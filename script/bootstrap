@@ -50,8 +50,7 @@ setup_gitconfig () {
 }
 
 link_file () {
-	echo "link"
-	echo "\$1=$1 \$2=$2"
+  info 'link file'
   local src=$1 dst=$2
 
   local overwrite= backup= skip=
@@ -134,8 +133,6 @@ link_config_dir () {
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 1 -type d -not -path '*.git*')
   do
     dst="$HOME/.config/$(basename "${src}")"
-    echo "\$src=$src"
-    echo "\$dst=$dst"
     link_file "$src" "$dst"
   done
 }
@@ -148,8 +145,6 @@ install_dotfiles () {
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
   do
     dst="$HOME/.$(basename "${src%.*}")"
-    echo "\$src=$src"
-    echo "\$dst=$dst"
     link_file "$src" "$dst"
   done
 }
