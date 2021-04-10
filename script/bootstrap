@@ -130,7 +130,7 @@ link_config_dir () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 1 -type d -not -path '*.git*')
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 1 -type d -not -path '*.git*' -not -path '*.dotfiles')
   do
     dst="$HOME/.config/$(basename "${src}")"
     link_file "$src" "$dst"

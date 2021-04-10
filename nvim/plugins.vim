@@ -149,11 +149,11 @@
     " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
     " neovim/nvim-lspconfig
-    Plug 'neovim/nvim-lspconfig'
-    Plug 'mfussenegger/nvim-jdtls'
-    Plug 'nvim-lua/completion-nvim'
-    Plug 'steelsojka/completion-buffers'
-    Plug 'kristijanhusak/completion-tags'
+    " Plug 'neovim/nvim-lspconfig'
+    " Plug 'mfussenegger/nvim-jdtls'
+    " Plug 'nvim-lua/completion-nvim'
+    " Plug 'steelsojka/completion-buffers'
+    " Plug 'kristijanhusak/completion-tags'
 
     " fcitx optimization
     Plug 'lilydjwg/fcitx.vim'
@@ -616,4 +616,4 @@
         " source ~/.config/nvim/coc.vim
 
     " nvim-lspconfig.nvim
-        source ~/.config/nvim/nvim-lsp.vim
+        " source ~/.config/nvim/nvim-lsp.vim
