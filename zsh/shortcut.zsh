@@ -18,7 +18,7 @@ fkill() {
 
   if [ "x$pid" != "x" ]
   then
-	echo $pid | xargs kill -${1:-9}
+	echo $pid | xargs sudo kill -${1:-9}
   fi
 }
 
