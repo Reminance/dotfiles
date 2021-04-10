@@ -1,0 +1,11 @@
+[Unit]
+Description="/etc/rc.local Compatibility"
+ConditionPathExists=/etc/rc.local.d
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/rc.local.d/rc.local start
+
+[Install]
+WantedBy=multi-user.target

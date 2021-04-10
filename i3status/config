@@ -1,0 +1,90 @@
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+        colors = true
+        output_format = i3bar
+        interval = 5
+        # color_good =     '#22ddcc'
+        # color_degraded = '#dd9933'
+        # color_bad =      '#aa5566'
+        color_good =     '#1dcc9f'
+        color_degraded = '#27c282'
+        color_bad =      '#aa0e50'
+        # markup = pango
+}
+
+order += "ipv6"
+order += "wireless _first_"
+order += "ethernet _first_"
+order += "battery all"
+order += "disk /"
+order += "load"
+order += "cpu_usage"
+order += "memory"
+order += "volume master"
+order += "tztime local"
+
+# format = "🌏 🚀 ♪   ⛁                           ⚡              "
+
+ipv6 {
+    format_up = " %IPv6"
+    format_down = " no IPv6"
+}
+
+wireless _first_ {
+        format_up = " (%quality at %essid) %ip"
+        format_down = " down"
+}
+
+ethernet _first_ {
+        format_up = "🌏 %ip (%speed)"
+        format_down = "🌏 down"
+}
+
+battery all {
+        format = "%status %remaining (%consumption)"
+        status_chr = ""
+        status_bat = ""
+        status_full = ""
+        hide_seconds = "true"
+        integer_battery_capacity = "true"
+        low_threshold = "20"
+        threshold_type = "time"
+        format_down = " No battery"
+}
+
+disk "/" {
+        format = "🖴 %avail"
+}
+
+load {
+        format = " LOAD: %1min"
+}
+
+cpu_usage {
+    format = " CPU: %usage"
+}
+
+memory {
+        format = " %available (%total)"
+        threshold_degraded = "1G"
+        format_degraded = " MEMORY < %available"
+}
+
+volume master {
+        format = " %volume"
+        format_muted = "🔇 muted %volume"
+        device = "default"
+        mixer = "Master"
+        mixer_idx = 0
+}
+
+tztime local {
+        format = " %H:%M:%S   %Y-%m-%d %A "
+}
