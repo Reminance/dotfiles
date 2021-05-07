@@ -154,3 +154,12 @@ cd spring-framework && ./gradlew asciidoctor
 ```
 > 访问 build\docs\asciidoc 目录中的内容。
 > 然后双击 index.html 文件，就可以看到最新的编译内容和结果。
+
+# 使用zulu-jdk8构建包含javafx依赖的项目
+```
+下载页面：
+https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk-fx
+
+下载链接：
+https://cdn.azul.com/zulu/bin/zulu8.54.0.21-ca-fx-jdk8.0.292-linux_x64.tar.gz
+```
