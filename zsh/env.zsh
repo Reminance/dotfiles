@@ -16,7 +16,9 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 # Make VIM the global editor
 NVIM=nvim
 NVIM_NIGHTLY=~/.config/sandbox/nvim-nightly/nvim-linux64/bin/nvim
-export VISUAL="$NVIM_NIGHTLY"
+# export VISUAL="$NVIM_NIGHTLY"
+# export EDITOR="$VISUAL"
+export VISUAL="$NVIM"
 export EDITOR="$VISUAL"
 #export TERM=alacritty
 export TERM=xterm-256color
