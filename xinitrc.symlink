@@ -48,9 +48,9 @@ export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 fcitx&
 export _JAVA_AWT_WM_NONREPARENTING=1
-echo $DISPLAY
 exec $1
-export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+# echo $DISPLAY
 exec i3
 # wmname LG3D
 # exec dwm
