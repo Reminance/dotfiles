@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+# in WSL 1
+# export DISPLAY=:0
+
+# in WSL 2
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+echo $DISPLAY

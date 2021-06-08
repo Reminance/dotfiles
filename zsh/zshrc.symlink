@@ -15,6 +15,7 @@ fi
 
 # all of our zsh files
 typeset -U config_files
+source $ZSH_CONF_ROOT/zsh/env.zsh
 config_files=($ZSH_CONF_ROOT/**/*.zsh)
 
 # load the path files
