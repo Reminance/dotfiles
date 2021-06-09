@@ -691,8 +691,8 @@
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
 ;;  (load-theme 'doom-Iosvkem t)
 ;;  (load-theme 'doom-one t)
-;;  (load-theme 'doom-snazzy t)
-  (load-theme 'doom-dracula t)
+  (load-theme 'doom-snazzy t)
+;;  (load-theme 'doom-dracula t)
   ;; Enable flashing mode-line on errors
   ;; (doom-themes-visual-bell-config)
   )
