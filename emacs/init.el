@@ -697,6 +697,10 @@
   ;; (doom-themes-visual-bell-config)
   )
 
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
+
 ;; for lisp
 ;; (use-package sly
 ;;   :hook (common-lisp-mode . sly-edit-mode) 
