@@ -63,7 +63,7 @@
 (setq create-lockfiles nil)
 ;; 随时重新加载发生修改过的文件
 (setq load-prefer-newer t)
-;; 关闭字体缓存gc
+n;; 关闭字体缓存gc
 (setq inhibit-compacting-font-caches nil)
 ;; 关闭烦人的提示
 (setq ring-bell-function 'ignore blink-cursor-mode nil)
@@ -377,7 +377,7 @@
   "Adjust the background opacity of FRAME by increment INCR."
   (unless (display-graphic-p frame)
     (error "Cannot adjust opacity of this frame"))
-  (let* ((oldalpha (or (frame-pkarameter frame 'alpha) 100))
+  (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
          ;; The 'alpha frame param became a pair at some point in
          ;; emacs 24.x, e.g. (100 100)
          (oldalpha (if (listp oldalpha) (car oldalpha) oldalpha))

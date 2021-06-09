@@ -41,7 +41,7 @@
   (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
   (global-set-key (kbd "M-˙") 'ns-do-hide-others)
   (with-eval-after-load 'nxml-mode
-                        (define-key nxml-mode-map (kbd "M-h") nil))
+    (define-key nxml-mode-map (kbd "M-h") nil))
   (global-set-key (kbd "M-ˍ") 'ns-do-hide-others) ;; what describe-key reports for cmd-option-h
   )
 
@@ -127,32 +127,32 @@
 (global-hl-line-mode 1)
 
 ;; 设置英文/中文字体
-;(setq reminance/en-font-name "Fira Code Nerd Font Mono"
+                                        ;(setq reminance/en-font-name "Fira Code Nerd Font Mono"
 (setq reminance/en-font-name "Iosevka"
       reminance/en-font-style "Regular"
       reminance/en-font-size 14)
-;(setq reminance/zh-font-name "WenQuanYi Zen Hei Mono"
-;(setq reminance/zh-font-name "Fira Code Nerd Font Mono"
+                                        ;(setq reminance/zh-font-name "WenQuanYi Zen Hei Mono"
+                                        ;(setq reminance/zh-font-name "Fira Code Nerd Font Mono"
 (setq reminance/zh-font-name "Iosevka"
       reminance/zh-font-style "Regular"
       reminance/zh-font-size 14)
 (progn
   (if (fontp (font-spec
-               :name reminance/en-font-name
-               :style reminance/en-font-style
-               :size reminance/en-font-size))
-    (progn
-      (set-face-attribute 'default nil
-                          :font (font-spec
-                                  :name reminance/en-font-name
-                                  :style reminance/en-font-style
-                                  :size reminance/en-font-size))
-      (set-fontset-font t 'han (font-spec
-                                 :name reminance/zh-font-name
-                                 :style reminance/zh-font-style))
-      (set-fontset-font "fontset-default" ?༼ (font-spec
-                                                 :name "Noto Serif Tibetan"
-                                                 :size 0)))
+              :name reminance/en-font-name
+              :style reminance/en-font-style
+              :size reminance/en-font-size))
+      (progn
+        (set-face-attribute 'default nil
+                            :font (font-spec
+                                   :name reminance/en-font-name
+                                   :style reminance/en-font-style
+                                   :size reminance/en-font-size))
+        (set-fontset-font t 'han (font-spec
+                                  :name reminance/zh-font-name
+                                  :style reminance/zh-font-style))
+        (set-fontset-font "fontset-default" ?༼ (font-spec
+                                                :name "Noto Serif Tibetan"
+                                                :size 0)))
     (message "Can't find %s font. You can install it or ignore this message at init-font.el" reminance/en-font-name)))
 
 ;; 显示跟踪空白
@@ -176,11 +176,11 @@
 (defun reminance/toggle-proxy ()
   (interactive)
   (if (null url-proxy-services)
-    (progn
-      (setq url-proxy-services
-            '(("http" . "127.0.0.1:7890")
-              ("https" . "127.0.0.1:7890")))
-      (message "proxy on."))
+      (progn
+        (setq url-proxy-services
+              '(("http" . "127.0.0.1:7890")
+                ("https" . "127.0.0.1:7890")))
+        (message "proxy on."))
     (setq url-proxy-services nil)
     (message "proxy off.")))
 
@@ -205,8 +205,8 @@
 
 ;; Window size and features
 (setq-default
-  window-resize-pixelwise t
-  frame-resize-pixelwise t)
+ window-resize-pixelwise t
+ frame-resize-pixelwise t)
 
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
@@ -227,7 +227,7 @@
   "Adjust the background opacity of FRAME by increment INCR."
   (unless (display-graphic-p frame)
     (error "Cannot adjust opacity of this frame"))
-  (let* ((oldalpha (or (frame-pkarameter frame 'alpha) 100))
+  (let* ((oldalpha (or (frame-parameter frame 'alpha) 100))
          ;; The 'alpha frame param became a pair at some point in
          ;; emacs 24.x, e.g. (100 100)
          (oldalpha (if (listp oldalpha) (car oldalpha) oldalpha))
@@ -240,26 +240,28 @@
   ;; Hint: Customize `ns-use-native-fullscreen'
   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
+                                        ; (global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+(global-set-key (kbd "M-C-7") (lambda () (interactive) (reminance/toggle-transparency)))
 (global-set-key (kbd "M-C-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
 (global-set-key (kbd "M-C-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
-; (global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-(global-set-key (kbd "M-C-7") (lambda () (interactive) (reminance/toggle-transparency)))
+(global-set-key (kbd "M-C-0") (lambda () (interactive) (reminance/toggle-proxy)))
 
 ;;;###autoload
 (defun reminance/toggle-transparency ()
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (set-frame-parameter
-      nil 'alpha
-      (if (eql (cond ((numberp alpha) alpha)
-                     ((numberp (cdr alpha)) (cdr alpha))
-                     ;; Also handle undocumented (<active> <inactive>) form.
-                     ((numberp (cadr alpha)) (cadr alpha)))
-               100)
-        '(85 . 85) '(100 . 100)))))
+     nil 'alpha
+     (if (eql (cond ((numberp alpha) alpha)
+                    ((numberp (cdr alpha)) (cdr alpha))
+                    ;; Also handle undocumented (<active> <inactive>) form.
+                    ((numberp (cadr alpha)) (cadr alpha)))
+              100)
+         '(85 . 85) '(100 . 100)))))
+
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
-                 (abbreviate-file-name (buffer-file-name))
+                   (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
 ;; Non-zero values for `line-spacing' can mess up ansi-term and co,
@@ -286,21 +288,29 @@
                         user-emacs-directory))
 
 ;;; Standard package repositories
-
-; (add-to-list 'package-archives '( "melpa" . "https://melpa.org/packages/") t)
+;; (add-to-list 'package-archives '( "melpa" . "http://melpa.org/packages/") t)
 ;; (setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
-;;                          ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/")
-;;                          ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
-;;                          ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
+;;                           ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/ ")
+;;                           ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
+;;                           ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
+
+(setq package-archives '(
+                         ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
+                         ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
+                         ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
+                         ))
+
+;;; Fire up package.el
+(package-initialize) ;; You might already have this line
+
 ;; Official MELPA Mirror, in case necessary.
 ;;(add-to-list 'package-archives (cons "melpa-mirror" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/")) t)
 
 ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
 (when (and (version< emacs-version "26.3") (boundp 'libgnutls-version) (>= libgnutls-version 30604))
   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-
-;;; Fire up package.el
-(package-initialize)
 
 ;;; for use-package
 (unless (package-installed-p 'use-package)
@@ -309,37 +319,37 @@
 
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
-             :ensure t
-             :config
-             (when (memq window-system '(mac ns))
-               (exec-path-from-shell-initialize))
-             )
+  :ensure t
+  :config
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize))
+  )
 
 ;; for try
 (use-package try
-             :ensure t)
+  :ensure t)
 
 ;; evil
-;; (use-package evil
-;;   :disabled
-;;   :ensure t
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (evil-mode 1))
-;; 
-;; (use-package evil-collection
-;;   :disabled
-;;   :after evil
-;;   :ensure t
-;;   :config
-;;   (evil-collection-init))
+(use-package evil
+;;  :disabled
+  :ensure t
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (evil-mode 1))
+
+(use-package evil-collection
+;;  :disabled
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 ;; magit
 (use-package magit
-             :ensure t
-             :commands (magit))
+  :ensure t
+  :commands (magit))
 
 ;; 显示当前行修改-Git
 ;; (use-package git-gutter-fringe
@@ -359,11 +369,11 @@
 ;;              :hook ((prog-mode  . diff-hl-mode)
 ;;                     (dired-mode . diff-hl-dired-mode)) )
 
-; (use-package markdown-mode
-;   :ensure t
-;   :mode "\\.md\\'"
-;   :mode "\\.text\\'"
-;   :mode "\\.markdown\\'")
+                                        ; (use-package markdown-mode
+                                        ;   :ensure t
+                                        ;   :mode "\\.md\\'"
+                                        ;   :mode "\\.text\\'"
+                                        ;   :mode "\\.markdown\\'")
 ;; (use-package markdown-mode+
 ;;              :defer t
 ;;              :ensure t
@@ -373,32 +383,32 @@
 
 ;; 著名的Emacs补全框架
 (use-package company
-             :ensure t
-             :hook (prog-mode . company-mode)
-             :init (setq company-tooltip-align-annotations t company-idle-delay 0.1 company-echo-delay 0
-                         company-minimum-prefix-length 2 company-require-match nil company-dabbrev-ignore-case
-                         nil company-dabbrev-downcase nil company-show-numbers t)
-             :config
-             :bind (:map company-active-map
-                         ("M-n" . nil)
-                         ("M-p" . nil)
-                         ("C-n" . #'company-select-next)
-                         ("C-p" . #'company-select-previous))
-             ; (:map leader-key
-             ;       ("c s" . #'company-yasnippet))
-             )
+  :ensure t
+  :hook (prog-mode . company-mode)
+  :init (setq company-tooltip-align-annotations t company-idle-delay 0.1 company-echo-delay 0
+              company-minimum-prefix-length 2 company-require-match nil company-dabbrev-ignore-case
+              nil company-dabbrev-downcase nil company-show-numbers t)
+  :config
+  :bind (:map company-active-map
+              ("M-n" . nil)
+              ("M-p" . nil)
+              ("C-n" . #'company-select-next)
+              ("C-p" . #'company-select-previous))
+                                        ; (:map leader-key
+                                        ;       ("c s" . #'company-yasnippet))
+  )
 
 ;; 美化company
 (use-package company-box
-             :ensure t
-             :hook (company-mode . company-box-mode))
+  :ensure t
+  :hook (company-mode . company-box-mode))
 
 ;; 代码片段
 (use-package yasnippet
-             :ensure t
-             :defer 2
-             :config
-             (setq yas-snippet-dirs '("~/.config/emacs/etc/snippets")))
+  :ensure t
+  :defer 2
+  :config
+  (setq yas-snippet-dirs '(expand-file-name "etc/snippets" user-emacs-directory)))
 
 ;; 大量可用的代码片段
 (use-package yasnippet-snippets 
@@ -564,55 +574,55 @@
 
 ;; 窗口管理器
 (use-package windmove
-             :defer 0
-             :ensure t
-             ; :init (windmove-default-keybindings)
-             ; :config
-             ; :bind (:map leader-key
-             ;             ("w f" . #'windmove-right)
-             ;             ("w b" . #'windmove-left)
-             ;             ("w p" . #'windmove-up)
-             ;             ("w n" . #'windmove-down)
-             ;             ("w F" . #'window-move-right)
-             ;             ("w B" . #'window-move-left)
-             ;             ("w P" . #'window-move-up)
-             ;             ("w N" . #'window-move-down)
-             ;             ("w h" . #'enlarge-window-horizontally)
-             ;             ("w l" . #'shrink-window-horizontally)
-             ;             ("w j" . #'enlarge-window)
-             ;             ("w k" . #'shrink-window))
-             )
+  :defer 0
+  :ensure t
+                                        ; :init (windmove-default-keybindings)
+                                        ; :config
+                                        ; :bind (:map leader-key
+                                        ;             ("w f" . #'windmove-right)
+                                        ;             ("w b" . #'windmove-left)
+                                        ;             ("w p" . #'windmove-up)
+                                        ;             ("w n" . #'windmove-down)
+                                        ;             ("w F" . #'window-move-right)
+                                        ;             ("w B" . #'window-move-left)
+                                        ;             ("w P" . #'window-move-up)
+                                        ;             ("w N" . #'window-move-down)
+                                        ;             ("w h" . #'enlarge-window-horizontally)
+                                        ;             ("w l" . #'shrink-window-horizontally)
+                                        ;             ("w j" . #'enlarge-window)
+                                        ;             ("w k" . #'shrink-window))
+  )
 
 ;; 项目管理
 (use-package projectile
-             :ensure t)
+  :ensure t)
 
 ;; REST
 (use-package restclient
-             :mode ("\\.http\\'" . restclient-mode)
-             :config
-             (use-package restclient-test
-                          :diminish
-                          :hook (restclient-mode . restclient-test-mode))
+  :mode ("\\.http\\'" . restclient-mode)
+  :config
+  (use-package restclient-test
+    :diminish
+    :hook (restclient-mode . restclient-test-mode))
 
-             (with-eval-after-load 'company
-                                   (use-package company-restclient
-                                                :defines company-backends
-                                                :init (add-to-list 'company-backends 'company-restclient)))
+  (with-eval-after-load 'company
+    (use-package company-restclient
+      :defines company-backends
+      :init (add-to-list 'company-backends 'company-restclient)))
 
-             (evil-leader/set-key-for-mode 'restclient-mode
-                                           "mn" 'restclient-jump-next
-                                           "mp" 'restclient-jump-prev
-                                           "ms" 'restclient-http-send-current-stay-in-window
-                                           "mS" 'restclient-http-send-current
-                                           "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
-                                           "mR" 'restclient-http-send-current-raw
-                                           "my" 'restclient-copy-curl-command))
+  (evil-leader/set-key-for-mode 'restclient-mode
+                                "mn" 'restclient-jump-next
+                                "mp" 'restclient-jump-prev
+                                "ms" 'restclient-http-send-current-stay-in-window
+                                "mS" 'restclient-http-send-current
+                                "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
+                                "mR" 'restclient-http-send-current-raw
+                                "my" 'restclient-copy-curl-command))
 
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
-             :ensure t
-             :hook (after-init . beacon-mode))
+  :ensure t
+  :hook (after-init . beacon-mode))
 
 ;; 有道词典，非常有用
 (use-package youdao-dictionary
@@ -629,20 +639,21 @@
 ;; icons font
 (progn
   (use-package all-the-icons
-               :ensure t)
+    :ensure t)
   ;; dired模式图标支持
   (use-package all-the-icons-dired
-               :ensure t
-               :hook ('dired-mode . 'all-the-icons-dired-mode))
+    :ensure t
+    :hook ('dired-mode . 'all-the-icons-dired-mode))
   ;; 表情符号
   (use-package emojify
-               :ensure t
-               :custom (emojify-emojis-dir "~/.emacs.d/var/emojis"))
+    :ensure t
+    :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
+
 ;;   ;; 浮动窗口支持
 ;;   (use-package posframe
 ;;                :ensure t
 ;;                :custom
-;;                (posframe-mouse-banish nil)))
+;;                (posframe-mouse-banish nil))
 
 ;; 彩虹猫进度条
 ;; (use-package nyan-mode
@@ -654,34 +665,37 @@
 
 ;; ASCII艺术字
 (use-package figlet
-             :ensure t
-             :config
-             (setq figlet-default-font "standard"))
+  :ensure t
+  :config
+  (setq figlet-default-font "standard"))
 
 ;; 撤销树
 (use-package undo-tree
-             :ensure t
-             :hook (after-init . global-undo-tree-mode)
-             :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
-             ;; HACK: keep the diff window
-             (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
-                               (setq-default undo-tree-visualizer-diff t)))
+  :ensure t
+  :hook (after-init . global-undo-tree-mode)
+  :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
+  ;; HACK: keep the diff window
+  (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
+                    (setq-default undo-tree-visualizer-diff t)))
 
 ;; 命令日志
 (use-package command-log-mode
-             :ensure t)
+  :ensure t)
 
 ;; themes config
 (use-package doom-themes
-             :ensure t
-             :config
-             ;; Global settings (defaults)
-             (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-                   doom-themes-enable-italic t) ; if nil, italics is universally disabled
-             (load-theme 'doom-Iosvkem t)
-             ;; Enable flashing mode-line on errors
-             ;; (doom-themes-visual-bell-config)
-             )
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;  (load-theme 'doom-Iosvkem t)
+;;  (load-theme 'doom-one t)
+;;  (load-theme 'doom-snazzy t)
+  (load-theme 'doom-dracula t)
+  ;; Enable flashing mode-line on errors
+  ;; (doom-themes-visual-bell-config)
+  )
 
 ;; for lisp
 ;; (use-package sly
@@ -718,20 +732,21 @@
   :ensure t
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+
 ;; 关闭鼠标功能
 (use-package disable-mouse
-             :ensure t
-             :hook (after-init . (lambda ()
-                                   (global-disable-mouse-mode -1))))
+  :ensure t
+  :hook (after-init . (lambda ()
+                        (global-disable-mouse-mode -1))))
 
 ;; 管理员模式编辑
 (use-package sudo-edit
-             :ensure t)
+  :ensure t)
 
 ;; 括号匹配
 (use-package smartparens
-             :ensure t
-             :hook (prog-mode . smartparens-mode))
+  :ensure t
+  :hook (prog-mode . smartparens-mode))
 
 ;; wgrep
 (setq-default grep-highlight-matches t
@@ -739,83 +754,83 @@
 (when *is-a-mac*
   (setq-default locate-command "mdfind"))
 (use-package wgrep
-             :ensure t
-             :config
-             (setq-default locate-command "mdfind")
-             )
+  :ensure t
+  :config
+  (setq-default locate-command "mdfind")
+  )
 (with-eval-after-load 'grep
-                      (dolist (key (list (kbd "C-c C-q") (kbd "w")))
-                        (define-key grep-mode-map key 'wgrep-change-to-wgrep-mode)))
+  (dolist (key (list (kbd "C-c C-q") (kbd "w")))
+    (define-key grep-mode-map key 'wgrep-change-to-wgrep-mode)))
 
 ;; 回到关闭文件前光标的位置
 (use-package saveplace
-             :ensure t
-             :hook (after-init . (lambda () (save-place-mode t))))
+  :ensure t
+  :hook (after-init . (lambda () (save-place-mode t))))
 
 ;; 键位提示
 (use-package which-key
-             :ensure t
-             :custom
-             ;; 弹出方式，底部弹出
-             (which-key-popup-type 'side-window)
-             :config
-             (which-key-mode 1))
+  :ensure t
+  :custom
+  ;; 弹出方式，底部弹出
+  (which-key-popup-type 'side-window)
+  :config
+  (which-key-mode 1))
 
 ;; 如果不喜欢ivy可以用这个包替换
 (use-package selectrum
-             :disabled
-             :ensure t
-             :config
-             (selectrum-mode +1)
-             (use-package selectrum-prescient
-                          :ensure t
-                          :disabled
-                          :config
-                          (prescient-persist-mode +1)
-                          (selectrum-prescient-mode +1)))
+  ;; :disabled
+  :ensure t
+  :config
+  (selectrum-mode +1)
+  (use-package selectrum-prescient
+    :ensure t
+    :disabled
+    :config
+    (prescient-persist-mode +1)
+    (selectrum-prescient-mode +1)))
 
 ;; 增强了搜索功能
 (use-package swiper
-             :ensure t
-             :bind
-             (("C-s" . swiper)
-              ("C-r" . swiper)
-              ("C-c C-r" . ivy-resume)
-              ("M-x" . counsel-M-x)
-              ("C-x C-f" . counsel-find-file))
-             :config
-             (setq counsel-describe-function-function #'helpful-callable)
-             (setq counsel-describe-variable-function #'helpful-variable)
-             (progn
-               (ivy-mode 1)
-               (setq ivy-use-virtual-buffers t)
-               (setq ivy-display-style 'fancy)
-               (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
+  :ensure t
+  :bind
+  (("C-s" . swiper)
+   ("C-r" . swiper)
+   ("C-c C-r" . ivy-resume)
+   ("M-x" . counsel-M-x)
+   ("C-x C-f" . counsel-find-file))
+  :config
+  (setq counsel-describe-function-function #'helpful-callable)
+  (setq counsel-describe-variable-function #'helpful-variable)
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (setq ivy-display-style 'fancy)
+    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
 
 ;; 集成了很多非常有用的的功能
 (use-package counsel
-             :ensure t
-             :bind
-             (("C-x C-r" . 'counsel-recentf)
-              ("C-x d" . 'counsel-dired))
-             :config
-             ;; 默认的 rg 配置
-             ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
-             (setq counsel-rg-base-command (list "rg"
-                                                 "-M" "240"
-                                                 "--with-filename" "--no-heading" "--line-number" "--color"
-                                                 "never" "%s"
-                                                 "-g" "!package-config.org"
-                                                 "-g" "!site-lisp"
-                                                 "-g" "!doc"
-                                                 "-g" "!themes"
-                                                 "-g" "!quelpa"
-                                                 "-g" "!etc-cache"))
-             (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
-             ;; Integration with `projectile'
-             (with-eval-after-load 'projectile
-                                   (setq projectile-completion-system 'ivy))
-             )
+  :ensure t
+  :bind
+  (("C-x C-r" . 'counsel-recentf)
+   ("C-x d" . 'counsel-dired))
+  :config
+  ;; 默认的 rg 配置
+  ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
+  (setq counsel-rg-base-command (list "rg"
+                                      "-M" "240"
+                                      "--with-filename" "--no-heading" "--line-number" "--color"
+                                      "never" "%s"
+                                      "-g" "!package-config.org"
+                                      "-g" "!site-lisp"
+                                      "-g" "!doc"
+                                      "-g" "!themes"
+                                      "-g" "!quelpa"
+                                      "-g" "!etc-cache"))
+  (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
+  ;; Integration with `projectile'
+  (with-eval-after-load 'projectile
+    (setq projectile-completion-system 'ivy))
+  )
 
 ;; for hydra
 ;; (use-package hydra
@@ -836,81 +851,30 @@
 ;;   :after hydra)
 
 ;; 安装quelpa包管理器（用于安装github上的插件）
-(unless (package-installed-p 'quelpa)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-    (eval-buffer)
-    (quelpa-self-upgrade))
-  (quelpa
-   '(quelpa-use-package
-     :fetcher git
-     :url "https://github.com/quelpa/quelpa-use-package.git")))
+;; (unless (package-installed-p 'quelpa)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;     (eval-buffer)
+;;     (quelpa-self-upgrade))
+;;   (quelpa
+;;    '(quelpa-use-package
+;;      :fetcher git
+;;      :url "https://github.com/quelpa/quelpa-use-package.git")))
+;; (require 'quelpa-use-package)
 
-(require 'quelpa-use-package)
-
-(setq quelpa-upgrade-interval 7
-      quelpa-update-melpa-p nil
-      use-package-ensure-function 'quelpa
-      use-package-always-ensure t)
+;; (setq quelpa-upgrade-interval 7
+;;       quelpa-update-melpa-p nil
+;;       use-package-ensure-function 'quelpa
+;;       use-package-always-ensure t)
 ;; (setq use-package-always-defer t)
-
-;; org
-(use-package org
-  :defer 2
-  :ensure t
-  :bind
-  ("C-c c" . 'org-capture)
-  ("C-c a" . 'org-agenda)
-  ("M-H" . 'org-shiftmetaleft)
-  ("M-L" . 'org-shiftmetaright)
-                                        ; :custom
-                                        ; (org-todo-keywords '((sequence "[学习](s!/@)" "[待办](t!/@)" "[等待](w!))" "|" "[完成](d!/@)" "[取消](c!@)")
-                                        ;                      (sequence "[BUG](b!/@)" "[新事件](i/@)" "[已知问题](k!/@)" "[修改中](W!/@)" "|" "[已修复](f!)")))
-  :config
-  (require 'org-capture)
-                                        ; (setq org-todo-keyword-faces '(("[学习]" . (:foreground "white" :background "#2ECC71" :weight bold))
-                                        ;                                ("[待办]" . (:foreground "white" :background "#F1C40F" :weight bold))
-                                        ;                                ("[等待]" . (:foreground "white" :background "#3498DB" :weight bold))
-                                        ;                                ("[完成]" . (:foreground "black" :background "snow " :weight bold))
-                                        ;                                ("[取消]" . (:foreground "white" :background "#566573" :weight bold))
-                                        ;                                ("[BUG]" . (:foreground "white" :background "#E74C3C" :weight bold))
-                                        ;                                ("[新事件]" . (:foreground "white" :background "#D35400" :weight bold))
-                                        ;                                ("[已知问题]" . (:foreground "white" :background "#17A589" :weight bold))
-                                        ;                                ("[修改中]" . (:foreground "white" :background "#BB8FCE" :weight bold))
-                                        ;                                ("[已修复]" . (:foreground "white" :background "#566573" :weight bold))))
-                                        ; (setq org-capture-templates nil)
-  ;; (push "~/Documents/org/capture/task.org" org-agenda-files)
-  ;; (setq org-time-stamp-formats '("<%Y-%m-%d 周%u %H:%M>"))
-                                        ; (add-to-list 'org-capture-templates '("t" "任务清单"))
-                                        ; (add-to-list 'org-capture-templates '("tw" "工作任务" entry (file+headline "~/Documents/org/capture/task.org" "Work")
-                                        ;                                       "* [待办] %^{任务名} - %U\n  %a\n  %?"))
-                                        ; (add-to-list 'org-capture-templates '("ts" "学习任务" entry (file+headline "~/Documents/org/capture/task.org" "Study")
-                                        ;                                       "* [学习] %^{学习项目} - %U\n  %a\n  %?"))
-                                        ; (add-to-list 'org-capture-templates '("j" "我的日志" entry (file+headline"~/Documents/site/org/diary.org" "日志")
-                                        ;                                       "* %U - %^{标题}\n  %?"))
-                                        ; (add-to-list 'org-capture-templates '("i" "我的闪念" entry (file+headline "~/Documents/site/org/idea.org" "闪念")
-                                        ;                                       "* %U - %^{标题} %^g\n  %?\n"))
-                                        ; (add-to-list 'org-capture-templates '("k" "我的百科" entry (file+headline "~/Documents/site/org/wiki.org" "WIKI")
-                                        ;                                       "* %^{标题} %t %^g\n  %?\n"))
-                                        ; (add-to-list 'org-capture-templates '("w" "我的单词" table-line (file+headline "~/Documents/org/capture/word.org" "Words")
-                                        ;                                       " | %U | %^{en_US} | %^{词性} | %^{zh_CN} |"))
-                                        ; (add-to-list 'org-capture-templates '("f" "单词速导" table-line (file+headline "~/Documents/org/capture/word.org" "Words")
-                                        ;                                       "| %U | %(evan/capture-get-word 1) | %(evan/capture-get-word 2) | %(evan/capture-get-word 3) |"))
-                                        ; (add-to-list 'org-capture-templates '("l" "超链接" entry (file+headline "~/Documents/org/capture/link.org" "Links")
-                                        ;                                       "* %^{简介} %t %^g\n  %^L\n  %?\n"))
-  ;; 设置org-babel支持运行的代码
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (shell . t))))
 
 ;; 美化org
 (use-package org-bullets
-             :ensure t
-             :after org
-             :hook ('org-mode . 'org-bullets-mode)
-             :custom
-             (org-bullets-bullet-list '("☰" "☷" "✿" "☭")))
+  :ensure t
+  :init
+  (add-hook 'org-mode-hook 'org-bullets-mode)
+  ;;   :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
+  )
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
@@ -931,13 +895,13 @@
 ;;----------------------------------------------------------------------------
 ;; Locales (setting them earlier in this file doesn't work in X)
 ;;----------------------------------------------------------------------------
-; (require 'init-locales)
+                                        ; (require 'init-locales)
 
 
 ;;----------------------------------------------------------------------------
 ;; Allow users to provide an optional "init-local" containing personal settings
 ;;----------------------------------------------------------------------------
-; (require 'init-local nil t)
+                                        ; (require 'init-local nil t)
 
 
 (provide 'init)
