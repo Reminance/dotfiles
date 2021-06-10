@@ -20,7 +20,6 @@
 ;;----------------------------------------------------------------------------
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 ;;----------------------------------------------------------------------------
 ;; init variables
@@ -45,6 +44,11 @@
   (global-set-key (kbd "M-ˍ") 'ns-do-hide-others) ;; what describe-key reports for cmd-option-h
   )
 
+(when (and *is-a-mac* (fboundp 'toggle-frame-fullscreen))
+  ;; Command-Option-f to toggle fullscreen mode
+  ;; Hint: Customize `ns-use-native-fullscreen'
+  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'truncate-lines nil)
 
@@ -61,11 +65,11 @@
 
 ;; 任何地方都使用UTF-8
 (set-charset-priority 'unicode)
-(setq locale-coding-system   'utf-8)    ; pretty
-(set-terminal-coding-system  'utf-8)    ; pretty
-(set-keyboard-coding-system  'utf-8)    ; pretty
-(set-selection-coding-system 'utf-8)    ; please
-(prefer-coding-system        'utf-8)    ; with sugar on top
+(setq locale-coding-system   'utf-8)
+(set-terminal-coding-system  'utf-8)
+(set-keyboard-coding-system  'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system        'utf-8)
 (setq default-process-coding-system '(utf-8 . utf-8))
 
 ;; 关闭自动调节行高
@@ -95,11 +99,14 @@
 (setq-default indent-tabs-mode nil)
 ;; 制表符宽度
 (setq-default tab-width 4)
+;; 显示跟踪空白
+(setq-local show-trailing-whitespace t)
 
 ;; 高亮对应的括号
 (show-paren-mode 1)
 
 ;; 设置eshell历史记录
+(setq url-configuration-directory (expand-file-name "var/url" user-emacs-directory))
 (setq eshell-history-file-name (expand-file-name "var/eshell/history" user-emacs-directory))
 (setq recentf-save-file  (expand-file-name "var/recentf" user-emacs-directory))
 ;; 自动刷新被修改过的文件
@@ -155,19 +162,15 @@
                                                 :size 0)))
     (message "Can't find %s font. You can install it or ignore this message at init-font.el" reminance/en-font-name)))
 
-;; 显示跟踪空白
-(setq-local show-trailing-whitespace t)
-
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
 ;;----------------------------------------------------------------------------
 ;; some custom shortcut
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(global-set-key (kbd "\e\ei")
-                (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
-(global-set-key (kbd "\e\el")
-                (lambda () (interactive) (find-file (expand-file-name "lisp" user-emacs-directory))))
-
+(global-set-key (kbd "C-` <f5>") 'revert-buffer)
+(global-set-key (kbd "C-` fi") (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
+(global-set-key (kbd "C-` fp") (lambda () (interactive) (find-file "~/doc/org/personal.org")))
+(global-set-key (kbd "C-` fw") (lambda () (interactive) (find-file "~/doc/org/work.org")))
+(global-set-key (kbd "C-` al") 'org-agenda-list)
 
 ;;----------------------------------------------------------------------------
 ;; custom common function
@@ -235,12 +238,7 @@
     (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
       (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
-(when (and *is-a-mac* (fboundp 'toggle-frame-fullscreen))
-  ;; Command-Option-f to toggle fullscreen mode
-  ;; Hint: Customize `ns-use-native-fullscreen'
-  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
-
-                                        ; (global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
 (global-set-key (kbd "M-C-7") (lambda () (interactive) (reminance/toggle-transparency)))
 (global-set-key (kbd "M-C-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
 (global-set-key (kbd "M-C-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
@@ -257,7 +255,7 @@
                     ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         '(85 . 85) '(100 . 100)))))
+         '(90 . 90) '(100 . 100)))))
 
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -289,11 +287,6 @@
 
 ;;; Standard package repositories
 ;; (add-to-list 'package-archives '( "melpa" . "http://melpa.org/packages/") t)
-;; (setq package-archives '(("gnu" . "http://mirrors.ustc.edu.cn/elpa/gnu/")
-;;                           ("melpa" . "http://mirrors.ustc.edu.cn/elpa/melpa/ ")
-;;                           ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
-;;                           ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
-
 ;; (setq package-archives '(
 ;;                          ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
 ;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
@@ -301,7 +294,6 @@
 ;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
 ;;                          ;;("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
 ;;                          ))
-
 (setq package-archives '(
                          ("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
@@ -325,22 +317,22 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
-  :ensure t
   :config
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize))
   )
 
 ;; for try
-(use-package try
-  :ensure t)
+(use-package try)
 
 ;; evil
 (use-package evil
-;;  :disabled
-  :ensure t
+  ;;  :disabled
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
@@ -350,48 +342,32 @@
 (use-package evil-collection
   ;;:disabled
   :after evil
-  :ensure t
   :config
   (evil-collection-init))
 
 ;; magit
 (use-package magit
-  :ensure t
   :commands (magit))
 
 ;; 显示当前行修改-Git
-;; (use-package git-gutter-fringe
-;;              ;; :disabled
-;;              :ensure nil
-;;              :hook (prog-mode . git-gutter-mode)
-;;              :custom
-;;              (git-gutter:update-interval 1)
-;;              (git-gutter:added-sign "+")
-;;              (git-gutter:deleted-sign "_")
-;;              (git-gutter:modified-sign "~")
-;;              (git-gutter:hide-gutter t))
-;; 
-;; ;; 高亮修改记录
-;; (use-package diff-hl
-;;              :ensure t
-;;              :hook ((prog-mode  . diff-hl-mode)
-;;                     (dired-mode . diff-hl-dired-mode)) )
+(use-package git-gutter-fringe
+  ;;:disabled
+  :hook (prog-mode . git-gutter-mode)
+  :custom
+  (git-gutter:update-interval 1)
+  (git-gutter:added-sign "+")
+  (git-gutter:deleted-sign "_")
+  (git-gutter:modified-sign "~")
+  (git-gutter:hide-gutter t))
 
-                                        ; (use-package markdown-mode
-                                        ;   :ensure t
-                                        ;   :mode "\\.md\\'"
-                                        ;   :mode "\\.text\\'"
-                                        ;   :mode "\\.markdown\\'")
-;; (use-package markdown-mode+
-;;              :defer t
-;;              :ensure t
-;;              :hook (markdown-mode . (lambda () (require 'markdown-mode+)))
-;;              :config
-;;              ())
+;; 高亮修改记录
+(use-package diff-hl
+  :disabled
+  :hook ((prog-mode  . diff-hl-mode)
+         (dired-mode . diff-hl-dired-mode)) )
 
 ;; 著名的Emacs补全框架
 (use-package company
-  :ensure t
   :hook (prog-mode . company-mode)
   :init (setq company-tooltip-align-annotations t company-idle-delay 0.1 company-echo-delay 0
               company-minimum-prefix-length 2 company-require-match nil company-dabbrev-ignore-case
@@ -408,24 +384,20 @@
 
 ;; 美化company
 (use-package company-box
-  :ensure t
   :hook (company-mode . company-box-mode))
 
 ;; 代码片段
 (use-package yasnippet
-  :ensure t
   :defer 2
   :config
   (setq yas-snippet-dirs '(expand-file-name "etc/snippets" user-emacs-directory)))
 
 ;; 大量可用的代码片段
 (use-package yasnippet-snippets 
-  :ensure t
   :after yasnippet)
 
 ;; 编译运行当前文件
 (use-package quickrun
-  :ensure t
   :commands(quickrun)
   ;; :bind (:map leader-key
   ;;             ("c r" . #'quickrun))
@@ -452,158 +424,12 @@
 ;; 人工智能补全代码
 (use-package company-tabnine
   :disabled
-  :ensure t
   :after 'company-mode
   'company-tabnine-mode
   :config (add-to-list 'company-backends #'company-tabnine))
 
-;; lsp
-;; =================================================
-;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
-;; =================================================
-;; = + bash                                        =
-;; =   > `npm i -g bash-language-server'           =
-;; = + python                                      =
-;; =   > `pip install python-language-server[all]' =
-;; = + ruby                                        =
-;; =   > `gem install solargraph'                  =
-;; = + java                                        =
-;; =   > `(use-package lsp-java :ensure t)'        =
-;; = + c/c++                                       =
-;; =   > `sudo pacman -S ccls'                     =
-;; =================================================
-;; (use-package lsp-mode
-;;   :ensure t
-;;   :defer 2
-;;   :commands (lsp)
-;;   :hook ((java-mode js-mode js2-mode web-mode c-mode c++-mode objc-mode python-mode rust-mode) . lsp)
-;;   :custom
-;;   (lsp-idle-delay 200)
-;;   (lsp-auto-guess-root nil)
-;;   (lsp-file-watch-threshold 2000)
-;;   (read-process-output-max (* 1024 10240))
-;;   (lsp-eldoc-hook nil)
-;;   (lsp-prefer-flymake nil)
-;;   :bind (:map lsp-mode-map
-;;               ("C-c C-f" . lsp-format-buffer)
-;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
-;;               ("M-RET" . lsp-execute-code-action)
-;;               )
-;;   :config
-;;   (setq lsp-prefer-capf t))
-
-
-;; 各个语言的Debug工具
-;; (use-package dap-mode
-;;              :ensure t
-;;              :functions dap-hydra/nil
-;;              :diminish
-;;              :bind (:map lsp-mode-map
-;;                          ("<f5>" . dap-debug)
-;;                          ("M-<f5>" . dap-hydra))
-;;              :hook ((after-init . dap-mode)
-;;                     (dap-mode . dap-ui-mode)
-;;                     (python-mode . (lambda () (require 'dap-python)))
-;;                     ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))))
-
-;; 美化lsp-mode
-;; (use-package lsp-ui
-;;              :ensure t
-;;              :hook (lsp-mode . lsp-ui-mode)
-;;              :config
-;;              ;; sideline
-;;              (setq lsp-ui-sideline-show-diagnostics t
-;;                    lsp-ui-sideline-show-hover t
-;;                    lsp-ui-sideline-show-code-actions nil
-;;                    lsp-ui-sideline-update-mode 'line
-;;                    ;; sideline
-;;                    lsp-ui-sideline-delay 1)
-;;              ;; peek
-;;              (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;;              (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-;;              ;; doc
-;;              (setq lsp-ui-doc-enable t
-;;                    ;; 文档显示的位置
-;;                    lsp-ui-doc-position 'top
-;;                    ;; 显示文档的延迟
-;;                    lsp-ui-doc-delay 2))
-
-;; lsp-java
-;; (use-package lsp-java
-;;   :commands (lsp)
-;;   :ensure t
-;;   :hook (java-mode . (lambda () (require 'lsp-java)))
-;;   :config
-;;   (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
-
-;; flycheck
-;; (use-package flycheck
-;;              :ensure t
-;;              :commands (flycheck-mode)
-;;              ;; :hook (prog-mode . flycheck-mode)
-;;              ; :bind (:map leader-key
-;;              ;             ("t t" . global-flycheck-mode))
-;;              :config (which-key-add-key-based-replacements "M-SPC t t" "开关flycheck")
-;;              (setq flycheck-global-modes '(not text-mode outline-mode fundamental-mode org-mode diff-mode
-;;                                                shell-mode eshell-mode term-mode vterm-mode)
-;;                    flycheck-emacs-lisp-load-path 'inherit
-;;                    ;; Only check while saving and opening files
-;;                    ;; 只在打开和保存文件时才进行检查
-;;                    flycheck-check-syntax-automatically '(save mode-enabled) flycheck-indication-mode
-;;                    'right-fringe)
-;;              ;; 美化一下
-;;              (when (fboundp 'define-fringe-bitmap)
-;;                (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [16 48 112 240 112 48 16] nil nil
-;;                                      'center)))
-
-;; 用GUI tooltips来显示检查到的错误
-;; (progn
-;;   (use-package flycheck-posframe
-;;                :ensure t
-;;                :custom-face (flycheck-posframe-border-face ((t
-;;                                                               (:inherit default))))
-;;                :hook (flycheck-mode . flycheck-posframe-mode)
-;;                :init (setq flycheck-posframe-border-width 1 flycheck-posframe-inhibit-functions '((lambda
-;;                                                                                                     (&rest _)
-;;                                                                                                     (bound-and-true-p
-;;                                                                                                       company-backend)))))
-;;   (use-package flycheck-pos-tip
-;;                :ensure t
-;;                :defines flycheck-pos-tip-timeout
-;;                :hook (global-flycheck-mode . flycheck-pos-tip-mode)
-;;                :config (setq flycheck-pos-tip-timeout 30))
-;;   (use-package flycheck-popup-tip
-;;                :ensure t
-;;                :hook (flycheck-mode . flycheck-popup-tip-mode)))
-
-;; 写js可用的模式
-;; (use-package js2-mode
-;;              :ensure t)
-
-;; 窗口管理器
-(use-package windmove
-  :defer 0
-  :ensure t
-                                        ; :init (windmove-default-keybindings)
-                                        ; :config
-                                        ; :bind (:map leader-key
-                                        ;             ("w f" . #'windmove-right)
-                                        ;             ("w b" . #'windmove-left)
-                                        ;             ("w p" . #'windmove-up)
-                                        ;             ("w n" . #'windmove-down)
-                                        ;             ("w F" . #'window-move-right)
-                                        ;             ("w B" . #'window-move-left)
-                                        ;             ("w P" . #'window-move-up)
-                                        ;             ("w N" . #'window-move-down)
-                                        ;             ("w h" . #'enlarge-window-horizontally)
-                                        ;             ("w l" . #'shrink-window-horizontally)
-                                        ;             ("w j" . #'enlarge-window)
-                                        ;             ("w k" . #'shrink-window))
-  )
-
 ;; 项目管理
-(use-package projectile
-  :ensure t)
+(use-package projectile)
 
 ;; REST
 (use-package restclient
@@ -629,13 +455,11 @@
 
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
-  :ensure t
   :hook (after-init . beacon-mode))
 
 ;; 有道词典，非常有用
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
-  :ensure t
   :config (setq url-automatic-caching t)
   (which-key-add-key-based-replacements "C-x y" "有道翻译")
   :bind (("C-x y t" . 'youdao-dictionary-search-at-point+)
@@ -646,40 +470,21 @@
 
 ;; icons font
 (progn
-  (use-package all-the-icons
-    :ensure t)
+  (use-package all-the-icons)
   ;; dired模式图标支持
   (use-package all-the-icons-dired
-    :ensure t
     :hook ('dired-mode . 'all-the-icons-dired-mode))
   ;; 表情符号
   (use-package emojify
-    :ensure t
     :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
-
-;;   ;; 浮动窗口支持
-;;   (use-package posframe
-;;                :ensure t
-;;                :custom
-;;                (posframe-mouse-banish nil))
-
-;; 彩虹猫进度条
-;; (use-package nyan-mode
-;;              :ensure t
-;;              :hook (after-init . nyan-mode)
-;;              :config
-;;              (setq nyan-wavy-trail t
-;;                    nyan-animate-nyancat t))
 
 ;; ASCII艺术字
 (use-package figlet
-  :ensure t
   :config
   (setq figlet-default-font "standard"))
 
 ;; 撤销树
 (use-package undo-tree
-  :ensure t
   :hook (after-init . global-undo-tree-mode)
   :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
   ;; HACK: keep the diff window
@@ -687,53 +492,27 @@
                     (setq-default undo-tree-visualizer-diff t)))
 
 ;; 命令日志
-(use-package command-log-mode
-  :ensure t)
+(use-package command-log-mode)
 
 ;; themes config
 (use-package doom-themes
-  :ensure t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;  (load-theme 'doom-Iosvkem t)
-;;  (load-theme 'doom-one t)
+  ;;  (load-theme 'doom-Iosvkem t)
+  ;;  (load-theme 'doom-one t)
   (load-theme 'doom-snazzy t)
-;;  (load-theme 'doom-dracula t)
+  ;;  (load-theme 'doom-dracula t)
   ;; Enable flashing mode-line on errors
   ;; (doom-themes-visual-bell-config)
   )
 
 (use-package doom-modeline
-  :ensure t
   :init (doom-modeline-mode 1))
-
-;; for lisp
-;; (use-package sly
-;;   :hook (common-lisp-mode . sly-edit-mode) 
-;;   :ensure t)
-;; (use-package sly-macrostep
-;;   :ensure t
-;;   :hook (common-lisp-mode . sly-macrostep-mode))
-;; 
-;; (use-package sly-repl-ansi-color
-;;   :ensure t
-;;   :hook (common-lisp-mode . sly-repl-ansi-color))
-
-;; for elisp
-;; (use-package lispy
-;;   :ensure t
-;;   :hook (emacs-lisp-mode . lispy-mode))
-
-;; lisp符号操作工具
-;; (use-package symbol-overlay
-;;   :ensure t
-;;   :hook (emacs-lisp-mode . symbol-overlay-mode))
 
 ;; 增强*help* buffer的功能
 (use-package helpful
-  :ensure t
   :bind
   (("C-h f" . helpful-callable)
    ("C-h v" . helpful-variable)
@@ -741,23 +520,19 @@
 
 ;; 为*help*中的函数提供elisp例子
 (use-package elisp-demos
-  :ensure t
   :config
   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;; 关闭鼠标功能
 (use-package disable-mouse
-  :ensure t
   :hook (after-init . (lambda ()
                         (global-disable-mouse-mode -1))))
 
 ;; 管理员模式编辑
-(use-package sudo-edit
-  :ensure t)
+(use-package sudo-edit)
 
 ;; 括号匹配
 (use-package smartparens
-  :ensure t
   :hook (prog-mode . smartparens-mode))
 
 ;; wgrep
@@ -766,7 +541,6 @@
 (when *is-a-mac*
   (setq-default locate-command "mdfind"))
 (use-package wgrep
-  :ensure t
   :config
   (setq-default locate-command "mdfind")
   )
@@ -776,12 +550,12 @@
 
 ;; 回到关闭文件前光标的位置
 (use-package saveplace
-  :ensure t
+  :config
+  (setq save-place-file (locate-user-emacs-file "var/places" "var/.emacs-places"))
   :hook (after-init . (lambda () (save-place-mode t))))
 
 ;; 键位提示
 (use-package which-key
-  :ensure t
   :custom
   ;; 弹出方式，底部弹出
   (which-key-popup-type 'side-window)
@@ -791,11 +565,9 @@
 ;; 如果不喜欢ivy可以用这个包替换
 (use-package selectrum
   ;; :disabled
-  :ensure t
   :config
   (selectrum-mode +1)
   (use-package selectrum-prescient
-    :ensure t
     :disabled
     :config
     (prescient-persist-mode +1)
@@ -803,7 +575,6 @@
 
 ;; 增强了搜索功能
 (use-package swiper
-  :ensure t
   :bind
   (("C-s" . swiper)
    ("C-r" . swiper)
@@ -821,7 +592,6 @@
 
 ;; 集成了很多非常有用的的功能
 (use-package counsel
-  :ensure t
   :bind
   (("C-x C-r" . 'counsel-recentf)
    ("C-x d" . 'counsel-dired))
@@ -844,49 +614,16 @@
     (setq projectile-completion-system 'ivy))
   )
 
-;; for hydra
-;; (use-package hydra
-;;   :defer 0
-;;   :ensure t)
-;;
-;; (use-package hydra-posframe
-;;   :quelpa ((hydra-posframe
-;;             :fetcher github
-;;             :repo "Ladicle/hydra-posframe"))
-;;   :hook (after-init . (lambda ()
-;;                         (hydra-posframe-mode +1) ) ))
-;;
-;; (use-package
-;;   major-mode-hydra
-;;   :defer 0
-;;   :ensure t
-;;   :after hydra)
-
-;; 安装quelpa包管理器（用于安装github上的插件）
-;; (unless (package-installed-p 'quelpa)
-;;   (with-temp-buffer
-;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-;;     (eval-buffer)
-;;     (quelpa-self-upgrade))
-;;   (quelpa
-;;    '(quelpa-use-package
-;;      :fetcher git
-;;      :url "https://github.com/quelpa/quelpa-use-package.git")))
-;; (require 'quelpa-use-package)
-
-;; (setq quelpa-upgrade-interval 7
-;;       quelpa-update-melpa-p nil
-;;       use-package-ensure-function 'quelpa
-;;       use-package-always-ensure t)
-;; (setq use-package-always-defer t)
-
 ;;; org
-;;; To-do settings
 (setq org-agenda-files (list
                         "~/doc/org/test.org"
                         ;;"~/doc/org/work.org"
-                        ;;"~/doc/org/home.org"
+                        ;;"~/doc/org/personal.org"
                         ))
+
+;;; Archiving
+(setq org-archive-mark-done nil)
+(setq org-archive-location "%s_archive::* Archive")
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
@@ -900,7 +637,6 @@
 
 ;; 美化org
 (use-package org-bullets
-  :ensure t
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
   ;;   :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
@@ -918,21 +654,213 @@
 ;;----------------------------------------------------------------------------
 ;; Variables configured via the interactive 'customize' interface
 ;;----------------------------------------------------------------------------
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; lsp
+;; =================================================
+;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
+;; =================================================
+;; = + bash                                        =
+;; =   > `npm i -g bash-language-server'           =
+;; = + python                                      =
+;; =   > `pip install python-language-server[all]' =
+;; = + ruby                                        =
+;; =   > `gem install solargraph'                  =
+;; = + java                                        =
+;; =   > `(use-package lsp-java)'        =
+;; = + c/c++                                       =
+;; =   > `sudo pacman -S ccls'                     =
+;; =================================================
+;; (use-package lsp-mode
+;;   :defer 2
+;;   :commands (lsp)
+;;   :hook ((java-mode js-mode js2-mode web-mode c-mode c++-mode objc-mode python-mode rust-mode) . lsp)
+;;   :custom
+;;   (lsp-idle-delay 200)
+;;   (lsp-auto-guess-root nil)
+;;   (lsp-file-watch-threshold 2000)
+;;   (read-process-output-max (* 1024 10240))
+;;   (lsp-eldoc-hook nil)
+;;   (lsp-prefer-flymake nil)
+;;   :bind (:map lsp-mode-map
+;;               ("C-c C-f" . lsp-format-buffer)
+;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
+;;               ("M-RET" . lsp-execute-code-action)
+;;               )
+;;   :config
+;;   (setq lsp-prefer-capf t))
 
-;;----------------------------------------------------------------------------
-;; Locales (setting them earlier in this file doesn't work in X)
-;;----------------------------------------------------------------------------
-                                        ; (require 'init-locales)
+;; 各个语言的Debug工具
+;; (use-package dap-mode
+;;              :functions dap-hydra/nil
+;;              :diminish
+;;              :bind (:map lsp-mode-map
+;;                          ("<f5>" . dap-debug)
+;;                          ("M-<f5>" . dap-hydra))
+;;              :hook ((after-init . dap-mode)
+;;                     (dap-mode . dap-ui-mode)
+;;                     (python-mode . (lambda () (require 'dap-python)))
+;;                     ((c-mode c++-mode) . (lambda () (require 'dap-lldb)))))
 
+;; 美化lsp-mode
+;; (use-package lsp-ui
+;;              :hook (lsp-mode . lsp-ui-mode)
+;;              :config
+;;              ;; sideline
+;;              (setq lsp-ui-sideline-show-diagnostics t
+;;                    lsp-ui-sideline-show-hover t
+;;                    lsp-ui-sideline-show-code-actions nil
+;;                    lsp-ui-sideline-update-mode 'line
+;;                    ;; sideline
+;;                    lsp-ui-sideline-delay 1)
+;;              ;; peek
+;;              (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;;              (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+;;              ;; doc
+;;              (setq lsp-ui-doc-enable t
+;;                    ;; 文档显示的位置
+;;                    lsp-ui-doc-position 'top
+;;                    ;; 显示文档的延迟
+;;                    lsp-ui-doc-delay 2))
 
-;;----------------------------------------------------------------------------
-;; Allow users to provide an optional "init-local" containing personal settings
-;;----------------------------------------------------------------------------
-                                        ; (require 'init-local nil t)
+;; lsp-java
+;; (use-package lsp-java
+;;   :commands (lsp)
+;;   :hook (java-mode . (lambda () (require 'lsp-java)))
+;;   :config
+;;   (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
 
+;; flycheck
+;; (use-package flycheck
+;;              :commands (flycheck-mode)
+;;              ;; :hook (prog-mode . flycheck-mode)
+;;              ; :bind (:map leader-key
+;;              ;             ("t t" . global-flycheck-mode))
+;;              :config (which-key-add-key-based-replacements "M-SPC t t" "开关flycheck")
+;;              (setq flycheck-global-modes '(not text-mode outline-mode fundamental-mode org-mode diff-mode
+;;                                                shell-mode eshell-mode term-mode vterm-mode)
+;;                    flycheck-emacs-lisp-load-path 'inherit
+;;                    ;; Only check while saving and opening files
+;;                    ;; 只在打开和保存文件时才进行检查
+;;                    flycheck-check-syntax-automatically '(save mode-enabled) flycheck-indication-mode
+;;                    'right-fringe)
+;;              ;; 美化一下
+;;              (when (fboundp 'define-fringe-bitmap)
+;;                (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow [16 48 112 240 112 48 16] nil nil
+;;                                      'center)))
+
+;; 用GUI tooltips来显示检查到的错误
+;; (progn
+;;   (use-package flycheck-posframe
+;;                :custom-face (flycheck-posframe-border-face ((t
+;;                                                               (:inherit default))))
+;;                :hook (flycheck-mode . flycheck-posframe-mode)
+;;                :init (setq flycheck-posframe-border-width 1 flycheck-posframe-inhibit-functions '((lambda
+;;                                                                                                     (&rest _)
+;;                                                                                                     (bound-and-true-p
+;;                                                                                                       company-backend)))))
+;;   (use-package flycheck-pos-tip
+;;                :defines flycheck-pos-tip-timeout
+;;                :hook (global-flycheck-mode . flycheck-pos-tip-mode)
+;;                :config (setq flycheck-pos-tip-timeout 30))
+;;   (use-package flycheck-popup-tip
+;;                :hook (flycheck-mode . flycheck-popup-tip-mode)))
+
+;; 写js可用的模式
+;; (use-package js2-mode)
+
+;; 窗口管理器
+;;(use-package windmove
+;;  :defer 0
+;;  :init (windmove-default-keybindings)
+;;  :config
+;;  :bind (:map leader-key
+;;              ("w f" . #'windmove-right)
+;;              ("w b" . #'windmove-left)
+;;              ("w p" . #'windmove-up)
+;;              ("w n" . #'windmove-down)
+;;              ("w F" . #'window-move-right)
+;;              ("w B" . #'window-move-left)
+;;              ("w P" . #'window-move-up)
+;;              ("w N" . #'window-move-down)
+;;              ("w h" . #'enlarge-window-horizontally)
+;;              ("w l" . #'shrink-window-horizontally)
+;;              ("w j" . #'enlarge-window)
+;;              ("w k" . #'shrink-window))
+;;  )
+
+;;   ;; 浮动窗口支持
+;;   (use-package posframe
+;;                :custom
+;;                (posframe-mouse-banish nil))
+
+;; 彩虹猫进度条
+;; (use-package nyan-mode
+;;              :hook (after-init . nyan-mode)
+;;              :config
+;;              (setq nyan-wavy-trail t
+;;                    nyan-animate-nyancat t))
+
+;; for hydra
+;; (use-package hydra :defer 0)
+;;
+;; (use-package hydra-posframe
+;;   :quelpa ((hydra-posframe
+;;             :fetcher github
+;;             :repo "Ladicle/hydra-posframe"))
+;;   :hook (after-init . (lambda ()
+;;                         (hydra-posframe-mode +1) ) ))
+;;
+;; (use-package
+;;   major-mode-hydra
+;;   :defer 0
+;;   :after hydra)
+
+;; 安装quelpa包管理器（用于安装github上的插件）
+;; (unless (package-installed-p 'quelpa)
+;;   (with-temp-buffer
+;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
+;;     (eval-buffer)
+;;     (quelpa-self-upgrade))
+;;   (quelpa
+;;    '(quelpa-use-package
+;;      :fetcher git
+;;      :url "https://github.com/quelpa/quelpa-use-package.git")))
+;; (require 'quelpa-use-package)
+
+;; (setq quelpa-upgrade-interval 7
+;;       quelpa-update-melpa-p nil
+;;       use-package-ensure-function 'quelpa)
+;; (setq use-package-always-defer t)
+
+;; for lisp
+;; (use-package sly
+;;   :hook (common-lisp-mode . sly-edit-mode))
+;; (use-package sly-macrostep
+;;   :hook (common-lisp-mode . sly-macrostep-mode))
+;; 
+;; (use-package sly-repl-ansi-color
+;;   :hook (common-lisp-mode . sly-repl-ansi-color))
+
+;; for elisp
+;; (use-package lispy
+;;   :hook (emacs-lisp-mode . lispy-mode))
+
+;; lisp符号操作工具
+;; (use-package symbol-overlay
+;;   :hook (emacs-lisp-mode . symbol-overlay-mode))
+
+;;(use-package markdown-mode
+;;  :mode "\\.md\\'"
+;;  :mode "\\.text\\'"
+;;  :mode "\\.markdown\\'")
+;;(use-package markdown-mode+
+;;  :defer t
+;;  :hook (markdown-mode . (lambda () (require 'markdown-mode+)))
+;;  :config
+;;  ())
 
 (provide 'init)
 ;; Local Variables:
