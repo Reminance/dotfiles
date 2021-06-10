@@ -1,5 +1,10 @@
-#!/bin/sh
+export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+export PATH=$PATH:~/.local/bin
 
+# for fcitx or other stuff
+export $(dbus-launch)
+
+# those should be in .xinitxc
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.config/xmodmap/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
@@ -49,9 +54,9 @@ export XMODIFIERS="@im=fcitx"
 #fcitx&
 if test $( pgrep -f fcitx | wc -l ) -eq 0; then nohup fcitx &; fi
 export _JAVA_AWT_WM_NONREPARENTING=1
-exec $1
+#exec $1
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 # echo $DISPLAY
-exec i3
+#exec i3
 # wmname LG3D
 # exec dwm

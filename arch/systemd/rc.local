@@ -1,4 +1,4 @@
-#!/bin/sh
+export $(dbus-launch)
 
 userresources=$HOME/.Xresources
 usermodmap=$HOME/.config/xmodmap/.Xmodmap
@@ -46,8 +46,7 @@ fi
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
-#fcitx&
-if test $( pgrep -f fcitx | wc -l ) -eq 0; then nohup fcitx &; fi
+fcitx&
 export _JAVA_AWT_WM_NONREPARENTING=1
 exec $1
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
