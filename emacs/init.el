@@ -378,8 +378,8 @@
               ("M-p" . nil)
               ("C-n" . #'company-select-next)
               ("C-p" . #'company-select-previous))
-                                        ; (:map leader-key
-                                        ;       ("c s" . #'company-yasnippet))
+  ;; (:map leader-key
+  ;;       ("c s" . #'company-yasnippet))
   )
 
 ;; 美化company
