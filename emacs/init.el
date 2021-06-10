@@ -874,6 +874,11 @@
 
 ;;; org
 ;;; To-do settings
+(setq org-agenda-files (list
+                        "~/doc/org/test.org"
+                        ;;"~/doc/org/work.org"
+                        ;;"~/doc/org/home.org"
+                        ))
 
 (setq org-todo-keywords
       (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
