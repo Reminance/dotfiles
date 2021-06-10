@@ -615,6 +615,10 @@
   )
 
 ;;; org
+;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
+(setq org-display-inline-images t)
+(setq org-redisplay-inline-images t)
+(setq org-startup-with-inline-images t)
 (setq org-agenda-files (list
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
