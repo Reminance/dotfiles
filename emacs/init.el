@@ -294,12 +294,20 @@
 ;;                           ("melpa-stable" . "http://mirrors.ustc.edu.cn/elpa/melpa-stable/")
 ;;                           ("org" . "http://mirrors.ustc.edu.cn/elpa/org/")))
 
+;; (setq package-archives '(
+;;                          ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+;;                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
+;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
+;;                          ;;("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
+;;                          ))
+
 (setq package-archives '(
-                         ("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-                         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-                         ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
-                         ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
+                         ("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
+                         ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
+                         ("org" . "http://elpa.emacs-china.org/org/")
                          ))
 
 ;;; Fire up package.el
@@ -340,7 +348,7 @@
   (evil-mode 1))
 
 (use-package evil-collection
-;;  :disabled
+  ;;:disabled
   :after evil
   :ensure t
   :config
