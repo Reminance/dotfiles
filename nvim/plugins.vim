@@ -156,7 +156,7 @@
     " Plug 'kristijanhusak/completion-tags'
 
     " fcitx optimization
-    Plug 'lilydjwg/fcitx.vim'
+    " Plug 'lilydjwg/fcitx.vim'
 
     call plug#end()
 
