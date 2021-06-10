@@ -616,9 +616,8 @@
 
 ;;; org
 (setq org-agenda-files (list
-                        "~/doc/org/test.org"
-                        ;;"~/doc/org/work.org"
-                        ;;"~/doc/org/personal.org"
+                        "~/doc/org/personal.org"
+                        "~/doc/org/work.org"
                         ))
 
 ;;; Archiving
