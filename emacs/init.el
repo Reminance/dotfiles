@@ -132,17 +132,18 @@
 (setq-default cursor-type 'bar)
 ;; 高亮当前行
 (global-hl-line-mode 1)
+(windmove-default-keybindings)
 
 ;; 设置英文/中文字体
-                                        ;(setq reminance/en-font-name "Fira Code Nerd Font Mono"
+;(setq reminance/en-font-name "Fira Code Nerd Font Mono"
 (setq reminance/en-font-name "Iosevka"
       reminance/en-font-style "Regular"
-      reminance/en-font-size 14)
-                                        ;(setq reminance/zh-font-name "WenQuanYi Zen Hei Mono"
-                                        ;(setq reminance/zh-font-name "Fira Code Nerd Font Mono"
+      reminance/en-font-size 16)
+;(setq reminance/zh-font-name "WenQuanYi Zen Hei Mono"
+;(setq reminance/zh-font-name "Fira Code Nerd Font Mono"
 (setq reminance/zh-font-name "Iosevka"
       reminance/zh-font-style "Regular"
-      reminance/zh-font-size 14)
+      reminance/zh-font-size 16)
 (progn
   (if (fontp (font-spec
               :name reminance/en-font-name
@@ -389,8 +390,8 @@
 ;; 代码片段
 (use-package yasnippet
   :defer 2
-  :config
-  (setq yas-snippet-dirs '(expand-file-name "etc/snippets" user-emacs-directory)))
+  ;;:config (setq yas-snippet-dirs '(expand-file-name "etc/snippets" user-emacs-directory))
+  )
 
 ;; 大量可用的代码片段
 (use-package yasnippet-snippets 
@@ -644,6 +645,24 @@
   (add-hook 'org-mode-hook 'org-bullets-mode)
   ;;   :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
   )
+
+;;(use-package windmove
+;;  :init (windmove-default-keybindings)
+;;  :config
+;;;;  :bind (:map leader-key
+;;;;              ("w f" . #'windmove-right)
+;;;;              ("w b" . #'windmove-left)
+;;;;              ("w p" . #'windmove-up)
+;;;;              ("w n" . #'windmove-down)
+;;;;              ("w F" . #'window-move-right)
+;;;;              ("w B" . #'window-move-left)
+;;;;              ("w P" . #'window-move-up)
+;;;;              ("w N" . #'window-move-down)
+;;;;              ("w h" . #'enlarge-window-horizontally)
+;;;;              ("w l" . #'shrink-window-horizontally)
+;;;;              ("w j" . #'enlarge-window)
+;;;;              ("w k" . #'shrink-window))
+;;  )
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
