@@ -184,3 +184,4 @@ xterm
 yay
 zip
 zsh
+bat
