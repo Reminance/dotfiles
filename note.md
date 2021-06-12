@@ -163,3 +163,8 @@ https://www.azul.com/downloads/zulu-community/?version=java-8-lts&package=jdk-fx
 下载链接：
 https://cdn.azul.com/zulu/bin/zulu8.54.0.21-ca-fx-jdk8.0.292-linux_x64.tar.gz
 ```
+
+# windows 端口代理
+```
+netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=22 connectaddress=172.18.240.75 connectport=22
+```
