@@ -29,13 +29,13 @@ fe() {
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
-# file directory&enter
-fd() {
-  local dir
-  dir=$(find ${1:-.} -path '*/\.*' -prune \
-				  -o -type d -print 2> /dev/null | fzf +m) &&
-  cd "$dir"
-}
+# file directory&enter; won't use this function, use sps fd instead
+#fd() {
+#  local dir
+#  dir=$(find ${1:-.} -path '*/\.*' -prune \
+#				  -o -type d -print 2> /dev/null | fzf +m) &&
+#  cd "$dir"
+#}
 
 # tm - create new tmux session, or switch to existing one. Works from within tmux too. (@bag-man)
 # `tm` will allow you to select your tmux session via fzf.

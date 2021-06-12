@@ -1,14 +1,21 @@
 export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 export PATH=$PATH:~/.local/bin
+#export XAUTHORITY=~/.Xauthority
+#export XDG_RUNTIME_DIR=/run/user/$(id -u)
 
 # for fcitx or other stuff
 export $(dbus-launch)
+# if test -z "$DBUS_SESSION_BUS_ADDRESS" ; then
+#     ## if not found, launch a new one
+#     eval `dbus-launch --sh-syntax`
+#     echo "D-Bus per-session daemon address is: $DBUS_SESSION_BUS_ADDRESS"
+# fi
 
 # those should be in .xinitxc
 userresources=$HOME/.Xresources
-usermodmap=$HOME/.config/xmodmap/.Xmodmap
+# usermodmap=$HOME/.config/xmodmap/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
-sysmodmap=/etc/X11/xinit/.Xmodmap
+# sysmodmap=/etc/X11/xinit/.Xmodmap
 
 # merge in defaults and keymaps
 
@@ -16,17 +23,17 @@ if [ -f $sysresources ]; then
     xrdb -merge $sysresources
 fi
 
-if [ -f $sysmodmap ]; then
-    xmodmap $sysmodmap
-fi
+# if [ -f $sysmodmap ]; then
+#     xmodmap $sysmodmap
+# fi
 
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
 fi
 
-if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
-fi
+# if [ -f "$usermodmap" ]; then
+#     xmodmap "$usermodmap"
+# fi
 
 # start some nice programs
 
@@ -52,11 +59,7 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 #fcitx&
-if test $( pgrep -f fcitx | wc -l ) -eq 0; then nohup fcitx &; fi
+if test $( pgrep -f fcitx | wc -l ) -eq 0; then fcitx > /dev/null 2>&1; fi
 export _JAVA_AWT_WM_NONREPARENTING=1
 #exec $1
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-# echo $DISPLAY
-#exec i3
-# wmname LG3D
-# exec dwm
