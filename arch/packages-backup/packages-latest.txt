@@ -185,3 +185,4 @@ yay
 zip
 zsh
 bat
+tmux
