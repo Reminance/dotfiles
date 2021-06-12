@@ -7,6 +7,7 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --inline-info'
 # export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export FZF_CTRL_T_COMMAND="fd -t f -H -I"
 
+export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range :500 {}"'
 #export FZF_COMPLETION_TRIGGER='\'
 #
 export FZF_TMUX=1
