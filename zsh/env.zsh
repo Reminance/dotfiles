@@ -30,7 +30,8 @@ export TERM=xterm-256color
 # this is for nvim-lsp env
 export JAR=~/.config/coc/extensions/coc-java-data/server/plugins/org.eclipse.equinox.launcher_-2.5.700.v20200207-2156.jar
 export GRADLE_HOME=$HOME/gradle
-export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
 export JDTLS_CONFIG=~/.config/coc/extensions/coc-java-data/server/config_linux
 export WORKSPACE=$HOME/workspace
 export M2_HOME=/opt/maven
