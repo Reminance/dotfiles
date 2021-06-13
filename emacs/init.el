@@ -116,6 +116,9 @@
 (setq auto-save-list-file-prefix  (expand-file-name "var/auto-save-list/.saves-" user-emacs-directory))
 ;; minibuffer history
 (setq savehist-file (expand-file-name "var/savehist" user-emacs-directory))
+;; emacs bookmarks
+(setq bookmark-default-file (expand-file-name "var/bookmarks" user-emacs-directory))
+
 ;; 更友好及平滑的滚动
 (setq scroll-step 2
       scroll-margin 4
@@ -167,11 +170,13 @@
 ;; global common keybindings
 ;;----------------------------------------------------------------------------
 ;; some custom shortcut
-(global-set-key (kbd "C-` <f5>") 'revert-buffer)
-(global-set-key (kbd "C-` fi") (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
-(global-set-key (kbd "C-` fp") (lambda () (interactive) (find-file "~/doc/org/personal.org")))
-(global-set-key (kbd "C-` fw") (lambda () (interactive) (find-file "~/doc/org/work.org")))
-(global-set-key (kbd "C-` al") 'org-agenda-list)
+(global-unset-key "\C-\\")
+(global-set-key (kbd "C-\\ <f5>") 'revert-buffer)
+(global-set-key (kbd "C-\\ fi") (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
+(global-set-key (kbd "C-\\ fn") (lambda () (interactive) (find-file "~/doc/org/notes.org")))
+(global-set-key (kbd "C-\\ fp") (lambda () (interactive) (find-file "~/doc/org/personal.org")))
+(global-set-key (kbd "C-\\ fw") (lambda () (interactive) (find-file "~/doc/org/work.org")))
+(global-set-key (kbd "C-\\ al") 'org-agenda-list)
 
 ;;----------------------------------------------------------------------------
 ;; custom common function
@@ -338,6 +343,13 @@
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
   :config
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-insert-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-a" nil)
+      (define-key (eval map) "\C-e" nil)
+      ))
   (evil-mode 1))
 
 (use-package evil-collection
@@ -617,10 +629,13 @@
 
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
+;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
+(setq org-default-notes-file "~/doc/org/notes.org")
 (setq org-display-inline-images t)
 (setq org-redisplay-inline-images t)
 (setq org-startup-with-inline-images t)
 (setq org-agenda-files (list
+                        "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
                         ))
