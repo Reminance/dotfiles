@@ -368,6 +368,7 @@
       (define-key (eval map) "\C-p" nil)
       (define-key (eval map) "\C-a" nil)
       (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\M-." nil)
       ))
   (evil-mode 1))
 
@@ -426,6 +427,11 @@
 
 ;; 大量可用的代码片段
 (use-package yasnippet-snippets :after yasnippet)
+
+(use-package multiple-cursors
+  :bind (("M-." . mc/mark-next-like-this)
+         ("M-," . mc/unmark-next-like-this)
+         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
 
 ;; 编译运行当前文件
 (use-package quickrun
