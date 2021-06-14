@@ -300,7 +300,7 @@
 ;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
 ;;                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
 ;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
-;;                          ;;("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
+;;                          ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
 ;;                          ))
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
@@ -773,6 +773,42 @@
 
 ;; 写js可用的模式
 (use-package js2-mode)
+
+;; mu4e
+(use-package mu4e
+  :ensure nil
+  :defer 20
+  :load-path "/usr/share/emacs/site-lisp/mu4e"
+  :config
+  (require 'smtpmail)
+  ;; smtp
+  (setq message-send-mail-function 'smtpmail-send-it
+        smtpmail-auth-credentials "~/.authinfo"
+        ;; smtpmail-starttls-credentials '(("smtp.qq.com" 587 nil nil))
+        ;; smtpmail-default-smtp-server "smtp.qq.com"
+        ;; smtpmail-smtp-server "smtp.qq.com"
+        ;; smtpmail-smtp-service 587
+        smtpmail-debug-info t)
+  (mu4e t)
+  :custom
+  (mu4e-attachment-dir "~/Downloads")
+  (mu4e-compose-signature-auto-include nil)
+  (mu4e-maildir "~/email")
+  (mu4e-drafts-folder "/Drafts")
+  (mu4e-refile-folder "/Archive")
+  (mu4e-get-mail-command "mbsync -a")
+  (mu4e-sent-folder "/Sent Messages")
+  (mu4e-trash-folder "/Deleted Messages")
+  (mu4e-maildir-shortcuts
+   '(("/xc-qq/INBOX" . ?i)
+     ("/xc-qq/Deleted Messages" . ?d)
+     ("/xc-qq/Drafts" . ?D)
+     ("/xc-qq/Sent Messages" . ?s)
+     ("/xc-qq/Junk" . ?j)))
+  (mu4e-update-interval 300)
+  (mu4e-use-fancy-chars t)
+  (mu4e-view-show-addresses t)
+  (mu4e-view-show-images t))
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
