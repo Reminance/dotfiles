@@ -25,8 +25,12 @@
 ;; init variables
 ;;----------------------------------------------------------------------------
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
-(defconst *is-a-mac* (eq system-type 'darwin))
-(when *is-a-mac*
+(defconst *is-mac* (eq system-type 'darwin))
+(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+(defconst *is-linux* (eq system-type 'gnu/linux))
+(defconst *is-x11* (eq window-system 'x))
+(defconst *is-windows* (eq system-type 'windows-nt))
+(when *is-mac*
   (setq mac-command-modifier 'meta)
   (setq mac-option-modifier 'none)
   ;; Make mouse wheel / trackpad scrolling less jerky
@@ -41,10 +45,10 @@
   (global-set-key (kbd "M-˙") 'ns-do-hide-others)
   (with-eval-after-load 'nxml-mode
     (define-key nxml-mode-map (kbd "M-h") nil))
-  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others) ;; what describe-key reports for cmd-option-h
-  )
+  ;; what describe-key reports for cmd-option-h
+  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
 
-(when (and *is-a-mac* (fboundp 'toggle-frame-fullscreen))
+(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
   ;; Command-Option-f to toggle fullscreen mode
   ;; Hint: Customize `ns-use-native-fullscreen'
   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
@@ -89,12 +93,10 @@
 ;; 最大单行字符数量
 (setq-default fill-column 80)
 
-;; 让'_'被视为单词的一部分
-(add-hook 'after-change-major-mode-hook (lambda ()
-                                          (modify-syntax-entry ?_ "w")))
-;; "-" 同上)
-(add-hook 'after-change-major-mode-hook (lambda ()
-                                          (modify-syntax-entry ?- "w")))
+;; ;; 让'_'被视为单词的一部分
+;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
+;; ;; "-" 同上)
+;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?- "w")))
 ;; 允许插入制表符
 (setq-default indent-tabs-mode nil)
 ;; 制表符宽度
@@ -196,14 +198,14 @@
 
 ;; for using with i3 keybinding, like:
 ;;     bindsym $mod+Ctrl+c exec "emacsclient -ne '(make-capture-frame)'"
-(defun make-capture-frame ()
-  "Create a new frame and run org-capture."
-  (interactive)
-  (make-frame '((name . "capture")))
-  (select-frame-by-name "capture")
-  (delete-other-windows)
-  (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-          (org-capture)))
+;; (use-package noflet)
+;; (defun make-capture-frame ()
+;;   "Create a new frame and run 'org-capture'."
+;;   (interactive)
+;;   (make-frame '((name . "capture")))
+;;   (select-frame-by-name "capture")
+;;   (delete-other-windows)
+;;   (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf))) (org-capture)))
 
 ;;----------------------------------------------------------------------------
 ;; basic configuation
@@ -305,6 +307,8 @@
                          ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
                          ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
                          ("org" . "http://elpa.emacs-china.org/org/")
+                         ("sunrise-commander-elpa" . "http://elpa.emacs-china.org/sunrise-commander/")
+                         ("user42-elpa"	. "http://elpa.emacs-china.org/user42/")
                          ))
 
 ;;; Fire up package.el
@@ -329,18 +333,33 @@
 (use-package windmove
   :init (windmove-default-keybindings)
   :config (use-package buffer-move)
-  :bind (("M-h" . #'windmove-left)
-         ("M-j" . #'windmove-down)
-         ("M-k" . #'windmove-up)
-         ("M-l" . #'windmove-right)
-         ("M-C-h" . #'shrink-window-horizontally)
-         ("M-C-j" . #'enlarge-window)
-         ("M-C-k" . #'shrink-window)
-         ("M-C-l" . #'enlarge-window-horizontally)
-         ("M-C-S-h" . #'buf-move-left)
-         ("M-C-S-j" . #'buf-move-down)
-         ("M-C-S-k" . #'buf-move-up)
-         ("M-C-S-l" . #'buf-move-right)))
+  :bind (
+         ("M-C-<left>" . #'shrink-window-horizontally)
+         ("M-C-<down>" . #'enlarge-window)
+         ("M-C-<up>" . #'shrink-window)
+         ("M-C-<right>" . #'enlarge-window-horizontally)
+         ))
+
+;; Use Ibuffer for Buffer List
+(use-package ibuffer
+  :config
+  (setq ibuffer-expert t)
+  (setq ibuffer-show-empty-filter-groups nil)
+  (setq ibuffer-saved-filter-groups
+        (quote (("home"
+                 ("dotfiles" (or (filename . ".dotfiles")))
+                 ("workspace" (filename . "workspace"))
+                 ("mu4e" (or (filename . "\*mu4e\*")))
+                 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+	             ("Org" (or (mode . org-mode) (filename . "OrgMode")))
+	             ("Magit" (name . "\*magit"))
+	             ("Help" (or (name . "\*Help\*") (name . "\*Apropos\*") (name . "\*info\*")))
+                 ))))
+  (add-hook 'ibuffer-mode-hook
+            '(lambda ()
+               (ibuffer-auto-mode)
+	           (ibuffer-switch-to-saved-filter-groups "home")))
+  :bind ([remap list-buffers] . ibuffer))
 
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
@@ -348,12 +367,11 @@
   (when (memq window-system '(mac ns))
     (exec-path-from-shell-initialize)))
 
-;; for try
+;; try
 (use-package try)
 
 ;; evil
 (use-package evil
-  ;;  :disabled
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
@@ -368,12 +386,13 @@
       (define-key (eval map) "\C-p" nil)
       (define-key (eval map) "\C-a" nil)
       (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\C-f" nil)
+      (define-key (eval map) "\C-b" nil)
       (define-key (eval map) "\M-." nil)
       ))
   (evil-mode 1))
 
 (use-package evil-collection
-  ;;:disabled
   :after evil
   :config
   (evil-collection-init))
@@ -384,7 +403,6 @@
 
 ;; 显示当前行修改-Git
 (use-package git-gutter-fringe
-  ;;:disabled
   :hook (prog-mode . git-gutter-mode)
   :custom
   (git-gutter:update-interval 1)
@@ -393,27 +411,34 @@
   (git-gutter:modified-sign "~")
   (git-gutter:hide-gutter t))
 
-;; 高亮修改记录
-(use-package diff-hl
-  :disabled
-  :hook ((prog-mode  . diff-hl-mode)
-         (dired-mode . diff-hl-dired-mode)) )
-
 ;; 著名的Emacs补全框架
 (use-package company
   :hook (prog-mode . company-mode)
-  :init (setq company-tooltip-align-annotations t company-idle-delay 0.1 company-echo-delay 0
-              company-minimum-prefix-length 2 company-require-match nil company-dabbrev-ignore-case
-              nil company-dabbrev-downcase nil company-show-numbers t)
+  :demand t
+  :diminish company-mode
+  :bind (("C-<tab>" . company-complete)
+         :map company-active-map
+         ("C-n" . company-select-next)
+         ("C-p" . company-select-previous)
+         ("<tab>" . company-complete-selection)
+         ("C-j" . company-complete-selection))
   :config
-  :bind (:map company-active-map
-              ("M-n" . nil)
-              ("M-p" . nil)
-              ("C-n" . #'company-select-next)
-              ("C-p" . #'company-select-previous))
-  ;; (:map leader-key
-  ;;       ("c s" . #'company-yasnippet))
-  )
+  (progn
+    (add-hook 'prog-mode-hook 'company-mode)
+    (setq company-idle-delay 0.5
+          company-echo-delay 0
+          company-tooltip-align-annotations t
+          company-tooltip-limit 10
+          company-minimum-prefix-length 2
+          company-show-numbers t
+          company-require-match nil
+          company-dabbrev-ignore-case nil
+          company-dabbrev-downcase nil
+          company-global-modes '(not magit-status-mode))
+    (use-package company-quickhelp
+      :init
+      (with-eval-after-load 'company
+        (company-quickhelp-mode)))))
 
 ;; 美化company
 (use-package company-box
@@ -474,20 +499,19 @@
   (use-package restclient-test
     :diminish
     :hook (restclient-mode . restclient-test-mode))
-
   (with-eval-after-load 'company
     (use-package company-restclient
       :defines company-backends
-      :init (add-to-list 'company-backends 'company-restclient)))
+      :init (add-to-list 'company-backends 'company-restclient))))
 
-  (evil-leader/set-key-for-mode 'restclient-mode
-                                "mn" 'restclient-jump-next
-                                "mp" 'restclient-jump-prev
-                                "ms" 'restclient-http-send-current-stay-in-window
-                                "mS" 'restclient-http-send-current
-                                "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
-                                "mR" 'restclient-http-send-current-raw
-                                "my" 'restclient-copy-curl-command))
+;; (evil-leader/set-key-for-mode 'restclient-mode
+;;                               "mn" 'restclient-jump-next
+;;                               "mp" 'restclient-jump-prev
+;;                               "ms" 'restclient-http-send-current-stay-in-window
+;;                               "mS" 'restclient-http-send-current
+;;                               "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
+;;                               "mR" 'restclient-http-send-current-raw
+;;                               "my" 'restclient-copy-curl-command)
 
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
@@ -498,7 +522,7 @@
   :commands (youdao-dictionary-search-at-point-posframe)
   :config (setq url-automatic-caching t)
   (which-key-add-key-based-replacements "C-x y" "有道翻译")
-  :bind (("C-x y t" . 'youdao-dictionary-search-at-point+)
+  :bind (("C-x y y" . 'youdao-dictionary-search-at-point+)
          ("C-x y g" . 'youdao-dictionary-search-at-point-posframe)
          ("C-x y p" . 'youdao-dictionary-play-voice-at-point)
          ("C-x y r" . 'youdao-dictionary-search-and-replace)
@@ -571,18 +595,6 @@
 (use-package smartparens
   :hook (prog-mode . smartparens-mode))
 
-;; wgrep
-(setq-default grep-highlight-matches t
-              grep-scroll-output t)
-(when *is-a-mac*
-  (setq-default locate-command "mdfind"))
-(use-package wgrep
-  :config
-  (setq-default locate-command "mdfind"))
-(with-eval-after-load 'grep
-  (dolist (key (list (kbd "C-c C-q") (kbd "w")))
-    (define-key grep-mode-map key 'wgrep-change-to-wgrep-mode)))
-
 ;; 回到关闭文件前光标的位置
 (use-package saveplace
   :config
@@ -612,7 +624,6 @@
 (use-package swiper
   :bind
   (("C-s" . swiper)
-   ("C-r" . swiper)
    ("C-c C-r" . ivy-resume)
    ("M-x" . counsel-M-x)
    ("C-x C-f" . counsel-find-file))
@@ -629,20 +640,13 @@
 (use-package counsel
   :bind
   (("C-x C-r" . 'counsel-recentf)
-   ("C-x d" . 'counsel-dired))
+   ("C-x d" . 'counsel-dired)
+   ("C-S-f" . counsel-rg)
+   ("C-S-n" . counsel-fzf))
   :config
   ;; 默认的 rg 配置
   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
-  (setq counsel-rg-base-command (list "rg"
-                                      "-M" "240"
-                                      "--with-filename" "--no-heading" "--line-number" "--color"
-                                      "never" "%s"
-                                      "-g" "!package-config.org"
-                                      "-g" "!site-lisp"
-                                      "-g" "!doc"
-                                      "-g" "!themes"
-                                      "-g" "!quelpa"
-                                      "-g" "!etc-cache"))
+  (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
   (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
   ;; Integration with `projectile'
   (with-eval-after-load 'projectile
