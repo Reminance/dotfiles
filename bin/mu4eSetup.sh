@@ -1,8 +1,9 @@
 #!/usr/bin/bash
 
 yay -S mbsync-git mu
-mkdir -p ~/email/xc-qq
+mkdir -p ~/email/qq
+mkdir -p ~/email/work
 gpg2 --output .mbsyncpass.gpg --symmetric .mbsyncpass
 gpg2 --output .authinfo.gpg --symmetric .authinfo
 mbsync -a
-mu init --maildir=~/email/
+mu index --maildir=~/email/ --my-address=872666026@qq.com

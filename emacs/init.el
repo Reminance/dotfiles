@@ -777,38 +777,50 @@
 ;; mu4e
 (use-package mu4e
   :ensure nil
-  :defer 20
   :load-path "/usr/share/emacs/site-lisp/mu4e"
   :config
-  (require 'smtpmail)
+  (setq mu4e-change-filenames-when-moving t)
+  (setq mu4e-get-mail-command "mbsync -a")
+  (setq mu4e-update-interval (* 5 60))
+  (setq mu4e-maildir "~/email")
+  (setq mu4e-attachment-dir "~/Downloads")
+  (setq mu4e-compose-signature-auto-include nil)
+  (setq mu4e-use-fancy-chars t)
+  (setq mu4e-view-show-addresses t)
+  (setq mu4e-view-show-images t)
+  ;; (require 'smtpmail)
+  ;; (setq message-send-mail-function 'smtpmail-send-it)
   ;; smtp
-  (setq message-send-mail-function 'smtpmail-send-it
-        smtpmail-auth-credentials "~/.authinfo"
-        ;; smtpmail-starttls-credentials '(("smtp.qq.com" 587 nil nil))
-        ;; smtpmail-default-smtp-server "smtp.qq.com"
-        ;; smtpmail-smtp-server "smtp.qq.com"
-        ;; smtpmail-smtp-service 587
-        smtpmail-debug-info t)
-  (mu4e t)
-  :custom
-  (mu4e-attachment-dir "~/Downloads")
-  (mu4e-compose-signature-auto-include nil)
-  (mu4e-maildir "~/email")
-  (mu4e-drafts-folder "/Drafts")
-  (mu4e-refile-folder "/Archive")
-  (mu4e-get-mail-command "mbsync -a")
-  (mu4e-sent-folder "/Sent Messages")
-  (mu4e-trash-folder "/Deleted Messages")
-  (mu4e-maildir-shortcuts
-   '(("/xc-qq/INBOX" . ?i)
-     ("/xc-qq/Deleted Messages" . ?d)
-     ("/xc-qq/Drafts" . ?D)
-     ("/xc-qq/Sent Messages" . ?s)
-     ("/xc-qq/Junk" . ?j)))
-  (mu4e-update-interval 300)
-  (mu4e-use-fancy-chars t)
-  (mu4e-view-show-addresses t)
-  (mu4e-view-show-images t))
+  (setq mu4e-context
+        (list
+         ;; personal account
+         (make-mu4e-context
+          :name "personal"
+          :match-func
+          (lambda (msg)
+            (when msg
+              (string-prefix-p "/qq" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address . "872666026@qq.com")
+                  (user-full-name . "xucheng")
+                  (mu4e-drafts-folder . "/qq/Drafts")
+                  (mu4e-refile-folder . "/qq/Archive")
+                  (mu4e-sent-folder . "/qq/Sent Messages")
+                  (mu4e-trash-folder . "/qq/Deleted Messages")
+                  ;; smtpmail-auth-credentials . "~/.authinfo"
+                  ;; smtpmail-starttls-credentials . '(("smtp.qq.com" 587 nil nil))
+                  ;; ;; smtpmail-default-smtp-server . "smtp.qq.com"
+                  ;; smtpmail-smtp-server . "smtp.qq.com"
+                  ;; smtpmail-smtp-service . 587
+                  ;; smtpmail-stream-type . ssl
+                  ;; smtpmail-debug-info . t ;; todo optional
+                  ))))
+  (setq mu4e-maildir-shortcuts
+        '(("/qq/INBOX" . ?i)
+          ("/qq/Deleted Messages" . ?d)
+          ("/qq/Drafts" . ?D)
+          ("/qq/Sent Messages" . ?s)
+          ("/qq/Junk" . ?j)))
+  (mu4e t))
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient

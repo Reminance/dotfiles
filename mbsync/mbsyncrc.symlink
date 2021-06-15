@@ -1,23 +1,22 @@
-IMAPAccount xc-qq
+IMAPAccount qq
 Host imap.qq.com
 User 872666026@qq.com
-PassCmd "gpg2 -q --for-your-eyes-only --no-tty -d ~/.mbsyncpass.gpg"
+PassCmd "cat ~/.mbsyncpass"
 Port 993
 SSLType IMAPS
-AuthMechs Login
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
-IMAPStore xc-qq-remote
-Account xc-qq
+IMAPStore qq-remote
+Account qq
 
-MaildirStore xc-qq-local
-Path ~/email/xc-qq/
-Inbox ~/email/xc-qq/INBOX
+MaildirStore qq-local
+Path ~/email/qq/
+Inbox ~/email/qq/INBOX
 
-Channel xc-qq
-Far :xc-qq-remote:
-Near :xc-qq-local:
-Patterns "其他文件夹" "INBOX" "Sent Messages" "Drafts" "Deleted Messages" "Junk"
+Channel qq
+Far :qq-remote:
+Near :qq-local:
+Patterns *
 Create Near
 Sync All
 Expunge Both
