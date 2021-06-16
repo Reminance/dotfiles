@@ -1,1 +1,2 @@
-machine imap.qq.com login xx@qq.com port 587 password xx
+machine imap.qq.com login xx@qq.com password xx port 465
+machine imap.exmail.qq.com login xx@qq.com password xx port 465
