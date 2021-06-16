@@ -180,6 +180,7 @@
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
 (define-key leader-key "al" 'org-agenda-list)
+(define-key leader-key "e" 'mu4e)
 
 ;;----------------------------------------------------------------------------
 ;; custom common function
