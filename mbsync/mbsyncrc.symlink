@@ -4,6 +4,7 @@ User 872666026@qq.com
 PassCmd "cat ~/.mbsyncpass"
 Port 993
 SSLType IMAPS
+SSLVersions TLSv1.2
 CertificateFile /etc/ssl/certs/ca-certificates.crt
 
 IMAPStore qq-remote
@@ -11,13 +12,40 @@ Account qq
 
 MaildirStore qq-local
 Path ~/email/qq/
-Inbox ~/email/qq/INBOX
+Inbox ~/email/qq/INBOX/
 
 Channel qq
 Far :qq-remote:
 Near :qq-local:
 Patterns *
-Create Near
+Expunge none
+CopyArrivalDate yes
 Sync All
-Expunge Both
+Create Both
+SyncState *
+
+IMAPAccount work
+Host imap.exmail.qq.com
+User xucheng2@shein.com
+PassCmd "cat ~/.mbsyncpass_work"
+Port 993
+SSLType IMAPS
+SSLVersions TLSv1.2
+CertificateFile /etc/ssl/certs/ca-certificates.crt
+
+IMAPStore work-remote
+Account work
+
+MaildirStore work-local
+Path ~/email/work/
+Inbox ~/email/work/INBOX/
+
+Channel work
+Far :work-remote:
+Near :work-local:
+Patterns *
+Expunge none
+CopyArrivalDate yes
+Sync All
+Create Both
 SyncState *

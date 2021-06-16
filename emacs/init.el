@@ -788,38 +788,57 @@
   (setq mu4e-use-fancy-chars t)
   (setq mu4e-view-show-addresses t)
   (setq mu4e-view-show-images t)
-  ;; (require 'smtpmail)
-  ;; (setq message-send-mail-function 'smtpmail-send-it)
-  ;; smtp
-  (setq mu4e-context
+  (add-to-list 'mu4e-bookmarks '("m:/qq/INBOX or m:/work/Inbox" "All Inboxes" ?i))
+  (setq message-send-mail-function 'smtpmail-send-it)
+  (setq mu4e-compose-context-policy 'ask-if-none)
+  (setq mu4e-contexts
         (list
          ;; personal account
          (make-mu4e-context
-          :name "personal"
-          :match-func
-          (lambda (msg)
-            (when msg
-              (string-prefix-p "/qq" (mu4e-message-field msg :maildir))))
+          :name "qq"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-match-p "^/qq" (mu4e-message-field msg :maildir))))
           :vars '((user-mail-address . "872666026@qq.com")
-                  (user-full-name . "xucheng")
-                  (mu4e-drafts-folder . "/qq/Drafts")
-                  (mu4e-refile-folder . "/qq/Archive")
+                  (user-full-name    . "xucheng")
+                  (smtpmail-smtp-user     . "872666026@qq.com")
+                  (smtpmail-smtp-server  . "smtp.qq.com")
+                  (smtpmail-smtp-service . 465)
+                  (smtpmail-stream-type  . ssl)
+                  (mu4e-compose-signature . "xucheng via qq mail")
+                  (mu4e-drafts-folder  . "/qq/Drafts")
                   (mu4e-sent-folder . "/qq/Sent Messages")
-                  (mu4e-trash-folder . "/qq/Deleted Messages")
-                  ;; smtpmail-auth-credentials . "~/.authinfo"
-                  ;; smtpmail-starttls-credentials . '(("smtp.qq.com" 587 nil nil))
-                  ;; ;; smtpmail-default-smtp-server . "smtp.qq.com"
-                  ;; smtpmail-smtp-server . "smtp.qq.com"
-                  ;; smtpmail-smtp-service . 587
-                  ;; smtpmail-stream-type . ssl
-                  ;; smtpmail-debug-info . t ;; todo optional
+                  (mu4e-refile-folder . "/qq/Archive")
+                  (mu4e-trash-folder  . "/qq/Deleted Messages")
+                  (mu4e-maildir-shortcuts . (("/INBOX" . ?i)
+                                             ("/qq/Deleted Messages" . ?d)
+                                             ("/qq/Drafts" . ?D)
+                                             ("/qq/Sent Messages" . ?s)
+                                             ("/qq/Junk" . ?j)))
+                  ))
+         ;; work account
+         (make-mu4e-context
+          :name "work"
+          :match-func (lambda (msg)
+                        (when msg
+                          (string-match-p "^/work" (mu4e-message-field msg :maildir))))
+          :vars '((user-mail-address . "xucheng2@shein.com")
+                  (user-full-name . "xucheng2")
+                  (smtpmail-smtp-user  . "xucheng2@shein.com")
+                  (smtpmail-smtp-server  . "smtp.exmail.qq.com")
+                  (smtpmail-smtp-service . 465)
+                  (smtpmail-stream-type  . ssl)
+                  (mu4e-compose-signature . "xucheng via qq exmail")
+                  (mu4e-drafts-folder . "/work/Drafts")
+                  (mu4e-sent-folder . "/work/Sent Messages")
+                  (mu4e-refile-folder . "/work/Archive")
+                  (mu4e-trash-folder . "/work/Deleted Messages")
+                  (mu4e-maildir-shortcuts . (("/INBOX" . ?i)
+                                             ("/work/Deleted Messages" . ?d)
+                                             ("/work/Drafts" . ?D)
+                                             ("/work/Sent Messages" . ?s)
+                                             ("/work/Junk" . ?j)))
                   ))))
-  (setq mu4e-maildir-shortcuts
-        '(("/qq/INBOX" . ?i)
-          ("/qq/Deleted Messages" . ?d)
-          ("/qq/Drafts" . ?D)
-          ("/qq/Sent Messages" . ?s)
-          ("/qq/Junk" . ?j)))
   (mu4e t))
 
 ;;----------------------------------------------------------------------------
