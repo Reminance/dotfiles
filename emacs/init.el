@@ -497,6 +497,7 @@
 (use-package restclient
   :mode ("\\.http\\'" . restclient-mode)
   :config
+  (use-package ob-restclient)
   (use-package restclient-test
     :diminish
     :hook (restclient-mode . restclient-test-mode))
@@ -656,6 +657,7 @@
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
+(setq org-babel-confirm-evaluate nil)
 (setq org-default-notes-file "~/doc/org/notes.org")
 (setq org-display-inline-images t)
 (setq org-redisplay-inline-images t)
