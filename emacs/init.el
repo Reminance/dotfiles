@@ -486,8 +486,7 @@
 ;; 人工智能补全代码
 (use-package company-tabnine
   :disabled
-  :after 'company-mode
-  'company-tabnine-mode
+  :after 'company-mode 'company-tabnine-mode
   :config (add-to-list 'company-backends #'company-tabnine))
 
 ;; 项目管理
@@ -612,15 +611,7 @@
   (which-key-mode 1))
 
 ;; 如果不喜欢ivy可以用这个包替换
-(use-package selectrum
-  ;; :disabled
-  :config
-  (selectrum-mode +1)
-  (use-package selectrum-prescient
-    :disabled
-    :config
-    (prescient-persist-mode +1)
-    (selectrum-prescient-mode +1)))
+(use-package selectrum :config (selectrum-mode +1))
 
 ;; 增强了搜索功能
 (use-package swiper
@@ -653,6 +644,30 @@
   ;; Integration with `projectile'
   (with-eval-after-load 'projectile
     (setq projectile-completion-system 'ivy)))
+
+(use-package ivy-prescient
+  :after counsel
+  :config
+  (setq prescient-sort-length-enable nil)
+  ;; This is the default value!
+  (setq prescient-filter-method '(literal regexp fuzzy))
+  ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+  (setq ivy-prescient-enable-filtering nil)
+  ;; Getting the old highlighting back
+  ;; (setq ivy-prescient-retain-classic-highlighting t)
+  (ivy-prescient-mode 1)
+  ;; Remember candidate frequencies across sessions
+  (prescient-persist-mode 1))
+
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1))
+
+(use-package selectrum-prescient
+    :config
+    (prescient-persist-mode +1)
+    (selectrum-prescient-mode +1))
 
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
@@ -842,7 +857,8 @@
                                              ("/work/Sent Messages" . ?s)
                                              ("/work/Junk" . ?j)))
                   ))))
-  (mu4e t))
+  ;; (mu4e t)
+  )
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
