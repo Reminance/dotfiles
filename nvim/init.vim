@@ -1,7 +1,7 @@
 " ----------------------------------- VIMRC -----------------------------------
 " PreSetup
     set nocompatible
-    filetype off
+    filetype on
     filetype indent on
     filetype plugin on
     filetype plugin indent on
@@ -9,24 +9,26 @@
 " Basic Options
     " let $BASH_ENV = "~/.bash_profile"
     " set shell=/bin/bash
+    let mapleader=","
+    let maplocalleader = "\\"
     set hidden " 允许在有未保存的修改时切换缓冲区，此时的修改由 vim 负责保存
     set encoding=utf-8
     set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
     set fileformats=unix,dos,mac
     set modelines=0
-    set showmode
-    set showcmd
+    set noshowmode
+    set noshowcmd
+    set noruler
     set ttyfast "should make scrolling faster
     set lazyredraw "same as above
     let &t_SI="\<Esc>]50;CursorShape=1\x7"
     let &t_SR="\<Esc>]50;CursorShape=2\x7"
     let &t_EI="\<Esc>]50;CursorShape=0\x7"
-    set laststatus=2
+    set laststatus=0
     set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
     set wrap
     set textwidth=80
     set nu rnu
-    set ruler
     set colorcolumn=+1
     set list
     " set listchars=tab:▸\ ,trail:▫,eol:¬,extends:❯,precedes:❮,nbsp:␣,conceal:┊
@@ -38,8 +40,6 @@
     set shiftround
     set signcolumn=yes
     set inccommand=split
-    let mapleader=","
-    let maplocalleader = "\\"
     " set linebreak " auto wrap long lines with line break
     " set autochdir " auto change cwd
     " Save when losing focus
@@ -73,12 +73,11 @@
         set termguicolors " enable true colors support
         let $NVIM_TUI_ENABLE_TRUE_COLOR=1
         if !has('gui_running')
-        set t_Co=256
+            set t_Co=256
         endif
         set t_ut=
 
     " Timeout
-
         " Time out on key codes but not mappings.
         " Basically this makes terminal Vim work sanely.
         set timeout
@@ -89,18 +88,15 @@
         set updatetime=200
 
     " Better Completion
-
         " (:help 'complete')
         set complete=.,w,b,u,t
         set completeopt=menuone,preview,noinsert,noselect
         set shortmess+=c
 
     " Line Return
-
         au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif " make cursor remain the position of last quit
 
     " Backups
-
         set backup                        " enable backups
         set noswapfile
 
@@ -116,7 +112,6 @@
         endif
 
     " Wildmenu Completion
-
         set wildmenu
         set wildmode=longest:full
         set wildignore+=.hg,.git,.svn                    " Version control
@@ -135,20 +130,14 @@
         set wildignore+=classes
         set wildignore+=lib
 
-" Machine Specifisc Settings
-    " Create a _machine_specific.vim file to adjust machine specific stuff, like python interpreter location
-    let has_machine_specific_file=1
-    if empty(glob('~/.config/nvim/_machine_specific.vim'))
-        let has_machine_specific_file=0
-        silent! exe "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
-    endif
-    source ~/.config/nvim/_machine_specific.vim
+    " Automatically deletes all trailing whitespace and newlines at end of file on save.
+        autocmd BufWritePre * %s/\s\+$//e
+        autocmd BufWritePre * %s/\n\+\%$//e
+        autocmd BufWritePre *.[ch] %s/\%$/\r/e
 
 " Basic Mappings
     " Save & quit
     nnoremap s <nop>
-    " ignore it for now
-    " nnoremap S <nop>
     nnoremap R <nop>
     nnoremap Q <nop>
     nnoremap <C-q> :q<CR>
@@ -171,8 +160,8 @@
     nnoremap <Leader>vmi :imap
     nnoremap <Leader>vmv :vmap
 
-    " Sudo to write
-    cnoremap w!! w !sudo tee % >/dev/null
+    " Save file as sudo on files that require root permission
+    cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
     " normal mode bindings
     nnoremap <C-Down> :res +5<CR>
@@ -202,7 +191,7 @@
     vnoremap > >gv
 
     " duplicate words
-    " nnoremap <Leader>dw /\(\<\w\+\>\)\_s*\1<CR>
+    nnoremap <Leader>dw /\(\<\w\+\>\)\_s*\1<CR>
 
     " Open up lazygit
     nnoremap <C-\>g :tabe<CR>:tabmove<CR>:term lazygit<CR>:setl nonu<CR>:setl nornu<CR>a
@@ -255,6 +244,12 @@
     " Great for pasting Python lines into REPLs.
     nnoremap <Leader>vv ^vg_
 
+    " Perform dot commands over visual blocks:
+    vnoremap . :normal .<CR>
+
+    " Replace all is aliased to S.
+    nnoremap S :%s//g<Left><Left>
+
     " templates
     augroup templates
         au!
@@ -298,12 +293,6 @@
         " inoremap <C-n> <Down>
         " inoremap <C-p> <Up>
 
-    " Quick Navigation
-        " nnoremap H 3h
-        " nnoremap J 3j
-        " nnoremap K 3k
-        " nnoremap L 3l
-
     " command line mode bindings
         cnoremap <C-a> <Home>
         cnoremap <C-e> <End>
@@ -325,10 +314,10 @@
         vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
 
     " List navigation
-        nnoremap <Left>  :cprev<cr>zvzz
-        nnoremap <Right> :cnext<cr>zvzz
-        nnoremap <Up>    :lprev<cr>zvzz
-        nnoremap <Down>  :lnext<cr>zvzz
+        " nnoremap <Left>  :cprev<cr>zvzz
+        " nnoremap <Right> :cnext<cr>zvzz
+        " nnoremap <Up>    :lprev<cr>zvzz
+        " nnoremap <Down>  :lnext<cr>zvzz
 
     " syntax highlighting of search results
         " for gui
@@ -354,10 +343,10 @@
     nnoremap sj :set splitbelow<CR>:split<CR>
     nnoremap sk :set nosplitbelow<CR>:split<CR>
     nnoremap sl :set splitright<CR>:vsplit<CR>
-    nnoremap seh :set nosplitright<CR>:vsplit 
-    nnoremap sej :set splitbelow<CR>:split 
-    nnoremap sek :set nosplitbelow<CR>:split 
-    nnoremap sel :set splitright<CR>:vsplit 
+    nnoremap seh :set nosplitright<CR>:vsplit
+    nnoremap sej :set splitbelow<CR>:split
+    nnoremap sek :set nosplitbelow<CR>:split
+    nnoremap sel :set splitright<CR>:vsplit
 
     " Place the two screens side by side (vertical)
     nnoremap sm <C-w>t<C-w>H
@@ -398,28 +387,6 @@
     endfor
     nnoremap <M-9> :tablast<CR>
 
-" Open Settings File
-    " Open the vimrc file anytime
-    nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
-    " Open the function.vim file anytime
-    nnoremap <Leader><Leader>f :e ~/.config/nvim/function.vim<CR>
-    " Open the _md_snippets.vim file anytime
-    nnoremap <Leader><Leader>m :e ~/.config/nvim/snippets/_md_snippets.vim<CR>
-    " Open the presentation.vim file anytime
-    nnoremap <Leader><Leader>P :e ~/.config/nvim/mode/presentation.vim<CR>
-    " Open the plugins.vim file anytime
-    nnoremap <Leader><Leader>p :e ~/.config/nvim/plugins.vim<CR>
-    " Open the coc.vim file anytime
-    nnoremap <Leader><Leader>c :e ~/.config/nvim/coc.vim<CR>
-    " Open the coc-settings.json file anytime
-    nnoremap <Leader><Leader>cs :e ~/.config/nvim/coc-settings.json<CR>
-    " Open the nvim-lsp.vim file anytime
-    nnoremap <Leader><Leader>lsp :e ~/.config/nvim/nvim-lsp.vim<CR>
-    " Open the lua dir anytime
-    nnoremap <Leader><Leader>lua :e ~/.config/nvim/lua<CR>
-    " Open the scratchpad anytime
-    nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
-
 " Clipboard
     " set clipboard^=unnamed,unnnamedplus
 
@@ -447,8 +414,6 @@
     " Tab to toggle folds.
     nnoremap <CR> za
     vnoremap <CR> za
-    nnoremap <S-CR> zc
-    vnoremap <S-CR> zc
 
     " Make <z0> recursively open whatever fold we're in, even if it's partially open.
     nnoremap z0 zczO
@@ -468,122 +433,6 @@
     endfunction
     set foldtext=MyFoldText()
 
-" Assembly
-    " for assembly
-    " changeToHex
-    " nnoremap <M-\> :%!xxd<CR>
-    " reverseFromHex
-    " nnoremap <M-\|> :%!xxd -r<CR>
-    " 备注: Vim 的操作大概涉及的场景有：读取，写入，缓冲区，选项，启动和退出，杂项。
-    augroup filetype_asm
-        au!
-        au BufEnter *.asm,*.inc,*.nas :setlocal filetype=asm
-        au FileType asm setlocal noexpandtab shiftwidth=8 tabstop=8 softtabstop=8
-    augroup END
-
-" C
-    augroup filetype_c
-        au!
-        au FileType c setlocal foldmethod=marker foldmarker={,}
-    augroup END
-
-" Java
-    " " Javadoc comments (/** and */ pairs) and code sections (marked by {} pairs)
-    " " mark the start and end of folds.
-    " " All other lines simply take the fold level that is going so far.
-    " function! ProgramFoldLevel( lineNumber )
-    "   let thisLine = getline( a:lineNumber )
-    "   " Don't create fold if entire Javadoc comment or {} pair is on one line.
-    "   if ( thisLine =~ '\%(\%(/\*\*\).*\%(\*/\)\)\|\%({.*}\)' )
-    "     return '='
-    "   elseif ( thisLine =~ '\%(^\s*/\*\*\s*$\)\|{' )
-    "     return "a1"
-    "   elseif ( thisLine =~ '\%(^\s*\*/\s*$\)\|}' )
-    "     return "s1"
-    "   endif
-    "   return '='
-    " endfunction
-    " setlocal foldexpr=ProgramFoldLevel(v:lnum)
-    " setlocal foldmethod=expr
-    augroup filetype_java
-        au!
-        " au FileType java setlocal foldmethod=expr
-        " au FileType java setlocal foldexpr=ProgramFoldLevel(v:lnum)
-        au FileType java setlocal foldmethod=marker
-        au FileType java setlocal foldmarker={,} foldlevel=99
-    augroup END
-
-" JavaScript
-    augroup filetype_javascript
-        au!
-        au FileType javascript setlocal foldmethod=marker
-        au FileType javascript setlocal foldmarker={,}
-        au FileType javascript call MakeSpacelessBufferIabbrev('clog', 'console.log();<left><left>')
-        " Make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-        " positioned inside of them AND the following code doesn't get unfolded.}
-        au Filetype javascript inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>kA<bs>
-        " Prettify a hunk of JSON with <LocalLeader>p
-        " au FileType javascript nnoremap <buffer> <LocalLeader>p ^vg_:!python -m json.tool<cr>
-        " au FileType javascript vnoremap <buffer> <LocalLeader>p :!python -m json.tool<cr>
-    augroup END
-
-" CSS And LessCSS
-    augroup filetype_css
-        au!
-        au bufnewfile,bufread *.less setlocal filetype=less
-        au filetype less,css setlocal foldmethod=marker
-        au filetype less,css setlocal foldmarker={,}
-        au filetype less,css setlocal omnifunc=csscomplete#completecss
-        au filetype less,css setlocal iskeyword+=-
-        au bufnewfile,bufread *.less,*.css nnoremap <buffer> <localleader>s ?{<cr>jv/\v^\s*\}?$<cr>k:sort<cr>:noh<cr>
-        " make {<cr> insert a pair of brackets in such a way that the cursor is correctly
-        " positioned inside of them and the following code doesn't get unfolded.
-        au bufnewfile,bufread *.less,*.css inoremap <buffer> {<cr> {}<left><cr><space><space><space><space>.<cr><esc>ka<bs>
-    augroup END
-
-" markdown
-    augroup filetype_markdown
-        au BufEnter,BufNewFile,BufRead *.md,*.markdown,*.mdown,*.mkd,*.mkdn,*.mdwn setl filetype=markdown
-        au Filetype markdown setl foldlevel=99 tabstop=2 softtabstop=2 shiftwidth=2
-        " au Filetype markdown nnoremap <buffer> <LocalLeader>p VV:'<,'>!python -m json.tool<cr>
-        " au Filetype markdown vnoremap <buffer> <LocalLeader>p :!python -m json.tool<cr>
-        au Filetype markdown nnoremap <buffer> <M-f> 0f(f.egf
-    augroup END
-    " markdown settings
-    let g:markdown_folding=1
-    " highlight Folded term=standout ctermfg=14 ctermbg=0
-
-    " Markdown snippets
-    source ~/.config/nvim/snippets/_md_snippets.vim
-
-" Nginx
-    augroup filetype_nginx
-        au!
-        au BufRead,BufNewFile nginx.conf                             set ft=nginx
-        au BufRead,BufNewFile /etc/nginx/conf/*                      set ft=nginx
-        au BufRead,BufNewFile /etc/nginx/sites-available/*           set ft=nginx
-        au BufRead,BufNewFile /usr/local/etc/nginx/sites-available/* set ft=nginx
-        au BufRead,BufNewFile vhost.nginx                            set ft=nginx
-        au FileType nginx setlocal foldmethod=marker foldmarker={,} foldlevel=99
-    augroup END
-
-" Python
-    augroup filetype_python
-        au!
-        au FileType python setlocal define=^\s*\\(def\\\\|class\\)
-        au FileType man nnoremap <buffer> <cr> :q<cr>
-        " Jesus tapdancing Christ, built-in Python syntax, you couldn't let me
-        " override this in a normal way, could you?
-        au FileType python if exists("python_space_error_highlight") | unlet python_space_error_highlight | endif
-        au FileType python iabbrev <buffer> afo assert False, "Okay"
-    augroup END
-
-" QuickFix
-    augroup filetype_quickfix
-        au!
-        au Filetype qf setlocal colorcolumn=0 nolist nocursorline nowrap tw=0
-    augroup END
-
 " Vim
     augroup filetype_vim
         au!
@@ -591,126 +440,6 @@
         au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
         au Filetype vim nnoremap <buffer> <M-f> $F.egf
     augroup END
-
-" dbout(dadbod output)
-    " " dbui is buggy, so just comment below by now
-    " augroup filetype_dbout
-    "     au!
-    "     au FileType dbout setl foldmethod=marker foldlevel=99
-    " augroup END
-
-" Yaml
-    augroup filetype_yaml
-        au!
-        au FileType yaml set shiftwidth=2
-    augroup END
-
-" XML
-    augroup filetype_xml
-        au!
-        au FileType xml setlocal foldmethod=manual
-        " Use <LocalLeader>f to fold the current tag.
-        au FileType xml nnoremap <buffer> <LocalLeader>f Vatzf
-        " Indent tag
-        au FileType xml nnoremap <buffer> <LocalLeader>= Vat=
-    augroup END
-
-" Basic Funcion
-    source ~/.config/nvim/function.vim
-
-" Utils
-    " Error Toggles
-        command! ErrorsToggle call ErrorsToggle()
-        function! ErrorsToggle()
-        if exists("w:is_error_window")
-            unlet w:is_error_window
-            exec "q"
-        else
-            exec "Errors"
-            lopen
-            let w:is_error_window = 1
-        endif
-        endfunction
-
-        command! -bang -nargs=? QFixToggle call QFixToggle(<bang>0)
-        function! QFixToggle(forced)
-        if exists("g:qfix_win") && a:forced == 0
-            cclose
-            unlet g:qfix_win
-        else
-            copen 10
-            let g:qfix_win = bufnr("$")
-        endif
-        endfunction
-
-        nmap <silent> <F3> :ErrorsToggle<cr>
-        nmap <silent> <F4> :QFixToggle<cr>
-
-    " MS to UTC
-        function! MS2UTC(ms)
-            let seconds = strpart(a:ms, 0, strlen(a:ms) - 3)
-            return substitute(system("date -ur " . seconds), "\n\n*", "", "")
-        endfunction
-
-        function! MS2UTCWord()
-            return MS2UTC(expand("<cword>"))
-        endfunction
-
-        nnoremap <Leader>U :echo MS2UTCWord()<cr>
-    " Highlight Word
-        "
-        " This mini-plugin provides a few mappings for highlighting words temporarily.
-        "
-        " Sometimes you're looking at a hairy piece of code and would like a certain
-        " word or two to stand out temporarily.  You can search for it, but that only
-        " gives you one color of highlighting.  Now you can use <Leader>N where N is
-        " a number from 1-6 to highlight the current word in a specific color.
-
-        function! HiInterestingWord(n)
-            " Save our location.
-            normal! mz
-
-            " Yank the current word into the z register.
-            normal! "zyiw
-
-            " Calculate an arbitrary match ID.  Hopefully nothing else is using it.
-            let mid = 86750 + a:n
-
-            " Clear existing matches, but don't worry if they don't exist.
-            silent! call matchdelete(mid)
-
-            " Construct a literal pattern that has to match at boundaries.
-            let pat = '\V\<' . escape(@z, '\') . '\>'
-
-            " Actually match the words.
-            call matchadd("InterestingWord" . a:n, pat, 1, mid)
-
-            " Move back to our original location.
-            normal! `z
-        endfunction
-
-        " Mappings
-            nnoremap <silent> <Leader>1 :call HiInterestingWord(1)<cr>
-            nnoremap <silent> <Leader>2 :call HiInterestingWord(2)<cr>
-            nnoremap <silent> <Leader>3 :call HiInterestingWord(3)<cr>
-            nnoremap <silent> <Leader>4 :call HiInterestingWord(4)<cr>
-            nnoremap <silent> <Leader>5 :call HiInterestingWord(5)<cr>
-            nnoremap <silent> <Leader>6 :call HiInterestingWord(6)<cr>
-
-        " Default Highlights
-            hi def InterestingWord1 guifg=#000000 ctermfg=16 guibg=#ffa724 ctermbg=214
-            hi def InterestingWord2 guifg=#000000 ctermfg=16 guibg=#aeee00 ctermbg=154
-            hi def InterestingWord3 guifg=#000000 ctermfg=16 guibg=#8cffba ctermbg=121
-            hi def InterestingWord4 guifg=#000000 ctermfg=16 guibg=#b88853 ctermbg=137
-            hi def InterestingWord5 guifg=#000000 ctermfg=16 guibg=#ff9eb8 ctermbg=211
-            hi def InterestingWord6 guifg=#000000 ctermfg=16 guibg=#ff2c4b ctermbg=195
-
-" Presentation Mode
-    source ~/.config/nvim/mode/presentation.vim
-
-" Plugins Settings(Included lsp)
-    " plugins
-    source ~/.config/nvim/plugins.vim
 
 " Environments (GUI/Console)
     if has('gui_running')
@@ -750,3 +479,33 @@
         " Mouse support
         set mouse=a
     endif
+
+" Basic Funcion
+    source ~/.config/nvim/function.vim
+
+" Plugins Settings(Included lsp)
+    source ~/.config/nvim/plugins.vim
+
+" Markdown sneppets
+    source ~/.config/nvim/snippets/_md_snippets.vim
+
+" Openning Files
+    " Open the vimrc file anytime
+    nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
+    " Open the function.vim file anytime
+    nnoremap <Leader><Leader>f :e ~/.config/nvim/function.vim<CR>
+    " Open the plugins.vim file anytime
+    nnoremap <Leader><Leader>p :e ~/.config/nvim/plugins.vim<CR>
+    " Open the _md_snippets.vim file anytime
+    nnoremap <Leader><Leader>m :e ~/.config/nvim/snippets/_md_snippets.vim<CR>
+    " Open the scratchpad anytime
+    nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
+
+" Machine Specifisc Settings
+    " adjust machine specific stuff
+    let has_machine_specific_file=1
+    if empty(glob('~/.config/nvim/_machine_specific.vim'))
+        let has_machine_specific_file=0
+        silent! exe "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
+    endif
+    source ~/.config/nvim/_machine_specific.vim

@@ -20,8 +20,17 @@ if [ -f "$userresources" ]; then
 fi
 
 if [ -f "$usermodmap" ]; then
-    xmodmap "$usermodmap"
+    # xmodmap "$usermodmap"
 fi
+
+xmodmap -e 'clear Lock'
+#this will make Esc to act as Caps Lock
+xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"
+#this will make Caps Lock to act as Esc
+xmodmap -e "keycode 66 = Escape NoSymbol Escape"
+
+# Increase key speed via a rate change by default: auto repeat delay:  658    repeat rate:  25
+xset r rate 300 50
 
 # start some nice programs
 

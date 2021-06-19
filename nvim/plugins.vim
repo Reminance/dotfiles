@@ -1,13 +1,14 @@
 " Vim-plug Auto Load
     " Auto load for the first time
-    if empty(glob('~/.config/nvim/autoload/plug.vim'))
-        silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs
-                    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-        autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+        echo "Downloading junegunn/vim-plug to manage plugins..."
+        silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
+        silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+        autocmd VimEnter * PlugInstall
     endif
 
 " Plug Install
-    call plug#begin('~/.config/nvim/plugged')
+    call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
     " status line
     Plug 'vim-airline/vim-airline'
@@ -21,12 +22,12 @@
     Plug 'whatyouhide/vim-gotham'
 
     " vim-peekaboo
-    " Peekaboo extends " and @ in normal mode and <CTRL-R> in insert mode 
+    " Peekaboo extends " and @ in normal mode and <CTRL-R> in insert mode
     " so you can see the contents of the registers.
     Plug 'junegunn/vim-peekaboo'
 
     " File navigation
-    Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+    Plug 'preservim/nerdtree'
     Plug 'Xuyuanp/nerdtree-git-plugin'
 
     " fzf
@@ -77,7 +78,7 @@
     " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
     " Markdown
-    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+    " Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
     Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
     "Plug 'vimwiki/vimwiki'
 
@@ -123,13 +124,6 @@
     " auto-pairs
     Plug 'jiangmiao/auto-pairs'
 
-    " " vim-dadbod
-    " Plug 'tpope/vim-dadbod'
-    " " vim-dadbod-ui
-    " Plug 'kristijanhusak/vim-dadbod-ui'
-    " " vim-dadbod-completion
-    " Plug 'kristijanhusak/vim-dadbod-completion'
-
     " vista.vim
     " Plug 'liuchengxu/vista.vim'
 
@@ -157,6 +151,9 @@
 
     " fcitx optimization
     " Plug 'lilydjwg/fcitx.vim'
+
+    Plug 'junegunn/goyo.vim'
+    Plug 'jreybert/vimagit'
 
     call plug#end()
 
@@ -223,7 +220,7 @@
         "let NERDTreeMapChangeRoot=""
 
         " NERDTree-git
-        let g:NERDTreeIndicatorMapCustom={
+        let g:NERDTreeGitStatusIndicatorMapCustom={
             \ "Modified"  : "✹",
             \ "Staged"    : "✚",
             \ "Untracked" : "✭",
@@ -397,9 +394,9 @@
         " Open Startify
         nnoremap <Leader>\ :Startify<CR>
         nnoremap <Leader>ss :SSave! Session.session<CR>
-        nnoremap <Leader>sS :SSave! 
+        nnoremap <Leader>sS :SSave!
         nnoremap <Leader>sl :SLoad! Session.session<CR>
-        nnoremap <Leader>sL :SLoad! 
+        nnoremap <Leader>sL :SLoad!
         nnoremap <Leader>sd :SDelete!<CR>
         nnoremap <Leader>sc :SClose<CR>
 
@@ -504,40 +501,6 @@
         let g:AutoPairsShortcutJump='<Leader>apj'
         let g:AutoPairsShortcutBackInsert='<Leader>api'
 
-    " vim-dadbod-ui
-        " " nnoremap <silent> <Leader>dt :tabe<CR>:tabmove<CR>:DBUIToggle<CR>
-        " nnoremap <silent> <Leader>dt :DBUIToggle<CR>
-        " nnoremap <silent> <Leader>da :DBUIAddConnection<CR>
-        " "" \ 'dev': 'postgres://postgres:mypassword@localhost:5432/my-dev-db',
-        " let g:dbs={
-        " \ 'local': 'mysql://test@192.168.0.101:3306/test',
-        " \ 'remote': 'mysql://test@dev.seeu.ink:3306/test',
-        " \ }
-        " " ui icons
-        " " let g:db_ui_icons={
-        " "     \ 'expanded': '▾',
-        " "     \ 'collapsed': '▸',
-        " "     \ 'saved_query': '*',
-        " "     \ 'new_query': '+',
-        " "     \ 'tables': '~',
-        " "     \ 'buffers': '»',
-        " "     \ 'connection_ok': '✓',
-        " "     \ 'connection_error': '✕',
-        " "     \ }
-        " " table helpers  # to add a "count rows" helper for postgres
-        " let g:db_ui_table_helpers={
-        " \   'postgresql': {
-        " \     'Count': 'select count(*) from "{table}"'
-        " \   },
-        " \   'mysql': {
-        " \     'Count': 'select count(*) from "{table}"'
-        " \   }
-        " \ }
-        " " If this is set to 1, opening any of the table helpers will also automatically execute the query. default:0
-        " " let g:db_ui_auto_execute_table_helpers=0
-        " let g:db_ui_winwidth=60
-        " let g:db_ui_default_query='select * from "{table}" limit 10'
-
     " vista
         " function! NearestMethodOrFunction() abort
         "     return get(b:, 'vista_nearest_method_or_function', '')
@@ -614,6 +577,9 @@
 
     " coc.nvim
         " source ~/.config/nvim/coc.vim
+
+    " Goyo plugin makes text more readable when writing prose:
+        map <leader>f :Goyo \| set bg=dark \| set linebreak<CR>
 
     " nvim-lspconfig.nvim
         " source ~/.config/nvim/nvim-lsp.vim

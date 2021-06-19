@@ -90,33 +90,33 @@
     augroup END
 
 " Another Quickfix Toggle --testing
-    " another quickfix toggle --testing
-    function! GetBufferList()
-    redir =>buflist
-    silent! ls!
-    redir END
-    return buflist
-    endfunction
+    " " another quickfix toggle --testing
+    " function! GetBufferList()
+    " redir =>buflist
+    " silent! ls!
+    " redir END
+    " return buflist
+    " endfunction
 
-    function! ToggleList(bufname, pfx)
-    let buflist = GetBufferList()
-    for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
-        if bufwinnr(bufnum) != -1
-        exec(a:pfx.'close')
-        return
-        endif
-    endfor
-    if a:pfx == 'l' && len(getloclist(0)) == 0
-        echohl ErrorMsg
-        echo "Location List is Empty."
-        return
-    endif
-    let winnr = winnr()
-    exec(a:pfx.'open')
-    if winnr() != winnr
-        wincmd p
-    endif
-    endfunction
+    " function! ToggleList(bufname, pfx)
+    " let buflist = GetBufferList()
+    " for bufnum in map(filter(split(buflist, '\n'), 'v:val =~ "'.a:bufname.'"'), 'str2nr(matchstr(v:val, "\\d\\+"))')
+    "     if bufwinnr(bufnum) != -1
+    "     exec(a:pfx.'close')
+    "     return
+    "     endif
+    " endfor
+    " if a:pfx == 'l' && len(getloclist(0)) == 0
+    "     echohl ErrorMsg
+    "     echo "Location List is Empty."
+    "     return
+    " endif
+    " let winnr = winnr()
+    " exec(a:pfx.'open')
+    " if winnr() != winnr
+    "     wincmd p
+    " endif
+    " endfunction
 
     " nmap <silent> <Leader>`l :call ToggleList("Location List", 'l')<CR>
     " nmap <silent> <Leader>`q :call ToggleList("Quickfix List", 'c')<CR>
@@ -158,50 +158,50 @@
     endfunc
 
 " Netrw Settings
-    nnoremap <Leader>tt :Lexplore<CR><C-w>l
-    " @see https://vi.stackexchange.com/questions/22455/how-to-override-netrw-delete-behavior
-    " unfortunately, the visual mode is not supported by Netrw_UserMaps,
-    " so implement it with the help of augroup/autocmd
-    " (although netrw is very peculiar about its mappings,
-    " it seems to work okay too)
-    augroup MyNetrw | au!
-        autocmd FileType netrw nnoremap <buffer>r :call g:MyNetrw_nop(1)<CR>
-    augroup end
-    " setup netrw mappings (:h g:Netrw_UserMaps)
-    let g:Netrw_UserMaps = [['<C-l>', 'g:MyNetrw_ctrl_l'], ['s', 'g:MyNetrw_nop']]
-    " implement normal mode refresh; islocal:1 stands for true
-    function! g:MyNetrw_nop(islocal)
-        echom 'not supported operation'
-    endfunction
-    function! g:MyNetrw_ctrl_l(islocal)
-        if a:islocal
-            return 'refresh'
-        endif
-        " this is to handle remote deletion
-        echom 'not supported operation'
-    endfunction
-    let g:netrw_banner=1       " set 0 if you want to disable annoying banner
-    let g:netrw_browse_split=4 " open in prior window
-    let g:netrw_altv=1         " open splits to the right
-    let g:netrw_liststyle=3    " tree view
-    let g:netrw_list_hide=netrw_gitignore#Hide()
-    " let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
-    let g:netrw_winsize=15
-    let g:netrw_list_hide='
-                \.*.netrwhist$,
-                \.*.swp$,
-                \ *.pyc$,
-                \ *.log$,
-                \ *.o$,
-                \ *.xmi$,
-                \ *.swp$,
-                \ *.bak$,
-                \ *.class$,
-                \ *.pyc$,
-                \ *.jar$,
-                \ *.war$,
-                \ *__pycache__*
-                \'
+    " nnoremap <Leader>tt :Lexplore<CR><C-w>l
+    " " @see https://vi.stackexchange.com/questions/22455/how-to-override-netrw-delete-behavior
+    " " unfortunately, the visual mode is not supported by Netrw_UserMaps,
+    " " so implement it with the help of augroup/autocmd
+    " " (although netrw is very peculiar about its mappings,
+    " " it seems to work okay too)
+    " augroup MyNetrw | au!
+    "     autocmd FileType netrw nnoremap <buffer>r :call g:MyNetrw_nop(1)<CR>
+    " augroup end
+    " " setup netrw mappings (:h g:Netrw_UserMaps)
+    " let g:Netrw_UserMaps = [['<C-l>', 'g:MyNetrw_ctrl_l'], ['s', 'g:MyNetrw_nop']]
+    " " implement normal mode refresh; islocal:1 stands for true
+    " function! g:MyNetrw_nop(islocal)
+    "     echom 'not supported operation'
+    " endfunction
+    " function! g:MyNetrw_ctrl_l(islocal)
+    "     if a:islocal
+    "         return 'refresh'
+    "     endif
+    "     " this is to handle remote deletion
+    "     echom 'not supported operation'
+    " endfunction
+    " let g:netrw_banner=1       " set 0 if you want to disable annoying banner
+    " let g:netrw_browse_split=4 " open in prior window
+    " let g:netrw_altv=1         " open splits to the right
+    " let g:netrw_liststyle=3    " tree view
+    " let g:netrw_list_hide=netrw_gitignore#Hide()
+    " " let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+    " let g:netrw_winsize=15
+    " let g:netrw_list_hide='
+    "             \.*.netrwhist$,
+    "             \.*.swp$,
+    "             \ *.pyc$,
+    "             \ *.log$,
+    "             \ *.o$,
+    "             \ *.xmi$,
+    "             \ *.swp$,
+    "             \ *.bak$,
+    "             \ *.class$,
+    "             \ *.pyc$,
+    "             \ *.jar$,
+    "             \ *.war$,
+    "             \ *__pycache__*
+    "             \'
 
 " CTRL-W And Meta-D
     " 检查是否删除到了行首
@@ -222,7 +222,7 @@
         \ "<C-o>de"
 
 " RestoreRegister
-    " prevent replacing paste buffer on paste
+    " prevent replacing paste buffer on paste 防止粘贴之后复制内容丢失
     function! RestoreRegister()
     let @" = s:restore_reg
     return ''
@@ -234,11 +234,50 @@
     vmap <silent> <expr> p <sid>Repl()
 
 " SynStack
-    " describe syntax under cursor
-    function! <SID>SynStack()
-        if !exists("*synstack")
-            return
+    " " describe syntax under cursor
+    " function! <SID>SynStack()
+    "     if !exists("*synstack")
+    "         return
+    "     endif
+    "     echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+    " endfunc
+    " nnoremap <Leader>ds :call <SID>SynStack()<CR>
+
+" Presentation
+    au BufEnter no_plugins.vim command! Pline execute 'echo getline(".")'
+    au BufEnter no_plugins.vim command! START normal gg8Gzz:Pline<CR>
+    au BufEnter no_plugins.vim command! GO normal M17jzzH:Pline<CR>
+    au BufEnter no_plugins.vim command! BACK normal M17kzzH:Pline<CR>
+    au BufEnter no_plugins.vim nnoremap <buffer> . :START<CR>
+    au BufEnter no_plugins.vim nnoremap <buffer> <Down> :GO<CR>
+    au BufEnter no_plugins.vim nnoremap <buffer> <Up> :BACK<CR>
+    au BufEnter no_plugins.vim setl window=66 | exe 'START'
+
+    " Function for toggling the bottom statusbar:
+    let s:hidden_all = 1
+    function! ToggleHiddenAll()
+        if s:hidden_all  == 0
+            let s:hidden_all = 1
+            set noshowmode
+            set noruler
+            set laststatus=0
+            set noshowcmd
+            setl nonumber
+            setl norelativenumber
+            setl listchars=tab:>\ ,trail:-,nbsp:+
+        else
+            let s:hidden_all = 0
+            set showmode
+            set ruler
+            set laststatus=2
+            set showcmd
+            setl number
+            setl relativenumber
+            setl listchars=tab:»\ ,trail:▫,eol:¬,extends:>,precedes:<,nbsp:␣,conceal:┊
         endif
-        echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-    endfunc
-    nnoremap <Leader>ds :call <SID>SynStack()<CR>
+    endfunction
+    nnoremap <leader><leader>h :call ToggleHiddenAll()<CR>
+
+    " 如果需要解绑键位 如下:
+    " au BufEnter no_plugins.vim unmap H
+    " au BufEnter no_plugins.vim unmap L
