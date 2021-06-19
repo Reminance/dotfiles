@@ -16,15 +16,15 @@
     set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
     set fileformats=unix,dos,mac
     set modelines=0
+    " set laststatus=0
+    au VimEnter * set laststatus=0 " disable airline by default
     set noshowmode
     set noshowcmd
     set noruler
-    set ttyfast "should make scrolling faster
-    set lazyredraw "same as above
+    set shortmess+=c
     let &t_SI="\<Esc>]50;CursorShape=1\x7"
     let &t_SR="\<Esc>]50;CursorShape=2\x7"
     let &t_EI="\<Esc>]50;CursorShape=0\x7"
-    set laststatus=0
     set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
     set wrap
     set textwidth=80
@@ -91,7 +91,6 @@
         " (:help 'complete')
         set complete=.,w,b,u,t
         set completeopt=menuone,preview,noinsert,noselect
-        set shortmess+=c
 
     " Line Return
         au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif " make cursor remain the position of last quit
@@ -383,7 +382,7 @@
     nnoremap <M->> :+tabmove<CR>
     " Map alt-x keys to jump to a tab
     for i in range(1, 8)
-    exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
+        exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
     endfor
     nnoremap <M-9> :tablast<CR>
 

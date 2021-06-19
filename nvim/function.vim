@@ -281,3 +281,13 @@
     " 如果需要解绑键位 如下:
     " au BufEnter no_plugins.vim unmap H
     " au BufEnter no_plugins.vim unmap L
+
+" toggle status line
+    function! ToggleHiddenStatusLine()
+        if &laststatus < 2
+            set laststatus=2
+        else
+            set laststatus=0
+        endif
+    endfunction
+    nnoremap <leader>st :call ToggleHiddenStatusLine()<CR>
