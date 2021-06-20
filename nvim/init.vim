@@ -16,6 +16,7 @@
     set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
     set fileformats=unix,dos,mac
     set modelines=0
+    set mouse=a " mouse support
     " @see h: statusline
     " set statusline=%#PmenuSel#%{toupper(g:currentmode[mode()])}%#LineNr#\ %{StatuslineGit()}\ %<%F\ %=\ [%{&ff}][%{&fenc}]%y%h%w%m%r\ \ %p%%\ \ %-10.(%l,%c%V%)\ @%{strftime(\"%H:%M:%S\")}\ [%{hostname()}]
     set statusline=%{toupper(g:currentmode[mode()])}%#LineNr#%{StatuslineGit()}%<%F%=[%{&ff}][%{&fenc}]%y%h%w%m%r\ %p%%\ %-8.(%l,%c%V%)[%{hostname()}]
@@ -396,12 +397,9 @@
     nnoremap <Leader>P "+P
 
 " Folding
-    set foldlevelstart=0
-    " set foldcolumn=0 " default 0
-
     " Tab to toggle folds.
-    nnoremap <CR> za
-    vnoremap <CR> za
+    nnoremap <Tab> za
+    vnoremap <Tab> za
 
     " Make <z0> recursively open whatever fold we're in, even if it's partially open.
     nnoremap z0 zczO
@@ -409,18 +407,19 @@
     let g:foldmarkerlhs=split(&foldmarker, ",")[0]
     let g:foldcolumnwidth = &foldcolumn + &number * &numberwidth
     function! MyFoldText()
-        let windowwidth = winwidth(0) - g:foldcolumnwidth - 3
         let foldedlinecount = v:foldend - v:foldstart
         let linerange = ' [' . v:foldstart . '-' . v:foldend . ']'
         let line = getline(v:foldstart)
         let line = substitute(line, g:foldmarkerlhs, '', 'g')
         let filldashcount = &textwidth - len(line) - len(linerange) - 1
+        " echo &textwidth . '-' . len(line) . '-' . len(linerange)
         if filldashcount < 0
             let line = line[0 : len(line)+filldashcount-3] . '...' . linerange . ' (' . foldedlinecount . ')'
         else
             let line = line . ' ' . repeat('-', filldashcount) . linerange . ' (' . foldedlinecount . ')'
         endif
-        let fillspacecount = windowwidth - len(line) + 1
+        let fillspacecount = winwidth(0) - g:foldcolumnwidth - len(line) + 10 " 加起来大于windwidth就行
+        " echo winwidth(0) . '-' . g:foldcolumnwidth . '-' . len(line)
         return line . repeat(' ', fillspacecount)
     endfunction
     set foldtext=MyFoldText()
@@ -432,45 +431,6 @@
         au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
         au Filetype vim nnoremap <buffer> <M-f> $F.egf
     augroup END
-
-" Environments (GUI/Console)
-    if has('gui_running')
-        " GUI Vim
-
-        set guifont=Menlo\ Regular\ for\ Powerline:h12
-
-        " Remove all the UI cruft
-        " 'guioptions' 'go'	string	(default "egmrLT"   (MS-Windows))
-        set guioptions-=T
-        set guioptions-=l
-        set guioptions-=L
-        set guioptions-=r
-        set guioptions-=R
-
-        highlight SpellBad term=underline gui=undercurl guisp=Orange
-
-        " Different cursors for different modes.
-        set guicursor=n-c:block-Cursor-blinkon0
-        set guicursor+=v:block-vCursor-blinkon0
-        set guicursor+=i-ci:ver20-iCursor
-
-        if has("gui_macvim")
-            " Full screen means FULL screen
-            set fuoptions=maxvert,maxhorz
-
-            " Use the normal HIG movements, except for M-Up/Down
-            let macvim_skip_cmd_opt_movement = 1
-            " no   <D-Left>       <Home>
-        else
-            " Non-MacVim GUI, like Gvim
-        end
-    else
-        " Console Vim
-        " For me, this means iTerm2, possibly through tmux
-
-        " Mouse support
-        set mouse=a
-    endif
 
 " Basic Funcion
     source ~/.config/nvim/function.vim

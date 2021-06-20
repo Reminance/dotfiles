@@ -122,7 +122,6 @@
     " nmap <silent> <Leader>`q :call ToggleList("Quickfix List", 'c')<CR>
 
 " Sessions
-    " 自带的session颜色丢失 用startify的session管理代替
     " auto save and load session for $HOME/.config/nvim/session/current.session
     " set sessionoptions="blank,buffers,curdir,folds,globals,help,localoptions,options,resize,sesdir,slash,tabpages,terminal,unix,winpos,winsize"
     " set sessionoptions="blank,buffers,folds,globals,help,localoptions,resize,sesdir,slash,tabpages,terminal,unix,winpos,winsize"
@@ -204,6 +203,7 @@
     "             \'
 
 " CTRL-W And Meta-D
+    " for CTRL-W
     " 检查是否删除到了行首
     function! s:is_first_of_line() abort
         return !(col('.') - 1)
@@ -222,7 +222,7 @@
         \ "<C-o>de"
 
 " RestoreRegister
-    " prevent replacing paste buffer on paste 防止粘贴之后复制内容丢失
+    " prevent replacing register on paste
     function! RestoreRegister()
     let @" = s:restore_reg
     return ''
