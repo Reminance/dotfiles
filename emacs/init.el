@@ -366,7 +366,7 @@
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
   :config
-  (when (memq window-system '(mac ns))
+  (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
 ;; try
@@ -514,6 +514,27 @@
 ;;                               "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
 ;;                               "mR" 'restclient-http-send-current-raw
 ;;                               "my" 'restclient-copy-curl-command)
+
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-do-load-languages
+   `((R . t)
+     (dot . t)
+     (haskell . nil)
+     (latex . t)
+     (python . t)
+     (ruby . t)
+     (,(if (locate-library "ob-sh") 'sh 'shell) . t)
+     (sql . t)
+     (sqlite . t))))
+
+(use-package ob-async)
+
+;; (use-package ob-sh
+;;   :after org)
+;;    :config
+;;    (setq org-babel-default-header-args:sh '((:results . "output")))
+;;    (setq org-babel-default-header-args:shell '((:results . "output"))))
 
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
@@ -928,7 +949,7 @@
 ;;   :hook (common-lisp-mode . sly-edit-mode))
 ;; (use-package sly-macrostep
 ;;   :hook (common-lisp-mode . sly-macrostep-mode))
-;; 
+;;
 ;; (use-package sly-repl-ansi-color
 ;;   :hook (common-lisp-mode . sly-repl-ansi-color))
 
