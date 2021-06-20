@@ -16,6 +16,9 @@
     set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
     set fileformats=unix,dos,mac
     set modelines=0
+    " @see h: statusline
+    " set statusline=%#PmenuSel#%{toupper(g:currentmode[mode()])}%#LineNr#\ %{StatuslineGit()}\ %<%F\ %=\ [%{&ff}][%{&fenc}]%y%h%w%m%r\ \ %p%%\ \ %-10.(%l,%c%V%)\ @%{strftime(\"%H:%M:%S\")}\ [%{hostname()}]
+    set statusline=%{toupper(g:currentmode[mode()])}%#LineNr#%{StatuslineGit()}%<%F%=[%{&ff}][%{&fenc}]%y%h%w%m%r\ %p%%\ %-8.(%l,%c%V%)[%{hostname()}]
     " set laststatus=0
     au VimEnter * set laststatus=0 " disable airline by default
     set noshowmode
@@ -29,7 +32,6 @@
     set wrap
     set textwidth=80
     set nu rnu
-    set colorcolumn=+1
     set list
     " set listchars=tab:▸\ ,trail:▫,eol:¬,extends:❯,precedes:❮,nbsp:␣,conceal:┊
     " set listchars=tab:»\ ,trail:·,eol:↲,extends:❯,precedes:❮,nbsp:␣,conceal:┊
@@ -38,7 +40,7 @@
     set matchtime=5
     set autoread autowrite
     set shiftround
-    set signcolumn=yes
+    " set signcolumn=yes
     set inccommand=split
     " set linebreak " auto wrap long lines with line break
     " set autochdir " auto change cwd
@@ -50,8 +52,7 @@
     " set fillchars=diff:⣿,vert:│
     " Don't try to highlight lines longer than 800 characters.
     set synmaxcol=800
-    " (:h backspace?), default "indent,eol,start"; eol让退格键可以退到上一行
-    set backspace=indent,eol,start
+    set backspace=indent,eol,start " eol让退格键可以退到上一行
 
     " Cursorline & ColorColumn
         set cursorline
@@ -61,10 +62,12 @@
             au WinLeave,InsertEnter * set nocursorline
             au WinEnter,InsertLeave * set cursorline
         augroup END
-        augroup colorcolumn
+        " set colorcolumn=+1
+        augroup colorscheme
             au!
-            au ColorScheme * highlight ColorColumn term=reverse ctermbg=1 guifg=#f9f9ff guibg=#242729
-            au ColorScheme * highlight Folded term=reverse ctermbg=Black guifg=#00d6d6 guibg=NONE
+            " au ColorScheme * highlight ColorColumn term=reverse ctermbg=1 guifg=#f9f9ff guibg=#242729
+            " au ColorScheme * highlight Folded term=reverse ctermbg=Black guifg=#00d6d6 guibg=NONE
+            au ColorScheme * highlight Folded ctermbg=NONE guifg=NONE guibg=NONE
         augroup end
 
     " Gui
@@ -137,6 +140,7 @@
 " Basic Mappings
     " Save & quit
     nnoremap s <nop>
+    nnoremap <M-s> <nop>
     nnoremap R <nop>
     nnoremap Q <nop>
     nnoremap <C-q> :q<CR>
@@ -208,11 +212,6 @@
 
     " reading source into vim(:h read) or :r! cat ~/.bashrc
     nnoremap <M-S-r> :r
-
-    " help shortcut(:helpgrep i_^n)
-    nnoremap <Leader>hg :helpgrep
-    nnoremap <Leader>hn :cnext<CR>
-    nnoremap <Leader>hp :cprev<CR>
 
     " open the quickfix list
     nnoremap <Leader>co :copen<CR>
@@ -321,7 +320,7 @@
     " syntax highlighting of search results
         " for gui
         " au ColorScheme * highlight Search guibg=guibg guifg=guifg gui=italic,underline,bold
-        au ColorScheme * highlight Search guibg=guibg guifg=Cyan gui=italic,underline,bold
+        au ColorScheme * highlight Search guibg=NONE guifg=Cyan gui=italic,underline,bold
         " for term
         " au ColorScheme * highlight Search ctermbg=black ctermfg=yellow term=underline
 
@@ -396,19 +395,9 @@
     nnoremap <Leader>p "+p
     nnoremap <Leader>P "+P
 
-" Ultisnips
-    function! s:edit_snippets(snippets_name)
-        exe 'vsp ~/.config/nvim/Ultisnips/'.a:snippets_name
-    endfunction
-    command! -bang -nargs=* EditUtilSnips call fzf#run({
-                \   'source': 'ls -1 ~/.config/nvim/Ultisnips',
-                \   'down': 20,
-                \   'sink': function('<sid>edit_snippets')
-                \ })
-
 " Folding
     set foldlevelstart=0
-    set foldcolumn=0
+    " set foldcolumn=0 " default 0
 
     " Tab to toggle folds.
     nnoremap <CR> za
@@ -418,17 +407,21 @@
     nnoremap z0 zczO
 
     let g:foldmarkerlhs=split(&foldmarker, ",")[0]
-    let g:nucolwidth = &fdc + &number * &numberwidth
+    let g:foldcolumnwidth = &foldcolumn + &number * &numberwidth
     function! MyFoldText()
-        let windowwidth = winwidth(0) - g:nucolwidth - 3
+        let windowwidth = winwidth(0) - g:foldcolumnwidth - 3
         let foldedlinecount = v:foldend - v:foldstart
         let linerange = ' [' . v:foldstart . '-' . v:foldend . ']'
         let line = getline(v:foldstart)
         let line = substitute(line, g:foldmarkerlhs, '', 'g')
-        let filldashcount = &textwidth - len(line) - len(linerange)
-        let line = line . repeat('-', filldashcount) . linerange
-        let fillspacecount = windowwidth - len(line) - len(foldedlinecount)
-        return line . repeat(' ', fillspacecount) . foldedlinecount . ' '
+        let filldashcount = &textwidth - len(line) - len(linerange) - 1
+        if filldashcount < 0
+            let line = line[0 : len(line)+filldashcount-3] . '...' . linerange . ' (' . foldedlinecount . ')'
+        else
+            let line = line . ' ' . repeat('-', filldashcount) . linerange . ' (' . foldedlinecount . ')'
+        endif
+        let fillspacecount = windowwidth - len(line) + 1
+        return line . repeat(' ', fillspacecount)
     endfunction
     set foldtext=MyFoldText()
 
@@ -484,9 +477,6 @@
 
 " Plugins Settings(Included lsp)
     source ~/.config/nvim/plugins.vim
-
-" Markdown sneppets
-    source ~/.config/nvim/snippets/_md_snippets.vim
 
 " Openning Files
     " Open the vimrc file anytime

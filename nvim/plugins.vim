@@ -11,8 +11,8 @@
     call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
     " status line
-    Plug 'vim-airline/vim-airline'
-    Plug 'vim-airline/vim-airline-themes'
+    " Plug 'vim-airline/vim-airline'
+    " Plug 'vim-airline/vim-airline-themes'
     " Plug 'itchyny/lightline.vim'
 
     " themes
@@ -258,6 +258,15 @@
         " If you want :UltiSnipsEdit to split your window.
         let g:UltiSnipsEditSplit="vertical"
 
+        function! s:edit_snippets(snippets_name)
+            exe 'vsp ~/.config/nvim/Ultisnips/'.a:snippets_name
+        endfunction
+        command! -bang -nargs=* EditUtilSnips call fzf#run({
+                    \ 'source': 'ls -1 ~/.config/nvim/Ultisnips',
+                    \   'down': 20,
+                    \   'sink': function('<sid>edit_snippets')
+                    \ })
+
     " MarkdownPreview
         let g:mkdp_auto_start=0
         let g:mkdp_auto_close=1
@@ -406,11 +415,15 @@
         let g:surround_no_insert_mappings=1
 
     " vim-fugitive
-        nnoremap <Leader>gb :Gblame<CR>
+        nnoremap <Leader>gb :Git blame<CR>
+        nnoremap <Leader>gc :G commit<CR>
+        nnoremap <Leader>gf :Git fetch<CR>
+        nnoremap <Leader>gF :Git pull<CR>
+        nnoremap <Leader>gp :Git push<CR>
         nnoremap <Leader>gd :Gvdiffsplit<CR>
-        nnoremap <Leader>dh :diffget //2<CR>
-        nnoremap <Leader>dl :diffget //3<CR>
-        nnoremap <Leader>gg :G<CR>
+        nnoremap <Leader>gh :diffget //2<CR>
+        nnoremap <Leader>gl :diffget //3<CR>
+        nnoremap <Leader>G :G<CR>
 
     " vim-signify
         " 设置要检查的VCS

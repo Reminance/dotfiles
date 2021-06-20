@@ -256,8 +256,8 @@
     " Function for toggling the bottom statusbar:
     let s:hidden_all = 1
     function! ToggleHiddenAll()
-        if s:hidden_all  == 0
-            let s:hidden_all = 1
+        if s:hidden_all == 1
+            let s:hidden_all = 0
             set noshowmode
             set noruler
             set laststatus=0
@@ -266,7 +266,7 @@
             setl norelativenumber
             setl listchars=tab:>\ ,trail:-,nbsp:+
         else
-            let s:hidden_all = 0
+            let s:hidden_all = 1
             set showmode
             set ruler
             set laststatus=2
@@ -282,7 +282,27 @@
     " au BufEnter no_plugins.vim unmap H
     " au BufEnter no_plugins.vim unmap L
 
-" toggle status line
+" status line
+    function! GitBranch()
+        return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    endfunction
+
+    function! StatuslineGit()
+        let l:branchname = GitBranch()
+        return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+    endfunction
+
+    let g:currentmode={
+       \ 'n'  : '  NORMAL ',
+       \ 'v'  : '  VISUAL ',
+       \ 'V'  : '  V·Line ',
+       \ "\<C-V>" : '  V·Block ',
+       \ 'i'  : '  INSERT ',
+       \ 'R'  : '  R ',
+       \ 'Rv' : '  V·Replace ',
+       \ 'c'  : '  Command ',
+       \}
+
     function! ToggleHiddenStatusLine()
         if &laststatus < 2
             set laststatus=2
@@ -290,4 +310,4 @@
             set laststatus=0
         endif
     endfunction
-    nnoremap <leader>st :call ToggleHiddenStatusLine()<CR>
+    nnoremap <LocalLeader><Space> :call ToggleHiddenStatusLine()<CR>
