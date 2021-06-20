@@ -139,33 +139,33 @@
 (global-hl-line-mode 1)
 
 ;; 设置英文/中文字体
-;; (setq reminance/en-font-name "Fira Code Nerd Font Mono"
-(setq reminance/en-font-name "Iosevka"
-      reminance/en-font-style "Regular"
-      reminance/en-font-size 16)
-;; (setq reminance/zh-font-name "WenQuanYi Zen Hei Mono"
-;; (setq reminance/zh-font-name "Fira Code Nerd Font Mono"
-(setq reminance/zh-font-name "Iosevka"
-      reminance/zh-font-style "Regular"
-      reminance/zh-font-size 16)
+;; (setq my/en-font-name "Fira Code Nerd Font Mono"
+(setq my/en-font-name "Iosevka"
+      my/en-font-style "Regular"
+      my/en-font-size 16)
+;; (setq my/zh-font-name "WenQuanYi Zen Hei Mono"
+;; (setq my/zh-font-name "Fira Code Nerd Font Mono"
+(setq my/zh-font-name "Iosevka"
+      my/zh-font-style "Regular"
+      my/zh-font-size 16)
 (progn
   (if (fontp (font-spec
-              :name reminance/en-font-name
-              :style reminance/en-font-style
-              :size reminance/en-font-size))
+              :name my/en-font-name
+              :style my/en-font-style
+              :size my/en-font-size))
       (progn
         (set-face-attribute 'default nil
                             :font (font-spec
-                                   :name reminance/en-font-name
-                                   :style reminance/en-font-style
-                                   :size reminance/en-font-size))
+                                   :name my/en-font-name
+                                   :style my/en-font-style
+                                   :size my/en-font-size))
         (set-fontset-font t 'han (font-spec
-                                  :name reminance/zh-font-name
-                                  :style reminance/zh-font-style))
+                                  :name my/zh-font-name
+                                  :style my/zh-font-style))
         (set-fontset-font "fontset-default" ?༼ (font-spec
                                                 :name "Noto Serif Tibetan"
                                                 :size 0)))
-    (message "Can't find %s font. You can install it or ignore this message at init-font.el" reminance/en-font-name)))
+    (message "Can't find %s font. You can install it or ignore this message at init-font.el" my/en-font-name)))
 
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
@@ -185,8 +185,8 @@
 ;;----------------------------------------------------------------------------
 ;; custom common function
 ;;----------------------------------------------------------------------------
-;; 切换代理
-(defun reminance/toggle-proxy ()
+(defun my/toggle-proxy ()
+  "切换代理."
   (interactive)
   (if (null url-proxy-services)
       (progn
@@ -249,13 +249,14 @@
       (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
 ;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-(global-set-key (kbd "M-C-7") (lambda () (interactive) (reminance/toggle-transparency)))
+(global-set-key (kbd "M-C-7") (lambda () (interactive) (my/toggle-transparency)))
 (global-set-key (kbd "M-C-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
 (global-set-key (kbd "M-C-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
-(global-set-key (kbd "M-C-0") (lambda () (interactive) (reminance/toggle-proxy)))
+(global-set-key (kbd "M-C-0") (lambda () (interactive) (my/toggle-proxy)))
 
 ;;;###autoload
-(defun reminance/toggle-transparency ()
+(defun my/toggle-transparency ()
+  "切换透明度."
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (set-frame-parameter
