@@ -531,11 +531,6 @@
      (sql . t)
      (sqlite . t))))
 
-;; (use-package ob-sh
-;;   :after org)
-;;    :config
-;;    (setq org-babel-default-header-args:sh '((:results . "output")))
-;;    (setq org-babel-default-header-args:shell '((:results . "output"))))
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
   :hook (after-init . beacon-mode))
