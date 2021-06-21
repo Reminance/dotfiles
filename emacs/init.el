@@ -515,6 +515,9 @@
 ;;                               "mR" 'restclient-http-send-current-raw
 ;;                               "my" 'restclient-copy-curl-command)
 
+(require 'ob-shell)
+(require 'url-util)
+
 (with-eval-after-load 'org
   (org-babel-do-load-languages
    'org-babel-do-load-languages
@@ -524,18 +527,15 @@
      (latex . t)
      (python . t)
      (ruby . t)
-     (,(if (locate-library "ob-sh") 'sh 'shell) . t)
+     (,(if (locate-library "ob-shell") 'sh 'shell) . t)
      (sql . t)
      (sqlite . t))))
-
-(use-package ob-async)
 
 ;; (use-package ob-sh
 ;;   :after org)
 ;;    :config
 ;;    (setq org-babel-default-header-args:sh '((:results . "output")))
 ;;    (setq org-babel-default-header-args:shell '((:results . "output"))))
-
 ;; 切换buffer焦点时高亮动画
 (use-package beacon
   :hook (after-init . beacon-mode))
