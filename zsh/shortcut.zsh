@@ -57,3 +57,20 @@ fs() {
     fzf --query="$1" --select-1 --exit-0) &&
   tmux switch-client -t "$session"
 }
+
+# sudo pacman -S lf
+# A terminal file manager inspred by ranger written in Go
+# lfcd () {
+#     tmp="$(mktemp)"
+#     lf -last-dir-path="$tmp" "$@"
+#     if [ -f "$tmp" ]; then
+#         dir="$(cat "$tmp")"
+#         rm -f "$tmp"
+#         [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+#     fi
+# }
+# bindkey -s '^o' 'lfcd\n'
+
+# Edit line in vim with ctrl-`
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^`' edit-command-line

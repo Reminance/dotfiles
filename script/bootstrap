@@ -137,8 +137,8 @@ link_config_dir () {
   done
 }
 
-install_dotfiles () {
-  info 'installing dotfiles'
+link_symlink_file () {
+  info 'linking symlink file'
 
   local overwrite_all=false backup_all=false skip_all=false
 
@@ -151,7 +151,7 @@ install_dotfiles () {
 
 setup_gitconfig
 link_config_dir
-install_dotfiles
+link_symlink_file
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
