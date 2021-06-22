@@ -186,3 +186,4 @@ zip
 zsh
 bat
 tmux
+nerd-fonts-source-code-pro
