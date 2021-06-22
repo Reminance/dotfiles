@@ -228,6 +228,7 @@
 
 (menu-bar-mode -1)
 ;; 开启行号
+(setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode +1)
 ;; 选中文本后输入会覆盖
 (delete-selection-mode +1)
@@ -693,7 +694,7 @@
 (setq org-default-notes-file "~/doc/org/notes.org")
 (setq org-display-inline-images t)
 (setq org-redisplay-inline-images t)
-(setq org-startup-with-inline-images t)
+(setq org-startup-with-inline-images nil)
 (setq org-agenda-files (list
                         "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
