@@ -71,6 +71,6 @@ fs() {
 # }
 # bindkey -s '^o' 'lfcd\n'
 
-# Edit line in vim with ctrl-`
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^`' edit-command-line
+# Edit line in vim with ctrl-v
+# autoload edit-command-line; zle -N edit-command-line
+# bindkey '^v' edit-command-line
