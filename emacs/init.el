@@ -690,6 +690,11 @@
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
+(use-package org
+  :config
+  (setq org-ellipsis " ▾"
+        org-hide-emphasis-markers t))
+
 (setq org-babel-confirm-evaluate nil)
 (setq org-default-notes-file "~/doc/org/notes.org")
 (setq org-display-inline-images t)
