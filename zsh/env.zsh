@@ -3,7 +3,7 @@
 #export LC_ALL=C
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN.UTF-8
-export LC_ALL=zh_CN.UTF-8
+#export LC_ALL=zh_CN.UTF-8
 export MYVIMRC=~/.config/nvim/init.vim
 export GOROOT=/usr/lib/go
 export GOPATH=~/go
