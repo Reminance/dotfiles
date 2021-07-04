@@ -1,7 +1,7 @@
 # shortcut to this dotfiles path is $ZSH_CONF_ROOT
 export ZSH_CONF_ROOT=$HOME/dotfiles
-source $ZSH_CONF_ROOT/zsh/env.zsh
-source $ZSH_CONF_ROOT/zsh/ohmyzsh-setup
+source $ZSH_CONF_ROOT/.config/zsh/env.zsh
+source $ZSH_CONF_ROOT/.config/zsh/ohmyzsh-setup
 
 # your project folder that we can `c [tab]` to
 export PROJECTS=$HOME/workspace
@@ -16,8 +16,8 @@ fi
 
 # all of our zsh files
 typeset -U config_files
-# exclude for .dotfiles/nvim/tmp/*.zsh
-config_files=($ZSH_CONF_ROOT/**[^tmp]/*.zsh)
+# exclude for .dotfiles/.config/nvim/tmp/*.zsh
+config_files=($ZSH_CONF_ROOT/.config/**[^tmp]/*.zsh)
 
 # load the path files
 for file in ${(M)config_files:#*/path.zsh}

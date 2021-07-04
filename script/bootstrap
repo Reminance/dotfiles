@@ -27,28 +27,6 @@ fail () {
   exit
 }
 
-setup_gitconfig () {
-  if ! [ -f git/gitconfig.local.symlink ]
-  then
-    info 'setup gitconfig'
-
-    git_credential='cache'
-    if [ "$(uname -s)" == "Darwin" ]
-    then
-      git_credential='osxkeychain'
-    fi
-
-    user ' - What is your github author name?'
-    read -e git_authorname
-    user ' - What is your github author email?'
-    read -e git_authoremail
-
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" git/gitconfig.local.symlink.example > git/gitconfig.local.symlink
-
-    success 'gitconfig'
-  fi
-}
-
 link_file () {
   info 'link file'
   local src=$1 dst=$2
@@ -125,16 +103,28 @@ link_file () {
   fi
 }
 
-link_config_dir () {
-  info 'linking config dir'
+setup_gitconfig () {
+  if ! [ -f .config/git/gitconfig.local.symlink ]
+  then
+    info 'setup gitconfig'
 
-  local overwrite_all=false backup_all=false skip_all=false
+    git_credential='cache'
+    if [ "$(uname -s)" == "Darwin" ]
+    then
+      git_credential='osxkeychain'
+    fi
 
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 1 -type d -not -path '*.git*' -not -path '*dotfiles')
-  do
-    dst="$HOME/.config/$(basename "${src}")"
-    link_file "$src" "$dst"
-  done
+    user ' - What is your github author name?'
+    read -e git_authorname
+    user ' - What is your github author email?'
+    read -e git_authoremail
+
+    sed -e "s/AUTHORNAME/$git_authorname/g" -e
+    "s/AUTHOREMAIL/$git_authoremail/g" -e
+    "s/GIT_CREDENTIAL_HELPER/$git_credential/g" .config/git/gitconfig.local.symlink.example > .config/git/gitconfig.local.symlink
+
+    success 'gitconfig'
+  fi
 }
 
 link_symlink_file () {
@@ -142,16 +132,37 @@ link_symlink_file () {
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink' -not -path '*.git*')
   do
     dst="$HOME/.$(basename "${src%.*}")"
     link_file "$src" "$dst"
   done
 }
 
+link_config_dir () {
+  info 'linking config dir'
+
+  local overwrite_all=false backup_all=false skip_all=false
+
+  for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1 -type d -not -path '*.git*' -not -path '*dotfiles')
+  do
+    dst="$HOME/.config/$(basename "${src}")"
+    link_file "$src" "$dst"
+  done
+}
+
+link_local_share_applications_dir () {
+  info 'linking ~/.local/share/applications dir'
+  local overwrite_all=false backup_all=false skip_all=false
+  src="$DOTFILES_ROOT/.local/share/applications"
+  dst="$HOME/.local/share/applications"
+  link_file "$src" "$dst"
+}
+
 setup_gitconfig
-link_config_dir
 link_symlink_file
+link_config_dir
+link_local_share_applications_dir
 
 # If we're on a Mac, let's install and setup homebrew.
 if [ "$(uname -s)" == "Darwin" ]
