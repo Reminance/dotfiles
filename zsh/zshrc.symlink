@@ -1,5 +1,5 @@
 # shortcut to this dotfiles path is $ZSH_CONF_ROOT
-export ZSH_CONF_ROOT=$HOME/.dotfiles
+export ZSH_CONF_ROOT=$HOME/dotfiles
 source $ZSH_CONF_ROOT/zsh/env.zsh
 source $ZSH_CONF_ROOT/zsh/ohmyzsh-setup
 

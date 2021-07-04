@@ -26,7 +26,7 @@ label=<span color="#ff5555"> </span>
 
 [home]
 command=df -h /home | awk 'FNR==2{print $4}'
-interval=3
+interval=60
 label=<span color="#ff79c6"> </span>
 
 [root]
@@ -62,23 +62,13 @@ command=pulseaudio-ctl full-status | awk '{ printf "%i%\n", $1 }'
 interval=1
 label=<span color="#ffb86c"> </span>
 
-[time_pst]
-command=TZ=":US/Pacific" date '+%I:%M %Z'
-interval=1
-label=<span color="#ff5555"> </span>
-
-[time_cst]
-command=TZ=":US/Central" date '+%I:%M %Z'
-interval=1
-label=<span color="#ff79c6"> </span>
-
-[time_est]
-command=TZ=":US/Eastern" date '+%I:%M %Z'
+[time_shanghai]
+command=TZ=":Asia/Shanghai" date '+%H:%M:%S %Z'
 interval=1
 label=<span color="#bd93f9"> </span>
 
 [date]
-command=date '+%Y年%B%d日 %A'
+command=date '+%Y-%m-%d %A'
 interval=60
 label=<span color="#8be9fd"> </span>
 
