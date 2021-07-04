@@ -1,69 +1,16 @@
 #!/bin/bash
 
-#userresources=$HOME/.Xresources
 usermodmap=$HOME/.config/xmodmap/.Xmodmap
-#sysresources=/etc/X11/xinit/.Xresources
-#sysmodmap=/etc/X11/xinit/.Xmodmap
-
-# merge in defaults and keymaps
-
-#if [ -f $sysresources ]; then
-#    xrdb -merge $sysresources
-#fi
-
-#if [ -f $sysmodmap ]; then
-#    xmodmap $sysmodmap
-#fi
-
-#if [ -f "$userresources" ]; then
-#    xrdb -merge "$userresources"
-#fi
 
 if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
-#xmodmap -e 'clear Lock'
-##this will make Esc to act as Caps Lock
-#xmodmap -e "keycode 9 = Caps_Lock NoSymbol Caps_Lock"
-##this will make Caps Lock to act as Esc
-#xmodmap -e "keycode 66 = Escape NoSymbol Escape"
-
 # Increase key speed via a rate change by default: auto repeat delay:  658    repeat rate:  25
 xset r rate 300 50
-
-# start some nice programs
-#if [ -d /etc/X11/xinit/xinitrc.d ] ; then
-# for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
-#  [ -x "$f" ] && . "$f"
-# done
-# unset f
-#fi
-
-#twm &
-#xclock -geometry 50x50-1+1 &
-#xterm -geometry 80x50+494+51 &
-#xterm -geometry 80x20+494-0 &
-#exec xterm -geometry 80x66+0+0 -name login
-
-#exec i3 -V >> ~/.config/i3/log/i3-log-$(date + '%F-%k-%M-%S') 2>&1
-
-
-# screen setup
-# xrandr --output DP-0 --left-of HDMI-0 --auto
-# export XDG_RUNTIME_DIR=/run/user/$(id -u)
-# export $(dbus-launch)
 
 # could be in /etc/profile
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
-#fcitx&
-# notice that pgrep didn't work in tty1 by fd in use error, so comment below
-#if test $( pgrep -f fcitx | wc -l ) -eq 0; then nohup fcitx &; fi
 export _JAVA_AWT_WM_NONREPARENTING=1
-# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
-# echo $DISPLAY
-#exec i3
-# wmname LG3D
-#exec dwm

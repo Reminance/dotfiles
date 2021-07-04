@@ -53,6 +53,8 @@ fi
 # xrandr --output DP-0 --left-of HDMI-0 --auto
 # export XDG_RUNTIME_DIR=/run/user/$(id -u)
 # export $(dbus-launch)
+
+# could be in /etc/profile
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
