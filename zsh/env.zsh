@@ -35,3 +35,9 @@ export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
 export JDTLS_CONFIG=~/.config/coc/extensions/coc-java-data/server/config_linux
 export WORKSPACE=$HOME/workspace
 export M2_HOME=/opt/maven
+
+# could be in /etc/profile
+#export GTK_IM_MODULE=fcitx
+#export QT_IM_MODULE=fcitx
+#export XMODIFIERS="@im=fcitx"
+#export _JAVA_AWT_WM_NONREPARENTING=1

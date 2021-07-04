@@ -7,7 +7,7 @@ sudo pacman -Syyu
 mkdir old-arch
 sudo mount /dev/sda2 old-arch/
 cd old-arch/home/xc/
-cp -r .dotfiles/ .m2/ .oh-my-zsh/ .ssh/ workspace/ get-pip.py fortivpn-config.sh github.token ~/
+cp -r .dotfiles/ doc/ .m2/ .oh-my-zsh/ .ssh/ workspace/ get-pip.py fortivpn-config.sh github.token ~/
 ./.dotfiles/script/bootstrap 
 sudo pacman -S zsh google-chrome git dmenu clash fcitx fcitx-configtool fcitx-im
 fcitx-googlepinyin base-devel ethtool alacritty screenkey tmux neovim python
@@ -17,7 +17,7 @@ picom openfortivpn ruby rubygems nodejs npm yarn lua nasm maven gradle figlet
 openssl openvpn fd bat jq htop tree curl jq lazygit virtualbox-host-modules-arch
 archiso qemu asciidoc asciidoctor autoconf clang clash ctags flameshot gcc gdb
 imagemagick inotify-tools libtool netease-cloud-music nerd-fonts-source-code-pro
-ttc-iosevka ntfs-3g
+ttc-iosevka ntfs-3g pcmanfm sddm
 
 vim .xinitrc 
 sudo chsh -s /usr/bin/zsh

@@ -211,7 +211,10 @@ bar {
 }
 
 exec_always --no-startup-id ~/.config/i3/scripts/autostart-i3.sh
-exec_always --no-startup-id ~/.config/i3/scripts/wp-startbyi3-autochange.sh
+exec_always --no-startup-id ~/.config/i3/scripts/picom.sh
+#exec_always --no-startup-id ~/.config/i3/scripts/wp-startbyi3-autochange.sh
+exec_always --no-startup-id ~/.config/i3/scripts/wp-change.sh
+exec_always --no-startup-id fcitx
 
 new_window pixel 1
 
@@ -219,6 +222,7 @@ new_window pixel 1
 for_window [instance="alacritty"] border pixel 3
 for_window [class="chrome"] border pixel 0
 for_window [instance="note"] floating enable
+for_window [class="Pcmanfm"] floating enable
 for_window [instance="scratchpad"] move scratchpad
 
 gaps inner 10
