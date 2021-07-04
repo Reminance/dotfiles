@@ -93,7 +93,7 @@
     " Other visual enhancement
     Plug 'mhinz/vim-startify'
     Plug 'ryanoasis/vim-devicons'
-    Plug 'luochen1990/rainbow'
+    " Plug 'luochen1990/rainbow'
     " Plug 'wincent/terminus'
 
     " A Vim Plugin for Lively Previewing LaTeX PDF Output
