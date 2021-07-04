@@ -1,0 +1,5 @@
+[Desktop Entry]
+Type=Application
+Name=File Manager
+Exec=/usr/bin/pcmanfm %U
+#Exec=/usr/local/bin/st -e lf %u
