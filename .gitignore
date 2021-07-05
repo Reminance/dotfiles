@@ -13,6 +13,7 @@
 !tmux.conf.symlink
 !wsl
 !xinitrc.symlink.backup
+!config-file.list
 
 
 !.config/alacritty
