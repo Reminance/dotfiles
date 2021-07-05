@@ -109,7 +109,7 @@ link_file () {
 }
 
 setup_gitconfig () {
-  if ! [ -f ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink ]
+  if ! [ -f $DOTFILES_ROOT/.config/git/gitconfig.local.symlink ]
   then
     info 'setup gitconfig'
 
@@ -127,8 +127,8 @@ setup_gitconfig () {
     sed -e "s/AUTHORNAME/$git_authorname/g" \
         -e "s/AUTHOREMAIL/$git_authoremail/g" \
         -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" \
-        ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink.example \
-        > ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink
+        $DOTFILES_ROOT/.config/git/gitconfig.local.symlink.example \
+        > $DOTFILES_ROOT/.config/git/gitconfig.local.symlink
 
     success 'gitconfig'
   fi
