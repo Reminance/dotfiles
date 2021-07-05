@@ -31,6 +31,7 @@
     let &t_EI="\<Esc>]50;CursorShape=0\x7"
     set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
     set wrap
+    set formatoptions-=t "turn off Auto-wrap text using textwidth
     set textwidth=80
     set nu rnu
     set list

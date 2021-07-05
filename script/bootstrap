@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 #
+# $XDG_DATA_HOME $HOME/.local/share
+# $XDG_CONFIG_HOME $HOME/.config
+# $XDG_DATA_DIRS /usr/local/share/:/usr/share/
+# $XDG_CONFIG_DIRS /etc/xdg
+# $XDG_CACHE_HOME $HOME/.cache
 # bootstrap installs things.
 
 cd "$(dirname "$0")/.."
@@ -104,7 +109,7 @@ link_file () {
 }
 
 setup_gitconfig () {
-  if ! [ -f .config/git/gitconfig.local.symlink ]
+  if ! [ -f ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink ]
   then
     info 'setup gitconfig'
 
@@ -114,14 +119,16 @@ setup_gitconfig () {
       git_credential='osxkeychain'
     fi
 
-    user ' - What is your github author name?'
+    user ' - What is your git author name?'
     read -e git_authorname
-    user ' - What is your github author email?'
+    user ' - What is your git author email?'
     read -e git_authoremail
 
-    sed -e "s/AUTHORNAME/$git_authorname/g" -e
-    "s/AUTHOREMAIL/$git_authoremail/g" -e
-    "s/GIT_CREDENTIAL_HELPER/$git_credential/g" .config/git/gitconfig.local.symlink.example > .config/git/gitconfig.local.symlink
+    sed -e "s/AUTHORNAME/$git_authorname/g" \
+        -e "s/AUTHOREMAIL/$git_authoremail/g" \
+        -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" \
+        ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink.example \
+        > ${XDG_CONFIG_HOME:-$HOME/.config}/git/gitconfig.local.symlink
 
     success 'gitconfig'
   fi
@@ -140,22 +147,24 @@ link_symlink_file () {
 }
 
 link_config_dir () {
-  info 'linking config dir'
+  info 'linking everything in config dir'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1 -type d -not -path '*.git*' -not -path '*dotfiles')
+  # for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1 -type d -not -path '*.git*' -not -path '*.config')
+  for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1  -not -path '*.git*' -not -path '*.config')
   do
     dst="$HOME/.config/$(basename "${src}")"
+    dst="${XDG_CONFIG_HOME:-$HOME/.config}/$(basename "${src}")"
     link_file "$src" "$dst"
   done
 }
 
 link_local_share_applications_dir () {
-  info 'linking ~/.local/share/applications dir'
+  info "linking ${XDG_DATA_HOME:-$HOME/.local/share}/applications dir"
   local overwrite_all=false backup_all=false skip_all=false
   src="$DOTFILES_ROOT/.local/share/applications"
-  dst="$HOME/.local/share/applications"
+  dst="${XDG_DATA_HOME:-$HOME/.local/share}/applications"
   link_file "$src" "$dst"
 }
 

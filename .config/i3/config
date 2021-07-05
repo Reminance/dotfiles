@@ -210,6 +210,7 @@ bar {
         # }
 }
 
+exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc # for notify-send, a Customizable and lightweight notification-daemon
 exec_always --no-startup-id ~/.config/i3/scripts/autostart-i3.sh
 exec_always --no-startup-id ~/.config/i3/scripts/picom.sh
 #exec_always --no-startup-id ~/.config/i3/scripts/wp-startbyi3-autochange.sh
@@ -237,7 +238,7 @@ bindsym $mod+c exec --no-startup-id google-chrome-stable
 bindsym $mod+Ctrl+a exec --no-startup-id flameshot gui
 bindsym $mod+Ctrl+e exec "emacsclient -c -a %"
 # bindsym $mod+Ctrl+c exec "emacsclient -ne '(make-capture-frame)'"
-bindsym $mod+Ctrl+c exec --no-startup-id alacritty --class note -e /home/xc/.config/bin/vimNoteCapture.sh
+bindsym $mod+Ctrl+c exec --no-startup-id alacritty --class note -e /home/xc/dotfiles/bin/vimNoteCapture.sh
 
 # Make the currently focused window a scratchpad
 bindsym $mod+Shift+backslash move scratchpad
