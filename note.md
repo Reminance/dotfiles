@@ -168,3 +168,11 @@ https://cdn.azul.com/zulu/bin/zulu8.54.0.21-ca-fx-jdk8.0.292-linux_x64.tar.gz
 ```
 netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=22 connectaddress=172.18.240.75 connectport=22
 ```
+
+# note 20210706
+```
+https://github.com/LukeSmithxyz/voidrice
+https://github.com/vivien/i3blocks-contrib
+https://github.com/vegarab/varbs
+https://github.com/vegarab/dotfiles
+```
