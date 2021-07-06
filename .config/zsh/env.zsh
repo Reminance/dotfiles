@@ -11,7 +11,7 @@ export PATH="$PATH:${$(find ~/dotfiles/bin -type d -printf %p:)%%:}"
 export WORKSPACE=$HOME/workspace
 
 # terminal
-#export TERM=alacritty
+export TERMINAL=alacritty
 export TERM=xterm-256color
 # export http_proxy=127.0.0.1:7890
 # export https_proxy=127.0.0.1:7890
