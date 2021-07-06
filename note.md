@@ -171,6 +171,7 @@ netsh interface portproxy add v4tov4 listenaddress=0.0.0.0 listenport=22 connect
 
 # note 20210706
 ```
+https://github.com/tallguyjenks/.dotfiles
 https://github.com/LukeSmithxyz/voidrice
 https://github.com/vivien/i3blocks-contrib
 https://github.com/vegarab/varbs
