@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# pgrep wp-autochange.sh > /dev/null && exit 0
+
+trap 'rm ~/dotfiles/bin/wp-autochange.lock' EXIT
+while true; do
+    /bin/bash ~/dotfiles/bin/wp-change
+    sleep 3m
+done

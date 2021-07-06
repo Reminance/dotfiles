@@ -5,7 +5,7 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN.UTF-8
 #export LC_ALL=zh_CN.UTF-8
 
-# Adds `~/.local/bin` to $PATH
+# Adds `~/dotfiles/bin` to $PATH
 export PATH="$PATH:${$(find ~/dotfiles/bin -type d -printf %p:)%%:}"
 
 export WORKSPACE=$HOME/workspace

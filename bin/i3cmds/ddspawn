@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+
+# Toggle floating scratchpad terminal in i3, or start if non-existing.
+# $1 is	the script run in the terminal.
+# All other args are terminal settings.
+# Terminal names are in scratchpad_* to allow easily setting i3 settings.
+
+# [ -z "$1" ] && exit
+
+script=${1:-term}
+shift
+if xwininfo -tree -root | grep "(\"scratchpad_$script\" ";
+then
+	echo "Window detected."
+	i3 "[instance=\"scratchpad_$script\"] scratchpad show; [instance=\"scratchpad_$script\"] move position center"
+else
+	echo "Window not detected... spawning."
+	# i3 "exec --no-startup-id $TERMINAL -n scratchpad_$script $@ -e $script"
+	# i3 "exec --no-startup-id alacritty --class scratchpad_$script $@ -e $script"
+    if [ "$script" == "term" ]
+    then
+        i3 "exec --no-startup-id $TERMINAL --class scratchpad_term"
+    else
+        i3 "exec --no-startup-id $TERMINAL --class scratchpad_$script $@ -e $script"
+    fi
+fi

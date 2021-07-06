@@ -6,4 +6,4 @@
 # fi
 # trap 'rm -rf ~/.config/i3/scripts/wp-autochange.lock' EXIT
 
-flock -n ~/.config/i3/scripts/wp-autochange.lock -c "/bin/bash ~/.config/i3/scripts/wp-autochange.sh" &
+flock -n ~/dotfiles/bin/wp-autochange.lock -c "/bin/bash ~/dotfiles/bin/wp-autochange.sh" &
