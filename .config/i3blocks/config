@@ -6,38 +6,41 @@ markup=pango
 color=#ebdbb2
 background=#282828
 
-[record]
-command=cat /tmp/recordingicon
-interval=once
-signal=9
+# [record]
+# command=cat /tmp/recordingicon
+# interval=once
+# signal=9
 
-#[archlogo]
-#command=echo ""
-#label=
-#color=#458588
-#interval=once
-
-[runez]
+[archlogo]
+command=echo ""
+label=
+color=#458588
 interval=once
 
-[crypto]
-interval=once
+# [runez]
+# interval=once
+
+# [crypto]
+# interval=once
 
 # [youtubesubs]
 # interval=30
 
-[music]
-label=<span color="#1d2021"> </span>
-interval=once
-signal=11
+# [music]
+# label=<span color="#1d2021"> </span>
+# interval=once
+# signal=11
 
-[news]
-label=<span color="#d65d0e"> </span>
-interval=once
-signal=6
+# [news]
+# label=<span color="#d65d0e"> </span>
+# interval=once
+# signal=6
 
 #[iplocate]
 #interval=30
+
+[networktraffic]
+interval=1
 
 [pacpackages]
 label=<span color="#fabd2f"> </span>
@@ -48,46 +51,70 @@ signal=8
 #interval=20
 #signal=7
 
-[weather]
-interval=18000
-signal=5
+# [weather]
+# # command=curl -Ss 'https://wttr.in/~Guangzhou+panyu' | cut -c 32-72 | sed -n '4p' | xargs echo
+# interval=18000
+# signal=5
 
 #[moonphase]
 #interval=10
 
-[mailbox]
-label=<span color="#cc241d"> </span>
-interval=180
-signal=12
+# [mailbox]
+# label=<span color="#cc241d"> </span>
+# interval=180
+# signal=12
 
-#[memory]
-#interval=30
-#label=<span color="#9d0006"> </span>
-
+# 
 [cpu]
 interval=15
-label=<span color="#d65d0e"> </span>
+label=<span color="#d65d0e"> </span>
 
-[volume]
-interval=once
-signal=10
-
-#[disk]
-#interval=60
-#command=disk /
+# 
+[memory]
+interval=30
+label=<span color="#9d0006"> </span>
 
 [disk]
 interval=60
-label=<span color="#458588"> </span>
+label=<span color="#458588"> </span>
 command=disk /home | awk '{print $2}'
 
-[battery]
-command=battery BAT0
-interval=5
+# [volume]
+# interval=once
+# signal=10
 
-[battery]
-command=battery BAT1
-interval=5
+[volume-bak]
+# command=$SCRIPT_DIR/volume
+LABEL=
+interval=once
+signal=10
+#STEP=5%
+#MIXER=[determined automatically]
+#SCONTROL=[determined automatically]
+#NATURAL_MAPPING=0
+
+[volume-pulseaudio]
+# command=$SCRIPT_DIR/volume-pulseaudio
+interval=once
+signal=1
+
+[gpu-load]
+command=nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ printf "%02i<span color=\"#8be9fd\"><b>%</b></span>\n", $0}'
+label=<span color="#8be9fd"><b>GPU: </b></span>
+interval=2
+
+[openvpn]
+command=$SCRIPT_DIR/openvpn
+interval=20
+PID_FILE_FORMAT='/run/openvpn/*.pid'
+
+# [battery]
+# command=battery BAT0
+# interval=5
+
+# [battery]
+# command=battery BAT1
+# interval=5
 
 [internet]
 interval=10
@@ -95,9 +122,6 @@ interval=10
 [clock]
 label=<span color="#cc241d"> </span>
 interval=30
-
-#[networktraffic]
-#interval=1
 
 #[help]
 #interval=once

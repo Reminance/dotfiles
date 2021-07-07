@@ -1,11 +1,18 @@
 #!/usr/bin/env sh
-location="$1"; [ -z "$location" ] || { location="$location+" && rm -f "$HOME/.local/share/weatherreport" ;}
+# location="${1:-~Guangzhou+panyu}"; [ -z "$location" ] || { location="$location+" && rm -f "$HOME/.local/share/weatherreport" ;}
+location="${1:-~Guangzhou+panyu}"
 
-getforecast() { ping -q -c 1 1.1.1.1 >/dev/null || exit 1
-curl -s "wttr.in/$location" > "$HOME/.local/share/weatherreport" || exit 1 ;}
+getforecast() {
+    ping -q -c 1 1.1.1.1 >/dev/null || exit 1
+    curl -s "wttr.in/$location" > "$HOME/.local/share/weatherreport" || exit 1 ;
+}
+# getforecast
+# exit 0
 
-showweather() {  printf "%s" "$(sed '16q;d' "$HOME/.local/share/weatherreport" | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/\<span color\=\'\#b16286\'\>\<\/span\> /g" | tr -d '\n')"
-sed '13q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " \<span color\=\"\#d79921\"\>\<\/span\>", $2 "°", "\<span color\=\"\#458588\"\>\<\/span\>",$1 "°"}' ;}
+showweather() {
+    printf "%s" "$(sed '16q;d' "$HOME/.local/share/weatherreport" | grep -wo "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/\<span color\=\'\#b16286\'\>\<\/span\> /g" | tr -d '\n')"
+    sed '13q;d' "$HOME/.local/share/weatherreport" | grep -o "m\\(-\\)*[0-9]\\+" | sort -n -t 'm' -k 2n | sed -e 1b -e '$!d' | tr '\n|m' ' ' | awk '{print " \<span color\=\"\#d79921\"\>\<\/span\>", $2 "°", "\<span color\=\"\#458588\"\>\<\/span\>",$1 "°"}' ;
+}
 
 
 case $BLOCK_BUTTON in

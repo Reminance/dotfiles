@@ -21,5 +21,6 @@ elif [ "$vol" -lt "30" ]; then
 else
 	icon="<span color='#458588'></span>"
 fi
+# ♪
 
 printf "%s %s%%\\n" "$icon" "$vol"
