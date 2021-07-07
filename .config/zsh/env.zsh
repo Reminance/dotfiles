@@ -6,12 +6,14 @@ export LANGUAGE=zh_CN.UTF-8
 #export LC_ALL=zh_CN.UTF-8
 
 # Adds `~/dotfiles/bin` to $PATH
-export PATH="$PATH:${$(find ~/dotfiles/bin -type d -printf %p:)%%:}"
+# If user ID is greater than or equal to 1000 & if ~/bin exists and is a directory & if ~/bin is not already in your $PATH
+# then export ~/bin to your $PATH.
+[[ $UID -ge 1000 && -d $HOME/dotfiles/bin && -z $(echo $PATH | grep -o $HOME/dotfiles/bin) ]] && export PATH="${PATH}:$HOME/dotfiles/bin"
+# export PATH="$PATH:${$(find ~/dotfiles/bin -type d -printf %p:)%%:}"
 
 export WORKSPACE=$HOME/workspace
 
 # terminal
-export TERMINAL=alacritty
 export TERM=xterm-256color
 # export http_proxy=127.0.0.1:7890
 # export https_proxy=127.0.0.1:7890
@@ -53,6 +55,8 @@ export GRADLE_HOME=$HOME/gradle
 # export JDTLS_CONFIG=~/.config/coc/extensions/coc-java-data/server/config_linux
 
 # could be in /etc/profile
+#export TERMINAL=alacritty
+#export BROWSER=google-chrome-stable
 #export GTK_IM_MODULE=fcitx
 #export QT_IM_MODULE=fcitx
 #export XMODIFIERS="@im=fcitx"

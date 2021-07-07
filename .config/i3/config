@@ -5,6 +5,7 @@
 # this file and re-run i3-config-wizard(1).
 #
 
+# Note that while i3 start by sddm, the user env won't work, you need to export the env before starting i3
 # This config file will use environmental variables such as $BROWSER and $TERMINAL.
 # You can set these variables in /etc/profile or ~/.profile or ~/.bash_profile if you have it as below:
 # export FILE="ranger"

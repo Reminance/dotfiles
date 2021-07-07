@@ -51,8 +51,9 @@ unset TERMCAP
 # Man is much better than us at figuring this out
 unset MANPATH
 
+export TERMINAL=alacritty
+export BROWSER=google-chrome-stable
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 export _JAVA_AWT_WM_NONREPARENTING=1
-export TERMINAL=alacritty

@@ -23,8 +23,8 @@ interval=once
 [crypto]
 interval=once
 
-[youtubesubs]
-interval=30
+# [youtubesubs]
+# interval=30
 
 [music]
 label=<span color="#1d2021"> </span>
