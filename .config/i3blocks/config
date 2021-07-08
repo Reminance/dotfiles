@@ -70,7 +70,7 @@ interval=15
 label=<span color="#d65d0e"> </span>
 
 [cpubars]
-interval=15
+interval=5
 
 # 
 [memory]
@@ -82,11 +82,11 @@ interval=60
 label=<span color="#458588"> </span>
 command=disk /home | awk '{print $2}'
 
-# [volume]
+# [volume-bak]
 # interval=once
 # signal=10
 
-[volume-bak]
+[volume]
 # command=$SCRIPT_DIR/volume
 LABEL=
 interval=once
