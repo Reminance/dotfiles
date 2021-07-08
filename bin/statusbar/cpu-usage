@@ -1,0 +1,13 @@
+#!/bin/bash
+
+case $BLOCK_BUTTON in
+    1) notify-send " CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
+    2) setsid -f "$TERMINAL" -e htop ;;
+    3) notify-send " 🪨 CPU load module" "Each bar represents one CPU core.
+- Click to show intensive processes.  ";;
+    6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+usage=$((10000 - `mpstat 1 1 | tail -1 | rev | cut -d ' ' -f 1 | rev | tr -d .`))
+
+printf "%.2f%%\n" $((usage / 100)).$((usage % 100))

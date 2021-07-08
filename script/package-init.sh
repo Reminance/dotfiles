@@ -17,7 +17,7 @@ picom openfortivpn ruby rubygems nodejs npm yarn lua nasm maven gradle figlet
 openssl openvpn fd bat jq htop tree curl jq lazygit virtualbox-host-modules-arch
 archiso qemu asciidoc asciidoctor autoconf clang clash ctags flameshot gcc gdb
 imagemagick inotify-tools libtool netease-cloud-music nerd-fonts-source-code-pro
-ttc-iosevka ntfs-3g pcmanfm sddm dunst xdotool bc
+ttc-iosevka ntfs-3g pcmanfm sddm dunst xdotool bc sysstat
 
 vim .xinitrc 
 sudo chsh -s /usr/bin/zsh

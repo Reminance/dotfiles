@@ -399,8 +399,8 @@
 
 " Folding
     " Tab to toggle folds.
-    nnoremap <Tab> za
-    vnoremap <Tab> za
+    nnoremap <Enter> za
+    vnoremap <Enter> za
 
     " Make <z0> recursively open whatever fold we're in, even if it's partially open.
     nnoremap z0 zczO

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+# Module showing CPU load in percentage. 
+
+case $BLOCK_BUTTON in
+	2) setsid -f "$TERMINAL" -e htop ;;
+	3) notify-send " 🪨 CPU load module" "cpu usage in percentage";;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+prefix=' '
+cpu_limit=80
+color="$color_primary"
+# total_cpu_usage="$( top -bn 1 | grep '%Cpu(s)' | awk '{print $8}' )"
+total_cpu_usage="$( echo "100-`top -bn 1 | grep '%Cpu(s)' | awk '{print $8}'`" | bc )"
+if [ "$( echo "$total_cpu_usage >= $cpu_limit" | bc )" == "1" ]; then
+	color="#FF0000"
+fi
+final="${total_cpu_usage}"
+echo -e "${prefix}${final}%\n"
+echo "$color"

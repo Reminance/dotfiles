@@ -11,11 +11,16 @@ background=#282828
 # interval=once
 # signal=9
 
-[archlogo]
-command=echo ""
-label=
-color=#458588
-interval=once
+# [click]
+# full_text=Click me!
+# command=echo "Got clicked with button $button"
+# color=#F79494
+
+# [archlogo]
+# command=echo ""
+# label=
+# color=#458588
+# interval=once
 
 # [runez]
 # interval=once
@@ -65,17 +70,41 @@ signal=8
 # signal=12
 
 #  
-[cpu]
-interval=15
-label=<span color="#d65d0e"> </span>
+# [cpu]
+# interval=15
+# label=<span color="#d65d0e"> </span>
 
 [cpubars]
 interval=5
 
+# [cpu-usage.bak]
+# interval=1
+# # command=<path to this repo>/cpu.sh
+# min_width=⣾⣄ 100.00%
+# # label=<span color="#9d0006"> </span>
+# # command=echo $(echo "100-$(top -n 1 | grep 'Cpu(s)' | awk '{print $8}')"|bc)%
+# # command=top -n 1 | grep 'Cpu(s)' | awk '{print $8}' | xargs echo | envsubst
+# # command=cat /tmp/cpuusage | envsubst
+
+# [cpuusage.bak]
+# interval=5
+
+[cpu-usage]
+# command=$SCRIPT_DIR/cpu_usage
+interval=5
+# LABEL=CPU 
+label=<span color="#d65d0e"> </span>
+# LABEL= 
+# min_width=⣾⣄ 100.00%
+#min_width=CPU: 100.00%
+#T_WARN=50
+#T_CRIT=80
+#DECIMALS=2
+
 # 
 [memory]
 interval=30
-label=<span color="#9d0006"> </span>
+label=<span color="#dddfff"> </span>
 
 [disk]
 interval=60
@@ -86,30 +115,23 @@ command=disk /home | awk '{print $2}'
 # interval=once
 # signal=10
 
-[volume]
-# command=$SCRIPT_DIR/volume
-LABEL=
-interval=once
-signal=10
-#STEP=5%
-#MIXER=[determined automatically]
-#SCONTROL=[determined automatically]
-#NATURAL_MAPPING=0
+#[volume]
+#LABEL=
+#interval=once
+#signal=10
+##STEP=5%
+##MIXER=[determined automatically]
+##SCONTROL=[determined automatically]
+##NATURAL_MAPPING=0
 
 [volume-pulseaudio]
-# command=$SCRIPT_DIR/volume-pulseaudio
 interval=once
 signal=1
 
-[gpu-load]
-command=nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ printf "%02i<span color=\"#8be9fd\"><b>%</b></span>\n", $0}'
-label=<span color="#8be9fd"><b>GPU: </b></span>
-interval=2
-
-[openvpn]
-command=$SCRIPT_DIR/openvpn
-interval=20
-PID_FILE_FORMAT='/run/openvpn/*.pid'
+# [gpu-load]
+# command=nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits | awk '{ printf "%02i<span color=\"#8be9fd\"><b>%</b></span>\n", $0}'
+# label=<span color="#8be9fd"><b>GPU: </b></span>
+# interval=5
 
 # [battery]
 # command=battery BAT0
@@ -123,7 +145,9 @@ PID_FILE_FORMAT='/run/openvpn/*.pid'
 interval=10
 
 [clock]
-label=<span color="#cc241d"> </span>
+# label=<span color="#cc241d"> </span>
+# label=<span color="#F79494"> </span>
+label=<span color="#8be9fd"> </span>
 interval=30
 
 #[help]

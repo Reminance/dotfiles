@@ -9,9 +9,11 @@
 cache=/tmp/cpubarscache
 
 case $BLOCK_BUTTON in
+	1) notify-send " CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
 	2) setsid -f "$TERMINAL" -e htop ;;
-	3) notify-send "🪨 CPU load module" "Each bar represents
-one CPU core";;
+	3) notify-send " 🪨 CPU load module" "Each bar represents one CPU core.
+- Click to show intensive processes.
+        ";;
 	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
 
@@ -29,7 +31,6 @@ echo "$stats" | while read -r row; do
 	case "$(echo "$old" | awk '{if ($1 == id)
 		printf "%d\n", (1 - (idle - $3)  / (total - $2))*100 /12.5}' \
 		id="$id" total="$total" idle="$idle")" in
-
 		"0") printf "▁";;
 		"1") printf "▂";;
 		"2") printf "▃";;
@@ -40,5 +41,8 @@ echo "$stats" | while read -r row; do
 		"7") printf "█";;
 		"8") printf "█";;
 	esac
-done; printf "\\n"
+done;
+printf "  "
+sensors | awk '/Core 0/ {print $3}'
+printf "\\n"
 echo "$stats" > "$cache"
