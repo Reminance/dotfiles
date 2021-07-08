@@ -64,10 +64,13 @@ signal=8
 # interval=180
 # signal=12
 
-# 
+#  
 [cpu]
 interval=15
-label=<span color="#d65d0e"> </span>
+label=<span color="#d65d0e"> </span>
+
+[cpubars]
+interval=15
 
 # 
 [memory]
