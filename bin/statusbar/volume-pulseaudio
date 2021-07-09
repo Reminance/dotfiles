@@ -15,12 +15,13 @@ AUDIO_MUTED_SYMBOL=${AUDIO_MUTED_SYMBOL:-''}
 
 AUDIO_DELTA=${AUDIO_DELTA:-5}
 
-DEFAULT_COLOR=${DEFAULT_COLOR:-"#F79494"}
+DEFAULT_COLOR=${DEFAULT_COLOR:-"#ebdbb2"}
+# DEFAULT_COLOR=${DEFAULT_COLOR:-"#F79494"}
 # DEFAULT_COLOR=${DEFAULT_COLOR:-"#ebdbb2"}
 MUTED_COLOR=${MUTED_COLOR:-"#a0a0a0"}
 
-LONG_FORMAT=${LONG_FORMAT:-'${SYMB} ${VOL}% [${INDEX}:${NAME}]'}
-SHORT_FORMAT=${SHORT_FORMAT:-'${SYMB} ${VOL}% [${INDEX}]'}
+LONG_FORMAT=${LONG_FORMAT:-'${SYMB}${VOL}% [${INDEX}:${NAME}]'}
+SHORT_FORMAT=${SHORT_FORMAT:-'${SYMB}${VOL}% [${INDEX}]'}
 USE_ALSA_NAME=${USE_ALSA_NAME:-0}
 USE_DESCRIPTION=${USE_DESCRIPTION:-0}
 
@@ -150,12 +151,12 @@ sed 's/.*= "\(.*\)".*/\1/')
     fi
 
     if [[ $MUTED =~ "no" ]] ; then
-        SYMB=$AUDIO_HIGH_SYMBOL
-        [[ $VOL -le $AUDIO_MED_THRESH ]] && SYMB=$AUDIO_MED_SYMBOL
-        [[ $VOL -le $AUDIO_LOW_THRESH ]] && SYMB=$AUDIO_LOW_SYMBOL
+        SYMB="<span color='#3388aa'>$AUDIO_HIGH_SYMBOL </span>"
+        [[ $VOL -le $AUDIO_MED_THRESH ]] && SYMB="<span color='#3388aa'>$AUDIO_MED_SYMBOL </span>"
+        [[ $VOL -le $AUDIO_LOW_THRESH ]] && SYMB="<span color='#3388aa'>$AUDIO_LOW_SYMBOL </span>"
         COLOR=$DEFAULT_COLOR
     else
-        SYMB=$AUDIO_MUTED_SYMBOL
+        SYMB="<span color='#3388aa'>$AUDIO_MED_SYMBOL </span>"
         COLOR=$MUTED_COLOR
     fi
 
