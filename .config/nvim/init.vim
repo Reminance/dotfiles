@@ -18,10 +18,27 @@
     set modelines=0
     set mouse=a " mouse support
     " @see h: statusline
-    " set statusline=%#PmenuSel#%{toupper(g:currentmode[mode()])}%#LineNr#\ %{StatuslineGit()}\ %<%F\ %=\ [%{&ff}][%{&fenc}]%y%h%w%m%r\ \ %p%%\ \ %-10.(%l,%c%V%)\ @%{strftime(\"%H:%M:%S\")}\ [%{hostname()}]
-    set statusline=%{toupper(g:currentmode[mode()])}%#LineNr#%{StatuslineGit()}%<%F%=[%{&ff}][%{&fenc}]%y%h%w%m%r\ %p%%\ %-8.(%l,%c%V%)[%{hostname()}]
+    " set statusline=%{toupper(g:currentmode[mode()])}%#LineNr#%{StatuslineGit()}%<%F%=[%{&ff}][%{&fenc}]%y%h%w%m%r\ %p%%\ %-8.(%l,%c%V%)[%{hostname()}]
+    set statusline=
+    set statusline+=%#Title#
+    set statusline+=%{toupper(g:currentmode[mode()])}
+    set statusline+=%#Directory#
+    set statusline+=%<%f
+    set statusline+=%#CursorLineNr#
+    set statusline+=%{StatuslineGit()}
+    set statusline+=%#LineNr#
+    set statusline+=%=
+    set statusline+=%#CursorLineNr#
+    set statusline+=[%{&ff}]
+    set statusline+=[%{&fenc}]
+    set statusline+=%y%h%w%m%r
+    " set statusline+=[%{hostname()}]
+    set statusline+=%#Title#
+    set statusline+=\ %p%%\ 
+    set statusline+=%(%l,%c%V%)
+
     " set laststatus=0
-    au VimEnter * set laststatus=0 " disable airline by default
+    " au VimEnter * set laststatus=0 " disable airline by default
     set noshowmode
     set noshowcmd
     set noruler
