@@ -47,8 +47,8 @@ background=#282828
 [networktraffic]
 interval=1
 
-[pacpackages]
-label=<span color="#fabd2f"> </span>
+[pacman-packages]
+label=<span color="#D8BFD8"> </span>
 interval=once
 signal=8
 
@@ -77,38 +77,30 @@ signal=8
 [cpubars]
 interval=5
 
+[cpu-usage]
+interval=5
+label=<span color="#DDA0DD"> </span>
+# label=<span color="#00CED1"> </span>
+
+[cpu-temperature]
+interval=30
+
 # [cpu-usage.bak]
 # interval=1
 # # command=<path to this repo>/cpu.sh
 # min_width=⣾⣄ 100.00%
 # # label=<span color="#9d0006"> </span>
-# # command=echo $(echo "100-$(top -n 1 | grep 'Cpu(s)' | awk '{print $8}')"|bc)%
-# # command=top -n 1 | grep 'Cpu(s)' | awk '{print $8}' | xargs echo | envsubst
-# # command=cat /tmp/cpuusage | envsubst
 
 # [cpuusage.bak]
 # interval=5
 
-[cpu-usage]
-# command=$SCRIPT_DIR/cpu_usage
-interval=5
-# LABEL=CPU 
-label=<span color="#d65d0e"> </span>
-# LABEL= 
-# min_width=⣾⣄ 100.00%
-#min_width=CPU: 100.00%
-#T_WARN=50
-#T_CRIT=80
-#DECIMALS=2
-
-# 
 [memory]
 interval=30
-label=<span color="#dddfff"> </span>
+label=<span color="#B0C4DE"> </span>
 
 [disk]
 interval=60
-label=<span color="#458588"> </span>
+label=<span color="#D2691E"> </span>
 command=disk /home | awk '{print $2}'
 
 # [volume-bak]
@@ -145,10 +137,16 @@ signal=1
 interval=10
 
 [clock]
-# label=<span color="#cc241d"> </span>
-# label=<span color="#F79494"> </span>
-label=<span color="#8be9fd"> </span>
-interval=30
+interval=1
+label=<span color="#8be9fd"> </span>
+
+[calendar]
+interval=600
+# label=<span color="#D2691E"> </span>
+label=<span color="#B0C4DE"> </span>
+DATEFMT=+%Y-%m-%d (%a)
+HEIGHT=-20
+WIDTH=220
 
 #[help]
 #interval=once

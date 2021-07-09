@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Module showing CPU load as a changing bars.
+# Just like in polybar.
+# Each bar represents amount of load on one core since
+# last run.
+
+# Cache in tmpfs to improve speed and reduce SSD load
+
+case $BLOCK_BUTTON in
+	1) notify-send " CPU hogs" "$(ps axch -o cmd:15,%cpu --sort=-%cpu | head)" ;;
+	2) setsid -f "$TERMINAL" -e htop ;;
+	3) notify-send " 🪨 CPU load module" "Each bar represents one CPU core.
+- Click to show intensive processes.
+        ";;
+	6) "$TERMINAL" -e "$EDITOR" "$0" ;;
+esac
+
+# id total idle 🪨
+printf "<span color='#FFD700'></span>"
+sensors | awk '/Core 0/ {print $3}'
+printf "\\n"

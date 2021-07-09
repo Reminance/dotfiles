@@ -5,7 +5,7 @@ set -a
 
 AUDIO_HIGH_SYMBOL=${AUDIO_HIGH_SYMBOL:-''}
 
-AUDIO_MED_THRESH=${AUDIO_MED_THRESH:-50}
+AUDIO_MED_THRESH=${AUDIO_MED_THRESH:-20}
 AUDIO_MED_SYMBOL=${AUDIO_MED_SYMBOL:-''}
 
 AUDIO_LOW_THRESH=${AUDIO_LOW_THRESH:-0}
@@ -151,12 +151,12 @@ sed 's/.*= "\(.*\)".*/\1/')
     fi
 
     if [[ $MUTED =~ "no" ]] ; then
-        SYMB="<span color='#3388aa'>$AUDIO_HIGH_SYMBOL </span>"
-        [[ $VOL -le $AUDIO_MED_THRESH ]] && SYMB="<span color='#3388aa'>$AUDIO_MED_SYMBOL </span>"
-        [[ $VOL -le $AUDIO_LOW_THRESH ]] && SYMB="<span color='#3388aa'>$AUDIO_LOW_SYMBOL </span>"
+        SYMB="<span color='#F0FFF0'>$AUDIO_HIGH_SYMBOL </span>"
+        [[ $VOL -le $AUDIO_MED_THRESH ]] && SYMB="<span color='#F0FFF0'>$AUDIO_MED_SYMBOL </span>"
+        [[ $VOL -le $AUDIO_LOW_THRESH ]] && SYMB="<span color='#F0FFF0'>$AUDIO_LOW_SYMBOL </span>"
         COLOR=$DEFAULT_COLOR
     else
-        SYMB="<span color='#3388aa'>$AUDIO_MED_SYMBOL </span>"
+        SYMB="<span color='#F0FFF0'>$AUDIO_MED_SYMBOL </span>"
         COLOR=$MUTED_COLOR
     fi
 
