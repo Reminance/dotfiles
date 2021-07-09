@@ -144,7 +144,7 @@ label=<span color="#8be9fd"> </span>
 interval=600
 # label=<span color="#D2691E"> </span>
 label=<span color="#B0C4DE"> </span>
-DATEFMT=+%Y-%m-%d (%a)
+DATEFMT=+%Y-%m-%d %a
 HEIGHT=-20
 WIDTH=220
 
