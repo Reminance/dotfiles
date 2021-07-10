@@ -21,6 +21,7 @@ au FocusLost * :silent! wall
 au VimResized * :wincmd =
 " Don't try to highlight lines longer than 800 characters.
 set synmaxcol=800
+set backspace=indent,start " set backspace=indent,eol,start; eol让退格键可以退到上一行
 
 " Cursor Movement
 " insert mode bindings(emacs like)
