@@ -4,8 +4,9 @@ let mapleader=","
 let maplocalleader="\\"
 set mouse=a " mouse support
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
-set wrap
-set formatoptions-=t "turn off Auto-wrap text using textwidth
+set ignorecase smartcase incsearch showmatch hlsearch
+set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
+set scrolloff=2
 set nu rnu
 set list
 " set listchars=tab:▸\ ,trail:▫,eol:¬,extends:❯,precedes:❮,nbsp:␣,conceal:┊
@@ -20,13 +21,6 @@ au FocusLost * :silent! wall
 au VimResized * :wincmd =
 " Don't try to highlight lines longer than 800 characters.
 set synmaxcol=800
-
-" Searching And Movement
-set ignorecase smartcase incsearch showmatch hlsearch
-
-set scrolloff=2
-" Don't move on *
-nnoremap <silent> * mm*`m
 
 " Cursor Movement
 " insert mode bindings(emacs like)
@@ -56,6 +50,8 @@ cnoremap <C-d> <Del>
 cnoremap <M-f> <S-Right>
 cnoremap <M-b> <S-Left>
 
+" Don't move on *
+nnoremap <silent> * mm*`m
 " Visual Mode */# from Scrooloose
 function! s:VSetSearch()
     let temp = @@
@@ -65,7 +61,6 @@ function! s:VSetSearch()
 endfunction
 vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
 vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
-
 " syntax highlighting of search results
 au ColorScheme * highlight Search guibg=NONE guifg=Cyan gui=italic,underline,bold
 
@@ -87,7 +82,6 @@ endif
 
 " Save & quit
 nnoremap s <nop>
-nnoremap <M-s> <nop>
 nnoremap R <nop>
 nnoremap Q <nop>
 nnoremap <C-q> :q<CR>
@@ -99,11 +93,11 @@ inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> :w<CR>
 
 " Source
-nnoremap <M-x> <nop>
-nnoremap <M-x>si :source $MYVIMRC<CR>
-nnoremap <M-x>s. :so %<CR>
-vnoremap <M-x>sv y:execute @@<CR>:echo 'Sourced selection.'<CR>
-nnoremap <M-x>sl ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
+nnoremap <M-s> <nop>
+nnoremap <M-s>i :source $MYVIMRC<CR>
+nnoremap <M-s>. :so %<CR>
+vnoremap <M-s>v y:execute @@<CR>:echo 'Sourced selection.'<CR>
+nnoremap <M-s>l ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 
 " Save file as sudo on files that require root permission
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
@@ -156,10 +150,6 @@ nnoremap sh :set nosplitright<CR>:vsplit<CR>
 nnoremap sj :set splitbelow<CR>:split<CR>
 nnoremap sk :set nosplitbelow<CR>:split<CR>
 nnoremap sl :set splitright<CR>:vsplit<CR>
-nnoremap seh :set nosplitright<CR>:vsplit
-nnoremap sej :set splitbelow<CR>:split
-nnoremap sek :set nosplitbelow<CR>:split
-nnoremap sel :set splitright<CR>:vsplit
 
 " Place the two screens side by side (vertical)
 nnoremap sm <C-w>t<C-w>H
@@ -299,6 +289,14 @@ func! CompileRunGcc()
         :FloatermNew time lua %
     endif
 endfunc
+
+" Vim
+augroup filetype_vim
+    au!
+    au FileType vim setl foldmethod=indent foldlevel=99
+    au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
+    au Filetype vim nnoremap <buffer> <M-f> $F.egf
+augroup END
 
 " Plugins Settings
 source ~/.config/nvim/plugins.vim
