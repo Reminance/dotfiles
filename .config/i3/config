@@ -235,7 +235,7 @@ bar {
 # Personal Settings
 #
 # #---Basic Definitions---# #
-for_window [class="^.*"] border pixel 0
+for_window [class="^.*"] border pixel 2
 gaps inner 20
 gaps outer 5
 
