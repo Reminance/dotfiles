@@ -1,0 +1,7 @@
+ CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                            NAMES
+
+5c7d1b981cdf        haproxy             "/docker-entrypoint.…"   2 hours ago         Up 2 hours          0.0.0.0:4002->3306/tcp, 0.0.0.0:4001->8888/tcp   haproxy-node1
+
+185b5400b53a        pxc                 "/entrypoint.sh mysq…"   5 hours ago         Up 2 hours          4567-4568/tcp, 0.0.0.0:3308->3306/tcp            pxc-node2
+
+6162092a46f7        pxc                 "/entrypoint.sh mysq…"   5 hours ago         Up 5 hours          4567-4568/tcp, 0.0.0.0:3307->3306/tcp            pxc-node1
