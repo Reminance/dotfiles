@@ -122,13 +122,13 @@ inoremap <M-i> <++>
 nnoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 inoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
-" move selected lines up and down in visual mode
-xnoremap J :move '>+1<CR>gv-gv
-xnoremap K :move '<-2<CR>gv-gv
+" move selected lines up/down and keep selected
+vnoremap J :move '>+1<CR>gv-gv
+vnoremap K :move '<-2<CR>gv-gv
+" indent Llocks and keep selected
+vnoremap H <gv
+vnoremap L >gv
 
-" indent blocks and keep selected
-vnoremap < <gv
-vnoremap > >gv
 " copy from rigister to the vim cmdline
 nnoremap <Leader>cp :<C-r>"
 " Clean trailing whitespace
@@ -212,16 +212,6 @@ function! s:Repl()
 endfunction
 vmap <silent> <expr> p <sid>Repl()
 
-" Openning Files
-" Open the vimrc file anytime
-nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
-" Open the function.vim file anytime
-nnoremap <Leader><Leader>f :e ~/.config/nvim/function.vim<CR>
-" Open the plugins.vim file anytime
-nnoremap <Leader><Leader>p :e ~/.config/nvim/plugins.vim<CR>
-" Open the scratchpad anytime
-nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
-
 " Compile Function
 nnoremap <M-r> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -298,6 +288,14 @@ augroup filetype_vim
     au BufWinEnter *.txt if &ft == 'help' | wincmd L | endif
     au Filetype vim nnoremap <buffer> <M-f> $F.egf
 augroup END
+
+" Openning Files
+" Open the vimrc file anytime
+nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
+" Open the plugins.vim file anytime
+nnoremap <Leader><Leader>p :e ~/.config/nvim/plugins.vim<CR>
+" Open the scratchpad anytime
+nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
 
 " Plugins Settings
 source ~/.config/nvim/plugins.vim
