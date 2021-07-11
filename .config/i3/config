@@ -307,9 +307,8 @@ no_focus [title="mpvfloat"]
 
 # Make the currently focused window a scratchpad
 bindsym $mod+slash move scratchpad
-# bindsym $mod+Ctrl+backslash exec $term --class scratchpad_term
 # Show the first scratchpad window
-bindsym $mod+Shift+slash scratchpad show
+bindsym $mod+Shift+slash scratchpad show move position center
 # move all floating windows to the scratchpad
 # bindsym $mod+x [floating] move scratchpad
 
