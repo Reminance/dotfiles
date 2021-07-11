@@ -20,8 +20,6 @@ export WORKSPACE=$HOME/workspace
 
 # terminal
 export TERM=xterm-256color
-# export http_proxy=127.0.0.1:7890
-# export https_proxy=127.0.0.1:7890
 
 # VIM
 export MYVIMRC=~/.config/nvim/init.vim
