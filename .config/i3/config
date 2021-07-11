@@ -109,6 +109,7 @@ bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+s sticky toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
@@ -239,9 +240,9 @@ for_window [class="^.*"] border pixel 2
 gaps inner 20
 gaps outer 5
 
-bindsym $mod+semicolon     exec --no-startup-id ddspawn
-# bindsym $mod+apostrophe    exec --no-startup-id 
-bindsym $mod+apostrophe    exec --no-startup-id ddspawn scratchpadcalc
+bindsym $mod+semicolon     exec --no-startup-id ddspawn scratchpadterm
+bindsym $mod+apostrophe    exec --no-startup-id ddspawn scratchpadcalc scratchpadcalc
+bindsym $mod+backslash     exec --no-startup-id ddspawn thunderbird thunderbird false
 
 # Startup applications
 exec_always --no-startup-id dunst -config ~/.config/dunst/dunstrc # for notify-send, a Customizable and lightweight notification-daemon
@@ -275,13 +276,28 @@ for_window [instance="scratchpad_*"] floating enable
 for_window [instance="scratchpad_*"] move scratchpad
 for_window [instance="scratchpad_*"] sticky enable
 for_window [instance="scratchpad_*"] scratchpad show
-for_window [instance="scratchpad_tmuxdd"] resize set 625 450
+
+for_window [class="scratchpad_*"] floating enable
+for_window [class="scratchpad_*"] move scratchpad
+for_window [class="scratchpad_*"] sticky enable
+for_window [class="scratchpad_*"] scratchpad show
+for_window [class="scratchpad_thunderbird"] resize set 1000 800
+
 for_window [instance="scratchpad_scratchpadcalc"] resize set 800 300
-for_window [instance="scratchpad_term"] resize set 800 400
-for_window [instance="scratchpad_tmuxdd"] border pixel 3
+for_window [instance="scratchpad_scratchpadterm"] resize set 800 400
 for_window [instance="scratchpad_scratchpadcalc"] border pixel 2
-for_window [instance="scratchpad_*"] move position center
+# for_window [instance="scratchpad_tmuxdd"] resize set 625 450
+# for_window [instance="scratchpad_tmuxdd"] border pixel 3
 # for_window [class="chrome"] border pixel 0
+
+for_window [instance="scratchpad_*"] move position center
+for_window [class="scratchpad_*"] move position center
+
+# for_window [class="Thunderbird"] floating enable
+# for_window [class="Thunderbird"] move scratchpad
+# for_window [class="Thunderbird"] sticky enable
+# for_window [class="Thunderbird"] resize set 1000 800
+# for_window [class="Thunderbird"] move position center
 
 # Bindings to make the webcam float and stick.
 for_window [title="mpvfloat"] floating enable
@@ -290,10 +306,10 @@ for_window [title="mpvfloat"] border pixel 0
 no_focus [title="mpvfloat"]
 
 # Make the currently focused window a scratchpad
-# bindsym $mod+Shift+backslash move scratchpad
+bindsym $mod+slash move scratchpad
 # bindsym $mod+Ctrl+backslash exec $term --class scratchpad_term
 # Show the first scratchpad window
-# bindsym $mod+backslash scratchpad show
+bindsym $mod+Shift+slash scratchpad show
 # move all floating windows to the scratchpad
 # bindsym $mod+x [floating] move scratchpad
 

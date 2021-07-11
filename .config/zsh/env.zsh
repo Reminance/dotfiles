@@ -1,9 +1,9 @@
-#export LANG=en_US.UTF-8
-#export LANGUAGE=en_US.UTF-8
-export LC_ALL=C
-export LANG=zh_CN.UTF-8
-export LANGUAGE=zh_CN.UTF-8
-#export LC_ALL=zh_CN.UTF-8
+export LANG=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+# export LC_ALL=C
+# export LANG=zh_CN.UTF-8
+# export LANGUAGE=zh_CN.UTF-8
+# export LC_ALL=zh_CN.UTF-8
 
 # Adds `~/dotfiles/bin` to $PATH
 # If user ID is greater than or equal to 1000 & if ~/bin exists and is a directory & if ~/bin is not already in your $PATH

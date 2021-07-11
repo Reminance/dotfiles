@@ -2,6 +2,7 @@ alias a='alias'
 alias lla='ls -lA'
 
 # EDITOR from ~/.config/zsh/env.zsh
+alias v="$EDITOR"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias nvim="$EDITOR"

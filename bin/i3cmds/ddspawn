@@ -7,20 +7,32 @@
 
 # [ -z "$1" ] && exit
 
-script=${1:-term}
+CLASS_SUFFIX=${1:-"scratchpadterm"}
+APP_COMMAND=${2:-""}
+TERM_APP=${3:-true}
 shift
-if xwininfo -tree -root | grep "(\"scratchpad_$script\" ";
+if xwininfo -tree -root | grep "(\"scratchpad_$CLASS_SUFFIX\"\|\"scratchpad_$CLASS_SUFFIX\")";
 then
 	echo "Window detected."
-	i3 "[instance=\"scratchpad_$script\"] scratchpad show; [instance=\"scratchpad_$script\"] move position center"
+    if [ "$TERM_APP" == "true" ]
+    then
+        i3 "[instance=\"scratchpad_$CLASS_SUFFIX\"] scratchpad show; [instance=\"scratchpad_$CLASS_SUFFIX\"] move position center"
+    else
+        i3 "[class=\"scratchpad_$CLASS_SUFFIX\"] scratchpad show; [class=\"scratchpad_$CLASS_SUFFIX\"] move position center"
+    fi
 else
 	echo "Window not detected... spawning."
 	# i3 "exec --no-startup-id $TERMINAL -n scratchpad_$script $@ -e $script"
 	# i3 "exec --no-startup-id alacritty --class scratchpad_$script $@ -e $script"
-    if [ "$script" == "term" ]
+    if [ "$TERM_APP" == "true" ]
     then
-        i3 "exec --no-startup-id $TERMINAL --class scratchpad_term"
+        if [ "$APP_COMMAND" == "" ]
+        then
+            i3 "exec --no-startup-id $TERMINAL --class scratchpad_$CLASS_SUFFIX"
+        else
+            i3 "exec --no-startup-id $TERMINAL --class scratchpad_$CLASS_SUFFIX -e $APP_COMMAND"
+        fi
     else
-        i3 "exec --no-startup-id $TERMINAL --class scratchpad_$script $@ -e $script"
+        i3 "exec --no-startup-id $APP_COMMAND --class scratchpad_$CLASS_SUFFIX"
     fi
 fi
