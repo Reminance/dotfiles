@@ -148,15 +148,18 @@ Plug 'voldikss/vim-translator'
 " Plug 'nvim-lua/completion-nvim'
 " Plug 'steelsojka/completion-buffers'
 " Plug 'kristijanhusak/completion-tags'
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-lua/popup.nvim'
+" Plug 'nvim-lua/plenary.nvim'
+" Plug 'nvim-telescope/telescope.nvim'
+" Plug 'bfredl/nvim-luadev'
 
 " fcitx optimization
 " Plug 'lilydjwg/fcitx.vim'
 
 Plug 'junegunn/goyo.vim'
-Plug 'jreybert/vimagit'
+" Plug 'jreybert/vimagit'
+
+" Plug 'tweekmonster/startuptime.vim'
 
 call plug#end()
 
