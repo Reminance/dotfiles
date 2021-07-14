@@ -616,7 +616,7 @@ nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " nvim-lspconfig.nvim
 " source ~/.config/nvim/nvim-lsp.vim
 
-" from completion-nvim -->
+" from completion-nvim start -->
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
@@ -648,13 +648,14 @@ augroup CompletionTriggerCharacter
 augroup end
 let g:completion_trigger_keyword_length = 2 " default = 1
 let g:completion_trigger_on_delete = 1
-" from completion-nvim <--
+" from completion-nvim end <--
 
-let g:diagnostic_virtual_text_prefix = ''
-let g:diagnostic_enable_virtual_text = 1
+command! LspLog execute 'lua vim.cmd("e"..vim.lsp.get_log_path())'
+command! LspLogPrint execute 'lua print(vim.lsp.get_log_path())'
 
 lua << EOF
 local nvim_lsp = require('lspconfig')
+vim.lsp.set_log_level("debug")
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -693,7 +694,7 @@ end
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- local servers = {'jsonls', 'vimls', 'pyright', 'rust_analyzer', 'clangd', 'tsserver', 'cssls', 'html', 'jdtls', 'sumneko_lua'}
-local servers = {'jsonls', 'vimls', 'rust_analyzer', 'clangd', 'cssls', 'html', 'jdtls', 'sumneko_lua', 'pyright'}
+local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'jdtls', 'sumneko_lua', 'pyright', 'html', 'jsonls', 'cssls'}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
         on_attach = on_attach,
@@ -702,6 +703,24 @@ for _, lsp in ipairs(servers) do
             }
         }
 end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    -- This will disable virtual text, like doing:
+    -- let g:diagnostic_enable_virtual_text = 0
+    virtual_text = true,
+
+    -- This is similar to:
+    -- let g:diagnostic_show_sign = 1
+    -- To configure sign display,
+    --  see: ":help vim.lsp.diagnostic.set_signs()"
+    signs = false,
+
+    -- This is similar to:
+    -- "let g:diagnostic_insert_delay = 1"
+    update_in_insert = false,
+  }
+)
 EOF
 
 command! -buffer -nargs=0 LspShowLineDiagnostics lua require'jumpLoc'.openLineDiagnostics()

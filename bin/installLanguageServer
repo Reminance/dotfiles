@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# for html and json and cssls
+sudo npm i -g vscode-langservers-extracted
+
+# for bash
+sudo npm i -g bash-language-server
+
+# for vim
+sudo  npm install -g vim-language-server
+
+# for go
+sudo pacman -S gopls
+
+# for python
+sudo pacman -S pyright
+
+# for clangd
+sudo pacman -S clang
+
+# for rust
+sudo pacman -S rust-analyzer
+
