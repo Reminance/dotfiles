@@ -34,14 +34,16 @@ export EDITOR="$VISUAL"
 export RANGER_LOAD_DEFAULT_RC=FALSE
 
 # GO
+export GO111MODULE=on
 export GOPROXY=https://goproxy.cn/
+# export GOPROXY=https://mirrors.aliyun.com/goproxy
 export GOROOT=/usr/lib/go
-# export GOPATH=$HOME/go
-# export GOBIN=$HOME/go/bin
+export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
 # export PATH=$PATH:$GOROOT/bin
 # export PATH=$PATH:$GOBIN
-# export PATH="$PATH:${$(find $GOROOT/bin -type d -printf %p:)%%:}"
-# export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
+export PATH="$PATH:${$(find $GOROOT/bin -type d -printf %p:)%%:}"
+export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
 
 # rust
 export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup

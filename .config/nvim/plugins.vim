@@ -122,7 +122,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'voldikss/vim-floaterm'
 
 " auto-pairs
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 
 " vista.vim
 " Plug 'liuchengxu/vista.vim'
@@ -144,8 +144,8 @@ Plug 'voldikss/vim-translator'
 
 " neovim/nvim-lspconfig
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-lua/diagnostic-nvim'
+Plug 'hrsh7th/nvim-compe'
+" Plug 'nvim-lua/completion-nvim'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'mfussenegger/nvim-jdtls'
 " Plug 'steelsojka/completion-buffers'
@@ -516,10 +516,10 @@ nnoremap <silent> <Leader>fh :FloatermNew htop<CR>
 nnoremap <silent> <Leader>fd :FloatermNew ncdu<CR>
 
 " auto-pairs
-let g:AutoPairsShortcutToggle='<Leader>apt'
-let g:AutoPairsShortcutFastWrap='<Leader>apf'
-let g:AutoPairsShortcutJump='<Leader>apj'
-let g:AutoPairsShortcutBackInsert='<Leader>api'
+" let g:AutoPairsShortcutToggle='<Leader>apt'
+" let g:AutoPairsShortcutFastWrap='<Leader>apf'
+" let g:AutoPairsShortcutJump='<Leader>apj'
+" let g:AutoPairsShortcutBackInsert='<Leader>api'
 
 " vista
 " function! NearestMethodOrFunction() abort
@@ -601,6 +601,7 @@ nnoremap <Leader>Co :Copen<CR>
 " Goyo plugin makes text more readable when writing prose:
 map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
 
+" telescope start
 " Find files using Telescope command-line sugar.
 " nnoremap <leader>ff <cmd>Telescope find_files<cr>
 " nnoremap <leader>fg <cmd>Telescope live_grep<cr>
@@ -608,47 +609,48 @@ map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
 " nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " Using Lua functions
-nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+" nnoremap <leader>ff <cmd>lua require('telescope.builtin').find_files()<cr>
+" nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+" nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+" nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
+" telescope end
 
 " nvim-lspconfig.nvim
 " source ~/.config/nvim/nvim-lsp.vim
 
-" from completion-nvim start -->
-" Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-" Set completeopt to have a better completion experience
-set completeopt=menuone,noinsert,noselect
-" Avoid showing message extra message when using completion
-set shortmess+=c
-" let g:completion_enable_auto_popup = 0
-"map <c-p> to manually trigger completion
-" imap <silent> <c-p> <Plug>(completion_trigger)
-" Or you want to use <Tab> as trigger keys
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
-" By default other snippets source support are disabled, turn them on by
-" possible value: 'UltiSnips', 'Neosnippet', 'vim-vsnip', 'snippets.nvim'
-let g:completion_enable_snippet = 'UltiSnips'
-" By default <CR> is used to confirm completion and expand snippets, change it by
-" let g:completion_confirm_key = "\<C-y>"
-" If the confirm key has a fallback mapping, for example when using the auto pairs plugin, it maps to <CR>. You can avoid using the default confirm key option and use a mapping like this instead.
-let g:completion_confirm_key = ""
-imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
-                 \ "\<Plug>(completion_confirm_completion)"  : "\<c-e>\<CR>" :  "\<CR>"
-let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
-let g:completion_matching_smart_case = 1
-augroup CompletionTriggerCharacter
-    autocmd!
-    autocmd BufEnter * let g:completion_trigger_character = ['.']
-    autocmd BufEnter *.java,*.c,*.cpp let g:completion_trigger_character = ['.', '::']
-augroup end
-let g:completion_trigger_keyword_length = 2 " default = 1
-let g:completion_trigger_on_delete = 1
-" from completion-nvim end <--
+"" from completion-nvim start -->
+"" Use <Tab> and <S-Tab> to navigate through popup menu
+"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"" Set completeopt to have a better completion experience
+"set completeopt=menuone,noinsert,noselect
+"" Avoid showing message extra message when using completion
+"set shortmess+=c
+"" let g:completion_enable_auto_popup = 0
+""map <c-p> to manually trigger completion
+"" imap <silent> <c-p> <Plug>(completion_trigger)
+"" Or you want to use <Tab> as trigger keys
+"imap <tab> <Plug>(completion_smart_tab)
+"imap <s-tab> <Plug>(completion_smart_s_tab)
+"" By default other snippets source support are disabled, turn them on by
+"" possible value: 'UltiSnips', 'Neosnippet', 'vim-vsnip', 'snippets.nvim'
+"let g:completion_enable_snippet = 'UltiSnips'
+"" By default <CR> is used to confirm completion and expand snippets, change it by
+"" let g:completion_confirm_key = "\<C-y>"
+"" If the confirm key has a fallback mapping, for example when using the auto pairs plugin, it maps to <CR>. You can avoid using the default confirm key option and use a mapping like this instead.
+"" let g:completion_confirm_key = ""
+"" imap <expr> <cr>  pumvisible() ? complete_info()["selected"] != "-1" ?
+""                  \ "\<Plug>(completion_confirm_completion)"  : "\<c-e>\<CR>" :  "\<CR>"
+"let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
+"let g:completion_matching_smart_case = 1
+"augroup CompletionTriggerCharacter
+"    autocmd!
+"    autocmd BufEnter * let g:completion_trigger_character = ['.']
+"    autocmd BufEnter *.java,*.c,*.cpp let g:completion_trigger_character = ['.', '::']
+"augroup end
+"let g:completion_trigger_keyword_length = 2 " default = 1
+"let g:completion_trigger_on_delete = 1
+"" from completion-nvim end <--
 
 command! LspLog execute 'lua vim.cmd("e"..vim.lsp.get_log_path())'
 command! LspLogPrint execute 'lua print(vim.lsp.get_log_path())'
@@ -660,7 +662,7 @@ vim.lsp.set_log_level("debug")
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
-require('completion').on_attach()
+-- require('completion').on_attach()
 local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
 local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
@@ -693,7 +695,7 @@ end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
--- local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'jdtls', 'sumneko_lua', 'pyright', 'html', 'jsonls', 'cssls'}
+-- local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'jdtls', 'sumneko_lua', 'pyright', 'tsserver', 'html', 'jsonls', 'cssls'}
 local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'pyright', 'html', 'jsonls', 'cssls'}
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
@@ -726,3 +728,38 @@ EOF
 command! -buffer -nargs=0 LspShowLineDiagnostics lua require'jumpLoc'.openLineDiagnostics()
 nnoremap <buffer><silent> <C-h> <cmd>LspShowLineDiagnostics<CR>
 command! Format execute 'lua vim.lsp.buf.formatting()'
+
+" nvim-compe start
+set completeopt=menuone,noselect
+let g:compe = {}
+let g:compe.enabled = v:true
+let g:compe.autocomplete = v:true
+let g:compe.debug = v:false
+let g:compe.min_length = 1
+let g:compe.preselect = 'enable'
+let g:compe.throttle_time = 80
+let g:compe.source_timeout = 200
+let g:compe.resolve_timeout = 800
+let g:compe.incomplete_delay = 400
+let g:compe.max_abbr_width = 100
+let g:compe.max_kind_width = 100
+let g:compe.max_menu_width = 100
+let g:compe.documentation = v:true
+
+let g:compe.source = {}
+let g:compe.source.path = v:true
+let g:compe.source.buffer = v:true
+let g:compe.source.calc = v:true
+let g:compe.source.nvim_lsp = v:true
+let g:compe.source.nvim_lua = v:true
+let g:compe.source.vsnip = v:false
+let g:compe.source.ultisnips = v:true
+let g:compe.source.luasnip = v:true
+let g:compe.source.emoji = v:true
+
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+" nvim-compe end
