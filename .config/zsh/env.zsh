@@ -50,8 +50,9 @@ export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
 # export JDK_HOME=/usr/lib/jvm/java-8-openjdk
 # export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 # export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-# export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
-export JAVA_HOME=/usr/lib/jvm/java-11-zulu-fx
+# export JAVA_HOME=/usr/lib/jvm/java-11-zulu-fx
+# export JAVA_HOME=/usr/lib/jvm/java-16-zulu-fx
+export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
 export M2_HOME=/opt/maven
 export GRADLE_HOME=/usr/share/java/gradle
 # this is for nvim-lsp env
