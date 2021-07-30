@@ -24,19 +24,14 @@ set synmaxcol=800
 set backspace=indent,start " set backspace=indent,eol,start; eol让退格键可以退到上一行
 
 " Cursor Movement
-" insert mode bindings(emacs like)
-inoremap <C-a> <C-o>I
-inoremap <C-e> <C-o>A
+" insert mode bindings
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <M-f> <S-Right>
 inoremap <M-b> <S-Left>
-inoremap <M-e> <Esc>ea
-inoremap <C-d> <Del>
 inoremap <C-k> <C-o>D
-inoremap <M-k> <Esc>ddk$
-nnoremap <S-Del> ddkA
-inoremap <S-Del> <Esc>ddkA
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
 " inoremap <C-n> <Down>
@@ -47,7 +42,6 @@ cnoremap <C-a> <Home>
 cnoremap <C-e> <End>
 cnoremap <C-f> <Right>
 cnoremap <C-b> <Left>
-cnoremap <C-d> <Del>
 cnoremap <M-f> <S-Right>
 cnoremap <M-b> <S-Left>
 
@@ -88,6 +82,10 @@ nnoremap Q <nop>
 nnoremap <C-q> :q<CR>
 inoremap <C-q> <Esc>:q<CR>
 nnoremap <Leader>qq :q!<CR>
+" quit all the other windows except for current  " (:h only)(<C-w>o)
+nnoremap <Leader>qw :only<CR>
+" quit all the other tabs except for current  " (:h tabonly)
+nnoremap <Leader>qt :tabonly<CR>
 nnoremap <C-M-q> :qa<CR>
 inoremap <C-M-q> :qa<CR>
 inoremap <C-s> <Esc>:w<CR>
@@ -104,17 +102,13 @@ nnoremap <M-s>l ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " normal mode bindings
-nnoremap <C-Down> :res +5<CR>
-nnoremap <C-Up> :res -5<CR>
-nnoremap <C-Left> :vertical resize-5<CR>
-nnoremap <C-Right> :vertical resize+5<CR>
+nnoremap <C-M-S-Down> :res +5<CR>
+nnoremap <C-M-S-Up> :res -5<CR>
+nnoremap <C-M-S-Left> :vertical resize-5<CR>
+nnoremap <C-M-S-Right> :vertical resize+5<CR>
 
 " Basic Mappings
 nnoremap <Leader><Space> :nohlsearch<CR>
-" quit all the other windows except for current  " (:h only)(<C-w>o)
-nnoremap <Leader>qw :only<CR>
-" quit all the other tabs except for current  " (:h tabonly)
-nnoremap <Leader>qt :tabonly<CR>
 
 " insert a <++>
 inoremap <M-i> <++>
@@ -123,9 +117,11 @@ nnoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 inoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 " move selected lines up/down and keep selected
-vnoremap J :move '>+1<CR>gv-gv
-vnoremap K :move '<-2<CR>gv-gv
-" indent Llocks and keep selected
+vnoremap J :move '>+1<CR>gv=gv
+vnoremap K :move '<-2<CR>gv=gv
+inoremap <C-j> <Esc>mz:m .+1<CR>==`za
+inoremap <C-k> <Esc>mz:m .-2<CR>==`za
+" indent blocks and keep selected
 vnoremap H <gv
 vnoremap L >gv
 

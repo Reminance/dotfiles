@@ -652,8 +652,9 @@
   :bind
   (("C-x C-r" . 'counsel-recentf)
    ("C-x d" . 'counsel-dired)
-   ("C-S-f" . counsel-rg)
-   ("C-S-n" . counsel-fzf))
+   ("C-M-f" . counsel-rg)
+   ("C-M-n" . counsel-fzf)
+   )
   :config
   ;; 默认的 rg 配置
   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
