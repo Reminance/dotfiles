@@ -19,6 +19,8 @@ archiso qemu asciidoc asciidoctor autoconf clang clash ctags flameshot gcc gdb
 imagemagick inotify-tools libtool netease-cloud-music nerd-fonts-source-code-pro
 ttc-iosevka ntfs-3g pcmanfm sddm dunst xdotool bc sysstat yad clang pyright rust-analyzer gopls
 
+sudo npm i -g fanyi && sps festival
+
 vim .xinitrc 
 sudo chsh -s /usr/bin/zsh
 chsh -s /usr/bin/zsh

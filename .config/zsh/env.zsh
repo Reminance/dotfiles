@@ -19,7 +19,7 @@ export BROWSER=google-chrome-stable
 export WORKSPACE=$HOME/workspace
 
 # terminal
-export TERM=xterm-256color
+# export TERM=xterm-256color
 
 # VIM
 export MYVIMRC=$HOME/.config/nvim/init.vim

@@ -122,7 +122,7 @@ Plug 'liuchengxu/vim-which-key'
 Plug 'voldikss/vim-floaterm'
 
 " auto-pairs
-" Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs'
 
 " vista.vim
 " Plug 'liuchengxu/vista.vim'
@@ -184,6 +184,7 @@ nnoremap \c :! ls \| grep -E '*.aux\|*.log\|*.nav\|*.out\|*.snm\|*.toc\|*.pdf' \
 " let g:airline_theme='papercolor'
 " let g:airline_theme='codedark'
 let g:airline_theme='molokai'
+let g:airline#extensions#tabline#enabled = 1
 
 " lightline
 " NearestMethodOrFunction cames from vista function below
@@ -516,7 +517,7 @@ nnoremap <silent> <Leader>fh :FloatermNew htop<CR>
 nnoremap <silent> <Leader>fd :FloatermNew ncdu<CR>
 
 " auto-pairs
-" let g:AutoPairsShortcutToggle='<Leader>apt'
+let g:AutoPairsShortcutToggle='<Leader>apt'
 " let g:AutoPairsShortcutFastWrap='<Leader>apf'
 " let g:AutoPairsShortcutJump='<Leader>apj'
 " let g:AutoPairsShortcutBackInsert='<Leader>api'
@@ -594,6 +595,14 @@ let g:dispatch_compilers = {
 nnoremap <Leader>Co :Copen<CR>
 
 " voldkiss/vim-translator settings
+let g:translator_default_engines=['youdao', 'google']
+" Once the translation window is opened, type <C-w>p to jump into it and again to jump back
+" Echo translation in the cmdline
+nmap <silent> <Leader>tt <Plug>Translate
+vmap <silent> <Leader>tt <Plug>TranslateV
+" Display translation in a window
+nmap <silent> <Leader>tw <Plug>TranslateW
+vmap <silent> <Leader>tw <Plug>TranslateWV
 
 " coc.nvim
 " source ~/.config/nvim/coc.vim

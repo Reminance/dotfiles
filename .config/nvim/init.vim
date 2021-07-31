@@ -2,7 +2,7 @@ set nocompatible
 set noswapfile
 let mapleader=","
 let maplocalleader="\\"
-set mouse=a " mouse support
+" set mouse=a " mouse support
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
 set ignorecase smartcase incsearch showmatch hlsearch
 set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
@@ -31,9 +31,9 @@ inoremap <C-b> <Left>
 inoremap <C-f> <Right>
 inoremap <M-f> <S-Right>
 inoremap <M-b> <S-Left>
-inoremap <C-k> <C-o>D
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
+" inoremap <C-k> <C-o>D
 " inoremap <C-n> <Down>
 " inoremap <C-p> <Up>
 
@@ -119,11 +119,11 @@ inoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 " move selected lines up/down and keep selected
 vnoremap J :move '>+1<CR>gv=gv
 vnoremap K :move '<-2<CR>gv=gv
-inoremap <C-j> <Esc>mz:m .+1<CR>==`za
-inoremap <C-k> <Esc>mz:m .-2<CR>==`za
 " indent blocks and keep selected
 vnoremap H <gv
 vnoremap L >gv
+" inoremap <C-J> <Esc>mz:m .+1<CR>==`za
+" inoremap <C-K> <Esc>mz:m .-2<CR>==`za
 
 " copy from rigister to the vim cmdline
 nnoremap <Leader>cp :<C-r>"

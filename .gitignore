@@ -23,3 +23,4 @@ sandbox/
 .config/nvim/plugged/
 .config/nvim/tmp/
 .config/nvim/_machine_specific.vim
+.config/nvim/session/
