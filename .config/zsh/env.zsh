@@ -16,8 +16,6 @@ export LANGUAGE=en_US.UTF-8
 export TERMINAL=alacritty
 export BROWSER=google-chrome-stable
 
-export WORKSPACE=$HOME/workspace
-
 # terminal
 # export TERM=xterm-256color
 
@@ -62,7 +60,6 @@ export GRADLE_HOME=/usr/share/java/gradle
 export JDTLS_HOME=$HOME/workspace/java/jdtls/eclipse.jdt.ls
 export JAR=${$(find $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar -type f -printf %p:)%%:}
 export JDTLS_CONFIG=$JDTLS_HOME/config_linux
-export WORKSPACE=$HOME/workspace
 
 # could be in /etc/profile
 #export TERMINAL=alacritty

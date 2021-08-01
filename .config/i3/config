@@ -120,7 +120,7 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-# assign workspace to different screen
+# assign workspace to different scree	n
 # Run `xrandr | grep ' connected'` or `xrandr --listactivemonitors` to connected screens
 # set $monitor1 HDMI-0
 # set $monitor2 DP-3
@@ -236,7 +236,7 @@ bar {
 # Personal Settings
 #
 # #---Basic Definitions---# #
-for_window [class="^.*"] border pixel 2
+for_window [class="^.*"] border pixel 4
 gaps inner 20
 gaps outer 5
 

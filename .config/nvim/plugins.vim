@@ -220,6 +220,9 @@ colorscheme snazzy
 
 " NERDTree
 nnoremap tt :NERDTreeToggle<CR>
+nnoremap tf :NERDTreeFind<CR>
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * if getcmdwintype() == '' | silent NERDTreeMirror | endif
 "let NERDTreeMapOpenExpl=""
 "let NERDTreeMapUpdir=""
 "let NERDTreeMapUpdirKeepOpen=""
