@@ -102,10 +102,10 @@ nnoremap <M-s>l ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " normal mode bindings
-nnoremap <C-M-S-Down> :res +5<CR>
-nnoremap <C-M-S-Up> :res -5<CR>
-nnoremap <C-M-S-Left> :vertical resize-5<CR>
-nnoremap <C-M-S-Right> :vertical resize+5<CR>
+nnoremap <M-S-Down> :res +5<CR>
+nnoremap <M-S-Up> :res -5<CR>
+nnoremap <M-S-Left> :vertical resize-5<CR>
+nnoremap <M-S-Right> :vertical resize+5<CR>
 
 " Basic Mappings
 nnoremap <Leader><Space> :nohlsearch<CR>
