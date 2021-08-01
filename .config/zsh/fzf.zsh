@@ -9,7 +9,8 @@ export FZF_CTRL_T_COMMAND="fd -t f -H -I"
 
 # export FZF_COMPLETION_TRIGGER='**'
 
-export FZF_ALT_C_COMMAND="fd -t d --hidden --follow --exclude \".git\" . $HOME"
+# export FZF_ALT_C_COMMAND="fd -t d --hidden --follow --exclude \".git\" . $HOME"
+export FZF_ALT_C_COMMAND="fd -t d --hidden --follow --exclude \".git\""
 
 # for preview
 export FZF_CTRL_T_OPTS='--preview "bat --style=numbers --color=always --line-range :200 {}"'

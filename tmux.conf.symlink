@@ -6,3 +6,5 @@ bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully r
 
 # no delay on ESC
 set -sg escape-time 0
+
+set -g mouse on

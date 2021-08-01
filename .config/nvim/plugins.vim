@@ -145,6 +145,7 @@ Plug 'voldikss/vim-translator'
 " neovim/nvim-lspconfig
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
+Plug 'glepnir/lspsaga.nvim'
 " Plug 'nvim-lua/completion-nvim'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'mfussenegger/nvim-jdtls'
@@ -518,6 +519,7 @@ nnoremap <silent> <Leader>fn :FloatermNew node<CR>
 nnoremap <silent> <Leader>fp :FloatermNew python<CR>
 nnoremap <silent> <Leader>fh :FloatermNew htop<CR>
 nnoremap <silent> <Leader>fd :FloatermNew ncdu<CR>
+tnoremap <silent> <C-q> <C-\><C-n>:FloatermKill<CR>
 
 " auto-pairs
 let g:AutoPairsShortcutToggle='<Leader>apt'
@@ -630,9 +632,6 @@ map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
 " nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 " telescope end
 
-" nvim-lspconfig.nvim
-" source ~/.config/nvim/nvim-lsp.vim
-
 "" from completion-nvim start -->
 "" Use <Tab> and <S-Tab> to navigate through popup menu
 "inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
@@ -690,21 +689,43 @@ local opts = { noremap=true, silent=true }
 -- See `:help vim.lsp.*` for documentation on any of the below functions
 buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+-- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
 buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+-- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 buf_set_keymap('n', '<Leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
 buf_set_keymap('n', '<Leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
 buf_set_keymap('n', '<Leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-buf_set_keymap('n', '<Leader>ld', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-buf_set_keymap('n', '<Leader>lr', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-buf_set_keymap('n', '<Leader>lc', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+-- buf_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+-- buf_set_keymap('n', '<A-Enter>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
 -- buf_set_keymap('n', '<Leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+-- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+-- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 buf_set_keymap('n', '<Leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 buf_set_keymap('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+-- lspsaga
+-- code actio
+-- buf_set_keymap('n', '<Leader>lc', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
+-- buf_set_keymap('v', '<Leader>lc', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
+buf_set_keymap('n', '<A-Enter>', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
+buf_set_keymap('v', '<A-Enter>', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
+-- show hover doc
+buf_set_keymap('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
+-- scroll down hover doc or scroll in definition preview
+buf_set_keymap('n', '<C-n>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', opts)
+-- scroll up hover doc
+buf_set_keymap('n', '<C-p>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', opts)
+-- show signature help
+buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
+-- rename
+buf_set_keymap('n', '<Leader>rn', '<cmd>lua require("lspsaga.rename").rename()<CR>', opts)
+-- show
+buf_set_keymap('n', '<Leader>el', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>', opts)
+-- jump diagnostic
+buf_set_keymap('n', '<Leader>en', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>', opts)
+buf_set_keymap('n', '<Leader>ep', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>', opts)
 
 end
 
