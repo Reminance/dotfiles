@@ -185,6 +185,9 @@ nnoremap \c :! ls \| grep -E '*.aux\|*.log\|*.nav\|*.out\|*.snm\|*.toc\|*.pdf' \
 " let g:airline_theme='codedark'
 let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline#extensions#tabline#show_tab_nr = 0
+" let g:airline#extensions#tabline#tab_nr_type = 1
 
 " lightline
 " NearestMethodOrFunction cames from vista function below
@@ -518,9 +521,12 @@ nnoremap <silent> <Leader>fd :FloatermNew ncdu<CR>
 
 " auto-pairs
 let g:AutoPairsShortcutToggle='<Leader>apt'
-" let g:AutoPairsShortcutFastWrap='<Leader>apf'
-" let g:AutoPairsShortcutJump='<Leader>apj'
-" let g:AutoPairsShortcutBackInsert='<Leader>api'
+" override default keybinding <M-e>
+let g:AutoPairsShortcutFastWrap='<Leader>apf'
+" override default keybinding <M-n>
+let g:AutoPairsShortcutJump='<Leader>apj'
+" override default keybinding <M-b>
+let g:AutoPairsShortcutBackInsert='<Leader>api'
 
 " vista
 " function! NearestMethodOrFunction() abort

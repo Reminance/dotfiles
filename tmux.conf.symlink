@@ -3,3 +3,6 @@
 # bind-key C-v send-prefix
 
 bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully reloaded!"
+
+# no delay on ESC
+set -sg escape-time 0

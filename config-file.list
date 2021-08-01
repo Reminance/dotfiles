@@ -2,6 +2,7 @@
 /home/xc/dotfiles/.config/zsh/zshrc.symlink
 /home/xc/dotfiles/.config/zsh/aliases.zsh
 /home/xc/dotfiles/.config/zsh/env.zsh
+/home/xc/dotfiles/.config/zsh/fzf.zsh
 /home/xc/dotfiles/.config/zsh/shortcut.zsh
 /home/xc/dotfiles/.config/zsh/git.zsh
 /home/xc/dotfiles/.config/i3/config
