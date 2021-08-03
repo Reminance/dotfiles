@@ -146,6 +146,8 @@ Plug 'voldikss/vim-translator'
 Plug 'neovim/nvim-lspconfig'
 Plug 'hrsh7th/nvim-compe'
 Plug 'glepnir/lspsaga.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'onsails/lspkind-nvim'
 " Plug 'nvim-lua/completion-nvim'
 " Plug 'nvim-lua/popup.nvim'
 " Plug 'mfussenegger/nvim-jdtls'
@@ -730,6 +732,52 @@ buf_set_keymap('n', '<Leader>el', '<cmd>lua require("lspsaga.diagnostic").show_l
 buf_set_keymap('n', '<Leader>en', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>', opts)
 buf_set_keymap('n', '<Leader>ep', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>', opts)
 
+-- lspkind-nvim
+require('lspkind').init({
+    -- enables text annotations
+    --
+    -- default: true
+    with_text = true,
+
+    -- default symbol map
+    -- can be either 'default' or
+    -- 'codicons' for codicon preset (requires vscode-codicons font installed)
+    --
+    -- default: 'default'
+    preset = 'codicons',
+
+    -- override preset symbols
+    --
+    -- default: {}
+    symbol_map = {
+      Text = "",
+      Method = "",
+      Function = "",
+      Constructor = "",
+      Field = "ﰠ",
+      Variable = "",
+      Class = "ﴯ",
+      Interface = "",
+      Module = "",
+      Property = "ﰠ",
+      Unit = "塞",
+      Value = "",
+      Enum = "",
+      Keyword = "",
+      Snippet = "",
+      Color = "",
+      File = "",
+      Reference = "",
+      Folder = "",
+      EnumMember = "",
+      Constant = "",
+      Struct = "פּ",
+      Event = "",
+      Operator = "",
+      TypeParameter = ""
+    },
+})
+
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -762,6 +810,23 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = false,
   }
 )
+EOF
+
+" nvim-treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  -- ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    -- disable = { "c", "rust" },  -- list of language that will be disabled
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    -- additional_vim_regex_highlighting = false,
+  },
+}
 EOF
 
 command! -buffer -nargs=0 LspShowLineDiagnostics lua require'jumpLoc'.openLineDiagnostics()
