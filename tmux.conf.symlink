@@ -6,10 +6,28 @@
 # enable mouse in tmux
 set -g mouse on
 
-bind-key C-r source-file ~/.tmux.conf \; display-message "   Config successfully reloaded!"
+bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully reloaded!"
+
+set -g default-terminal "screen-256color"
+
+# set-option -g status-style bg=black
+set-option -g status-style bg=default
+
+# set color for status bar
+# set-option -g status-style bg=colour235
+# set-option -g status-style fg=yellow
+set-option -g status-style dim
+
+ # set -g pane-border-style fg=magenta
+ # set -g pane-active-border-style fg=magenta 
+ # set -g pane-active-border-style bg=default
+
+
 
 # no delay on ESC
 set -sg escape-time 0
+
+
 
 ## Pane selection and resizing
 unbind-key C-M-h       ; bind-key -n C-M-h       select-pane -L
