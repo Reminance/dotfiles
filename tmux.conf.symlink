@@ -10,24 +10,23 @@ bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully r
 
 set -g default-terminal "screen-256color"
 
+set-option -g status-position top
+
+# set-option -g status-style bg=default
+# set-option -g status-style dim
+#
 # set-option -g status-style bg=black
-set-option -g status-style bg=default
 
 # set color for status bar
 # set-option -g status-style bg=colour235
 # set-option -g status-style fg=yellow
-set-option -g status-style dim
 
  # set -g pane-border-style fg=magenta
  # set -g pane-active-border-style fg=magenta 
  # set -g pane-active-border-style bg=default
 
-
-
 # no delay on ESC
 set -sg escape-time 0
-
-
 
 ## Pane selection and resizing
 unbind-key C-M-h       ; bind-key -n C-M-h       select-pane -L
@@ -195,3 +194,22 @@ unbind-key M-d     ; bind-key -n M-d  detach-client
 #unbind-key -t vi-copy Home  ; bind-key -t vi-copy Home  start-of-line
 #unbind-key -t vi-copy End   ; bind-key -t vi-copy End   end-of-line
 #unbind-key -t vi-copy b    ; bind-key -t vi-copy b    rectangle-toggle
+
+
+
+
+# List of plugins
+# https://github.com/tmux-plugins/tpm
+# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Press prefix + I (capital i, as in Install) to fetch the plugin.
+#
+# https://github.com/wfxr/tmux-power
+
+# set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'wfxr/tmux-power'
+# set -g @tmux_power_theme 'snow'
+set -g @tmux_power_theme 'sky'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
