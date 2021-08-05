@@ -6,6 +6,7 @@ alias gd='git diff'
 alias gds='git diff --cached' # same with: git diff --staged
 alias gpr='git pull --rebase'
 alias gco='git checkout'
+alias gwt='git worktree'
 
 # Adding helpers
 alias gadd='git add .'

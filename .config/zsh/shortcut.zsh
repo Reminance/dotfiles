@@ -29,6 +29,15 @@ edit-config-file () {
 zle -N edit-config-file
 bindkey '\ee' edit-config-file
 
+# edit config file
+git-worktree-add-branch () {
+    local branch=($(git branch -a | fzf --query="$1" --select-1 --exit-0))
+    [[ -n "$branch" ]] && git worktree add -b "${branch##*/}" ../"${branch##*/}" "${branch[@]}"
+    zle reset-prompt
+}
+zle -N git-worktree-add-branch
+bindkey '\eg' git-worktree-add-branch
+
 # file search&edit
 fe() {
     IFS=$'\n' local files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))

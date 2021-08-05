@@ -1,0 +1,24 @@
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+
+alias l='ls'
+alias ll='ls -l'
+alias lla='ls -la'
+alias gs='git status'
+alias gd='git diff'
+alias gb='git branch'
+alias gwt='git worktree'
+alias gco='git checkout'
+alias gpull='git pull'
+alias gpush='git push'
+
+alias fcd='cd $(fd -t d --hidden --follow --exclude \".git\" | fzf)'
+alias ff='$(fd -t f -H -I | fzf)'
+alias fh='$(history | fzf)'
+
+alias work='cd /mnt/c/work/workspace'
+
+# bind -x '"\eW":"cd $(fd -t d --hidden --follow --exclude \".git\" | fzf)"'
+# bind -x '"^t":"$(fd -t f -H -I | fzf)"'
+bind -x '"\C-t":"$(fd -t f -H -I | fzf)"'
+bind -x '"\C-r":"(history | fzf)"'
+bind -x '"\ec":"cd $(fd -t d --hidden --follow --exclude \".git\" | fzf)"'
