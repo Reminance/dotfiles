@@ -1,5 +1,6 @@
 /home/xc/dotfiles/config-file.list
 /home/xc/dotfiles/tmux.conf.symlink
+/home/xc/dotfiles/bashrc.symlink
 /home/xc/dotfiles/.config/zsh/zshrc.symlink
 /home/xc/dotfiles/.config/zsh/aliases.zsh
 /home/xc/dotfiles/.config/zsh/env.zsh

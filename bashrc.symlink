@@ -10,7 +10,7 @@ PS1='[\u@\h \W]\$ '
 
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
 
-alias l='ls'
+alias l='ls --color=auto'
 alias ll='ls -l'
 alias lla='ls -la'
 alias gs='git status'
