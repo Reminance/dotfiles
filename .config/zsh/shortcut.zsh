@@ -89,3 +89,16 @@ fs() {
 # Edit line in vim with ctrl-v
 # autoload edit-command-line; zle -N edit-command-line
 # bindkey '^v' edit-command-line
+
+urlencode() {
+  local length="${#1}"
+  for (( i = 0; i < length; i++ )); do
+    local c="${1:i:1}"
+    case $c in
+      [a-zA-Z0-9.~_-]) printf "$c" ;;
+    *) printf "$c" | xxd -p -c1 | while read x;do printf "%%%s" "$x";done
+  esac
+done
+}
+
+function urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
