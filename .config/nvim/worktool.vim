@@ -10,7 +10,9 @@ let g:logcenter_path='/home/xc/workspace/work-tools/logcenter'
 
 xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<Cr>
 xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<Cr>
-xnoremap <leader><leader>l y:ter <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
+" xnoremap <leader><leader>l y:tabe<CR>:tabmove<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>
+xnoremap <leader><leader>l y:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
+nnoremap <leader><leader>s :SwitchDB 
 
 " ################################ SwitchDB ################################
 command! -complete=shellcmd -nargs=+ SwitchDB call SwitchDB(<q-args>)
@@ -22,21 +24,26 @@ endfunction
 function! ExecuteSql(explain)
     let sql=GetVisualSelection(visualmode())
     " for multiline shell commnd
+    let sql=substitute(sql, "\"", "'", "g")
     let sql=substitute(sql, "\\n", " ", "g")
+    let sql=substitute(sql, ' \+', " ", "g")
     if StartsWith(sql, "./dbadmin")
         let shellCmdStr=substitute(sql, "./dbadmin", g:dbadmin_path, "")
     else
         let shellCmdStr=g:dbadmin_path
-                    \ . " -s '" . sql . "'"
+                    \ . " -s \"" . sql . "\""
                     \ . " -db ". g:dbadmin_db
                     \ . " -o " . g:dbadmin_output
                     \ . " -p " . g:dbadmin_page
                     \ . " -l " . g:dbadmin_limit
                     \ . (g:dbadmin_sql_no_cache == 'true' ? "" : " -c")
-                    \ . (a:explain == 'false' ? "" : " -e")
+                    \ . (a:explain == 'false' ? "" : " -operation explain")
     endif
     echom shellCmdStr
     call s:RunShellCommand(shellCmdStr)
+    " let sql=shellescape(sql)
+    " execute '!_compile' shellescape(a:game) shellescape(a:major) shellescape(a:minor)
+    " echom shellescape(shellCmdStr)
 endfunction
 
 " ################################ GetVisualSelection ################################

@@ -296,7 +296,7 @@ nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
 " Open the plugins.vim file anytime
 nnoremap <Leader><Leader>p :e ~/.config/nvim/plugins.vim<CR>
 " Open the scratchpad anytime
-nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
+" nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR>
 
 " Plugins Settings
 source ~/.config/nvim/plugins.vim
