@@ -23,6 +23,11 @@ au VimResized * :wincmd =
 set synmaxcol=800
 set backspace=indent,eol,start " set backspace=indent,eol,start; eol让退格键可以退到上一行
 
+" for ctags
+set tags=tags;/
+nnoremap <Leader>cg :!ctags --extra=+q --languages=java -R .
+" nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
+
 " Cursor Movement
 " insert mode bindings
 inoremap <C-a> <Home>
@@ -295,6 +300,9 @@ nnoremap <Leader><Leader>s :FloatermNew $EDITOR ~/.config/nvim/scratchpad.vim<CR
 
 " Plugins Settings
 source ~/.config/nvim/plugins.vim
+
+" work tool
+source ~/.config/nvim/worktool.vim
 
 " Machine Specifisc Settings
 " adjust machine specific stuff

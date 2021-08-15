@@ -188,7 +188,7 @@ allbackup: backup pipbackup
 BASE_PKGS := filesystem gcc gcc-libs glibc libtool bash coreutils file findutils gawk grep sed
 BASE_PKGS += base base-devel pciutils psmisc shadow util-linux tar unzip unrar bzip2 gzip xz
 BASE_PKGS += iputils iproute2 autoconf sudo automake binutils bison fakeroot flex groff licenses
-BASE_PKGS += systemd systemd-sysvcompat make patch pkgconf texinfo which gettext m4 procps-ng
+BASE_PKGS += systemd systemd-sysvcompat make patch pkgconf texinfo which gettext expect m4 procps-ng
 
 PACKAGES := go gopls java nodejs rust rustup clang pyright rust-analyzer python ruby rubygems gdb
 PACKAGES += nodejs npm yarn lua nasm maven gradle ctags gtags typescript llvm llvm-libs lldb

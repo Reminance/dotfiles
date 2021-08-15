@@ -14,7 +14,7 @@ fcitx-googlepinyin base-devel ethtool alacritty screenkey tmux neovim python
 rust rustup go emacs i3 i3-gaps i3status i3blocks fzf the_silver_searcher
 ripgrep mupdf zathura mpc mpd mpv feh nitrogen ttc-iosevka wqy-zenhei xclip wget
 picom openfortivpn ruby rubygems nodejs npm yarn lua nasm maven gradle figlet
-openssl openvpn fd bat jq htop tree curl jq lazygit virtualbox-host-modules-arch
+openssl openvpn fd bat jq htop tree expect curl jq lazygit virtualbox-host-modules-arch
 archiso qemu asciidoc asciidoctor autoconf clang clash ctags flameshot gcc gdb
 imagemagick inotify-tools libtool netease-cloud-music nerd-fonts-source-code-pro
 ttc-iosevka ntfs-3g pcmanfm sddm dunst xdotool bc sysstat yad clang pyright rust-analyzer gopls
