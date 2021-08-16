@@ -8,11 +8,17 @@ let g:dbadmin_sql_no_cache='true'
 
 let g:logcenter_path='/home/xc/workspace/work-tools/logcenter'
 
-xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<Cr>
-xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<Cr>
-" xnoremap <leader><leader>l y:tabe<CR>:tabmove<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>
-xnoremap <leader><leader>l y:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
+xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<CR>
+xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<CR>
+" xnoremap <leader><leader>e y:tabe<CR>:tabmove<CR>:term <C-r>"<CR>:setl nonu nornu<CR>
+xnoremap <leader><leader>e y:tabe<CR>:term <C-r>"<CR>:setl nonu nornu<CR>A
+nnoremap <leader><leader>q :<C-U> call QueryTable()<CR>:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
 nnoremap <leader><leader>s :SwitchDB 
+
+function! QueryTable()
+    " echo getreg('"')
+    let @"=g:dbadmin_path.' -db '.g:dbadmin_db.' -operation queryTable'
+endfunction
 
 " ################################ SwitchDB ################################
 command! -complete=shellcmd -nargs=+ SwitchDB call SwitchDB(<q-args>)
