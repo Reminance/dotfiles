@@ -8,20 +8,22 @@ let g:dbadmin_sql_no_cache='true'
 
 let g:logcenter_path='/home/xc/workspace/work-tools/logcenter'
 
+nnoremap <leader><leader>s :SwitchDB 
 xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<CR>
 xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<CR>
-" xnoremap <leader><leader>e y:tabe<CR>:tabmove<CR>:term <C-r>"<CR>:setl nonu nornu<CR>
-xnoremap <leader><leader>e y:tabe<CR>:term <C-r>"<CR>:setl nonu nornu<CR>A
-nnoremap <leader><leader>q :<C-U> call QueryTable()<CR>:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
-nnoremap <leader><leader>s :SwitchDB 
+" xnoremap <leader><leader>e y:tabe<CR>:term <C-r>"<CR>:setl nonu nornu<CR>A
+" nnoremap <leader><leader>q :<C-U> call QueryTable()<CR>:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
+" open in float term
+nnoremap <leader><leader>q :<C-U> call CopyQueryTableCmd()<CR>:FloatermNew --height=0.6 --width=0.9 <C-r>"<CR>
+xnoremap <leader><leader>e y:FloatermNew --height=0.9 --width=0.9 <C-r>"<CR>
 
-function! QueryTable()
+function! CopyQueryTableCmd()
     " echo getreg('"')
     let @"=g:dbadmin_path.' -db '.g:dbadmin_db.' -operation queryTable'
 endfunction
 
 " ################################ SwitchDB ################################
-command! -complete=shellcmd -nargs=+ SwitchDB call SwitchDB(<q-args>)
+command! -nargs=+ SwitchDB call SwitchDB(<q-args>)
 function! SwitchDB(db)
     let g:dbadmin_db=a:db
 endfunction
@@ -46,7 +48,10 @@ function! ExecuteSql(explain)
                     \ . (a:explain == 'false' ? "" : " -operation explain")
     endif
     echom shellCmdStr
-    call s:RunShellCommand(shellCmdStr)
+    " floatterm open
+    exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr
+    " RunShellCommand
+    " call s:RunShellCommand(shellCmdStr)
     " let sql=shellescape(sql)
     " execute '!_compile' shellescape(a:game) shellescape(a:major) shellescape(a:minor)
     " echom shellescape(shellCmdStr)

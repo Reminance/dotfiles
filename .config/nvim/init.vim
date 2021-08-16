@@ -214,6 +214,7 @@ endfunction
 vmap <silent> <expr> p <sid>Repl()
 
 " Compile Function
+" noremap <M-r> :call CompileRunGcc()<CR>
 nnoremap <M-r> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w"
