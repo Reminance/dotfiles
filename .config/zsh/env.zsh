@@ -11,6 +11,7 @@ export LANGUAGE=en_US.UTF-8
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin && -z $(echo $PATH | grep -o $HOME/dotfiles/bin) ]] && export PATH="${PATH}:$HOME/dotfiles/bin"
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin/i3cmds && -z $(echo $PATH | grep -o $HOME/dotfiles/bin/i3cmds) ]] && export PATH="${PATH}:$HOME/dotfiles/bin/i3cmds"
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin/statusbar && -z $(echo $PATH | grep -o $HOME/dotfiles/bin/statusbar) ]] && export PATH="${PATH}:$HOME/dotfiles/bin/statusbar"
+[[ $UID -ge 1000 && -d $HOME/workspace/work-tools && -z $(echo $PATH | grep -o $HOME/workspace/work-tools) ]] && export PATH="${PATH}:$HOME/workspace/work-tools"
 # export PATH="$PATH:${$(find $HOME/dotfiles/bin -type d -printf %p:)%%:}"
 
 export TERMINAL=alacritty

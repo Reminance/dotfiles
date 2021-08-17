@@ -1,4 +1,5 @@
-let g:dbadmin_path='/home/xc/workspace/work-tools/dbadmin'
+" let g:dbadmin_path='~/workspace/work-tools/dbadmin'
+let g:dbadmin_path='dbadmin'
 let g:dbadmin_db='wms'
 let g:dbadmin_page=1
 let g:dbadmin_limit=100
@@ -6,7 +7,8 @@ let g:dbadmin_output='csv'
 " let g:dbadmin_output='json'
 let g:dbadmin_sql_no_cache='true'
 
-let g:logcenter_path='/home/xc/workspace/work-tools/logcenter'
+" let g:logcenter_path='~/workspace/work-tools/logcenter'
+let g:logcenter_path='logcenter'
 
 nnoremap <leader><leader>s :SwitchDB 
 xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<CR>
