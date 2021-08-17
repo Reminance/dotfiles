@@ -58,9 +58,9 @@ export M2_HOME=/opt/maven
 export GRADLE_HOME=/usr/share/java/gradle
 # this is for nvim-lsp env
 # export JAR=$HOME/workspace/java/jdtls/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar
-export JDTLS_HOME=$HOME/workspace/java/jdtls/eclipse.jdt.ls
-export JAR=${$(find $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar -type f -printf %p:)%%:}
-export JDTLS_CONFIG=$JDTLS_HOME/config_linux
+# export JDTLS_HOME=$HOME/workspace/java/jdtls/eclipse.jdt.ls
+# export JAR=${$(find $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar -type f -printf %p:)%%:}
+# export JDTLS_CONFIG=$JDTLS_HOME/config_linux
 
 # could be in /etc/profile
 #export TERMINAL=alacritty
