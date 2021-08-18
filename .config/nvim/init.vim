@@ -2,7 +2,15 @@ set nocompatible
 set noswapfile
 let mapleader=","
 let maplocalleader="\\"
-" set mouse=a " mouse support
+
+" disable status and tab
+" set mouse=a     " mouse support
+" au VimEnter * set laststatus=0 " disable airline by default
+set laststatus=0  " disable status line
+set showtabline=0 " disable tab line
+set noruler       " line and column number in the status line
+set shortmess+=c  " helps to avoid all the hit-enter prompts caused by file messages
+
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
 set ignorecase smartcase incsearch showmatch hlsearch
 set wrap formatoptions-=t "turn off Auto-wrap text using textwidth

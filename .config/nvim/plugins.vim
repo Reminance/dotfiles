@@ -11,15 +11,15 @@ endif
 call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
 
 " status line
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 " Plug 'itchyny/lightline.vim'
 
 " themes
 Plug 'connorholyday/vim-snazzy'
 Plug 'morhetz/gruvbox'
-Plug 'w0ng/vim-hybrid'
-Plug 'whatyouhide/vim-gotham'
+" Plug 'w0ng/vim-hybrid'
+" Plug 'whatyouhide/vim-gotham'
 
 " vim-peekaboo
 " Peekaboo extends " and @ in normal mode and <CTRL-R> in insert mode
