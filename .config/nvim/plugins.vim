@@ -500,12 +500,12 @@ nmap <Leader>gsp <plug>(signify-prev-hunk)
 " let g:mapleader="\<Space>"
 " nnoremap <silent> <Leader>      :<C-u>WhichKey '<Space>'<CR>
 let g:mapleader=','
-let g:maplocalleader=','
+let g:maplocalleader='\'
 nnoremap <silent> <Leader>      :<C-u>WhichKey ','<CR>
 nnoremap <silent> <LocalLeader> :<C-u>WhichKey  ','<CR>
 
 " floaterm
-let g:floaterm_keymap_toggle='<Leader>.'
+let g:floaterm_keymap_toggle='<Leader>/'
 let g:floaterm_keymap_next='<Leader>f.'
 let g:floaterm_keymap_prev='<Leader>f,'
 let g:floaterm_keymap_new='<Leader>f+'
@@ -517,7 +517,7 @@ let g:floaterm_autoinsert=1
 let g:floaterm_width=0.6
 let g:floaterm_height=0.6
 " let g:floaterm_autoclose=1
-nnoremap <silent> <Leader>; :FloatermNew --wintype=popup --height=6<CR>
+nnoremap <silent> <Leader>fP :FloatermNew --wintype=popup --height=6<CR>
 nnoremap <silent> <Leader>ff :FloatermNew fzf<CR>
 nnoremap <silent> <Leader>fg :FloatermNew lazygit<CR>
 nnoremap <silent> <Leader>fn :FloatermNew node<CR>

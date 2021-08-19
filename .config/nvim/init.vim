@@ -8,8 +8,59 @@ let maplocalleader="\\"
 " au VimEnter * set laststatus=0 " disable airline by default
 set laststatus=0  " disable status line
 set showtabline=0 " disable tab line
-set noruler       " line and column number in the status line
+" set noruler       " no line and column number indicator
 set shortmess+=c  " helps to avoid all the hit-enter prompts caused by file messages
+
+" status line
+    function! ToggleHiddenStatusLine()
+        if &laststatus < 2
+            set laststatus=2
+            set showtabline=2
+        else
+            set laststatus=0
+            set showtabline=0
+        endif
+    endfunction
+    nnoremap <Leader>. :call ToggleHiddenStatusLine()<CR>
+
+    function! GitBranch()
+        return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+    endfunction
+
+    function! StatuslineGit()
+        let l:branchname = GitBranch()
+        return strlen(l:branchname) > 0?'  '.l:branchname.' ':''
+    endfunction
+
+    let g:currentmode={
+       \ 'n'  : '  NORMAL ',
+       \ 'v'  : '  VISUAL ',
+       \ 'V'  : '  V·Line ',
+       \ "\<C-V>" : '  V·Block ',
+       \ 'i'  : '  INSERT ',
+       \ 't'  : '  TERMINAL ',
+       \ 'c'  : '  Command ',
+       \ 'R'  : '  R ',
+       \ 'Rv' : '  V·Replace ',
+       \}
+
+    set statusline=
+    set statusline+=%#Title#
+    set statusline+=%{toupper(g:currentmode[mode()])}
+    set statusline+=%#Directory#
+    set statusline+=%<%f
+    set statusline+=%#CursorLineNr#
+    set statusline+=%{StatuslineGit()}
+    set statusline+=%#LineNr#
+    set statusline+=%=
+    set statusline+=%#CursorLineNr#
+    set statusline+=[%{&ff}]
+    set statusline+=[%{&fenc}]
+    set statusline+=%y%h%w%m%r
+    " set statusline+=[%{hostname()}]
+    set statusline+=%#Title#
+    set statusline+=\ %p%%\ 
+    set statusline+=%(%l,%c%V%)
 
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
 set ignorecase smartcase incsearch showmatch hlsearch
