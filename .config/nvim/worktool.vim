@@ -13,11 +13,14 @@ let g:logcenter_path='logcenter'
 nnoremap <leader><leader>s :SwitchDB 
 xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<CR>
 xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<CR>
+nnoremap <leader><leader>d V:<C-U> call ExecuteSql('false')<CR>
+nnoremap <leader><leader>D V:<C-U> call ExecuteSql('true')<CR>
 " xnoremap <leader><leader>e y:tabe<CR>:term <C-r>"<CR>:setl nonu nornu<CR>A
 " nnoremap <leader><leader>q :<C-U> call QueryTable()<CR>:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
 " open in float term
 nnoremap <leader><leader>q :<C-U> call CopyQueryTableCmd()<CR>:FloatermNew --height=0.6 --width=0.9 <C-r>"<CR>
 xnoremap <leader><leader>e y:FloatermNew --height=0.9 --width=0.9 <C-r>"<CR>
+nnoremap <leader><leader>e Vy:FloatermNew --height=0.9 --width=0.9 <C-r>"<CR>
 
 function! CopyQueryTableCmd()
     " echo getreg('"')
