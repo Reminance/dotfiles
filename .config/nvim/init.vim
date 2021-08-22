@@ -1,7 +1,7 @@
 set nocompatible
 set noswapfile
 let mapleader=","
-let maplocalleader="\\"
+" let maplocalleader="\\" " (default \ )
 
 " disable status and tab
 " set mouse=a     " mouse support
@@ -160,10 +160,10 @@ nnoremap <M-s> <nop>
 nnoremap <M-s>i :source $MYVIMRC<CR>
 nnoremap <M-s>. :so %<CR>
 vnoremap <M-s>v y:execute @@<CR>:echo 'Sourced selection.'<CR>
-nnoremap <M-s>l ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
+nnoremap <M-s>L ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 
-" Save file as sudo on files that require root permission
-cnoremap w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+" Save file as sudo on files that require root permission(by typing [Ctrl-s !]), note the '' symbol is type through Ctrl-v ctrl-s
+cnoremap ! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " normal mode bindings
 nnoremap <M-S-Down> :res +5<CR>
@@ -202,24 +202,26 @@ vnoremap <M-x>e mzg?`z
 nnoremap <Leader>vv ^vg_
 " Perform dot commands over visual blocks:
 vnoremap . :normal .<CR>
-" Replace all is aliased to S.
-nnoremap S :%s//g<Left><Left>
+" Replace all is aliased to R.
+nnoremap R :%s//g<Left><Left>
 
+" ----------------------------commented by now for vim-sneak key map --------------------
 " Window Management
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-nnoremap sh :set nosplitright<CR>:vsplit<CR>
-nnoremap sj :set splitbelow<CR>:split<CR>
-nnoremap sk :set nosplitbelow<CR>:split<CR>
-nnoremap sl :set splitright<CR>:vsplit<CR>
+nnoremap <M-s>h :set nosplitright<CR>:vsplit<CR>
+nnoremap <M-s>j :set splitbelow<CR>:split<CR>
+nnoremap <M-s>k :set nosplitbelow<CR>:split<CR>
+nnoremap <M-s>l :set splitright<CR>:vsplit<CR>
 
 " Place the two screens side by side (vertical)
-nnoremap sm <C-w>t<C-w>H
+nnoremap <M-s>m <C-w>t<C-w>H
 " Place the two screens up and down (horizontal)
-nnoremap sn <C-w>t<C-w>K
+nnoremap <M-s>n <C-w>t<C-w>K
 
 " Rotate screens
-nnoremap srm <C-w>b<C-w>H
-nnoremap srn <C-w>b<C-w>K
+" nnoremap <M-s>rm <C-w>b<C-w>H
+" nnoremap <M-s>rn <C-w>b<C-w>K
+" ----------------------------commented by now for vim-sneak key map --------------------
 
 " Use <ALT> + new arrow keys for moving the cursor around windows
 nnoremap <M-h> <C-w>h

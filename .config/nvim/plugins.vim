@@ -83,6 +83,7 @@ Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 "Plug 'vimwiki/vimwiki'
 
 " Plug 'easymotion/vim-easymotion'
+Plug 'justinmk/vim-sneak'
 
 " Find & Replace
 Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
@@ -315,7 +316,17 @@ nnoremap <Leader>tm :TableModeToggle<CR>
 " let g:EasyMotion_do_mapping=0
 " let g:EasyMotion_do_shade=0
 " let g:EasyMotion_smartcase=1
-" nmap <Leader>e <Plug>(easymotion-bd-f2)
+" nmap f <Plug>(easymotion-bd-f)
+" nmap F <Plug>(easymotion-bd-f2)
+
+" Plug 'justinmk/vim-sneak'
+let g:sneak#label = 1
+map s <Plug>Sneak_s
+map S <Plug>Sneak_S
+" map f <Plug>Sneak_f
+" map F <Plug>Sneak_F
+" map t <Plug>Sneak_t
+" map T <Plug>Sneak_T
 
 " Far.vim
 nnoremap <Leader>fa :F  %<left><left>
@@ -418,7 +429,7 @@ let g:startify_bookmarks=[
             \ ]
 
 " Open Startify
-nnoremap <Leader>\ :Startify<CR>
+nnoremap <Leader>\\ :Startify<CR>
 nnoremap <Leader>ss :SSave! Session.session<CR>
 nnoremap <Leader>sS :SSave!
 nnoremap <Leader>sl :SLoad! Session.session<CR>
