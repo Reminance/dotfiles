@@ -21,6 +21,7 @@ nnoremap <leader><leader>D V:<C-U> call ExecuteSql('true')<CR>
 nnoremap <leader><leader>q :<C-U> call CopyQueryTableCmd()<CR>:FloatermNew --height=0.6 --width=0.9 <C-r>"<CR>
 xnoremap <leader><leader>e y:FloatermNew --height=0.9 --width=0.9 <C-r>"<CR>
 nnoremap <leader><leader>e Vy:FloatermNew --height=0.9 --width=0.9 <C-r>"<CR>
+nnoremap <leader><leader>E vip:<C-U> call ExecuteMultiLineShellCommand()<CR>
 
 function! CopyQueryTableCmd()
     " echo getreg('"')
@@ -31,6 +32,16 @@ endfunction
 command! -nargs=+ SwitchDB call SwitchDB(<q-args>)
 function! SwitchDB(db)
     let g:dbadmin_db=a:db
+endfunction
+
+" ################################ ExecuteMultiLineShellCommand ################################
+function! ExecuteMultiLineShellCommand()
+    let shellCmdStr=GetVisualSelection(visualmode())
+    " for multiline shell commnd
+    let shellCmdStr=substitute(shellCmdStr, "\\n", " ", "g")
+    echom shellCmdStr
+    " floatterm open
+    exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr
 endfunction
 
 " ################################ ExecuteSql ################################
