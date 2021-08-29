@@ -10,9 +10,18 @@ bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully r
 
 set -g default-terminal "screen-256color"
 
-set-option -g status-position top
+# set-option -g status-position top
+set-option -g status-position bottom
 
-bind -t vi-copy y copy-pipe "xclip -sel clip -i"
+## Use vim keybindings in copy mode
+setw -g mode-keys vi
+set-option -s set-clipboard off
+bind P paste-buffer
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X rectangle-toggle
+unbind -T copy-mode-vi Enter
+bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel 'xclip -se c -i'
+bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel 'xclip -se c -i'
 
 # set-option -g status-style bg=default
 # set-option -g status-style dim
@@ -31,10 +40,14 @@ bind -t vi-copy y copy-pipe "xclip -sel clip -i"
 set -sg escape-time 0
 
 ## Pane selection and resizing
-unbind-key C-M-h       ; bind-key -n C-M-h       select-pane -L
-unbind-key C-M-j       ; bind-key -n C-M-j       select-pane -D
-unbind-key C-M-k       ; bind-key -n C-M-k       select-pane -U
-unbind-key C-M-l       ; bind-key -n C-M-l       select-pane -R
+# unbind-key C-M-h       ; bind-key -n C-M-h       select-pane -L
+# unbind-key C-M-j       ; bind-key -n C-M-j       select-pane -D
+# unbind-key C-M-k       ; bind-key -n C-M-k       select-pane -U
+# unbind-key C-M-l       ; bind-key -n C-M-l       select-pane -R
+unbind-key M-Left       ; bind-key -n M-Left      select-pane -L
+unbind-key M-Down       ; bind-key -n M-Down      select-pane -D
+unbind-key M-Up         ; bind-key -n M-Up        select-pane -U
+unbind-key M-Right      ; bind-key -n M-Right     select-pane -R
 
 unbind-key M-d     ; bind-key -n M-d  detach-client
 
@@ -209,6 +222,7 @@ unbind-key M-d     ; bind-key -n M-d  detach-client
 
 # set -g @plugin 'tmux-plugins/tpm'
 # set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'wfxr/tmux-power'
 # set -g @tmux_power_theme 'snow'
 set -g @tmux_power_theme 'sky'
