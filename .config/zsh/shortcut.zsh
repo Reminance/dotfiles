@@ -38,6 +38,19 @@ git-worktree-add-branch () {
 zle -N git-worktree-add-branch
 bindkey '\eg' git-worktree-add-branch
 
+# mycli-login
+mycli-login() {
+    local db=($(echo -e 'localhost\naliyun\ndev\ntest' | fzf --query="$1" --select-1 --exit-0))
+    # [[ -n "$db" ]] && mycli --login-path "${db[@]}"
+    # [[ -n "$db" ]] && print "mycli --login-path ${db[@]}"
+    # Why is interactive command breaking when using zsh widget to execute it
+    # zsh create a command line within a script but do not execute it
+    [[ -n "$db" ]] && echo "mycli --login-path ${db[@]}"
+    zle reset-prompt
+}
+zle -N mycli-login
+bindkey '\em' mycli-login
+
 # file search&edit
 fe() {
     IFS=$'\n' local files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
