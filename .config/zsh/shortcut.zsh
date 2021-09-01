@@ -40,7 +40,7 @@ bindkey '\eg' git-worktree-add-branch
 
 # mycli-login
 mycli-login() {
-    local db=($(echo -e 'localhost\naliyun\ndev\ntest' | fzf --query="$1" --select-1 --exit-0))
+    local db=($(echo -e 'localhost\naliyun\ndev\ntest' | fzf --query="$1" --select-1 --exit-0 --height 10))
     [[ -n "$db" ]] && mycli --login-path "${db[@]}" < $TTY
     zle reset-prompt
 }
