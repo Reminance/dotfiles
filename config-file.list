@@ -12,4 +12,5 @@
 /home/xc/dotfiles/.config/i3blocks/config
 /home/xc/dotfiles/.config/nvim/init.vim
 /home/xc/dotfiles/.config/emacs/init.el
+/home/xc/dotfiles/.config/mycli/myclirc.symlink
 /home/xc/dotfiles/script/package-init.sh
