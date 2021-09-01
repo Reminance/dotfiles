@@ -44,3 +44,10 @@ sudo ln -sf /home/xc/workspace/java/zulu8-jdk/zulu8.54.0.21-ca-fx-jdk8.0.292-lin
 java -version
 echo $JAVA_HOME
 mvn -v
+
+# install mycli
+sudo pip install --upgrade pip
+sudo pip install -U mycli
+sps percona-server
+mysql_config_editor set --login-path=localhost --host=127.0.0.1 --port 3306 --user=root --password
+
