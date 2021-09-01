@@ -9,6 +9,8 @@ fi
 # Increase key speed via a rate change by default: auto repeat delay:  658    repeat rate:  25
 xset r rate 300 50
 
+pgrep copyq || { sleep 7 && copyq & }
+
 # could be in /etc/profile
 #export GTK_IM_MODULE=fcitx
 #export QT_IM_MODULE=fcitx
