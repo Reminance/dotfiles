@@ -17,7 +17,9 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
 
 " themes
 Plug 'connorholyday/vim-snazzy'
-Plug 'morhetz/gruvbox'
+" Plug 'joshdick/onedark.vim'
+" Plug 'morhetz/gruvbox'
+" Plug 'dracula/vim'
 " Plug 'w0ng/vim-hybrid'
 " Plug 'whatyouhide/vim-gotham'
 
@@ -213,8 +215,10 @@ let g:lightline={
 " colorscheme
 let g:SnazzyTransparent=1
 colorscheme snazzy
-" colorscheme gotham
+" colorscheme onedark
 " colorscheme gruvbox
+" colorscheme dracula
+" colorscheme gotham
 " colorscheme hybrid
 
 " vim-peekaboo
