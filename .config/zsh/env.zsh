@@ -34,7 +34,8 @@ export RANGER_LOAD_DEFAULT_RC=FALSE
 
 # GO
 export GO111MODULE=on
-export GOPROXY=https://goproxy.cn/
+export GOPROXY=https://goproxy.cn,https://gocenter.io,https://goproxy.io,direct
+# export GOPROXY=https://goproxy.cn/
 # export GOPROXY=https://mirrors.aliyun.com/goproxy
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
