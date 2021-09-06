@@ -156,6 +156,7 @@ output.null = "#808080"
 # zlpyv -h ebbg -u qri.frrh.vax -C 3306 --cnff 11111112
 # zlpyv -h yg_jzf_qri_ej_gr -u bcf-jzf-qo-qri01.furva.pbz -C 3310 --cnffjbeq u80GYN0hSsKuW1sF
 # zlpyv -h yg_arjfvgrgrfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq u80GYN0hSsKuW1sF
+# zlpyv -h yg_jzq_grfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq 75gxcIyFU3NZsd18NpcL
 
 # sps mysql-clients
 # mysql_config_editor set --login-path
@@ -163,3 +164,4 @@ output.null = "#808080"
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=nyvlha --ubfg=qri.frrh.vax --cbeg 3306 --hfre=ebbg --cnffjbeq
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=qri --ubfg=bcf-jzf-qo-qri01.furva.pbz --cbeg 3310 --hfre=yg_jzf_qri_ej_gr --cnffjbeq
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_arjfvgrgrfg_ej_gr --cnffjbeq
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_jzq_grfg_ej_gr --cnffjbeq 75gxcIyFU3NZsd18NpcL
