@@ -177,3 +177,7 @@ https://github.com/vivien/i3blocks-contrib
 https://github.com/vegarab/varbs
 https://github.com/vegarab/dotfiles
 ```
+
+# jetbrains
+This project provides a series of easy-to-use Linux configurations, including some interesting and useful programming-related codes and scripts.
+The project also demonstrates how to manage and install these configurations through makefile or symblolic link and shell scripts.
