@@ -81,7 +81,7 @@ Plug 'honza/vim-snippets'
 " Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Markdown
-" Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 "Plug 'vimwiki/vimwiki'
 
