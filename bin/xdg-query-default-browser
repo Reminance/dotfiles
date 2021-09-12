@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+env XDG_UTILS_DEBUG_LEVEL=10  xdg-mime query default text/html

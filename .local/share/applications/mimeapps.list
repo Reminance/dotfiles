@@ -17,3 +17,7 @@ application/rss+xml=rss.desktop
 video/x-matroska=video.desktop
 x-scheme-handler/lbry=lbry.desktop
 inode/directory=file.desktop
+text/html=google-chrome.desktop;firefox.desktop;
+application/xhtml+xml=google-chrome.desktop;firefox.desktop;
+x-scheme-handler/http=google-chrome.desktop;firefox.desktop;
+x-scheme-handler/https=google-chrome.desktop;firefox.desktop;

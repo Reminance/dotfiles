@@ -258,7 +258,8 @@ bindsym $mod+BackSpace exec vol-toggle
 bindsym $mod+Shift+p exec wp-change
 bindsym $mod+Ctrl+p exec picom-toggle
 
-bindsym $mod+c exec --no-startup-id google-chrome-stable
+# bindsym $mod+c exec --no-startup-id google-chrome-stable
+bindsym $mod+c exec --no-startup-id $BROWSER
 bindsym $mod+Ctrl+a exec --no-startup-id flameshot gui
 bindsym $mod+Ctrl+e exec "emacsclient -c -a %"
 # bindsym $mod+Ctrl+c exec "emacsclient -ne '(make-capture-frame)'"
