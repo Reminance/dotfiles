@@ -1,0 +1,35 @@
+#!/bin/sh
+
+# Set Session Name
+SESSION="Work"
+SESSIONEXISTS=$(tmux list-sessions | grep $SESSION)
+
+# Only create tmux session if it doesn't already exist
+if [ "$SESSIONEXISTS" = "" ]
+then
+
+    # # set up tmux
+    # tmux start-server
+
+    # Start New Session with our name
+    tmux new-session -d -s $SESSION
+
+    # Name first Pane and start zsh
+    tmux rename-window -t 0 'Main'
+    tmux send-keys -t 'Main' 'zsh' C-m 'clear' C-m # Switch to bind script?
+
+    # Create and setup pane for hugo server
+    tmux new-window -t $SESSION:1 -n 'Work Tool'
+    tmux send-keys -t 'Work Tool' 'cd ~/workspace/work-tools' C-m 'clear' C-m # Switch to bind script?
+
+    # DB
+    tmux new-window -t $SESSION:2 -n 'DB'
+    tmux send-keys -t 'DB' "zsh" C-m 'clear' C-m
+
+    # # Setup an additional shell
+    # tmux new-window -t $SESSION:2 -n 'Shell'
+    # tmux send-keys -t 'Shell' "zsh" C-m 'clear' C-m
+fi
+
+# Attach Session, on the Main window
+tmux attach-session -t $SESSION:0
