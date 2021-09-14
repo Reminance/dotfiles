@@ -61,6 +61,40 @@ unbind-key M-S-down   ; bind-key -n M-S-down    resize-pane -D 1
 unbind-key M-S-up     ; bind-key -n M-S-up      resize-pane -U 1
 unbind-key M-S-right  ; bind-key -n M-S-right   resize-pane -R 1
 
+
+
+
+# List of plugins
+# https://github.com/tmux-plugins/tpm
+# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# Press prefix + I (capital i, as in Install) to fetch the plugin.
+
+set -g @plugin 'tmux-plugins/tpm'
+# set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-yank'
+
+# https://github.com/wfxr/tmux-power
+# set -g @plugin 'wfxr/tmux-power'
+# set -g @tmux_power_theme 'snow'
+# set -g @tmux_power_theme 'sky'
+
+set -g @plugin 'dracula/tmux'
+# available plugins: battery, cpu-usage, gpu-usage, ram-usage, network, network-bandwith, weather, time
+# set -g @dracula-plugins "battery cpu-usage ram-usage network time"
+set -g @dracula-plugins "cpu-usage ram-usage time"
+# set -g @dracula-plugins " "
+# available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
+# set -g @dracula-[plugin-name]-colors "[background] [foreground]"
+set -g @dracula-ram-usage-colors "yellow dark_gray"
+set -g @dracula-border-contrast true
+set -g @dracula-show-flags true
+set -g @dracula-show-powerline true
+# it can accept `session`, `smiley`, `window`, or any character.
+set -g @dracula-show-left-icon session
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
+
 ## All kind of nice options
 #set-option -g   bell-action any
 #set-option -g   default-terminal screen
@@ -214,37 +248,3 @@ unbind-key M-S-right  ; bind-key -n M-S-right   resize-pane -R 1
 #unbind-key -t vi-copy Home  ; bind-key -t vi-copy Home  start-of-line
 #unbind-key -t vi-copy End   ; bind-key -t vi-copy End   end-of-line
 #unbind-key -t vi-copy b    ; bind-key -t vi-copy b    rectangle-toggle
-
-
-
-
-# List of plugins
-# https://github.com/tmux-plugins/tpm
-# git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-# Press prefix + I (capital i, as in Install) to fetch the plugin.
-
-set -g @plugin 'tmux-plugins/tpm'
-# set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-yank'
-
-# https://github.com/wfxr/tmux-power
-# set -g @plugin 'wfxr/tmux-power'
-# set -g @tmux_power_theme 'snow'
-# set -g @tmux_power_theme 'sky'
-
-set -g @plugin 'dracula/tmux'
-# available plugins: battery, cpu-usage, gpu-usage, ram-usage, network, network-bandwith, weather, time
-# set -g @dracula-plugins "battery cpu-usage ram-usage network time"
-set -g @dracula-plugins "cpu-usage ram-usage time"
-# set -g @dracula-plugins " "
-# available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
-# set -g @dracula-[plugin-name]-colors "[background] [foreground]"
-set -g @dracula-ram-usage-colors "yellow dark_gray"
-set -g @dracula-border-contrast true
-set -g @dracula-show-flags true
-set -g @dracula-show-powerline true
-# it can accept `session`, `smiley`, `window`, or any character.
-set -g @dracula-show-left-icon session
-
-# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
-run '~/.tmux/plugins/tpm/tpm'

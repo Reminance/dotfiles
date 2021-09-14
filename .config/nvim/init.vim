@@ -60,6 +60,20 @@ if has('persistent_undo')
     set undodir=~/.config/nvim/tmp/undo,.
 endif
 
+" status line
+set laststatus=0  " disable status line
+" set showtabline=0 " disable tab line
+function! ToggleHiddenStatusLine()
+    if &laststatus < 2
+        set laststatus=2
+        " set showtabline=2
+    else
+        set laststatus=0
+        " set showtabline=0
+    endif
+endfunction
+nnoremap <Leader>. :call ToggleHiddenStatusLine()<CR>
+
 " for ctags
 set tags=tags;/
 nnoremap <Leader>cg :!ctags --extra=+q --languages=java -R .
@@ -391,7 +405,7 @@ Plug 'lewis6991/gitsigns.nvim'
 " Plug 'karb94/neoscroll.nvim'
 Plug 'vimwiki/vimwiki', { 'on': ['VimwikiIndex'] }
 Plug 'norcalli/nvim-colorizer.lua', { 'branch': 'color-editor' }
-" Plug 'folke/which-key.nvim'
+Plug 'folke/which-key.nvim'
 " Plug 'wesQ3/vim-windowswap' " <leader>ww
 " Plug 'ggandor/lightspeed.nvim'
 " Plug 'phaazon/hop.nvim'
@@ -457,21 +471,23 @@ Plug 'voldikss/vim-translator'
 
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'connorholyday/vim-snazzy'
-Plug 'npxbr/gruvbox.nvim'
-Plug 'tjdevries/colorbuddy.vim'
-Plug 'Th3Whit3Wolf/onebuddy'
+" Plug 'lifepillar/vim-gruvbox8'
+" Plug 'Th3Whit3Wolf/onebuddy'
+" Plug 'tjdevries/colorbuddy.vim'
+" Plug 'tjdevries/gruvbuddy.nvim'
 
 call plug#end()
 
 if (has("termguicolors"))
   set termguicolors " enable true colors support
 endif
+set background=dark " light or dark
+let g:SnazzyTransparent=1
+colorscheme snazzy
 let g:dracula_colorterm = 0
 let g:dracula_italic = 1
-let g:SnazzyTransparent=1
 " colorscheme dracula
-colorscheme snazzy
-" set background=dark " light or dark
+" colorscheme gruvbox
 " colorscheme onebuddy
 
 " justinmk/vim-sneak {{{
@@ -918,13 +934,16 @@ nnoremap <Leader>gh :diffget //2<CR>
 nnoremap <Leader>gl :diffget //3<CR>
 nnoremap <Leader>G :G<CR>
 
-" which-key
+" liuchengxu/vim-which-key
 " let g:mapleader="\<Space>"
 " nnoremap <silent> <Leader>      :<C-u>WhichKey '<Space>'<CR>
 " let g:mapleader=','
 " let g:maplocalleader='\'
 " nnoremap <silent> <Leader>      :<C-u>WhichKey ','<CR>
 " nnoremap <silent> <LocalLeader> :<C-u>WhichKey  ','<CR>
+
+" folke/which-key.nvim
+lua require("which-key").setup {}
 
 " floaterm
 " let g:floaterm_keymap_toggle='<Leader>/'
