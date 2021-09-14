@@ -1,5 +1,4 @@
 /home/xc/dotfiles/config-file.list
-/home/xc/dotfiles/tmux.conf.symlink
 /home/xc/dotfiles/bashrc.symlink
 /home/xc/dotfiles/.config/zsh/zshrc.symlink
 /home/xc/dotfiles/.config/zsh/aliases.zsh
@@ -13,4 +12,5 @@
 /home/xc/dotfiles/.config/nvim/init.vim
 /home/xc/dotfiles/.config/emacs/init.el
 /home/xc/dotfiles/.config/mycli/myclirc.symlink
+/home/xc/dotfiles/.config/tmux/tmux.conf.symlink
 /home/xc/dotfiles/script/package-init.sh
