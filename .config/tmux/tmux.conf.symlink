@@ -81,7 +81,7 @@ set -g @plugin 'tmux-plugins/tmux-yank'
 set -g @plugin 'dracula/tmux'
 # available plugins: battery, cpu-usage, gpu-usage, ram-usage, network, network-bandwith, weather, time
 # set -g @dracula-plugins "battery cpu-usage ram-usage network time"
-set -g @dracula-plugins "cpu-usage ram-usage time"
+set -g @dracula-plugins "time"
 # set -g @dracula-plugins " "
 # available colors: white, gray, dark_gray, light_purple, dark_purple, cyan, green, orange, red, pink, yellow
 # set -g @dracula-[plugin-name]-colors "[background] [foreground]"
