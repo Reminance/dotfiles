@@ -39,7 +39,7 @@ function! ExecuteMultiLineShellCommand()
     let shellCmdStr=GetVisualSelection(visualmode())
     " for multiline shell commnd
     let shellCmdStr=substitute(shellCmdStr, "\\n", " ", "g")
-    echom shellCmdStr
+    " echom shellCmdStr
     " floatterm open
     exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr
 endfunction
