@@ -81,15 +81,6 @@
 ;; 关闭自动换行的功能
 (setq truncate-partial-width-windows nil)
 
-;; 创建新行的动作
-;; 回车时创建新行并且对齐
-(global-set-key (kbd "RET") 'newline-and-indent)
-;; 取消对齐创建的新行
-(global-set-key (kbd "S-<return>") 'comment-indent-new-line)
-
-;; 让光标无法离开视线
-(setq mouse-yank-at-point nil)
-
 ;; 最大单行字符数量
 (setq-default fill-column 80)
 
@@ -122,19 +113,15 @@
 (setq bookmark-default-file (expand-file-name "var/bookmarks" user-emacs-directory))
 
 ;; 更友好及平滑的滚动
-(setq scroll-step 1
-      scroll-margin 1
-      hscroll-step 1
-      hscroll-margin 1
-      scroll-conservatively 101
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01
-      scroll-preserve-screen-position 'always)
+(setq scroll-conservatively 100)
+
 ;; init message
-(setq-default initial-scratch-message
-              (concat ";; Life is either a daring adventure, or nothing; " user-login-name ", Emacs ♥ you!\n\n"))
+;; (setq-default initial-scratch-message
+;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
+
 ;; 设置光标样式
-(setq-default cursor-type 'bar)
+;; (setq-default cursor-type t)
+
 ;; 高亮当前行
 (global-hl-line-mode 1)
 
@@ -172,6 +159,7 @@
 ;;----------------------------------------------------------------------------
 ;; some custom shortcut
 ;; (global-unset-key (kbd "M-SPC"))
+(global-unset-key (kbd "C-z"))
 (define-prefix-command 'leader-key)
 (global-set-key (kbd "M-SPC") 'leader-key)
 (define-key leader-key "<f5>" 'revert-buffer)
@@ -230,6 +218,9 @@
 ;; 开启行号
 (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode +1)
+;; show modeline column number
+(setq column-number-mode t)
+
 ;; 选中文本后输入会覆盖
 (delete-selection-mode +1)
 
@@ -250,10 +241,10 @@
       (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
 ;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-(global-set-key (kbd "M-C-7") (lambda () (interactive) (my/toggle-transparency)))
-(global-set-key (kbd "M-C-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
-(global-set-key (kbd "M-C-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
-(global-set-key (kbd "M-C-0") (lambda () (interactive) (my/toggle-proxy)))
+(global-set-key (kbd "C-M-7") (lambda () (interactive) (my/toggle-transparency)))
+(global-set-key (kbd "C-M-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
+(global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
+(global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
 
 ;;;###autoload
 (defun my/toggle-transparency ()
@@ -267,7 +258,7 @@
                     ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         '(90 . 90) '(100 . 100)))))
+         '(96 . 96) '(100 . 100)))))
 
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -307,11 +298,8 @@
 ;;                          ))
 (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                         ("melpa-stable" . "http://elpa.emacs-china.org/melpa-stable/")
-                         ("marmalade" . "http://elpa.emacs-china.org/marmalade/")
+                         ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
                          ("org" . "http://elpa.emacs-china.org/org/")
-                         ("sunrise-commander-elpa" . "http://elpa.emacs-china.org/sunrise-commander/")
-                         ("user42-elpa"	. "http://elpa.emacs-china.org/user42/")
                          ))
 
 ;;; Fire up package.el
@@ -321,8 +309,8 @@
 ;;(add-to-list 'package-archives (cons "melpa-mirror" (concat proto "://www.mirrorservice.org/sites/melpa.org/packages/")) t)
 
 ;; Work-around for https://debbugs.gnu.org/cgi/bugreport.cgi?bug=34341
-(when (and (version< emacs-version "26.3") (boundp 'libgnutls-version) (>= libgnutls-version 30604))
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
+;; (when (and (version< emacs-version "26.3") (boundp 'libgnutls-version) (>= libgnutls-version 30604))
+;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 ;;; for use-package
 (unless (package-installed-p 'use-package)
@@ -363,6 +351,19 @@
                (ibuffer-auto-mode)
 	           (ibuffer-switch-to-saved-filter-groups "home")))
   :bind ([remap list-buffers] . ibuffer))
+(defun kill-current-buffer ()
+  "Kill the current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
+;; (global-set-key (kbd "C-x b") 'ibuffer)
+
+(use-package avy
+  :ensure t
+  :bind
+  ("M-s" . avy-goto-char)
+  ("M-S" . avy-goto-char-2)
+  )
 
 ;; exec-path-from-shell
 (use-package exec-path-from-shell
@@ -402,7 +403,9 @@
 
 ;; magit
 (use-package magit
-  :commands (magit))
+  :commands (magit)
+  :bind
+  ("M-g" . magit-status))
 
 ;; 显示当前行修改-Git
 (use-package git-gutter-fringe
@@ -410,7 +413,7 @@
   :custom
   (git-gutter:update-interval 1)
   (git-gutter:added-sign "+")
-  (git-gutter:deleted-sign "_")
+  (git-gutter:deleted-sign "-")
   (git-gutter:modified-sign "~")
   (git-gutter:hide-gutter t))
 
@@ -419,16 +422,17 @@
   :hook (prog-mode . company-mode)
   :demand t
   :diminish company-mode
-  :bind (("C-<tab>" . company-complete)
+  ;; :bind (("C-<tab>" . company-complete)
+  :bind (
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          ("<tab>" . company-complete-selection)
-         ("C-j" . company-complete-selection))
+         ("SPC" . company-abort))
   :config
   (progn
     (add-hook 'prog-mode-hook 'company-mode)
-    (setq company-idle-delay 0.5
+    (setq company-idle-delay 0
           company-echo-delay 0
           company-tooltip-align-annotations t
           company-tooltip-limit 10
@@ -438,10 +442,7 @@
           company-dabbrev-ignore-case nil
           company-dabbrev-downcase nil
           company-global-modes '(not magit-status-mode))
-    (use-package company-quickhelp
-      :init
-      (with-eval-after-load 'company
-        (company-quickhelp-mode)))))
+    ))
 
 ;; 美化company
 (use-package company-box
@@ -457,9 +458,41 @@
 (use-package yasnippet-snippets :after yasnippet)
 
 (use-package multiple-cursors
-  :bind (("M-." . mc/mark-next-like-this)
-         ("M-," . mc/unmark-next-like-this)
+  :bind (("M-N" . mc/mark-next-like-this)
+         ("M-P" . mc/unmark-next-like-this)
          ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+
+(use-package rainbow-mode
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'rainbow-mode))
+
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
+
+(use-package expand-region
+  :ensure t
+  :bind ("C-<RET>" . er/expand-region))
+
+(use-package diminish
+  :ensure t
+  :init
+  (diminish 'which-key-mode)
+  (diminish 'linum-relative-mode)
+  (diminish 'hungry-delete-mode)
+  (diminish 'visual-line-mode)
+  (diminish 'subword-mode)
+  (diminish 'beacon-mode)
+  (diminish 'irony-mode)
+  (diminish 'page-break-lines-mode)
+  (diminish 'auto-revert-mode)
+  (diminish 'rainbow-delimiters-mode)
+  (diminish 'rainbow-mode)
+  (diminish 'yas-minor-mode)
+  (diminish 'flycheck-mode)
+  (diminish 'helm-mode))
 
 ;; 编译运行当前文件
 (use-package quickrun
@@ -486,10 +519,10 @@
 	:default "c++"))
 
 ;; 人工智能补全代码
-(use-package company-tabnine
-  :disabled
-  :after 'company-mode 'company-tabnine-mode
-  :config (add-to-list 'company-backends #'company-tabnine))
+;; (use-package company-tabnine
+;;   :disabled
+;;   :after 'company-mode 'company-tabnine-mode
+;;   :config (add-to-list 'company-backends #'company-tabnine))
 
 ;; 项目管理
 (use-package projectile)
@@ -526,6 +559,8 @@
      (dot . t)
      (haskell . nil)
      (latex . t)
+     (C . t)
+     (go . t)
      (python . t)
      (ruby . t)
      (,(if (locate-library "ob-shell") 'sh 'shell) . t)
@@ -533,8 +568,8 @@
      (sqlite . t))))
 
 ;; 切换buffer焦点时高亮动画
-(use-package beacon
-  :hook (after-init . beacon-mode))
+;; (use-package beacon
+;;   :hook (after-init . beacon-mode))
 
 ;; 有道词典，非常有用
 (use-package youdao-dictionary
@@ -589,30 +624,40 @@
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
+;; Toggle buffer size display in the mode line (Size Indication mode).
+(size-indication-mode 1)
 
 ;; 增强*help* buffer的功能
-(use-package helpful
-  :bind
-  (("C-h f" . helpful-callable)
-   ("C-h v" . helpful-variable)
-   ("C-h k" . helpful-key)))
+;; (use-package helpful
+;;   :bind
+;;   (("C-h f" . helpful-callable)
+;;    ("C-h v" . helpful-variable)
+;;    ("C-h k" . helpful-key)))
 
 ;; 为*help*中的函数提供elisp例子
-(use-package elisp-demos
-  :config
-  (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
+;; (use-package elisp-demos
+;;   :config
+;;   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
 
 ;; 关闭鼠标功能
-(use-package disable-mouse
-  :hook (after-init . (lambda ()
-                        (global-disable-mouse-mode -1))))
+;; (use-package disable-mouse
+;;   :hook (after-init . (lambda ()
+;;                         (global-disable-mouse-mode -1))))
 
 ;; 管理员模式编辑
 (use-package sudo-edit)
 
 ;; 括号匹配
-(use-package smartparens
-  :hook (prog-mode . smartparens-mode))
+(setq electric-pair-pairs '(
+                            (?\{ . ?\})
+                            (?\( . ?\))
+                            (?\[ . ?\])
+                            (?\" . ?\")
+                            ))
+(electric-pair-mode t)
+
+;; (use-package smartparens
+;;   :hook (prog-mode . smartparens-mode))
 
 ;; 回到关闭文件前光标的位置
 (use-package saveplace
@@ -629,29 +674,46 @@
   (which-key-mode 1))
 
 ;; 如果不喜欢ivy可以用这个包替换
-(use-package selectrum :config (selectrum-mode +1))
+;; (use-package selectrum :config (selectrum-mode +1))
+
+;; (use-package ivy-prescient
+;;   :after counsel
+;;   :config
+;;   (setq prescient-sort-length-enable nil)
+;;   ;; This is the default value!
+;;   (setq prescient-filter-method '(literal regexp fuzzy))
+;;   ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+;;   (setq ivy-prescient-enable-filtering nil)
+;;   ;; Getting the old highlighting back
+;;   ;; (setq ivy-prescient-retain-classic-highlighting t)
+;;   (ivy-prescient-mode 1)
+;;   ;; Remember candidate frequencies across sessions
+;;   (prescient-persist-mode 1))
+
+;; (use-package company-prescient
+;;   :after company
+;;   :config
+;;   (company-prescient-mode 1))
+
+;; (use-package selectrum-prescient
+;;     :config
+;;     (prescient-persist-mode +1)
+;;     (selectrum-prescient-mode +1))
 
 ;; 增强了搜索功能
 (use-package swiper
-  :bind
-  (("C-s" . swiper)
-   ("C-c C-r" . ivy-resume)
-   ("M-x" . counsel-M-x)
-   ("C-x C-f" . counsel-find-file))
-  :config
-  (setq counsel-describe-function-function #'helpful-callable)
-  (setq counsel-describe-variable-function #'helpful-variable)
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-display-style 'fancy)
-    (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)))
+  :ensure t
+  :bind ("C-s" . 'swiper))
 
 ;; 集成了很多非常有用的的功能
 (use-package counsel
   :bind
-  (("C-x C-r" . 'counsel-recentf)
+  (
+   ("M-x" . 'counsel-M-x)
+   ("C-x b" . 'counsel-switch-buffer)
    ("C-x d" . 'counsel-dired)
+   ("C-x C-f" . 'counsel-find-file)
+   ("C-x C-r" . 'counsel-recentf)
    ("C-M-f" . counsel-rg)
    ("C-M-n" . counsel-fzf)
    )
@@ -664,30 +726,6 @@
   (with-eval-after-load 'projectile
     (setq projectile-completion-system 'ivy)))
 
-(use-package ivy-prescient
-  :after counsel
-  :config
-  (setq prescient-sort-length-enable nil)
-  ;; This is the default value!
-  (setq prescient-filter-method '(literal regexp fuzzy))
-  ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
-  (setq ivy-prescient-enable-filtering nil)
-  ;; Getting the old highlighting back
-  ;; (setq ivy-prescient-retain-classic-highlighting t)
-  (ivy-prescient-mode 1)
-  ;; Remember candidate frequencies across sessions
-  (prescient-persist-mode 1))
-
-(use-package company-prescient
-  :after company
-  :config
-  (company-prescient-mode 1))
-
-(use-package selectrum-prescient
-    :config
-    (prescient-persist-mode +1)
-    (selectrum-prescient-mode +1))
-
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
@@ -695,17 +733,25 @@
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t))
+;; Easy Templates support shortcuts such as: '<s + TAB'
+(require 'org-tempo)
 
+(global-set-key (kbd "C-c '") 'org-edit-src-code)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-confirm-babel-evaluate nil)
 (setq org-babel-confirm-evaluate nil)
-(setq org-default-notes-file "~/doc/org/notes.org")
+(setq org-src-window-setup 'current-window)
 (setq org-display-inline-images t)
 (setq org-redisplay-inline-images t)
 (setq org-startup-with-inline-images nil)
+(setq org-default-notes-file "~/doc/org/notes.org")
 (setq org-agenda-files (list
                         "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
                         ))
+(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;;; Archiving
 (setq org-archive-mark-done nil)
@@ -725,7 +771,7 @@
 (use-package org-bullets
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
-  ;;   :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
+    ;; :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
   )
 
 ;; flycheck
@@ -748,10 +794,10 @@
       'center)))
 
 ;; for hydra
-(use-package hydra :defer 0)
-(use-package major-mode-hydra
-  :defer 0
-  :after hydra)
+;; (use-package hydra :defer 0)
+;; (use-package major-mode-hydra
+;;   :defer 0
+;;   :after hydra)
 ;; (use-package hydra-posframe
 ;;   :quelpa ((hydra-posframe
 ;;             :fetcher github
@@ -774,47 +820,47 @@
 ;; = + c/c++                                       =
 ;; =   > `sudo pacman -S ccls'                     =
 ;; =================================================
-(use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
-  :bind (:map lsp-mode-map
-              ("M-C-l" . lsp-format-buffer)
-              ("M-RET" . lsp-ui-sideline-apply-code-actions)
-              ("M-RET" . lsp-execute-code-action))
-  :config (setq lsp-completion-enable-additional-text-edit nil))
+;; (use-package lsp-mode
+;;   :hook ((lsp-mode . lsp-enable-which-key-integration))
+;;   :bind (:map lsp-mode-map
+;;               ("M-C-l" . lsp-format-buffer)
+;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
+;;               ("M-RET" . lsp-execute-code-action))
+;;   :config (setq lsp-completion-enable-additional-text-edit nil))
 
-;; lsp-java
-(use-package lsp-java
-  :config
-  (add-hook 'java-mode-hook 'lsp)
-  (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
+;; ;; lsp-java
+;; (use-package lsp-java
+;;   :config
+;;   (add-hook 'java-mode-hook 'lsp)
+;;   (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
 
-;; 美化lsp-mode
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  ;; sideline
-  (setq lsp-ui-sideline-show-diagnostics t
-        lsp-ui-sideline-show-hover t
-        lsp-ui-sideline-show-code-actions nil
-        lsp-ui-sideline-update-mode 'line
-        ;; sideline
-        lsp-ui-sideline-delay 1)
-  ;; peek
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-  ;; doc
-  (setq lsp-ui-doc-enable t
-        ;; 文档显示的位置
-        lsp-ui-doc-position 'top
-        ;; 显示文档的延迟
-        lsp-ui-doc-delay 2))
+;; ;; 美化lsp-mode
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :config
+;;   ;; sideline
+;;   (setq lsp-ui-sideline-show-diagnostics t
+;;         lsp-ui-sideline-show-hover t
+;;         lsp-ui-sideline-show-code-actions nil
+;;         lsp-ui-sideline-update-mode 'line
+;;         ;; sideline
+;;         lsp-ui-sideline-delay 1)
+;;   ;; peek
+;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+;;   ;; doc
+;;   (setq lsp-ui-doc-enable t
+;;         ;; 文档显示的位置
+;;         lsp-ui-doc-position 'top
+;;         ;; 显示文档的延迟
+;;         lsp-ui-doc-delay 2))
 
-;; 各个语言的Debug工具
-(use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
-(use-package dap-java :ensure nil)
+;; ;; 各个语言的Debug工具
+;; (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+;; (use-package dap-java :ensure nil)
 
-;; 写js可用的模式
-(use-package js2-mode)
+;; ;; 写js可用的模式
+;; (use-package js2-mode)
 
 ;; mu4e
 ;; (use-package mu4e
