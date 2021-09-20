@@ -303,7 +303,8 @@ func! CompileRunGcc()
         " set splitbelow
         " :sp
         " :term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
-        :FloatermNew export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
+        " :FloatermNew export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
+        :FloatermNew export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings %
     elseif &filetype == 'go'
         " set splitbelow
         " :sp
