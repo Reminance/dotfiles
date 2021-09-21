@@ -648,9 +648,9 @@
     :config
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
           doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    (load-theme 'doom-molokai t)
+    (load-theme 'doom-gruvbox t)
+    ;; (load-theme 'doom-molokai t)
     ;; (load-theme 'doom-monokai-pro t)
-    ;; (load-theme 'doom-gruvbox t)
     ;; (load-theme 'doom-xcode t)
     )
   )

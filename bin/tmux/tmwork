@@ -31,9 +31,9 @@ then
     tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m
     # tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m runemacs C-m
 
-    # # Setup an additional shell
-    # tmux new-window -t $SESSION:4 -n 'Shell'
-    # tmux send-keys -t 'Shell' "zsh" C-m 'clear' C-m
+    # Setup an additional shell
+    tmux new-window -t $SESSION:4 -n 'Shell'
+    tmux send-keys -t 'Shell' "zsh" C-m 'clear' C-m
 fi
 
 # Attach Session, on the Main window
