@@ -18,7 +18,7 @@ then
     tmux rename-window -t 0 'Main'
     tmux send-keys -t 'Main' 'zsh' C-m 'clear' C-m # Switch to bind script?
 
-    # Create and setup pane for hugo server
+    # Create and setup pane for work tool
     tmux new-window -t $SESSION:1 -n 'Work Tool'
     tmux send-keys -t 'Work Tool' 'cd ~/workspace/work-tools' C-m 'clear' C-m # Switch to bind script?
 
@@ -26,8 +26,13 @@ then
     tmux new-window -t $SESSION:2 -n 'DB'
     tmux send-keys -t 'DB' "zsh" C-m 'clear' C-m
 
+    # emacs
+    tmux new-window -t $SESSION:3 -n 'emacs'
+    tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m
+    # tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m runemacs C-m
+
     # # Setup an additional shell
-    # tmux new-window -t $SESSION:2 -n 'Shell'
+    # tmux new-window -t $SESSION:4 -n 'Shell'
     # tmux send-keys -t 'Shell' "zsh" C-m 'clear' C-m
 fi
 

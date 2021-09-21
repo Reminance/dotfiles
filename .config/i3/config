@@ -241,7 +241,8 @@ gaps inner 20
 gaps outer 5
 
 bindsym $mod+semicolon     exec --no-startup-id ddspawn scratchpadterm
-bindsym $mod+apostrophe    exec --no-startup-id ddspawn scratchpadcalc scratchpadcalc
+# bindsym $mod+apostrophe    exec --no-startup-id ddspawn scratchpadcalc scratchpadcalc
+bindsym $mod+apostrophe    exec --no-startup-id ddspawn scratchpadtmux scratchpadtmux
 bindsym $mod+backslash     exec --no-startup-id ddspawn thunderbird thunderbird false
 
 # Startup applications
@@ -284,9 +285,11 @@ for_window [class="scratchpad_*"] sticky enable
 for_window [class="scratchpad_*"] scratchpad show
 for_window [class="scratchpad_thunderbird"] resize set 1000 800
 
-for_window [instance="scratchpad_scratchpadcalc"] resize set 800 300
+for_window [instance="scratchpad_scratchpadtmux"] resize set 1200 900
+# for_window [instance="scratchpad_scratchpadcalc"] resize set 800 300
 for_window [instance="scratchpad_scratchpadterm"] resize set 800 400
 for_window [instance="scratchpad_scratchpadcalc"] border pixel 2
+for_window [instance="scratchpad_scratchpadtmux"] border pixel 0
 # for_window [instance="scratchpad_tmuxdd"] resize set 625 450
 # for_window [instance="scratchpad_tmuxdd"] border pixel 3
 # for_window [class="chrome"] border pixel 0

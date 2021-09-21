@@ -179,8 +179,8 @@
   (if (null url-proxy-services)
       (progn
         (setq url-proxy-services
-              '(("http" . "127.0.0.1:7890")
-                ("https" . "127.0.0.1:7890")))
+              '(("http" . "192.168.0.101:7890")
+                ("https" . "192.168.0.101:7890")))
         (message "proxy on."))
     (setq url-proxy-services nil)
     (message "proxy off.")))
@@ -213,10 +213,11 @@
   (tool-bar-mode -1))
 (when (fboundp 'set-scroll-bar-mode)
   (set-scroll-bar-mode nil))
+(when (fboundp 'menu-bar-mode)
+  (menu-bar-mode -1))
 
-(menu-bar-mode -1)
 ;; 开启行号
-(setq display-line-numbers-type 'relative)
+;; (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode +1)
 ;; show modeline column number
 (setq column-number-mode t)
@@ -247,6 +248,8 @@
 (global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
 
 ;;;###autoload
+;; Make frame transparency overridable
+(defvar my/frame-transparency '(90 . 90))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -255,10 +258,13 @@
      nil 'alpha
      (if (eql (cond ((numberp alpha) alpha)
                     ((numberp (cdr alpha)) (cdr alpha))
-                    ;; Also handle undocumented (<active> <inactive>) form.
                     ((numberp (cadr alpha)) (cadr alpha)))
               100)
-         '(96 . 96) '(100 . 100)))))
+         my/frame-transparency '(100 . 100)))))
+
+;; Set frame transparency
+(set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
+(add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
 
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -397,7 +403,16 @@
       (define-key (eval map) "\C-f" nil)
       (define-key (eval map) "\C-b" nil)
       (define-key (eval map) "\C-y" nil)
+      (define-key (eval map) "\C-k" nil)
+      (define-key (eval map) "\C-z" nil)
       (define-key (eval map) "\M-." nil)
+      (define-key (eval map) (kbd "TAB") nil)
+      ))
+  (eval-after-load "evil-maps"
+    (dolist (map '(
+                   evil-insert-state-map
+                   ))
+      (define-key (eval map) "\C-w" nil)
       ))
   (evil-mode 1))
 
@@ -559,23 +574,20 @@
 ;;                               "mR" 'restclient-http-send-current-raw
 ;;                               "my" 'restclient-copy-curl-command)
 
-(require 'ob-shell)
 (require 'url-util)
+(use-package ob-go
+  :ensure t)
 
-(with-eval-after-load 'org
-  (org-babel-do-load-languages
-   'org-babel-do-load-languages
-   `((R . t)
-     (dot . t)
-     (haskell . nil)
-     (latex . t)
-     (C . t)
-     (go . t)
-     (python . t)
-     (ruby . t)
-     (,(if (locate-library "ob-shell") 'sh 'shell) . t)
-     (sql . t)
-     (sqlite . t))))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (C . t)
+   (shell . t)
+   (sql . t)
+   (java . t)
+   (go . t)
+   (emacs-lisp . t)
+   (shell . t)))
 
 ;; 切换buffer焦点时高亮动画
 ;; (use-package beacon
@@ -619,21 +631,31 @@
 (use-package command-log-mode)
 
 ;; themes config
-(use-package doom-themes
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  ;;  (load-theme 'doom-Iosvkem t)
-  ;;  (load-theme 'doom-one t)
-  (load-theme 'doom-snazzy t)
-  ;;  (load-theme 'doom-dracula t)
-  ;; Enable flashing mode-line on errors
-  ;; (doom-themes-visual-bell-config)
+(if (display-graphic-p)
+    (use-package doom-themes
+      :config
+      ;; Global settings (defaults)
+      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+            doom-themes-enable-italic t) ; if nil, italics is universally disabled
+      ;; (load-theme 'doom-Iosvkem t)
+      ;; (load-theme 'doom-one t)
+      (load-theme 'doom-snazzy t)
+      ;; (load-theme 'doom-dracula t)
+      ;; Enable flashing mode-line on errors
+      ;; (doom-themes-visual-bell-config)
+      )
+  (use-package doom-themes
+    :config
+    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;; (load-theme 'doom-molokai t)
+    (load-theme 'doom-xcode t)
+    )
   )
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
+
 ;; Toggle buffer size display in the mode line (Size Indication mode).
 (size-indication-mode 1)
 
@@ -659,11 +681,16 @@
 
 ;; 括号匹配
 (setq electric-pair-pairs '(
-                            (?\{ . ?\})
                             (?\( . ?\))
                             (?\[ . ?\])
+                            (?\{ . ?\})
+                            (?\` . ?\`)
+                            (?\' . ?\')
                             (?\" . ?\")
                             ))
+(setq electric-pair-inhibit-predicate
+      (lambda (c)
+        (if (char-equal c ?\<) t (electric-pair-default-inhibit c))))
 (electric-pair-mode t)
 
 ;; (use-package smartparens
