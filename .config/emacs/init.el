@@ -174,7 +174,7 @@
 ;; custom common function
 ;;----------------------------------------------------------------------------
 (defun my/toggle-proxy ()
-  "切换代理."
+  "Toggle-proxy."
   (interactive)
   (if (null url-proxy-services)
       (progn
@@ -248,7 +248,7 @@
 
 ;;;###autoload
 (defun my/toggle-transparency ()
-  "切换透明度."
+  "Toggle-transparency."
   (interactive)
   (let ((alpha (frame-parameter nil 'alpha)))
     (set-frame-parameter
@@ -325,6 +325,10 @@
   :init (windmove-default-keybindings)
   :config (use-package buffer-move)
   :bind (
+         ("M-<left>" . 'windmove-left)
+         ("M-<down>" . 'windmove-down)
+         ("M-<up>" . 'windmove-up)
+         ("M-<right>" . 'windmove-right)
          ("M-C-<left>" . #'shrink-window-horizontally)
          ("M-C-<down>" . #'enlarge-window)
          ("M-C-<up>" . #'shrink-window)
@@ -338,8 +342,8 @@
   (setq ibuffer-show-empty-filter-groups nil)
   (setq ibuffer-saved-filter-groups
         (quote (("home"
-                 ("dotfiles" (or (filename . ".dotfiles")))
                  ("workspace" (filename . "workspace"))
+                 ("dotfiles" (or (filename . ".dotfiles")))
                  ("mu4e" (or (filename . "\*mu4e\*")))
                  ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
 	             ("Org" (or (mode . org-mode) (filename . "OrgMode")))
@@ -375,26 +379,27 @@
 (use-package try)
 
 ;; evil
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(evil-motion-state-map
-;;                    evil-normal-state-map
-;;                    evil-insert-state-map
-;;                    evil-visual-state-map
-;;                    evil-emacs-state-map))
-;;       (define-key (eval map) "\C-n" nil)
-;;       (define-key (eval map) "\C-p" nil)
-;;       (define-key (eval map) "\C-a" nil)
-;;       (define-key (eval map) "\C-e" nil)
-;;       (define-key (eval map) "\C-f" nil)
-;;       (define-key (eval map) "\C-b" nil)
-;;       (define-key (eval map) "\M-." nil)
-;;       ))
-;;   (evil-mode 1))
+(use-package evil
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-normal-state-map
+                   evil-insert-state-map
+                   evil-visual-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-n" nil)
+      (define-key (eval map) "\C-p" nil)
+      (define-key (eval map) "\C-a" nil)
+      (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\C-f" nil)
+      (define-key (eval map) "\C-b" nil)
+      (define-key (eval map) "\C-y" nil)
+      (define-key (eval map) "\M-." nil)
+      ))
+  (evil-mode 1))
 
 ;; (use-package evil-collection
 ;;   :after evil
@@ -474,7 +479,12 @@
 
 (use-package expand-region
   :ensure t
-  :bind ("C-<RET>" . er/expand-region))
+  :bind ("C-;" . er/expand-region))
+
+(setq kill-ring-max 100)
+(use-package popup-kill-ring
+  :ensure t
+  :bind ("M-y" . popup-kill-ring))
 
 (use-package diminish
   :ensure t
@@ -699,6 +709,9 @@
 ;;     :config
 ;;     (prescient-persist-mode +1)
 ;;     (selectrum-prescient-mode +1))
+
+(use-package ivy
+  :ensure t)
 
 ;; 增强了搜索功能
 (use-package swiper
