@@ -16,16 +16,17 @@ then
 
     # Name first Pane and start zsh
     tmux rename-window -t 1 'Main'
-    tmux send-keys -t 'Main' 'zsh' C-m 'clear' C-m # Switch to bind script?
+    tmux send-keys -t 'Main' 'zsh' C-m 'cd ~/dotfiles' C-m 'clear' C-m
 
     # emacs
     tmux new-window -t $SESSION:2 -n 'Emacs'
-    tmux send-keys -t 'Emacs' "zsh" C-m 'clear' C-m 'env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw' C-m
-    # tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m runemacs C-m
+    tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m
+    # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m 'env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw' C-m
+    # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m runemacs C-m
 
-    # Create and setup pane for work tool
-    tmux new-window -t $SESSION:3 -n 'Worktool'
-    tmux send-keys -t 'Worktool' 'cd ~/workspace/work-tools' C-m 'clear' C-m # Switch to bind script?
+    # Create and setup pane for doc
+    tmux new-window -t $SESSION:3 -n 'Doc'
+    tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m
 
     # Setup an additional shell
     tmux new-window -t $SESSION:4 -n 'Shell'
