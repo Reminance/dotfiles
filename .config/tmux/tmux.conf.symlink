@@ -16,7 +16,9 @@ set-option -ga terminal-overrides ",xterm-256color:Tc"
 set -g default-terminal "screen-256color"
 
 # set-option -g status-position top
-set-option -g status-position bottom
+# set-option -g status-position bottom
+# set-option -g status off
+bind-key -n C-F3 set-option -g status
 
 ## Use vim keybindings in copy mode
 setw -g mode-keys vi
@@ -70,7 +72,7 @@ unbind-key M-S-right  ; bind-key -n M-S-right   resize-pane -R 1
 # Press prefix + I (capital i, as in Install) to fetch the plugin.
 
 set -g @plugin 'tmux-plugins/tpm'
-# set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 
 # https://github.com/wfxr/tmux-power
