@@ -404,6 +404,7 @@
       (define-key (eval map) "\C-b" nil)
       (define-key (eval map) "\C-y" nil)
       (define-key (eval map) "\C-k" nil)
+      (define-key (eval map) "\C-d" nil)
       (define-key (eval map) "\C-z" nil)
       (define-key (eval map) "\M-." nil)
       (define-key (eval map) (kbd "TAB") nil)
@@ -588,6 +589,7 @@
    (go . t)
    (emacs-lisp . t)
    (shell . t)))
+(global-set-key (kbd "C-c r") 'org-babel-remove-result)
 
 ;; 切换buffer焦点时高亮动画
 ;; (use-package beacon
@@ -632,16 +634,26 @@
 
 ;; themes config
 (use-package doom-themes
-    :config
-    ;; Global settings (defaults)
-    (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-    ;; (load-theme 'doom-Iosvkem t)
-    ;; (load-theme 'doom-one t)
-    ;; (load-theme 'doom-dracula t)
-    ;; Enable flashing mode-line on errors
-    ;; (doom-themes-visual-bell-config)
-    )
+  (load-theme 'doom-molokai t)
+  ;; (load-theme 'doom-gruvbox t)
+  ;; (load-theme 'doom-monokai-pro t)
+  ;; (load-theme 'doom-Iosvkem t)
+  ;; (load-theme 'doom-one t)
+  ;; (load-theme 'doom-dracula t)
+  ;; Enable flashing mode-line on errors
+  ;; (doom-themes-visual-bell-config)
+  )
+;; (if (display-graphic-p)
+;;     (load-theme 'doom-molokai t)
+;;   ;; (load-theme 'doom-gruvbox t)
+;;   ;; (load-theme 'doom-molokai t)
+;;   (load-theme 'doom-monokai-pro t)
+;;   )
+
 ;; (use-package zenburn-theme
 ;;   :config
 ;;   (load-theme 'zenburn t)
@@ -675,11 +687,6 @@
 ;;   ;; (load-theme 'doom-monokai-pro t)
 ;;   ;; (load-theme 'doom-xcode t)
 ;;   )
-(if (display-graphic-p)
-    (load-theme 'doom-molokai t)
-    (load-theme 'doom-gruvbox t)
-    ;; (load-theme 'doom-molokai t)
-  )
 
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
@@ -873,6 +880,25 @@
 ;;   :hook (after-init . (lambda ()
 ;;                         (hydra-posframe-mode +1) ) ))
 
+;; golang
+(use-package go-mode
+  :ensure t)
+;; Go - lsp-mode
+;; Set up before-save hooks to format buffer and add/delete imports.
+(defun lsp-go-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-save-hooks)
+
+;; Start LSP Mode and YASnippet mode
+;; (add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook 'lsp)
+(add-hook 'go-mode-hook 'yas-minor-mode)
+
+;; C/C++
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+
 ;; lsp
 ;; =================================================
 ;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
@@ -887,41 +913,46 @@
 ;; =   > `(use-package lsp-java)'        =
 ;; = + c/c++                                       =
 ;; =   > `sudo pacman -S ccls'                     =
+;; = + go
+;; =   > `sudo pacman -S gopls'                     =
 ;; =================================================
-;; (use-package lsp-mode
-;;   :hook ((lsp-mode . lsp-enable-which-key-integration))
-;;   :bind (:map lsp-mode-map
-;;               ("M-C-l" . lsp-format-buffer)
-;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
-;;               ("M-RET" . lsp-execute-code-action))
-;;   :config (setq lsp-completion-enable-additional-text-edit nil))
+(use-package lsp-mode
+  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :bind (:map lsp-mode-map
+              ("M-C-l" . lsp-format-buffer)
+              ("M-RET" . lsp-ui-sideline-apply-code-actions)
+              ("M-RET" . lsp-execute-code-action))
+  :config
+  (setq lsp-completion-enable-additional-text-edit nil)
+  (setq lsp-enable-symbol-highlighting nil)
+  )
+
+;; ;; 美化lsp-mode
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  ;; sideline
+  (setq lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-hover t
+        lsp-ui-sideline-show-code-actions t
+        lsp-ui-sideline-update-mode 'line
+        ;; sideline
+        lsp-ui-sideline-delay 0.2)
+  ;; peek
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  ;; doc
+  (setq lsp-ui-doc-enable t
+        ;; 文档显示的位置
+        lsp-ui-doc-position 'at-point
+        ;; 显示文档的延迟
+        lsp-ui-doc-delay 1))
 
 ;; ;; lsp-java
 ;; (use-package lsp-java
 ;;   :config
 ;;   (add-hook 'java-mode-hook 'lsp)
 ;;   (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
-
-;; ;; 美化lsp-mode
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :config
-;;   ;; sideline
-;;   (setq lsp-ui-sideline-show-diagnostics t
-;;         lsp-ui-sideline-show-hover t
-;;         lsp-ui-sideline-show-code-actions nil
-;;         lsp-ui-sideline-update-mode 'line
-;;         ;; sideline
-;;         lsp-ui-sideline-delay 1)
-;;   ;; peek
-;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-;;   ;; doc
-;;   (setq lsp-ui-doc-enable t
-;;         ;; 文档显示的位置
-;;         lsp-ui-doc-position 'top
-;;         ;; 显示文档的延迟
-;;         lsp-ui-doc-delay 2))
 
 ;; ;; 各个语言的Debug工具
 ;; (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
