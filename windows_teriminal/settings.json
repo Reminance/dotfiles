@@ -28,6 +28,10 @@
             "command": "null",
             "keys": "alt+enter"
         },
+        {
+            "command": "null",
+            "keys": "alt+space"
+        },
         // Press Ctrl+Shift+F to open the search box
         // {
         //     "command": "find",
