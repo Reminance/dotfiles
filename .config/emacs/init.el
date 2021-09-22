@@ -631,28 +631,54 @@
 (use-package command-log-mode)
 
 ;; themes config
-(if (display-graphic-p)
-    (use-package doom-themes
-      :config
-      ;; Global settings (defaults)
-      (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-            doom-themes-enable-italic t) ; if nil, italics is universally disabled
-      ;; (load-theme 'doom-Iosvkem t)
-      ;; (load-theme 'doom-one t)
-      (load-theme 'doom-snazzy t)
-      ;; (load-theme 'doom-dracula t)
-      ;; Enable flashing mode-line on errors
-      ;; (doom-themes-visual-bell-config)
-      )
-  (use-package doom-themes
+(use-package doom-themes
     :config
+    ;; Global settings (defaults)
     (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-          doom-themes-enable-italic t) ; if nil, italics is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+    ;; (load-theme 'doom-Iosvkem t)
+    ;; (load-theme 'doom-one t)
+    ;; (load-theme 'doom-dracula t)
+    ;; Enable flashing mode-line on errors
+    ;; (doom-themes-visual-bell-config)
+    )
+;; (use-package zenburn-theme
+;;   :config
+;;   (load-theme 'zenburn t)
+;;   )
+;; (use-package monokai-alt-theme
+;;   :config
+;;   (load-theme 'monokai-alt t)
+;;   )
+;; (use-package monokai-pro-theme
+;;   :config
+;;   (load-theme 'monokai-pro t)
+;;   )
+;; (use-package monokai-theme
+;;   :config
+;;   (load-theme 'monokai t)
+;;   )
+;; (use-package gruvbox-theme
+;;   :config
+;;   (load-theme 'gruvbox t)
+;;   )
+;; (use-package flatland-theme
+;;   :config
+;;   (load-theme 'flatland t)
+;;   )
+;; (use-package doom-themes
+;;   :config
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-gruvbox t)
+;;   ;; (load-theme 'doom-molokai t)
+;;   ;; (load-theme 'doom-monokai-pro t)
+;;   ;; (load-theme 'doom-xcode t)
+;;   )
+(if (display-graphic-p)
+    (load-theme 'doom-molokai t)
     (load-theme 'doom-gruvbox t)
     ;; (load-theme 'doom-molokai t)
-    ;; (load-theme 'doom-monokai-pro t)
-    ;; (load-theme 'doom-xcode t)
-    )
   )
 
 (use-package doom-modeline
