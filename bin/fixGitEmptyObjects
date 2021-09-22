@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# https://stackoverflow.com/questions/11706215/how-can-i-fix-the-git-error-object-file-is-empty
 find .git/objects/ -type f -empty | xargs rm
 git fetch -p
 git fsck --full
