@@ -20,12 +20,12 @@ then
 
     # emacs
     tmux new-window -t $SESSION:2 -n 'Emacs'
-    tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m
+    tmux send-keys -t 'Emacs' "zsh" C-m 'clear' C-m 'env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw' C-m
     # tmux send-keys -t 'emacs' "zsh" C-m 'clear' C-m runemacs C-m
 
     # Create and setup pane for work tool
     tmux new-window -t $SESSION:3 -n 'Worktool'
-    tmux send-keys -t 'Work Tool' 'cd ~/workspace/work-tools' C-m 'clear' C-m # Switch to bind script?
+    tmux send-keys -t 'Worktool' 'cd ~/workspace/work-tools' C-m 'clear' C-m # Switch to bind script?
 
     # Setup an additional shell
     tmux new-window -t $SESSION:4 -n 'Shell'
