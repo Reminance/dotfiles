@@ -6,7 +6,10 @@ alias v="$EDITOR"
 alias vi="$EDITOR"
 alias vim="$EDITOR"
 alias nvim="$EDITOR"
-alias em='emacsclient -c -a %'
+alias e='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
+alias ec='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
+alias te='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
+alias temacs='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw'
 
 
 alias lg='lazygit'
