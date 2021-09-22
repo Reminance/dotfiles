@@ -14,6 +14,9 @@ bind-key R source-file ~/.tmux.conf \; display-message "   Config successfully r
 set-option -ga terminal-overrides ",xterm-256color:Tc"
 # Default terminal is 256 colors
 set -g default-terminal "screen-256color"
+# Start window and panes at 1 not 0
+set -g base-index 1
+setw -g pane-base-index 1
 
 # set-option -g status-position top
 # set-option -g status-position bottom
