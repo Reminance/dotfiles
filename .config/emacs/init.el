@@ -449,7 +449,8 @@
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
          ("<tab>" . company-complete-selection)
-         ("SPC" . company-abort))
+         ;; ("SPC" . company-abort)
+         )
   :config
   (progn
     (add-hook 'prog-mode-hook 'company-mode)
@@ -745,32 +746,7 @@
   :config
   (which-key-mode 1))
 
-;; 如果不喜欢ivy可以用这个包替换
-;; (use-package selectrum :config (selectrum-mode +1))
-
-;; (use-package ivy-prescient
-;;   :after counsel
-;;   :config
-;;   (setq prescient-sort-length-enable nil)
-;;   ;; This is the default value!
-;;   (setq prescient-filter-method '(literal regexp fuzzy))
-;;   ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
-;;   (setq ivy-prescient-enable-filtering nil)
-;;   ;; Getting the old highlighting back
-;;   ;; (setq ivy-prescient-retain-classic-highlighting t)
-;;   (ivy-prescient-mode 1)
-;;   ;; Remember candidate frequencies across sessions
-;;   (prescient-persist-mode 1))
-
-;; (use-package company-prescient
-;;   :after company
-;;   :config
-;;   (company-prescient-mode 1))
-
-;; (use-package selectrum-prescient
-;;     :config
-;;     (prescient-persist-mode +1)
-;;     (selectrum-prescient-mode +1))
+;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
 (use-package ivy
   :ensure t)
@@ -785,12 +761,15 @@
   :bind
   (
    ("M-x" . 'counsel-M-x)
-   ("C-x b" . 'counsel-switch-buffer)
+   ("C-x b" . 'counsel-ibuffer)
+   ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
    ("C-x d" . 'counsel-dired)
    ("C-x C-f" . 'counsel-find-file)
    ("C-x C-r" . 'counsel-recentf)
    ("C-M-f" . counsel-rg)
    ("C-M-n" . counsel-fzf)
+   :map minibuffer-local-map
+   ("C-r" . 'counsel-minibuffer-history)
    )
   :config
   ;; 默认的 rg 配置
@@ -800,6 +779,38 @@
   ;; Integration with `projectile'
   (with-eval-after-load 'projectile
     (setq projectile-completion-system 'ivy)))
+
+;; 如果不喜欢ivy可以用这个包替换
+;; (use-package selectrum :config (selectrum-mode +1))
+
+;; (use-package selectrum-prescient
+;;     :config
+;;     (prescient-persist-mode +1)
+;;     (selectrum-prescient-mode +1))
+
+;; (use-package prescient
+;;   :after counsel
+;;   :config
+;;   (prescient-persist-mode 1))
+
+(use-package ivy-prescient
+  :after counsel
+  :config
+  (setq prescient-sort-length-enable nil)
+  ;; This is the default value!
+  (setq prescient-filter-method '(literal regexp fuzzy))
+  ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+  (setq ivy-prescient-enable-filtering nil)
+  ;; Getting the old highlighting back
+  ;; (setq ivy-prescient-retain-classic-highlighting t)
+  (ivy-prescient-mode 1)
+  ;; Remember candidate frequencies across sessions
+  (prescient-persist-mode 1))
+
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1))
 
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
