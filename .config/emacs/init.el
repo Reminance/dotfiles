@@ -262,9 +262,9 @@
               100)
          my/frame-transparency '(100 . 100)))))
 
-;; Set frame transparency
-(set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
-(add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
+;; Set frame transparency at startup
+;; (set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
+;; (add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
 
 (setq frame-title-format
       '((:eval (if (buffer-file-name)
@@ -366,6 +366,7 @@
   (interactive)
   (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
+(global-set-key (kbd "C-q") 'kill-current-buffer)
 ;; (global-set-key (kbd "C-x b") 'ibuffer)
 
 (use-package avy
@@ -429,8 +430,9 @@
   ("M-g" . magit-status))
 
 ;; 显示当前行修改-Git
-(use-package git-gutter-fringe
+(use-package git-gutter
   :hook (prog-mode . git-gutter-mode)
+  :diminish git-gutter-mode
   :custom
   (git-gutter:update-interval 1)
   (git-gutter:added-sign "+")
@@ -468,6 +470,7 @@
 
 ;; 美化company
 (use-package company-box
+  :diminish company-box-mode
   :hook (company-mode . company-box-mode))
 
 ;; 代码片段
@@ -634,20 +637,21 @@
 (use-package command-log-mode)
 
 ;; themes config
-(use-package doom-themes
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-monokai-pro t)
-  ;; (load-theme 'doom-molokai t)
-  ;; (load-theme 'doom-gruvbox t)
-  ;; (load-theme 'doom-Iosvkem t)
-  ;; (load-theme 'doom-one t)
-  ;; (load-theme 'doom-dracula t)
-  ;; Enable flashing mode-line on errors
-  ;; (doom-themes-visual-bell-config)
-  )
+;; (use-package doom-themes
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-monokai-pro t)
+;;   ;; (load-theme 'doom-molokai t)
+;;   ;; (load-theme 'doom-gruvbox t)
+;;   ;; (load-theme 'doom-Iosvkem t)
+;;   ;; (load-theme 'doom-one t)
+;;   ;; (load-theme 'doom-dracula t)
+;;   ;; Enable flashing mode-line on errors
+;;   ;; (doom-themes-visual-bell-config)
+;;   )
+
 ;; (if (display-graphic-p)
 ;;     (load-theme 'doom-molokai t)
 ;;   ;; (load-theme 'doom-gruvbox t)
@@ -655,10 +659,10 @@
 ;;   (load-theme 'doom-monokai-pro t)
 ;;   )
 
-;; (use-package zenburn-theme
-;;   :config
-;;   (load-theme 'zenburn t)
-;;   )
+(use-package zenburn-theme
+  :config
+  (load-theme 'zenburn t)
+  )
 ;; (use-package monokai-alt-theme
 ;;   :config
 ;;   (load-theme 'monokai-alt t)
@@ -689,8 +693,8 @@
 ;;   ;; (load-theme 'doom-xcode t)
 ;;   )
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
+;; (use-package doom-modeline
+;;   :init (doom-modeline-mode 1))
 
 ;; Toggle buffer size display in the mode line (Size Indication mode).
 (size-indication-mode 1)
@@ -740,6 +744,7 @@
 
 ;; 键位提示
 (use-package which-key
+  :diminish which-key-mode
   :custom
   ;; 弹出方式，底部弹出
   (which-key-popup-type 'side-window)
@@ -749,6 +754,7 @@
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
 (use-package ivy
+  :diminish ivy-mode
   :ensure t)
 
 ;; 增强了搜索功能
@@ -943,8 +949,11 @@
   :hook (lsp-mode . lsp-ui-mode)
   :config
   ;; sideline
+  (if (display-graphic-p)
+      (setq lsp-ui-sideline-show-hover t)
+    (setq lsp-ui-sideline-show-hover nil)
+    )
   (setq lsp-ui-sideline-show-diagnostics t
-        lsp-ui-sideline-show-hover t
         lsp-ui-sideline-show-code-actions t
         lsp-ui-sideline-update-mode 'line
         ;; sideline
@@ -953,11 +962,13 @@
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   ;; doc
-  (setq lsp-ui-doc-enable t
-        ;; 文档显示的位置
-        lsp-ui-doc-position 'at-point
-        ;; 显示文档的延迟
-        lsp-ui-doc-delay 1))
+  (if (display-graphic-p)
+      (setq lsp-ui-doc-enable t)
+    (setq lsp-ui-doc-enable nil)
+    )
+  (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
+        lsp-ui-doc-delay 1        ;; 显示文档的延迟
+        ))
 
 ;; ;; lsp-java
 ;; (use-package lsp-java
