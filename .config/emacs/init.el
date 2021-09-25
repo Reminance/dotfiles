@@ -83,11 +83,10 @@
 
 ;; 最大单行字符数量
 (setq-default fill-column 80)
-
-;; ;; 让'_'被视为单词的一部分
-;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
-;; ;; "-" 同上)
-;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?- "w")))
+;; 让'_'被视为单词的一部分
+(add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
+;; "-" 同上)
+(add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?- "w")))
 ;; 允许插入制表符
 (setq-default indent-tabs-mode nil)
 ;; 制表符宽度
@@ -215,6 +214,9 @@
   (set-scroll-bar-mode nil))
 (when (fboundp 'menu-bar-mode)
   (menu-bar-mode -1))
+
+;; enable mouse in terminal
+(xterm-mouse-mode 1)
 
 ;; 开启行号
 ;; (setq display-line-numbers-type 'relative)
@@ -427,7 +429,7 @@
 (use-package magit
   :commands (magit)
   :bind
-  ("M-g" . magit-status))
+  ("C-c g" . magit-status))
 
 ;; 显示当前行修改-Git
 (use-package git-gutter
@@ -483,9 +485,14 @@
 (use-package yasnippet-snippets :after yasnippet)
 
 (use-package multiple-cursors
-  :bind (("M-N" . mc/mark-next-like-this)
+  :bind (
+         ("C-c M-N" . mc/edit-lines)
+         ("M-N" . mc/mark-next-like-this)
          ("M-P" . mc/unmark-next-like-this)
-         ("C-S-<mouse-1>" . mc/add-cursor-on-click)))
+         ;; ("M-P" . mc/mark-previous-like-this)
+         ;; ("C-c C-<" . mc/mark-all-like-this)
+         ("M-S-<mouse-1>" . mc/add-cursor-on-click)
+         ))
 
 (use-package rainbow-mode
   :ensure t
@@ -604,11 +611,11 @@
   :commands (youdao-dictionary-search-at-point-posframe)
   :config (setq url-automatic-caching t)
   (which-key-add-key-based-replacements "C-x y" "有道翻译")
-  :bind (("C-x y y" . 'youdao-dictionary-search-at-point+)
-         ("C-x y g" . 'youdao-dictionary-search-at-point-posframe)
-         ("C-x y p" . 'youdao-dictionary-play-voice-at-point)
-         ("C-x y r" . 'youdao-dictionary-search-and-replace)
-         ("C-x y i" . 'youdao-dictionary-search-from-input)))
+  :bind (("C-c y y" . 'youdao-dictionary-search-at-point+)
+         ("C-c y g" . 'youdao-dictionary-search-at-point-posframe)
+         ("C-c y p" . 'youdao-dictionary-play-voice-at-point)
+         ("C-c y r" . 'youdao-dictionary-search-and-replace)
+         ("C-c y i" . 'youdao-dictionary-search-from-input)))
 
 ;; icons font
 (progn
@@ -661,8 +668,15 @@
 
 (use-package zenburn-theme
   :config
-  (load-theme 'zenburn t)
-  )
+  (load-theme 'zenburn t))
+(custom-set-faces
+ '(line-number ((t (:background "gray20" :foreground "#6F6F6F"))))
+ '(region ((t (:extend t :background "gray32"))))
+ )
+(let ((zenburn-background-color '(background-color . "gray20")))
+  (add-to-list 'default-frame-alist zenburn-background-color)
+  (add-to-list 'initial-frame-alist zenburn-background-color))
+
 ;; (use-package monokai-alt-theme
 ;;   :config
 ;;   (load-theme 'monokai-alt t)
@@ -824,7 +838,8 @@
 (use-package org
   :config
   (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t))
+        ;; org-hide-emphasis-markers t
+        ))
 ;; Easy Templates support shortcuts such as: '<s + TAB'
 (require 'org-tempo)
 
