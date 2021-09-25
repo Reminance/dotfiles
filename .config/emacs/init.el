@@ -337,18 +337,18 @@
   :init (windmove-default-keybindings)
   :config (use-package buffer-move)
   :bind (
-         ("M-<left>" . 'windmove-left)
-         ("M-<down>" . 'windmove-down)
-         ("M-<up>" . 'windmove-up)
-         ("M-<right>" . 'windmove-right)
-         ("M-S-<left>" . 'windmove-swap-states-left)
-         ("M-S-<down>" . 'windmove-swap-states-down)
-         ("M-S-<up>" . 'windmove-swap-states-up)
-         ("M-S-<right>" . 'windmove-swap-states-right)
-         ("M-C-<left>" . #'shrink-window-horizontally)
-         ("M-C-<down>" . #'enlarge-window)
-         ("M-C-<up>" . #'shrink-window)
-         ("M-C-<right>" . #'enlarge-window-horizontally)
+         ("C-M-<left>" . 'windmove-left)
+         ("C-M-<down>" . 'windmove-down)
+         ("C-M-<up>" . 'windmove-up)
+         ("C-M-<right>" . 'windmove-right)
+         ("C-M-S-<left>" . 'windmove-swap-states-left)
+         ("C-M-S-<down>" . 'windmove-swap-states-down)
+         ("C-M-S-<up>" . 'windmove-swap-states-up)
+         ("C-M-S-<right>" . 'windmove-swap-states-right)
+         ;; ("C-M-S-h" . #'shrink-window-horizontally)
+         ;; ("C-M-S-j" . #'enlarge-window)
+         ;; ("C-M-S-k" . #'shrink-window)
+         ;; ("C-M-S-l" . #'enlarge-window-horizontally)
          ))
 
 ;; Use Ibuffer for Buffer List
@@ -744,7 +744,6 @@
                             (?\[ . ?\])
                             (?\{ . ?\})
                             (?\` . ?\`)
-                            (?\' . ?\')
                             (?\" . ?\")
                             ))
 (setq electric-pair-inhibit-predicate
@@ -844,7 +843,12 @@
   :config
   (setq org-ellipsis " ▾"
         ;; org-hide-emphasis-markers t
-        ))
+        )
+  (eval-after-load 'org
+    (progn
+      (define-key org-mode-map (kbd "<C-M-S-right>") nil)
+      (define-key org-mode-map (kbd "<C-M-S-left>") nil)))
+  )
 ;; Easy Templates support shortcuts such as: '<s + TAB'
 (require 'org-tempo)
 
