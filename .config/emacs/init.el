@@ -444,7 +444,7 @@
   :hook (prog-mode . git-gutter-mode)
   :diminish git-gutter-mode
   :custom
-  (git-gutter:update-interval 1)
+  (git-gutter:update-interval 0)
   (git-gutter:added-sign "+")
   (git-gutter:deleted-sign "-")
   (git-gutter:modified-sign "~")
@@ -680,6 +680,7 @@
 (custom-set-faces
  '(line-number ((t (:background "gray20" :foreground "#6F6F6F"))))
  '(region ((t (:extend t :background "gray32"))))
+ '(org-ellipsis ((t (:underline nil))))
  )
 (let ((zenburn-background-color '(background-color . "gray20")))
   (add-to-list 'default-frame-alist zenburn-background-color)
@@ -841,14 +842,27 @@
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
 (use-package org
   :config
-  (setq org-ellipsis " ▾"
-        ;; org-hide-emphasis-markers t
-        )
+  ;; This can be solved by adding a hook to org-tab-first-hook which adds org-end-of-line.
+  ;; Every time TAB is used it jumps to last visible character of the org-line, but before the ellipsis, and then opens/closes the container as usual.
+  (add-hook 'org-tab-first-hook 'org-end-of-line)
+  (setq org-ellipsis "▾")
   (eval-after-load 'org
     (progn
       (define-key org-mode-map (kbd "<C-M-S-right>") nil)
       (define-key org-mode-map (kbd "<C-M-S-left>") nil)))
   )
+
+;; for test
+(defun my/check-cursor-end-of-line ()
+  "Check end of line."
+  (interactive)
+  (if
+      (eq ?\n (char-after))
+      (message "yes")
+    (message "no")
+    )
+  )
+
 ;; Easy Templates support shortcuts such as: '<s + TAB'
 (require 'org-tempo)
 
