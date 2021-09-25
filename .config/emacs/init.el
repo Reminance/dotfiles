@@ -204,9 +204,9 @@
 (setq inhibit-startup-screen t)
 
 ;; Window size and features
-(setq-default
- window-resize-pixelwise t
- frame-resize-pixelwise t)
+;; (setq-default
+;;  window-resize-pixelwise t
+;;  frame-resize-pixelwise t)
 
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
@@ -221,8 +221,12 @@
 ;; 开启行号
 ;; (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode +1)
+
+;; show in mode line
 ;; show modeline column number
 (setq column-number-mode t)
+;; Toggle buffer size display in the mode line (Size Indication mode).
+(size-indication-mode 1)
 
 ;; 选中文本后输入会覆盖
 (delete-selection-mode +1)
@@ -337,6 +341,10 @@
          ("M-<down>" . 'windmove-down)
          ("M-<up>" . 'windmove-up)
          ("M-<right>" . 'windmove-right)
+         ("M-S-<left>" . 'windmove-swap-states-left)
+         ("M-S-<down>" . 'windmove-swap-states-down)
+         ("M-S-<up>" . 'windmove-swap-states-up)
+         ("M-S-<right>" . 'windmove-swap-states-right)
          ("M-C-<left>" . #'shrink-window-horizontally)
          ("M-C-<down>" . #'enlarge-window)
          ("M-C-<up>" . #'shrink-window)
@@ -368,7 +376,7 @@
   (interactive)
   (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
-(global-set-key (kbd "C-q") 'kill-current-buffer)
+(global-set-key (kbd "C-q") 'delete-window)
 ;; (global-set-key (kbd "C-x b") 'ibuffer)
 
 (use-package avy
@@ -710,9 +718,6 @@
 ;; (use-package doom-modeline
 ;;   :init (doom-modeline-mode 1))
 
-;; Toggle buffer size display in the mode line (Size Indication mode).
-(size-indication-mode 1)
-
 ;; 增强*help* buffer的功能
 ;; (use-package helpful
 ;;   :bind
@@ -925,7 +930,6 @@
 ;; Start LSP Mode and YASnippet mode
 ;; (add-hook 'go-mode-hook #'lsp-deferred)
 (add-hook 'go-mode-hook 'lsp)
-(add-hook 'go-mode-hook 'yas-minor-mode)
 
 ;; C/C++
 (add-hook 'c-mode-hook 'lsp)
@@ -955,8 +959,9 @@
               ("M-RET" . lsp-ui-sideline-apply-code-actions)
               ("M-RET" . lsp-execute-code-action))
   :config
-  (setq lsp-completion-enable-additional-text-edit nil)
-  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-completion-enable-additional-text-edit nil
+        lsp-enable-symbol-highlighting nil
+        lsp-headerline-breadcrumb-enable nil)
   )
 
 ;; ;; 美化lsp-mode
@@ -964,15 +969,12 @@
   :hook (lsp-mode . lsp-ui-mode)
   :config
   ;; sideline
-  (if (display-graphic-p)
-      (setq lsp-ui-sideline-show-hover t)
-    (setq lsp-ui-sideline-show-hover nil)
-    )
   (setq lsp-ui-sideline-show-diagnostics t
         lsp-ui-sideline-show-code-actions t
         lsp-ui-sideline-update-mode 'line
-        ;; sideline
-        lsp-ui-sideline-delay 0.2)
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-sideline-delay 0.1
+        )
   ;; peek
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
