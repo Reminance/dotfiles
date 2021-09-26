@@ -400,37 +400,44 @@
 (use-package try)
 
 ;; evil
-;; (use-package evil
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(evil-motion-state-map
-;;                    evil-normal-state-map
-;;                    evil-insert-state-map
-;;                    evil-visual-state-map
-;;                    evil-emacs-state-map))
-;;       (define-key (eval map) "\C-n" nil)
-;;       (define-key (eval map) "\C-p" nil)
-;;       (define-key (eval map) "\C-a" nil)
-;;       (define-key (eval map) "\C-e" nil)
-;;       (define-key (eval map) "\C-f" nil)
-;;       (define-key (eval map) "\C-b" nil)
-;;       (define-key (eval map) "\C-y" nil)
-;;       (define-key (eval map) "\C-k" nil)
-;;       (define-key (eval map) "\C-d" nil)
-;;       (define-key (eval map) "\C-z" nil)
-;;       (define-key (eval map) "\M-." nil)
-;;       (define-key (eval map) (kbd "TAB") nil)
-;;       ))
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(
-;;                    evil-insert-state-map
-;;                    ))
-;;       (define-key (eval map) "\C-w" nil)
-;;       ))
-;;   (evil-mode 1))
+(use-package evil
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-normal-state-map
+                   evil-insert-state-map
+                   evil-visual-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-n" nil)
+      (define-key (eval map) "\C-p" nil)
+      (define-key (eval map) "\C-a" nil)
+      (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\C-f" nil)
+      (define-key (eval map) "\C-b" nil)
+      (define-key (eval map) "\C-y" nil)
+      (define-key (eval map) "\C-k" nil)
+      (define-key (eval map) "\C-u" nil)
+      (define-key (eval map) "\C-d" nil)
+      (define-key (eval map) "\C-w" nil)
+      (define-key (eval map) "\C-z" nil)
+      (define-key (eval map) "\M-." nil)
+      (define-key (eval map) (kbd "TAB") nil)
+      )
+    )
+  (eval-after-load "evil-maps"
+    (dolist (map '(
+                   evil-insert-state-map
+                   ))
+      (define-key (eval map) "\C-i" nil) ;; evil-jump-forward didn't work, cause it translate into tab in magit
+      (define-key (eval map) "\C-o" nil)
+      (define-key (eval map) "\C-v" nil)
+      )
+    )
+  (setq evil-disable-insert-state-bindings t)
+  (evil-mode 1))
 
 ;; (use-package evil-collection
 ;;   :after evil
