@@ -848,7 +848,7 @@
   ;; This can be solved by adding a hook to org-tab-first-hook which adds org-end-of-line.
   ;; Every time TAB is used it jumps to last visible character of the org-line, but before the ellipsis, and then opens/closes the container as usual.
   (add-hook 'org-tab-first-hook 'org-end-of-line)
-  ;; (setq org-hide-emphasis-markers t)
+  ;; (setq org-hide-emphasis-markers t) ;; hide markers like *bold* or /italic/
   (setq org-ellipsis "▾")
   (eval-after-load 'org
     (progn
