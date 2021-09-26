@@ -124,34 +124,32 @@
 ;; 高亮当前行
 (global-hl-line-mode 1)
 
-;; 设置英文/中文字体
-;; (setq my/en-font-name "Fira Code Nerd Font Mono"
-(setq my/en-font-name "Iosevka"
-      my/en-font-style "Regular"
-      my/en-font-size 16)
-;; (setq my/zh-font-name "WenQuanYi Zen Hei Mono"
-;; (setq my/zh-font-name "Fira Code Nerd Font Mono"
-(setq my/zh-font-name "Iosevka"
-      my/zh-font-style "Regular"
-      my/zh-font-size 16)
-(progn
-  (if (fontp (font-spec
-              :name my/en-font-name
-              :style my/en-font-style
-              :size my/en-font-size))
-      (progn
-        (set-face-attribute 'default nil
-                            :font (font-spec
-                                   :name my/en-font-name
-                                   :style my/en-font-style
-                                   :size my/en-font-size))
-        (set-fontset-font t 'han (font-spec
-                                  :name my/zh-font-name
-                                  :style my/zh-font-style))
-        (set-fontset-font "fontset-default" ?༼ (font-spec
-                                                :name "Noto Serif Tibetan"
-                                                :size 0)))
-    (message "Can't find %s font. You can install it or ignore this message at init-font.el" my/en-font-name)))
+;; Move cursor to end of current line
+;; Insert new line below current line
+;; it will also indent newline
+(global-set-key (kbd "<S-return>") (lambda ()
+                                     (interactive)
+                                     (end-of-line)
+                                     (newline-and-indent)))
+
+;; Move cursor to previous line
+;; Go to end of the line
+;; Insert new line below current line (So it actually insert new line above with indentation)
+;; it will also indent newline
+(global-set-key (kbd "<C-M-return>") (lambda ()
+                                       (interactive)
+                                       (previous-line)
+                                       (end-of-line)
+                                       (newline-and-indent)
+                                       ))
+
+;; 设置字体
+;; "Fira Code Nerd Font Mono"
+(set-face-attribute 'default nil
+                    :font (font-spec
+                           :name "Iosevka"
+                           :style "Regular"
+                           :size 16))
 
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
@@ -384,7 +382,6 @@
 ;; (global-set-key (kbd "C-x b") 'ibuffer)
 
 (use-package avy
-  :ensure t
   :bind
   ("M-s" . avy-goto-char)
   ("M-S" . avy-goto-char-2)
@@ -398,11 +395,6 @@
 
 ;; try
 (use-package try)
-
-;; Translate the problematic keys to the function key Hyper, 
-;; then bind this to the desired ctrl-i behavior
-;; (keyboard-translate ?\C-i ?\H-i)
-;; (global-set-key [?\H-i] 'previous-line)
 
 ;; evil
 (use-package evil
@@ -428,9 +420,11 @@
       (define-key (eval map) "\C-k" nil)
       (define-key (eval map) "\C-u" nil)
       (define-key (eval map) "\C-d" nil)
-      (define-key (eval map) "\C-w" nil)
       (define-key (eval map) "\C-z" nil)
       (define-key (eval map) "\M-." nil)
+      ;; (define-key (eval map) "\C-w" nil)
+      ;; (define-key (eval map) (kbd "SPC") nil)
+      ;; (define-key (eval map) (kbd "RET") nil)
       ;; (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
       )
     )
@@ -520,26 +514,21 @@
          ))
 
 (use-package rainbow-mode
-  :ensure t
   :init
   (add-hook 'prog-mode-hook 'rainbow-mode))
 
 (use-package rainbow-delimiters
-  :ensure t
   :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package expand-region
-  :ensure t
-  :bind ("C-;" . er/expand-region))
+  :bind ("<C-return>" . er/expand-region))
 
 (setq kill-ring-max 100)
 (use-package popup-kill-ring
-  :ensure t
   :bind ("M-y" . popup-kill-ring))
 
 (use-package diminish
-  :ensure t
   :init
   (diminish 'which-key-mode)
   (diminish 'linum-relative-mode)
@@ -612,8 +601,7 @@
 ;;                               "my" 'restclient-copy-curl-command)
 
 (require 'url-util)
-(use-package ob-go
-  :ensure t)
+(use-package ob-go)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -790,12 +778,10 @@
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
 (use-package ivy
-  :diminish ivy-mode
-  :ensure t)
+  :diminish ivy-mode)
 
 ;; 增强了搜索功能
 (use-package swiper
-  :ensure t
   :bind ("C-s" . 'swiper))
 
 ;; 集成了很多非常有用的的功能
@@ -918,7 +904,7 @@
 (use-package org-bullets
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
-    ;; :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
+  ;; :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
   )
 
 ;; flycheck
@@ -953,8 +939,7 @@
 ;;                         (hydra-posframe-mode +1) ) ))
 
 ;; golang
-(use-package go-mode
-  :ensure t)
+(use-package go-mode)
 ;; Go - lsp-mode
 ;; Set up before-save hooks to format buffer and add/delete imports.
 (defun lsp-go-save-hooks ()
