@@ -283,6 +283,10 @@
           (lambda ()
             (setq line-spacing 0)))
 
+;; split window and change focus
+(defadvice split-window (after move-point-to-new-window activate)
+  "Move the point to the newly created window after splitting."
+  (other-window 1))
 
 ;;----------------------------------------------------------------------------
 ;; Allow users to provide an optional "init-preload-local.el"
@@ -436,8 +440,7 @@
 ;; magit
 (use-package magit
   :commands (magit)
-  :bind
-  ("C-c g" . magit-status))
+  )
 
 ;; 显示当前行修改-Git
 (use-package git-gutter
