@@ -399,6 +399,11 @@
 ;; try
 (use-package try)
 
+;; Translate the problematic keys to the function key Hyper, 
+;; then bind this to the desired ctrl-i behavior
+;; (keyboard-translate ?\C-i ?\H-i)
+;; (global-set-key [?\H-i] 'previous-line)
+
 ;; evil
 (use-package evil
   :init
@@ -408,6 +413,8 @@
   (eval-after-load "evil-maps"
     (dolist (map '(evil-motion-state-map
                    evil-normal-state-map
+                   evil-operator-state-map
+                   evil-replace-state-map
                    evil-insert-state-map
                    evil-visual-state-map
                    evil-emacs-state-map))
@@ -424,14 +431,14 @@
       (define-key (eval map) "\C-w" nil)
       (define-key (eval map) "\C-z" nil)
       (define-key (eval map) "\M-." nil)
-      (define-key (eval map) (kbd "TAB") nil)
+      ;; (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
       )
     )
   (eval-after-load "evil-maps"
     (dolist (map '(
                    evil-insert-state-map
                    ))
-      (define-key (eval map) "\C-i" nil) ;; evil-jump-forward didn't work, cause it translate into tab in magit
+      (define-key (eval map) "\C-i" nil)
       (define-key (eval map) "\C-o" nil)
       (define-key (eval map) "\C-v" nil)
       )
