@@ -196,16 +196,16 @@ nnoremap <M-s>n <C-w>t<C-w>K
 " nnoremap <M-s>rn <C-w>b<C-w>K
 
 " Use <ALT> + new arrow keys for moving the cursor around windows
-nnoremap <M-h> <C-w>h
-nnoremap <M-j> <C-w>j
-nnoremap <M-k> <C-w>k
-nnoremap <M-l> <C-w>l
+" nnoremap <M-h> <C-w>h
+" nnoremap <M-j> <C-w>j
+" nnoremap <M-k> <C-w>k
+" nnoremap <M-l> <C-w>l
 
 " Use shift arrow keys for moving the windows
-nnoremap <C-M-h> <C-w>H
-nnoremap <C-M-j> <C-w>J
-nnoremap <C-M-k> <C-w>K
-nnoremap <C-M-l> <C-w>L
+" nnoremap <C-M-h> <C-w>H
+" nnoremap <C-M-j> <C-w>J
+" nnoremap <C-M-k> <C-w>K
+" nnoremap <C-M-l> <C-w>L
 
 " Tab Management
 " Create a new tab
