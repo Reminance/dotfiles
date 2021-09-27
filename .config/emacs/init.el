@@ -683,11 +683,11 @@
   :config
   (load-theme 'zenburn t))
 (custom-set-faces
- '(line-number ((t (:background "gray20" :foreground "#6F6F6F"))))
+ '(line-number ((t (:background "gray18" :foreground "#6F6F6F"))))
  '(region ((t (:extend t :background "gray32"))))
  '(org-ellipsis ((t (:underline nil))))
  )
-(let ((zenburn-background-color '(background-color . "gray20")))
+(let ((zenburn-background-color '(background-color . "gray18")))
   (add-to-list 'default-frame-alist zenburn-background-color)
   (add-to-list 'initial-frame-alist zenburn-background-color))
 
