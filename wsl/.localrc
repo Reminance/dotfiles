@@ -1,4 +1,4 @@
-# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
+# export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0.0
 export PATH=$PATH:~/.local/bin
 #export XAUTHORITY=~/.Xauthority
 #export XDG_RUNTIME_DIR=/run/user/$(id -u)
@@ -64,7 +64,7 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS="@im=fcitx"
 export _JAVA_AWT_WM_NONREPARENTING=1
-#fcitx&
-#if test $( pgrep -f fcitx | wc -l ) -eq 0; then fcitx > /dev/null 2>&1; fi
+# fcitx&
+# if test $( pgrep -f fcitx | wc -l ) -eq 0; then fcitx > /dev/null 2>&1; fi
 #exec $1
 # export DISPLAY=$(awk '/nameserver / {print $2; exit}' /etc/resolv.conf 2>/dev/null):0
