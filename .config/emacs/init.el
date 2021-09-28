@@ -425,6 +425,7 @@
       (define-key (eval map) "\C-k" nil)
       (define-key (eval map) "\C-u" nil)
       (define-key (eval map) "\C-d" nil)
+      ;; (define-key (eval map) "\C-z" nil)
       (define-key (eval map) "\M-." nil)
       ;; (define-key (eval map) "\C-w" nil)
       ;; (define-key (eval map) (kbd "SPC") nil)
