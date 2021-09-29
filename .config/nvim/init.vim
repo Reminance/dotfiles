@@ -775,11 +775,12 @@ EOF
 " }}}
 
 " Plug 'hoob3rt/lualine.nvim' {{{
+" theme = 'dracula',
 lua << EOF
 require('plenary.reload').reload_module('lualine', true)
 require('lualine').setup({
   options = {
-    theme = 'dracula',
+    theme = 'gruvbox',
     disabled_types = { 'NvimTree' }
     },
   sections = {
