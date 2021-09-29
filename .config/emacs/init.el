@@ -531,7 +531,7 @@
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package expand-region
-  :bind ("<C-return>" . er/expand-region))
+  :bind ("M-@" . er/expand-region))
 
 (setq kill-ring-max 100)
 (use-package popup-kill-ring
