@@ -464,6 +464,7 @@
 ;; magit
 (use-package magit
   :commands (magit)
+  ;; :bind (("C-x C-g" . magit-status))
   )
 
 ;; 显示当前行修改-Git
