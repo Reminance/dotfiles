@@ -150,6 +150,13 @@
                                        (newline-and-indent)
                                        ))
 
+;; join-line
+(global-set-key "\M-J" (lambda ()
+                         (interactive)
+                         (next-line)
+                         (join-line)
+                         ))
+
 ;; 设置字体
 ;; "Fira Code Nerd Font Mono"
 ;; (set-face-attribute 'default nil
