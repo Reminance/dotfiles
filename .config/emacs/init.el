@@ -53,6 +53,8 @@
   ;; Hint: Customize `ns-use-native-fullscreen'
   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
+(when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
+
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'truncate-lines nil)
 
