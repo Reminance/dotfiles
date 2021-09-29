@@ -53,7 +53,7 @@
   ;; Hint: Customize `ns-use-native-fullscreen'
   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
-(when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
+;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (set-default 'truncate-lines nil)
@@ -152,11 +152,11 @@
 
 ;; 设置字体
 ;; "Fira Code Nerd Font Mono"
-(set-face-attribute 'default nil
-                    :font (font-spec
-                           :name "Iosevka"
-                           :style "Regular"
-                           :size 16))
+;; (set-face-attribute 'default nil
+;;                     :font (font-spec
+;;                            :name "Iosevka"
+;;                            :style "Regular"
+;;                            :size 16))
 
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
@@ -405,7 +405,7 @@
 
 ;; evil
 (use-package evil
-  ;; :disabled
+  :disabled
   :init
   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
   (setq evil-want-keybinding nil)
@@ -449,7 +449,7 @@
   (evil-mode 1))
 
 (use-package evil-collection
-  ;; :disabled
+  :disabled
   :after evil
   :config
   (evil-collection-init))
