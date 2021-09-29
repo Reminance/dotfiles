@@ -447,10 +447,10 @@
   (setq evil-disable-insert-state-bindings t)
   (evil-mode 1))
 
-;; (use-package evil-collection
-;;   :after evil
-;;   :config
-;;   (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
 
 ;; magit
 (use-package magit
@@ -685,6 +685,10 @@
 ;;   ;; (load-theme 'doom-molokai t)
 ;;   (load-theme 'doom-monokai-pro t)
 ;;   )
+
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1))
 
 (use-package zenburn-theme
   :config
