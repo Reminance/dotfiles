@@ -472,7 +472,7 @@ Plug 'voldikss/vim-translator'
 
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'connorholyday/vim-snazzy'
-" Plug 'lifepillar/vim-gruvbox8'
+Plug 'morhetz/gruvbox'
 " Plug 'Th3Whit3Wolf/onebuddy'
 " Plug 'tjdevries/colorbuddy.vim'
 " Plug 'tjdevries/gruvbuddy.nvim'
@@ -483,12 +483,12 @@ if (has("termguicolors"))
   set termguicolors " enable true colors support
 endif
 set background=dark " light or dark
-let g:SnazzyTransparent=1
-colorscheme snazzy
-let g:dracula_colorterm = 0
-let g:dracula_italic = 1
+" let g:SnazzyTransparent=1
+" colorscheme snazzy
+" let g:dracula_colorterm = -1
+" let g:dracula_italic = 1
 " colorscheme dracula
-" colorscheme gruvbox
+colorscheme gruvbox
 " colorscheme onebuddy
 
 " justinmk/vim-sneak {{{

@@ -432,7 +432,7 @@
       ;; (define-key (eval map) "\C-w" nil)
       ;; (define-key (eval map) (kbd "SPC") nil)
       ;; (define-key (eval map) (kbd "RET") nil)
-      ;; (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
       )
     )
   (eval-after-load "evil-maps"
