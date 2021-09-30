@@ -3,6 +3,8 @@ sandbox/
 .config/lazygit/
 .config/flameshot/
 .config/dmenu/*.o
+.config/emacs/ido.last
+.config/emacs/smex-items
 .config/emacs/.*
 .config/emacs/*.data
 .config/emacs/custom.el

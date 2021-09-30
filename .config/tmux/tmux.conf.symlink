@@ -17,7 +17,7 @@ bind-key F2 send-prefix
 # set-option -g status-position bottom
 # set-option -g status off
 # bind-key -n C-F3 set-option -g status
-bind-key -n F3 set-option -g status
+bind-key space set-option -g status
 
 # enable mouse in tmux
 set -g mouse on
