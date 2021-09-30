@@ -56,7 +56,6 @@
 ;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
 (fset 'yes-or-no-p 'y-or-n-p)
-(set-default 'truncate-lines nil)
 
 ;; 关闭备份
 (setq make-backup-files nil auto-save-default nil)
@@ -68,15 +67,6 @@
 (setq inhibit-compacting-font-caches nil)
 ;; 关闭烦人的提示
 (setq ring-bell-function 'ignore blink-cursor-mode nil)
-
-;; 任何地方都使用UTF-8
-(set-charset-priority 'unicode)
-(setq locale-coding-system   'utf-8)
-(set-terminal-coding-system  'utf-8)
-(set-keyboard-coding-system  'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system        'utf-8)
-(setq default-process-coding-system '(utf-8 . utf-8))
 
 ;; 关闭自动调节行高
 (setq auto-window-vscroll nil)
@@ -259,15 +249,9 @@
     (when (and (<= frame-alpha-lower-limit newalpha) (>= 100 newalpha))
       (modify-frame-parameters frame (list (cons 'alpha newalpha))))))
 
-;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-(global-set-key (kbd "C-M-7") (lambda () (interactive) (my/toggle-transparency)))
-(global-set-key (kbd "C-M-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
-(global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
-(global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
-
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(90 . 90))
+(defvar my/frame-transparency '(98 . 98))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -281,13 +265,19 @@
          my/frame-transparency '(100 . 100)))))
 
 ;; Set frame transparency at startup
-;; (set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
-;; (add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
+(set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
+(add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
 
-(setq frame-title-format
-      '((:eval (if (buffer-file-name)
-                   (abbreviate-file-name (buffer-file-name))
-                 "%b"))))
+;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
+(global-set-key (kbd "C-M-7") (lambda () (interactive) (my/toggle-transparency)))
+(global-set-key (kbd "C-M-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
+(global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
+(global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
+
+;; (setq frame-title-format
+;;       '((:eval (if (buffer-file-name)
+;;                    (abbreviate-file-name (buffer-file-name))
+;;                  "%b"))))
 
 ;; Non-zero values for `line-spacing' can mess up ansi-term and co,
 ;; so we zero it explicitly in those cases.
@@ -348,7 +338,6 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
-;; windmove 窗口管理器
 (use-package windmove
   :init (windmove-default-keybindings)
   :config (use-package buffer-move)
@@ -415,7 +404,6 @@
          )
   )
 
-;; 增强了搜索功能
 (use-package swiper
   :bind ("C-s" . 'swiper))
 
@@ -452,7 +440,6 @@
   (setq yas-snippet-dirs '("~/.config/emacs/etc/snippets"))
   (yas-global-mode))
 
-;; 大量可用的代码片段
 (use-package yasnippet-snippets :after yasnippet)
 
 (setq kill-ring-max 100)
@@ -524,14 +511,12 @@
       (quote (("NEXT" :inherit warning)
               ("PROJECT" :inherit font-lock-string-face))))
 
-;; 美化org
 (use-package org-bullets
   :init
   (add-hook 'org-mode-hook 'org-bullets-mode)
   ;; :custom (org-bullets-bullet-list '("☰" "☷" "✿" "☭"))
   )
 
-;; flycheck
 (use-package flycheck
   :commands (flycheck-mode)
   :hook (prog-mode . flycheck-mode)
@@ -547,7 +532,6 @@
         'right-fringe)
   )
 
-;; 管理员模式编辑
 (use-package sudo-edit)
 
 ;; 回到关闭文件前光标的位置
@@ -556,7 +540,6 @@
   (setq save-place-file (locate-user-emacs-file "var/places" "var/.emacs-places"))
   :hook (after-init . (lambda () (save-place-mode t))))
 
-;; 键位提示
 (use-package which-key
   :diminish which-key-mode
   :custom
@@ -574,7 +557,6 @@
   ;; :bind (("C-x C-g" . magit-status))
   )
 
-;; 显示当前行修改-Git
 (use-package git-gutter
   :hook (prog-mode . git-gutter-mode)
   :diminish git-gutter-mode
@@ -585,7 +567,6 @@
   (git-gutter:modified-sign "~")
   (git-gutter:hide-gutter t))
 
-;; 著名的Emacs补全框架
 (use-package company
   :hook (prog-mode . company-mode)
   :demand t
@@ -613,7 +594,6 @@
           company-global-modes '(not magit-status-mode))
     ))
 
-;; 美化company
 (use-package company-box
   :diminish company-box-mode
   :hook (company-mode . company-box-mode))
@@ -635,7 +615,6 @@
   (diminish 'flycheck-mode)
   (diminish 'helm-mode))
 
-;; 编译运行当前文件
 (use-package quickrun
   :commands(quickrun)
   ;; :bind (:map leader-key
@@ -787,6 +766,15 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;; 任何地方都使用UTF-8
+;; (set-charset-priority 'unicode)
+;; (setq locale-coding-system   'utf-8)
+;; (set-terminal-coding-system  'utf-8)
+;; (set-keyboard-coding-system  'utf-8)
+;; (set-selection-coding-system 'utf-8)
+;; (prefer-coding-system        'utf-8)
+;; (setq default-process-coding-system '(utf-8 . utf-8))
 
 ;; exec-path-from-shell
 ;; (use-package exec-path-from-shell
