@@ -401,23 +401,23 @@
   :config
   (evil-collection-init))
 
-(use-package windmove
-  :init (windmove-default-keybindings)
-  :config (use-package buffer-move)
-  :bind (
-         ("C-M-<left>" . 'windmove-left)
-         ("C-M-<down>" . 'windmove-down)
-         ("C-M-<up>" . 'windmove-up)
-         ("C-M-<right>" . 'windmove-right)
-         ("C-M-S-<left>" . 'windmove-swap-states-left)
-         ("C-M-S-<down>" . 'windmove-swap-states-down)
-         ("C-M-S-<up>" . 'windmove-swap-states-up)
-         ("C-M-S-<right>" . 'windmove-swap-states-right)
-         ;; ("C-M-S-h" . #'shrink-window-horizontally)
-         ;; ("C-M-S-j" . #'enlarge-window)
-         ;; ("C-M-S-k" . #'shrink-window)
-         ;; ("C-M-S-l" . #'enlarge-window-horizontally)
-         ))
+;; (use-package windmove
+;;   :init (windmove-default-keybindings)
+;;   :config (use-package buffer-move)
+;;   :bind (
+;;          ("C-M-<left>" . 'windmove-left)
+;;          ("C-M-<down>" . 'windmove-down)
+;;          ("C-M-<up>" . 'windmove-up)
+;;          ("C-M-<right>" . 'windmove-right)
+;;          ("C-M-S-<left>" . 'windmove-swap-states-left)
+;;          ("C-M-S-<down>" . 'windmove-swap-states-down)
+;;          ("C-M-S-<up>" . 'windmove-swap-states-up)
+;;          ("C-M-S-<right>" . 'windmove-swap-states-right)
+;;          ;; ("C-M-S-h" . #'shrink-window-horizontally)
+;;          ;; ("C-M-S-j" . #'enlarge-window)
+;;          ;; ("C-M-S-k" . #'shrink-window)
+;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
+;;          ))
 
 ;; Use Ibuffer for Buffer List
 (use-package ibuffer
