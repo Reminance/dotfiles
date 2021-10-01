@@ -5,7 +5,7 @@ set ignorecase smartcase incsearch showmatch hlsearch
 set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
 set scrolloff=2
 set noshowmode
-set nu rnu
+set nu "rnu
 set mouse=a
 set inccommand=split
 set hidden

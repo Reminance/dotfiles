@@ -703,7 +703,7 @@
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
   :config (setq url-automatic-caching t)
-  (which-key-add-key-based-replacements "C-x y" "有道翻译")
+  (which-key-add-key-based-replacements "C-c y" "有道翻译")
   :bind (("C-c y y" . 'youdao-dictionary-search-at-point+)
          ("C-c y g" . 'youdao-dictionary-search-at-point-posframe)
          ("C-c y p" . 'youdao-dictionary-play-voice-at-point)
