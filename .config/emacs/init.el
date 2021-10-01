@@ -226,7 +226,7 @@
 
 ;; show in mode line
 ;; show modeline column number
-(setq column-number-mode t)
+(column-number-mode 1)
 ;; Toggle buffer size display in the mode line (Size Indication mode).
 (size-indication-mode 1)
 
@@ -236,6 +236,18 @@
 (let ((no-border '(internal-border-width . 0)))
   (add-to-list 'default-frame-alist no-border)
   (add-to-list 'initial-frame-alist no-border))
+
+(setq electric-pair-pairs '(
+                            (?\( . ?\))
+                            (?\[ . ?\])
+                            (?\{ . ?\})
+                            (?\` . ?\`)
+                            (?\" . ?\")
+                            ))
+(setq electric-pair-inhibit-predicate
+      (lambda (c)
+        (if (char-equal c ?\<) t (electric-pair-default-inhibit c))))
+(electric-pair-mode t)
 
 (defun sanityinc/adjust-opacity (frame incr)
   "Adjust the background opacity of FRAME by increment INCR."
@@ -403,9 +415,6 @@
          ("C-c C-c M-x" . 'execute-extended-command)
          )
   )
-
-(use-package swiper
-  :bind ("C-s" . 'swiper))
 
 (use-package avy
   :bind
@@ -942,23 +951,13 @@
 ;;   :hook (after-init . (lambda ()
 ;;                         (global-disable-mouse-mode -1))))
 
-;; 括号匹配
-;; (setq electric-pair-pairs '(
-;;                             (?\( . ?\))
-;;                             (?\[ . ?\])
-;;                             (?\{ . ?\})
-;;                             (?\` . ?\`)
-;;                             (?\" . ?\")
-;;                             ))
-;; (setq electric-pair-inhibit-predicate
-;;       (lambda (c)
-;;         (if (char-equal c ?\<) t (electric-pair-default-inhibit c))))
-;; (electric-pair-mode t)
-
 ;; (use-package smartparens
 ;;   :hook (prog-mode . smartparens-mode))
 
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
+
+;; (use-package swiper
+;;   :bind ("C-s" . 'swiper))
 
 ;; (use-package ivy
 ;;   :diminish ivy-mode)
