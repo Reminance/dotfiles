@@ -389,6 +389,7 @@
                    ))
       (define-key (eval map) "\C-i" nil)
       (define-key (eval map) "\C-o" nil)
+      (define-key (eval map) "\C-w" nil)
       (define-key (eval map) "\C-v" nil)
       )
     )
@@ -447,6 +448,8 @@
 (global-set-key (kbd "C-q") 'delete-window)
 
 (ido-mode 1)
+(setq ido-enable-flex-matching 1)
+(setq ido-create-new-buffer 'always)
 (ido-everywhere 1)
 (global-set-key (kbd "C-M-j") 'ido-switch-buffer)
 
