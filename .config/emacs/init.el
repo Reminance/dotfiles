@@ -762,11 +762,9 @@
   (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
                     (setq-default undo-tree-visualizer-diff t)))
 
-(use-package command-log-mode)
-
-(use-package doom-modeline
-  :ensure t
-  :init (doom-modeline-mode 1))
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :init (doom-modeline-mode 1))
 
 (use-package zenburn-theme
   :config
@@ -947,6 +945,9 @@
 ;;          ;; ("C-M-S-k" . #'shrink-window)
 ;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
 ;;          ))
+
+;; (use-package command-log-mode
+;;   :ensure t)
 
 ;; exec-path-from-shell
 ;; (use-package exec-path-from-shell
