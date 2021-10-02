@@ -106,10 +106,8 @@
 ;; 更友好及平滑的滚动
 (setq scroll-conservatively 100)
 ;;; scroll
-(global-set-key "\M-n" (lambda ()
-                         (interactive)(scroll-down 1)))
-(global-set-key "\M-p" (lambda ()
-                         (interactive)(scroll-up 1)))
+(global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
+(global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
 
 ;; init message
 ;; (setq-default initial-scratch-message
