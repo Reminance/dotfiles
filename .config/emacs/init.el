@@ -713,8 +713,8 @@
 
 (use-package quickrun
   :commands(quickrun)
-  ;; :bind (:map leader-key
-  ;;             ("c r" . #'quickrun))
+  :bind (:map leader-key
+              ("r" . #'quickrun))
   :init (setq quickrun-timeout-seconds nil)
   (setq quickrun-focus-p nil)
   (setq quickrun-input-file-extension nil)
@@ -783,6 +783,7 @@
 ;; Go - lsp-mode
 ;; Set up before-save hooks to format buffer and add/delete imports.
 (defun lsp-go-save-hooks ()
+  "Go file before save, format and organize imports."
   (add-hook 'before-save-hook #'lsp-format-buffer t t)
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-save-hooks)
