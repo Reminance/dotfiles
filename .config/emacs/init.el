@@ -741,7 +741,7 @@
   :config
   (setq zenburn-override-colors-alist
         '(
-          ("zenburn-bg" . "#2e2e2e")
+          ("zenburn-bg" . "#292929")
           ("zenburn-bg-1" . "#404040") ;; region highlight
           ("zenburn-bg+05" . "#2e2e2e")
           ))
