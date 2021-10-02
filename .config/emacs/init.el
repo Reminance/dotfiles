@@ -383,19 +383,28 @@
 (global-set-key (kbd "C-q") 'delete-window)
 
 (use-package projectile
-  :ensure t)
+  :ensure t
+  :config
+  (projectile-mode +1)
+  ;; Recommended keymap prefix on macOS
+  ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  ;; Recommended keymap prefix on Windows/Linux
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  )
 
+;; extra search utilities
 (define-prefix-command 'meta-s-prefix)
 (global-set-key (kbd "M-s") 'meta-s-prefix)
+(define-key meta-s-prefix "c" #'avy-goto-char)
+(define-key meta-s-prefix "C" #'avy-goto-char-2)
+(define-key meta-s-prefix "g" #'counsel-rg)
+(define-key meta-s-prefix "a" #'counsel-ag)
+(define-key meta-s-prefix "f" #'counsel-fzf)
+(define-key meta-s-prefix "G" #'counsel-git)
+(define-key meta-s-prefix "F" #'counsel-git-grep)
 
 (use-package avy
-  :bind
-  (
-   :map meta-s-prefix
-   ("c" . avy-goto-char)
-   ("C" . avy-goto-char-2)
-   )
-  )
+  :ensure t)
 
 ;; ---------------------------------------------------------------------------- ido and smex
 
@@ -428,35 +437,47 @@
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
 (use-package swiper
+  :ensure t
   :bind ("C-s" . 'swiper))
 
 (use-package counsel
-  :bind
-  (
-   ("M-x" . 'counsel-M-x)
-   ("C-x b" . 'counsel-ibuffer)
-   ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
-   ("C-x d" . 'counsel-dired)
-   ("C-x C-f" . 'counsel-find-file)
-   ("C-x C-r" . 'counsel-recentf)
-   :map meta-s-prefix
-   ("g" . #'counsel-rg)
-   ("f" . #'counsel-fzf)
-   :map minibuffer-local-map
-   ("C-r" . 'counsel-minibuffer-history)
-   )
+  :bind (
+         ("M-x" . 'counsel-M-x)
+         ("C-x b" . 'counsel-ibuffer)
+         ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
+         ("C-x d" . 'counsel-dired)
+         ("C-x C-f" . 'counsel-find-file)
+         ("C-x C-r" . 'counsel-recentf)
+         ("C-c C-r" . 'ivy-resume)
+         ("<f1> f" . 'counsel-describe-function)
+         ("<f1> v" . 'counsel-describe-variable)
+         ("<f1> o" . 'counsel-describe-symbol)
+         ("<f1> l" . 'counsel-find-library)
+         ("<f2> i" . 'counsel-info-lookup-symbol)
+         ("<f2> u" . 'counsel-unicode-char)
+         ("C-c g" . 'counsel-git)
+         ("C-c j" . 'counsel-git-grep)
+         ;; ("C-c k" . 'counsel-ag)
+         ;; ("C-x l" . 'counsel-locate)
+         ;; ("C-S-o" . 'counsel-rhythmbox)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)
+         )
   :config
   ;; 默认的 rg 配置
   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
   (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
-  (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
-  ;; Integration with `projectile'
+  (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
+  ;; Integration with 'projectile'
   (with-eval-after-load 'projectile
     (setq projectile-completion-system 'ivy)))
 
 (use-package ivy
   :diminish ivy-mode
   :config
+  ;; (setq ivy-re-builders-alist
+  ;;     '((swiper . ivy--regex-fuzzy)
+  ;;       (t      . ivy--regex-plus))) ;; use ivy--regex-plus(default) for the rest of components
   (use-package ivy-rich
     :config
     (ivy-rich-mode 1))

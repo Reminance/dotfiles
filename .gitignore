@@ -13,6 +13,7 @@ sandbox/
 .config/emacs/transient/
 .config/emacs/var/
 .config/emacs/workspace/
+/.config/emacs/projectile-bookmarks.eld
 .config/fcitx/cached_layout
 .config/fcitx/clipboard/
 .config/fcitx/data/
