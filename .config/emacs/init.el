@@ -349,56 +349,56 @@
 (setq use-package-always-ensure t)
 
 ;; evil
-(use-package evil
-  ;; :disabled
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (eval-after-load "evil-maps"
-    (dolist (map '(evil-motion-state-map
-                   evil-normal-state-map
-                   evil-operator-state-map
-                   evil-replace-state-map
-                   evil-insert-state-map
-                   evil-visual-state-map
-                   evil-emacs-state-map))
-      (define-key (eval map) "\C-n" nil)
-      (define-key (eval map) "\C-p" nil)
-      (define-key (eval map) "\C-a" nil)
-      (define-key (eval map) "\C-e" nil)
-      (define-key (eval map) "\C-f" nil)
-      (define-key (eval map) "\C-b" nil)
-      (define-key (eval map) "\C-y" nil)
-      (define-key (eval map) "\C-k" nil)
-      (define-key (eval map) "\C-u" nil)
-      (define-key (eval map) "\C-d" nil)
-      ;; (define-key (eval map) "\C-z" nil)
-      (define-key (eval map) "\M-." nil)
-      ;; (define-key (eval map) "\C-w" nil)
-      ;; (define-key (eval map) (kbd "SPC") nil)
-      ;; (define-key (eval map) (kbd "RET") nil)
-      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
-      )
-    )
-  (eval-after-load "evil-maps"
-    (dolist (map '(
-                   evil-insert-state-map
-                   ))
-      (define-key (eval map) "\C-i" nil)
-      (define-key (eval map) "\C-o" nil)
-      (define-key (eval map) "\C-w" nil)
-      (define-key (eval map) "\C-v" nil)
-      )
-    )
-  (setq evil-disable-insert-state-bindings t)
-  (evil-mode 1))
+;; (use-package evil
+;;   ;; :disabled
+;;   :init
+;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(evil-motion-state-map
+;;                    evil-normal-state-map
+;;                    evil-operator-state-map
+;;                    evil-replace-state-map
+;;                    evil-insert-state-map
+;;                    evil-visual-state-map
+;;                    evil-emacs-state-map))
+;;       (define-key (eval map) "\C-n" nil)
+;;       (define-key (eval map) "\C-p" nil)
+;;       (define-key (eval map) "\C-a" nil)
+;;       (define-key (eval map) "\C-e" nil)
+;;       (define-key (eval map) "\C-f" nil)
+;;       (define-key (eval map) "\C-b" nil)
+;;       (define-key (eval map) "\C-y" nil)
+;;       (define-key (eval map) "\C-k" nil)
+;;       (define-key (eval map) "\C-u" nil)
+;;       (define-key (eval map) "\C-d" nil)
+;;       ;; (define-key (eval map) "\C-z" nil)
+;;       (define-key (eval map) "\M-." nil)
+;;       ;; (define-key (eval map) "\C-w" nil)
+;;       ;; (define-key (eval map) (kbd "SPC") nil)
+;;       ;; (define-key (eval map) (kbd "RET") nil)
+;;       (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+;;       )
+;;     )
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(
+;;                    evil-insert-state-map
+;;                    ))
+;;       (define-key (eval map) "\C-i" nil)
+;;       (define-key (eval map) "\C-o" nil)
+;;       (define-key (eval map) "\C-w" nil)
+;;       (define-key (eval map) "\C-v" nil)
+;;       )
+;;     )
+;;   (setq evil-disable-insert-state-bindings t)
+;;   (evil-mode 1))
 
-(use-package evil-collection
-  ;; :disabled
-  :after evil
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   ;; :disabled
+;;   :after evil
+;;   :config
+;;   (evil-collection-init))
 
 ;; (use-package windmove
 ;;   :init (windmove-default-keybindings)
@@ -438,6 +438,7 @@
                (ibuffer-auto-mode)
 	           (ibuffer-switch-to-saved-filter-groups "home")))
   :bind ([remap list-buffers] . ibuffer))
+
 (defun kill-current-buffer ()
   "Kill the current buffer."
   (interactive)
@@ -445,34 +446,110 @@
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
 (global-set-key (kbd "C-q") 'delete-window)
 
-(ido-mode 1)
-(setq ido-enable-flex-matching 1)
-(setq ido-create-new-buffer 'always)
-(ido-everywhere 1)
-(global-set-key (kbd "C-M-j") 'ido-switch-buffer)
+(use-package projectile
+  :ensure t)
 
-;; recentf stuff
-;; (require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
-
-(use-package ido-completing-read+
-  :config (ido-ubiquitous-mode 1))
-
-(use-package smex
-  :bind (
-         ("M-x" . 'smex)
-         ("M-X" . 'smex-major-mode-commands)
-         ("C-c C-c M-x" . 'execute-extended-command)
-         )
-  )
+(define-prefix-command 'meta-s-prefix)
+(global-set-key (kbd "M-s") 'meta-s-prefix)
 
 (use-package avy
   :bind
-  ("M-s" . avy-goto-char)
-  ("M-S" . avy-goto-char-2)
+  (
+   :map meta-s-prefix
+   ("c" . avy-goto-char)
+   ("C" . avy-goto-char-2)
+   )
   )
+
+;; ---------------------------------------------------------------------------- ido and smex
+
+;; (ido-mode 1)
+;; (setq ido-enable-flex-matching 1)
+;; (setq ido-create-new-buffer 'always)
+;; (ido-everywhere 1)
+;; (global-set-key (kbd "C-M-j") 'ido-switch-buffer)
+
+;; ;; recentf stuff
+;; ;; (require 'recentf)
+;; (recentf-mode 1)
+;; (setq recentf-max-menu-items 25)
+;; (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+
+;; (use-package ido-completing-read+
+;;   :config (ido-ubiquitous-mode 1))
+
+;; (use-package smex
+;;   :bind (
+;;          ("M-x" . 'smex)
+;;          ("M-X" . 'smex-major-mode-commands)
+;;          ("C-c C-c M-x" . 'execute-extended-command)
+;;          )
+;;   )
+
+;; ---------------------------------------------------------------------------- ido and smex
+
+;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper
+;; other similar packages to prescient: vertico consult selectrum prescient for completion
+
+(use-package swiper
+  :bind ("C-s" . 'swiper))
+
+(use-package counsel
+  :bind
+  (
+   ("M-x" . 'counsel-M-x)
+   ("C-x b" . 'counsel-ibuffer)
+   ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
+   ("C-x d" . 'counsel-dired)
+   ("C-x C-f" . 'counsel-find-file)
+   ("C-x C-r" . 'counsel-recentf)
+   :map meta-s-prefix
+   ("g" . #'counsel-rg)
+   ("f" . #'counsel-fzf)
+   :map minibuffer-local-map
+   ("C-r" . 'counsel-minibuffer-history)
+   )
+  :config
+  ;; 默认的 rg 配置
+  ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
+  (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
+  (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
+  ;; Integration with `projectile'
+  (with-eval-after-load 'projectile
+    (setq projectile-completion-system 'ivy)))
+
+(use-package ivy
+  :diminish ivy-mode
+  :config
+  (use-package ivy-rich
+    :config
+    (ivy-rich-mode 1))
+  (use-package ivy-prescient
+    :after counsel
+    :config
+    (setq prescient-sort-length-enable nil)
+    ;; This is the default value!
+    (setq prescient-filter-method '(literal regexp fuzzy))
+    ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+    (setq ivy-prescient-enable-filtering nil)
+    ;; Getting the old highlighting back
+    ;; (setq ivy-prescient-retain-classic-highlighting t)
+    (ivy-prescient-mode 1)
+    ;; Remember candidate frequencies across sessions
+    (prescient-persist-mode 1))
+  )
+
+;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper
+
+(use-package prescient
+  :after counsel
+  :config
+  (prescient-persist-mode 1))
+
+(use-package company-prescient
+  :after company
+  :config
+  (company-prescient-mode 1))
 
 (use-package multiple-cursors
   :bind (
@@ -698,8 +775,6 @@
 				   "%e %a"))
       (:remove  . ("%e")))
 	:default "c++"))
-
-(use-package projectile)
 
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
@@ -956,38 +1031,6 @@
 ;; (use-package smartparens
 ;;   :hook (prog-mode . smartparens-mode))
 
-;; other similar packages to prescient: vertico consult selectrum prescient for completion
-
-;; (use-package swiper
-;;   :bind ("C-s" . 'swiper))
-
-;; (use-package ivy
-;;   :diminish ivy-mode)
-
-;; 集成了很多非常有用的的功能
-;; (use-package counsel
-;;   :bind
-;;   (
-;;    ("M-x" . 'counsel-M-x)
-;;    ("C-x b" . 'counsel-ibuffer)
-;;    ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
-;;    ("C-x d" . 'counsel-dired)
-;;    ("C-x C-f" . 'counsel-find-file)
-;;    ("C-x C-r" . 'counsel-recentf)
-;;    ("C-M-f" . counsel-rg)
-;;    ("C-M-n" . counsel-fzf)
-;;    :map minibuffer-local-map
-;;    ("C-r" . 'counsel-minibuffer-history)
-;;    )
-;;   :config
-;;   ;; 默认的 rg 配置
-;;   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
-;;   (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
-;;   (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/eln-cache,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
-;;   ;; Integration with `projectile'
-;;   (with-eval-after-load 'projectile
-;;     (setq projectile-completion-system 'ivy)))
-
 ;; 如果不喜欢ivy可以用这个包替换
 ;; (use-package selectrum :config (selectrum-mode +1))
 
@@ -995,30 +1038,6 @@
 ;;     :config
 ;;     (prescient-persist-mode +1)
 ;;     (selectrum-prescient-mode +1))
-
-;; (use-package prescient
-;;   :after counsel
-;;   :config
-;;   (prescient-persist-mode 1))
-
-;; (use-package ivy-prescient
-;;   :after counsel
-;;   :config
-;;   (setq prescient-sort-length-enable nil)
-;;   ;; This is the default value!
-;;   (setq prescient-filter-method '(literal regexp fuzzy))
-;;   ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
-;;   (setq ivy-prescient-enable-filtering nil)
-;;   ;; Getting the old highlighting back
-;;   ;; (setq ivy-prescient-retain-classic-highlighting t)
-;;   (ivy-prescient-mode 1)
-;;   ;; Remember candidate frequencies across sessions
-;;   (prescient-persist-mode 1))
-
-;; (use-package company-prescient
-;;   :after company
-;;   :config
-;;   (company-prescient-mode 1))
 
 ;; for hydra
 ;; (use-package hydra :defer 0)
