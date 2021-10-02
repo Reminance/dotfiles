@@ -24,36 +24,6 @@
 ;;----------------------------------------------------------------------------
 ;; init variables
 ;;----------------------------------------------------------------------------
-(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
-(defconst *is-mac* (eq system-type 'darwin))
-(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
-(defconst *is-linux* (eq system-type 'gnu/linux))
-(defconst *is-x11* (eq window-system 'x))
-(defconst *is-windows* (eq system-type 'windows-nt))
-(when *is-mac*
-  (setq mac-command-modifier 'meta)
-  (setq mac-option-modifier 'none)
-  ;; Make mouse wheel / trackpad scrolling less jerky
-  (setq mouse-wheel-scroll-amount '(1
-                                    ((shift) . 5)
-                                    ((control))))
-  (dolist (multiple '("" "double-" "triple-"))
-    (dolist (direction '("right" "left"))
-      (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
-  (global-set-key (kbd "M-`") 'ns-next-frame)
-  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-  (global-set-key (kbd "M-˙") 'ns-do-hide-others)
-  (with-eval-after-load 'nxml-mode
-    (define-key nxml-mode-map (kbd "M-h") nil))
-  ;; what describe-key reports for cmd-option-h
-  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
-
-(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-  ;; Command-Option-f to toggle fullscreen mode
-  ;; Hint: Customize `ns-use-native-fullscreen'
-  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
-
-;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -203,11 +173,6 @@
 (setq use-dialog-box nil)
 (setq inhibit-startup-screen t)
 
-;; Window size and features
-;; (setq-default
-;;  window-resize-pixelwise t
-;;  frame-resize-pixelwise t)
-
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (fboundp 'set-scroll-bar-mode)
@@ -218,7 +183,7 @@
 ;; enable mouse in terminal
 (xterm-mouse-mode 1)
 
-;; 开启行号
+;; line number column
 ;; (setq display-line-numbers-type 'relative)
 (global-display-line-numbers-mode +1)
 
@@ -283,17 +248,6 @@
 (global-set-key (kbd "C-M-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
 (global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
 (global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
-
-;; (setq frame-title-format
-;;       '((:eval (if (buffer-file-name)
-;;                    (abbreviate-file-name (buffer-file-name))
-;;                  "%b"))))
-
-;; Non-zero values for `line-spacing' can mess up ansi-term and co,
-;; so we zero it explicitly in those cases.
-(add-hook 'term-mode-hook
-          (lambda ()
-            (setq line-spacing 0)))
 
 ;; split window and change focus
 (defadvice split-window (after move-point-to-new-window activate)
@@ -400,24 +354,6 @@
 ;;   :config
 ;;   (evil-collection-init))
 
-;; (use-package windmove
-;;   :init (windmove-default-keybindings)
-;;   :config (use-package buffer-move)
-;;   :bind (
-;;          ("C-M-<left>" . 'windmove-left)
-;;          ("C-M-<down>" . 'windmove-down)
-;;          ("C-M-<up>" . 'windmove-up)
-;;          ("C-M-<right>" . 'windmove-right)
-;;          ("C-M-S-<left>" . 'windmove-swap-states-left)
-;;          ("C-M-S-<down>" . 'windmove-swap-states-down)
-;;          ("C-M-S-<up>" . 'windmove-swap-states-up)
-;;          ("C-M-S-<right>" . 'windmove-swap-states-right)
-;;          ;; ("C-M-S-h" . #'shrink-window-horizontally)
-;;          ;; ("C-M-S-j" . #'enlarge-window)
-;;          ;; ("C-M-S-k" . #'shrink-window)
-;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
-;;          ))
-
 ;; Use Ibuffer for Buffer List
 (use-package ibuffer
   :config
@@ -488,7 +424,7 @@
 
 ;; ---------------------------------------------------------------------------- ido and smex
 
-;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper
+;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper start
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
 (use-package swiper
@@ -539,7 +475,7 @@
     (prescient-persist-mode 1))
   )
 
-;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper
+;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
 
 (use-package prescient
   :after counsel
@@ -572,7 +508,6 @@
 (use-package expand-region
   :bind ("M-@" . er/expand-region))
 
-;; 代码片段
 (use-package yasnippet
   :config
   (setq yas-snippet-dirs '("~/.config/emacs/etc/snippets"))
@@ -580,7 +515,7 @@
 
 (use-package yasnippet-snippets :after yasnippet)
 
-(setq kill-ring-max 100)
+(setq kill-ring-max 500)
 (use-package popup-kill-ring
   :bind ("M-y" . popup-kill-ring))
 
@@ -660,12 +595,11 @@
   :hook (prog-mode . flycheck-mode)
   :bind (:map leader-key
               ("t t" . global-flycheck-mode))
-  :config (which-key-add-key-based-replacements "M-SPC t t" "开关flycheck")
+  :config
   (setq flycheck-global-modes '(not text-mode outline-mode fundamental-mode org-mode diff-mode
                                     shell-mode eshell-mode term-mode vterm-mode)
         flycheck-emacs-lisp-load-path 'inherit
         ;; Only check while saving and opening files
-        ;; 只在打开和保存文件时才进行检查
         flycheck-check-syntax-automatically '(save mode-enabled) flycheck-indication-mode
         'right-fringe)
   )
@@ -814,9 +748,11 @@
   :config
   (setq zenburn-override-colors-alist
         '(
-          ("zenburn-bg" . "#292929")
+          ("zenburn-bg" . "#292929") ;; background
+          ("zenburn-bg+1" . "#292929") ;; fringe
           ("zenburn-bg-1" . "#404040") ;; region highlight
-          ("zenburn-bg+05" . "#2e2e2e")
+          ("zenburn-bg-05" . "#292929") ;; line number
+          ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
           ))
   (load-theme 'zenburn t))
 
@@ -904,6 +840,63 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;; Window size and features
+;; (setq-default
+;;  window-resize-pixelwise t
+;;  frame-resize-pixelwise t)
+
+;; fringe setup (clear line wrap symbol)
+;; (setf (cdr (assq 'continuation fringe-indicator-alist))
+;;       '(nil nil) ;; no continuation indicators
+;;       ;; '(nil right-curly-arrow) ;; right indicator only
+;;       ;; '(left-curly-arrow nil) ;; left indicator only
+;;       ;; '(left-curly-arrow right-curly-arrow) ;; default
+;;       )
+;; disable fringe column
+;; (fringe-mode '(0 . 0))
+
+;; (setq frame-title-format
+;;       '((:eval (if (buffer-file-name)
+;;                    (abbreviate-file-name (buffer-file-name))
+;;                  "%b"))))
+
+;; Non-zero values for `line-spacing' can mess up ansi-term and co,
+;; so we zero it explicitly in those cases.
+;; (add-hook 'term-mode-hook
+;;           (lambda ()
+;;             (setq line-spacing 0)))
+
+;; (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
+;; (defconst *is-mac* (eq system-type 'darwin))
+;; (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+;; (defconst *is-linux* (eq system-type 'gnu/linux))
+;; (defconst *is-x11* (eq window-system 'x))
+;; (defconst *is-windows* (eq system-type 'windows-nt))
+;; (when *is-mac*
+;;   (setq mac-command-modifier 'meta)
+;;   (setq mac-option-modifier 'none)
+;;   ;; Make mouse wheel / trackpad scrolling less jerky
+;;   (setq mouse-wheel-scroll-amount '(1
+;;                                     ((shift) . 5)
+;;                                     ((control))))
+;;   (dolist (multiple '("" "double-" "triple-"))
+;;     (dolist (direction '("right" "left"))
+;;       (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
+;;   (global-set-key (kbd "M-`") 'ns-next-frame)
+;;   (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+;;   (global-set-key (kbd "M-˙") 'ns-do-hide-others)
+;;   (with-eval-after-load 'nxml-mode
+;;     (define-key nxml-mode-map (kbd "M-h") nil))
+;;   ;; what describe-key reports for cmd-option-h
+;;   (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
+
+;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+;;   ;; Command-Option-f to toggle fullscreen mode
+;;   ;; Hint: Customize `ns-use-native-fullscreen'
+;;   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
+
 ;; 任何地方都使用UTF-8
 ;; (set-charset-priority 'unicode)
 ;; (setq locale-coding-system   'utf-8)
@@ -912,6 +905,24 @@
 ;; (set-selection-coding-system 'utf-8)
 ;; (prefer-coding-system        'utf-8)
 ;; (setq default-process-coding-system '(utf-8 . utf-8))
+
+;; (use-package windmove
+;;   :init (windmove-default-keybindings)
+;;   :config (use-package buffer-move)
+;;   :bind (
+;;          ("C-M-<left>" . 'windmove-left)
+;;          ("C-M-<down>" . 'windmove-down)
+;;          ("C-M-<up>" . 'windmove-up)
+;;          ("C-M-<right>" . 'windmove-right)
+;;          ("C-M-S-<left>" . 'windmove-swap-states-left)
+;;          ("C-M-S-<down>" . 'windmove-swap-states-down)
+;;          ("C-M-S-<up>" . 'windmove-swap-states-up)
+;;          ("C-M-S-<right>" . 'windmove-swap-states-right)
+;;          ;; ("C-M-S-h" . #'shrink-window-horizontally)
+;;          ;; ("C-M-S-j" . #'enlarge-window)
+;;          ;; ("C-M-S-k" . #'shrink-window)
+;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
+;;          ))
 
 ;; exec-path-from-shell
 ;; (use-package exec-path-from-shell
