@@ -395,16 +395,14 @@
 ;; extra search utilities
 (define-prefix-command 'meta-s-prefix)
 (global-set-key (kbd "M-s") 'meta-s-prefix)
-(define-key meta-s-prefix "c" #'avy-goto-char)
-(define-key meta-s-prefix "C" #'avy-goto-char-2)
-(define-key meta-s-prefix "g" #'counsel-rg)
-(define-key meta-s-prefix "a" #'counsel-ag)
-(define-key meta-s-prefix "f" #'counsel-fzf)
-(define-key meta-s-prefix "G" #'counsel-git)
-(define-key meta-s-prefix "F" #'counsel-git-grep)
 
 (use-package avy
-  :ensure t)
+  :ensure t
+  :bind (
+         :map meta-s-prefix
+         ("c" . #'avy-goto-char)
+         ("C" . #'avy-goto-char-2)
+         ))
 
 ;; ---------------------------------------------------------------------------- ido and smex
 
@@ -457,9 +455,14 @@
          ("<f2> u" . 'counsel-unicode-char)
          ("C-c g" . 'counsel-git)
          ("C-c j" . 'counsel-git-grep)
-         ;; ("C-c k" . 'counsel-ag)
          ;; ("C-x l" . 'counsel-locate)
          ;; ("C-S-o" . 'counsel-rhythmbox)
+         :map meta-s-prefix
+         ("g" . #'counsel-rg)
+         ("a" . #'counsel-ag)
+         ("f" . #'counsel-fzf)
+         ("G" . #'counsel-git)
+         ("F" . #'counsel-git-grep)
          :map minibuffer-local-map
          ("C-r" . 'counsel-minibuffer-history)
          )
