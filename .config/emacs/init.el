@@ -119,7 +119,7 @@
 ;; (setq-default cursor-type t)
 
 ;; 高亮当前行
-(global-hl-line-mode 1)
+;; (global-hl-line-mode 1)
 
 ;; Move cursor to end of current line
 ;; Insert new line below current line
@@ -739,6 +739,7 @@
   (setq zenburn-override-colors-alist
         '(
           ("zenburn-bg" . "#2e2e2e")
+          ("zenburn-bg-1" . "#404040") ;; region highlight
           ("zenburn-bg+05" . "#2e2e2e")
           ))
   (load-theme 'zenburn t))

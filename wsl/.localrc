@@ -37,7 +37,7 @@ fi
 
 
 # Increase key speed via a rate change by default: auto repeat delay:  658    repeat rate:  25
-xset r rate 300 50
+# xset r rate 300 50
 
 [ -z "$(ps -ef | grep cron | grep -v grep)" ] && sudo /usr/sbin/crond start &> /dev/null
 
