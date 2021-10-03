@@ -79,6 +79,13 @@
 (global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
 
+;; dired alternate open(avoid of too many buffers)
+(put 'dired-find-alternate-file 'disabled nil)
+(add-hook 'dired-mode-hook
+          (lambda ()
+            (define-key dired-mode-map (kbd "^")
+              (lambda () (interactive) (find-alternate-file "..")))))
+
 ;; init message
 ;; (setq-default initial-scratch-message
 ;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
@@ -131,11 +138,12 @@
 (global-unset-key (kbd "C-z"))
 (define-prefix-command 'leader-key)
 (global-set-key (kbd "C-\\") 'leader-key)
-(define-key leader-key "<f5>" 'revert-buffer)
+(define-key leader-key (kbd "<f5>") 'revert-buffer)
 (define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
 (define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
+(define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "e" 'mu4e)
 
@@ -203,13 +211,13 @@
 (setq electric-pair-pairs '(
                             (?\( . ?\))
                             (?\[ . ?\])
-                            (?\{ . ?\})
-                            (?\` . ?\`)
                             (?\" . ?\")
+                            (?\{ . ?\})
                             ))
-(setq electric-pair-inhibit-predicate
-      (lambda (c)
-        (if (char-equal c ?\<) t (electric-pair-default-inhibit c))))
+;; (setq electric-pair-inhibit-predicate
+;;       (lambda (c)
+;;         (if (char-equal c ?\<) t (electric-pair-default-inhibit c))
+;;         ))
 (electric-pair-mode t)
 
 (defun sanityinc/adjust-opacity (frame incr)
@@ -591,6 +599,7 @@
                         "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
+                        "~/doc/org/reading.org"
                         ))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
@@ -796,6 +805,13 @@
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
 
+;; python
+(add-hook 'python-mode-hook 'lsp)
+
+;; bash
+(add-hook 'shell-mode-hook 'lsp)
+(add-hook 'sh-mode-hook 'lsp)
+
 ;; lsp
 ;; =================================================
 ;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
@@ -807,12 +823,15 @@
 ;; = + ruby                                        =
 ;; =   > `gem install solargraph'                  =
 ;; = + java                                        =
-;; =   > `(use-package lsp-java)'        =
+;; =   > `(use-package lsp-java)'                  =
 ;; = + c/c++                                       =
 ;; =   > `sudo pacman -S ccls'                     =
-;; = + go
-;; =   > `sudo pacman -S gopls'                     =
+;; = + go                                          =
+;; =   > `sudo pacman -S gopls'                    =
 ;; =================================================
+;; The palantir python-language-server (pyls) is unmaintained;
+;; a maintained fork is the python-lsp-server (pylsp) project;
+;; you can install it with pip via: pip install python-lsp-server
 (use-package lsp-mode
   :hook ((lsp-mode . lsp-enable-which-key-integration))
   :bind (:map lsp-mode-map
@@ -846,6 +865,87 @@
   (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
         lsp-ui-doc-delay 1        ;; 显示文档的延迟
         ))
+
+;; pdf
+(use-package pdf-tools
+  :ensure t
+  :config
+  (pdf-tools-install)
+  )
+
+(global-set-key (kbd "C-M-v") (lambda () (interactive) (my/scroll-other-window)))
+(global-set-key (kbd "C-M-S-v") (lambda () (interactive) (my/scroll-other-window-down)))
+
+(defun my/scroll-other-window ()
+  "Scroll ather window up."
+  (interactive)
+  (let* ((wind (other-window-for-scrolling))
+         (mode (with-selected-window wind major-mode)))
+    (if (eq mode 'pdf-view-mode)
+        (with-selected-window wind
+          ;; (pdf-view-scroll-up-or-next-page &optional ARG)
+          ;; (pdf-view-scroll-up-or-next-page)
+          (pdf-view-next-line-or-next-page 4)
+          )
+      ;; (scroll-other-window 2)
+      (scroll-other-window)
+      )))
+
+(defun my/scroll-other-window-down ()
+  "Scroll ather window down."
+  (interactive)
+  (let* ((wind (other-window-for-scrolling))
+         (mode (with-selected-window wind major-mode)))
+    (if (eq mode 'pdf-view-mode)
+        (with-selected-window wind
+          (progn
+            ;; (pdf-view-scroll-down-or-previous-page &optional ARG)
+            ;; (pdf-view-scroll-down-or-previous-page)
+            (pdf-view-previous-line-or-previous-page 4)
+            (other-window 1)))
+      ;; (scroll-other-window-down 2)
+      (scroll-other-window-down)
+      )))
+
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
+
+(use-package org-noter-pdftools
+  :after org-noter
+  :config
+  ;; Add a function to ensure precise note is inserted
+  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
+                                                   (not org-noter-insert-note-no-questions)
+                                                 org-noter-insert-note-no-questions))
+           (org-pdftools-use-isearch-link t)
+           (org-pdftools-use-freestyle-annot t))
+       (org-noter-insert-note (org-noter--get-precise-info)))))
+  ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
+  (defun org-noter-set-start-location (&optional arg)
+    "When opening a session with this document, go to the current location.
+With a prefix ARG, remove start location."
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((inhibit-read-only t)
+           (ast (org-noter--parse-root))
+           (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
+       (with-current-buffer (org-noter--session-notes-buffer session)
+         (org-with-wide-buffer
+          (goto-char (org-element-property :begin ast))
+          (if arg
+              (org-entry-delete nil org-noter-property-note-location)
+            (org-entry-put nil org-noter-property-note-location
+                           (org-noter--pretty-print-location location))))))))
+  (with-eval-after-load 'pdf-annot
+    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+(use-package org-noter
+  :config
+  ;; Your org-noter config
+  (require 'org-noter-pdftools))
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
@@ -946,6 +1046,36 @@
 ;;          ;; ("C-M-S-k" . #'shrink-window)
 ;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
 ;;          ))
+
+;; (use-package centaur-tabs
+;;   :demand
+;;   :init
+;;   (setq centaur-tabs-enable-key-bindings t)
+;;   :config
+;;   (setq
+;;    centaur-tabs-style "bar"
+;;    centaur-tabs-set-bar 'over
+;;    centaur-tabs-set-icons t
+;;    centaur-tabs-set-modified-marker t
+;;    centaur-tabs-modified-marker "*"
+;;    ;; centaur-tabs-height 32
+;;    ;; centaur-tabs-plain-icons t
+;;    ;; centaur-tabs-gray-out-icons 'buffer
+;;    ;; centaur-tabs--buffer-show-groups t
+;;    ;; centaur-tabs-show-navigation-buttons t
+;;    )
+;;   (centaur-tabs-headline-match)
+;;   (centaur-tabs-mode t)
+;;   :hook
+;;   (dired-mode . centaur-tabs-local-mode)
+;;   ;; :bind (
+;;   ;;        ("C-<prior>" . centaur-tabs-backward)
+;;   ;;        ("C-<next>" . centaur-tabs-forward)
+;;   ;;        ;; :map evil-normal-state-map
+;;   ;;        ;; ("g t" . centaur-tabs-forward)
+;;   ;;        ;; ("g T" . centaur-tabs-backward)
+;;   ;;        )
+;;   )
 
 ;; (use-package command-log-mode
 ;;   :ensure t)

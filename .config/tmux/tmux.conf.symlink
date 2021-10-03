@@ -6,12 +6,12 @@
 # unbind C-b
 # set -g prefix `
 # bind-key ` send-prefix
-# unbind-key C-b
-# set -g prefix 'C-\'
-# bind-key 'C-\' send-prefix
 unbind-key C-b
-set -g prefix F5
-bind-key F5 send-prefix
+set -g prefix 'C-\'
+bind-key 'C-\' send-prefix
+# unbind-key C-b
+# set -g prefix F5
+# bind-key F5 send-prefix
 
 # set-option -g status-position top
 # set-option -g status-position bottom
@@ -70,7 +70,7 @@ unbind-key M-Down       ; bind-key -n M-Down      select-pane -D
 unbind-key M-Up         ; bind-key -n M-Up        select-pane -U
 unbind-key M-Right      ; bind-key -n M-Right     select-pane -R
 
-unbind-key M-d     ; bind-key -n M-d  detach-client
+# unbind-key M-d     ; bind-key -n M-d  detach-client
 
 unbind-key M-S-left   ; bind-key -n M-S-left    resize-pane -L 1
 unbind-key M-S-down   ; bind-key -n M-S-down    resize-pane -D 1
