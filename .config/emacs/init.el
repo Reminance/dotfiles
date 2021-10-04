@@ -234,7 +234,7 @@
 
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(98 . 98))
+(defvar my/frame-transparency '(96 . 96 ))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -310,6 +310,12 @@
 (require 'use-package-ensure)
 (setq use-package-always-ensure t)
 
+;; exec-path-from-shell
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
+
 ;; evil
 ;; (use-package evil
 ;;   ;; :disabled
@@ -370,7 +376,7 @@
   (setq ibuffer-saved-filter-groups
         (quote (("home"
                  ("workspace" (filename . "workspace"))
-                 ("dotfiles" (or (filename . ".dotfiles")))
+                 ("dotfiles" (or (filename . "dotfiles")))
                  ("mu4e" (or (filename . "\*mu4e\*")))
                  ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
 	             ("Org" (or (mode . org-mode) (filename . "OrgMode")))
@@ -787,6 +793,20 @@
           ))
   (load-theme 'zenburn t))
 
+(use-package yaml-mode :defer t)
+(use-package json-mode
+  :mode "\\.json\\'")
+
+(use-package docker
+  :ensure t
+  :bind ("C-c d" . docker))
+
+(use-package hackernews
+  :commands (hackernews)
+  :bind
+  ("C-c h" . hackernews)
+  )
+
 ;; golang
 (use-package go-mode)
 ;; Go - lsp-mode
@@ -833,9 +853,16 @@
 ;; a maintained fork is the python-lsp-server (pylsp) project;
 ;; you can install it with pip via: pip install python-lsp-server
 (use-package lsp-mode
-  :hook ((lsp-mode . lsp-enable-which-key-integration))
+  :defer t
+  :commands lsp
+  :hook (
+         ((java-mode python-mode go-mode rust-mode
+          js-mode js2-mode typescript-mode web-mode
+          c-mode c++-mode objc-mode) . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         )
   :bind (:map lsp-mode-map
-              ("M-C-l" . lsp-format-buffer)
+              ("C-M-l" . lsp-format-buffer)
               ("M-RET" . lsp-ui-sideline-apply-code-actions)
               ("M-RET" . lsp-execute-code-action))
   :config
@@ -843,6 +870,15 @@
         lsp-enable-symbol-highlighting nil
         lsp-headerline-breadcrumb-enable nil)
   )
+
+(use-package lsp-java
+  :after lsp-mode
+  :if (executable-find "mvn")
+  :init
+  (use-package request :defer t)
+  :custom
+  (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
+  (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
 
 (use-package lsp-ui
   :hook (lsp-mode . lsp-ui-mode)
@@ -946,6 +982,30 @@ With a prefix ARG, remove start location."
   :config
   ;; Your org-noter config
   (require 'org-noter-pdftools))
+
+;; input method
+(use-package pyim
+  :init
+  (use-package posframe :defer t)
+  :diminish pyim-isearch-mode
+  :custom
+  (default-input-method "pyim")
+  (pyim-default-scheme 'xiaohe-shuangpin)
+  (pyim-page-tooltip 'posframe)
+  (pyim-page-length 9)
+  :config
+  (use-package pyim-basedict
+    :after pyim
+    :config (pyim-basedict-enable))
+  (pyim-isearch-mode 1)
+  (setq-default pyim-english-input-switch-functions
+                '(pyim-probe-isearch-mode
+                  pyim-probe-org-structure-template))
+  (setq-default pyim-punctuation-half-width-functions
+                '(pyim-probe-punctuation-line-beginning
+                  pyim-probe-punctuation-after-punctuation))
+  ;; :bind ("M-j" . pyim-convert-string-at-point) ; M-j 强制将光标前的拼音字符串转换为中文
+  )
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
@@ -1079,12 +1139,6 @@ With a prefix ARG, remove start location."
 
 ;; (use-package command-log-mode
 ;;   :ensure t)
-
-;; exec-path-from-shell
-;; (use-package exec-path-from-shell
-;;   :config
-;;   (when (memq window-system '(mac ns x))
-;;     (exec-path-from-shell-initialize)))
 
 ;; ;; for test
 ;; (defun my/check-cursor-end-of-line ()

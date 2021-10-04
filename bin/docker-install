@@ -1,0 +1,13 @@
+#!/bin/sh
+
+sudo pacman -S docker
+
+# sudo groupadd docker
+# sudo gpasswd -a xc docker  # docker cmd without sudo
+sudo usermod -aG docker xc  # docker cmd without sudo
+
+systemctl restart docker.service
+systemctl enable docker.service
+
+docker version
+

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+sudo pacman -S samba
+systemctl restart smb.service
+systemctl enable smb.service
+sudo smbpasswd -a xc
