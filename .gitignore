@@ -14,6 +14,7 @@ sandbox/
 .config/emacs/var/
 .config/emacs/workspace/
 .config/emacs/pyim/
+/.config/emacs/hackernews/
 /.config/emacs/projectile-bookmarks.eld
 .config/fcitx/cached_layout
 .config/fcitx/clipboard/

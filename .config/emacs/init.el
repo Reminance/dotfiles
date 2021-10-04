@@ -801,6 +801,9 @@
   :ensure t
   :bind ("C-c d" . docker))
 
+(use-package dockerfile-mode
+  :defer t)
+
 (use-package hackernews
   :commands (hackernews)
   :bind
@@ -895,7 +898,7 @@
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   ;; doc
   (if (display-graphic-p)
-      (setq lsp-ui-doc-enable t)
+      (setq lsp-ui-doc-enable nil)
     (setq lsp-ui-doc-enable nil)
     )
   (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
@@ -921,7 +924,7 @@
         (with-selected-window wind
           ;; (pdf-view-scroll-up-or-next-page &optional ARG)
           ;; (pdf-view-scroll-up-or-next-page)
-          (pdf-view-next-line-or-next-page 4)
+          (pdf-view-next-line-or-next-page 2)
           )
       ;; (scroll-other-window 2)
       (scroll-other-window)
@@ -937,7 +940,7 @@
           (progn
             ;; (pdf-view-scroll-down-or-previous-page &optional ARG)
             ;; (pdf-view-scroll-down-or-previous-page)
-            (pdf-view-previous-line-or-previous-page 4)
+            (pdf-view-previous-line-or-previous-page 2)
             (other-window 1)))
       ;; (scroll-other-window-down 2)
       (scroll-other-window-down)
