@@ -1,0 +1,4 @@
+#!/bin/sh
+
+FILENAME=$(find ~/doc -regextype egrep -iregex ".*\.(org|md)$" | fzf )
+$EDITOR $FILENAME

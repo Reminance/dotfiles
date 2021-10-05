@@ -234,7 +234,7 @@
 
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(96 . 96 ))
+(defvar my/frame-transparency '(98 . 98))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -315,6 +315,23 @@
   :config
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
+
+(use-package windmove
+  :config (use-package buffer-move)
+  :bind (
+         ("C-c <left>" . windmove-left)
+         ("C-c <down>" . windmove-down)
+         ("C-c <up>" . windmove-up)
+         ("C-c <right>" . windmove-right)
+         ("C-c S-<left>" . windmove-swap-states-left)
+         ("C-c S-<down>" . windmove-swap-states-down)
+         ("C-c S-<up>" . windmove-swap-states-up)
+         ("C-c S-<right>" . windmove-swap-states-right)
+         ("C-M-S-<left>" . shrink-window-horizontally)
+         ("C-M-S-<down>" . enlarge-window)
+         ("C-M-S-<up>" . shrink-window)
+         ("C-M-S-<right>" . enlarge-window-horizontally)
+         ))
 
 ;; evil
 ;; (use-package evil
@@ -576,6 +593,7 @@
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
 (use-package org
+  :diminish org-indent-mode
   :config
   ;; This can be solved by adding a hook to org-tab-first-hook which adds org-end-of-line.
   ;; Every time TAB is used it jumps to last visible character of the org-line, but before the ellipsis, and then opens/closes the container as usual.
@@ -880,6 +898,7 @@
   :init
   (use-package request :defer t)
   :custom
+  ;; lsp-install-server --> jdtls
   (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
   (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
 
@@ -996,6 +1015,7 @@ With a prefix ARG, remove start location."
   (pyim-default-scheme 'xiaohe-shuangpin)
   (pyim-page-tooltip 'posframe)
   (pyim-page-length 9)
+  :bind ("C-c C-\\" . toggle-input-method)
   :config
   (use-package pyim-basedict
     :after pyim
@@ -1091,24 +1111,6 @@ With a prefix ARG, remove start location."
 ;; (set-selection-coding-system 'utf-8)
 ;; (prefer-coding-system        'utf-8)
 ;; (setq default-process-coding-system '(utf-8 . utf-8))
-
-;; (use-package windmove
-;;   :init (windmove-default-keybindings)
-;;   :config (use-package buffer-move)
-;;   :bind (
-;;          ("C-M-<left>" . 'windmove-left)
-;;          ("C-M-<down>" . 'windmove-down)
-;;          ("C-M-<up>" . 'windmove-up)
-;;          ("C-M-<right>" . 'windmove-right)
-;;          ("C-M-S-<left>" . 'windmove-swap-states-left)
-;;          ("C-M-S-<down>" . 'windmove-swap-states-down)
-;;          ("C-M-S-<up>" . 'windmove-swap-states-up)
-;;          ("C-M-S-<right>" . 'windmove-swap-states-right)
-;;          ;; ("C-M-S-h" . #'shrink-window-horizontally)
-;;          ;; ("C-M-S-j" . #'enlarge-window)
-;;          ;; ("C-M-S-k" . #'shrink-window)
-;;          ;; ("C-M-S-l" . #'enlarge-window-horizontally)
-;;          ))
 
 ;; (use-package centaur-tabs
 ;;   :demand
