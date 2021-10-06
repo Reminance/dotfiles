@@ -86,35 +86,6 @@
             (define-key dired-mode-map (kbd "^")
               (lambda () (interactive) (find-alternate-file "..")))))
 
-;; init message
-;; (setq-default initial-scratch-message
-;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
-
-;; 设置光标样式
-;; (setq-default cursor-type t)
-
-;; 高亮当前行
-;; (global-hl-line-mode 1)
-
-;; Move cursor to end of current line
-;; Insert new line below current line
-;; it will also indent newline
-(global-set-key (kbd "<S-return>") (lambda ()
-                                     (interactive)
-                                     (end-of-line)
-                                     (newline-and-indent)))
-
-;; Move cursor to previous line
-;; Go to end of the line
-;; Insert new line below current line (So it actually insert new line above with indentation)
-;; it will also indent newline
-(global-set-key (kbd "<C-M-return>") (lambda ()
-                                       (interactive)
-                                       (previous-line)
-                                       (end-of-line)
-                                       (newline-and-indent)
-                                       ))
-
 ;; join-line
 (global-set-key "\M-J" (lambda ()
                          (interactive)
@@ -1052,6 +1023,34 @@ With a prefix ARG, remove start location."
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
   (load custom-file))
+
+;; init message
+;; (setq-default initial-scratch-message
+;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
+
+;; 设置光标样式
+;; (setq-default cursor-type t)
+
+;; 高亮当前行
+;; (global-hl-line-mode 1)
+
+;; ;; Move cursor to end of current line
+;; ;; Insert new line below current line
+;; ;; it will also indent newline
+;; (global-set-key (kbd "<S-return>") (lambda ()
+;;                                      (interactive)
+;;                                      (end-of-line)
+;;                                      (newline-and-indent)))
+;; ;; Move cursor to previous line
+;; ;; Go to end of the line
+;; ;; Insert new line below current line (So it actually insert new line above with indentation)
+;; ;; it will also indent newline
+;; (global-set-key (kbd "<C-M-return>") (lambda ()
+;;                                        (interactive)
+;;                                        (previous-line)
+;;                                        (end-of-line)
+;;                                        (newline-and-indent)
+;;                                        ))
 
 ;; Window size and features
 ;; (setq-default
