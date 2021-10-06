@@ -45,10 +45,10 @@
 
 ;; 最大单行字符数量
 (setq-default fill-column 80)
-;; 让'_'被视为单词的一部分
-(add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
-;; "-" 同上)
-(add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?- "w")))
+;; ;; 让'_'被视为单词的一部分
+;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?_ "w")))
+;; ;; "-" 同上)
+;; (add-hook 'after-change-major-mode-hook (lambda () (modify-syntax-entry ?- "w")))
 ;; 允许插入制表符
 (setq-default indent-tabs-mode nil)
 ;; 制表符宽度
@@ -316,13 +316,16 @@
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
+;; Restore old window configurations
+(winner-mode 1)
+
 (use-package windmove
   :config (use-package buffer-move)
   :bind (
-         ("C-c <left>" . windmove-left)
-         ("C-c <down>" . windmove-down)
-         ("C-c <up>" . windmove-up)
-         ("C-c <right>" . windmove-right)
+         ("C-c C-<left>" . windmove-left)
+         ("C-c C-<down>" . windmove-down)
+         ("C-c C-<up>" . windmove-up)
+         ("C-c C-<right>" . windmove-right)
          ("C-c S-<left>" . windmove-swap-states-left)
          ("C-c S-<down>" . windmove-swap-states-down)
          ("C-c S-<up>" . windmove-swap-states-up)
@@ -834,7 +837,7 @@
 ;; Set up before-save hooks to format buffer and add/delete imports.
 (defun lsp-go-save-hooks ()
   "Go file before save, format and organize imports."
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  ;; (add-hook 'before-save-hook #'lsp-format-buffer t t) ;; don't auto format, in case of lsp remove unsed import before tmp save
   (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-save-hooks)
 
@@ -845,6 +848,10 @@
 ;; C/C++
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
+(define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
+;; (eval-after-load "c"
+;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
+;;           ))
 
 ;; python
 (add-hook 'python-mode-hook 'lsp)
