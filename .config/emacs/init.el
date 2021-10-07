@@ -401,12 +401,18 @@
 (define-prefix-command 'meta-s-prefix)
 (global-set-key (kbd "M-s") 'meta-s-prefix)
 
+(defun my/avy-goto-end-of-line ()
+  "Call avy-goto-char for RET(13)."
+  (interactive)
+  (avy-goto-char 13))
+
 (use-package avy
   :ensure t
   :bind (
          :map meta-s-prefix
-         ("c" . #'avy-goto-char)
-         ("C" . #'avy-goto-char-2)
+         ("c" . avy-goto-char)
+         ("C" . avy-goto-char-2)
+         ("<RET>" . my/avy-goto-end-of-line)
          ))
 
 ;; ---------------------------------------------------------------------------- ido and smex
@@ -861,7 +867,8 @@
          (lsp-mode . lsp-enable-which-key-integration)
          )
   :bind (:map lsp-mode-map
-              ("C-M-l" . lsp-format-buffer)
+              ;; ("C-M-l" . lsp-format-buffer)
+              ("C-M-l" . lsp-format-region)
               ("M-RET" . lsp-ui-sideline-apply-code-actions)
               ("M-RET" . lsp-execute-code-action))
   :config
