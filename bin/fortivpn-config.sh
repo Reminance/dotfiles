@@ -1,7 +1,7 @@
 ubfg = ffy.furvapbec.pa
 cbeg = 443
 hfreanzr = khpurat2@furva.pbz
-cnffjbeq = Dd872666026.
+cnffjbeq = Khpurat1234.
 
 # # sample see:https://github.com/adrienverge/openfortivpn
 # # install via archlinux aur
