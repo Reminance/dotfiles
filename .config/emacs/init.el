@@ -21,6 +21,16 @@
 ;; Bootstrap config
 ;;----------------------------------------------------------------------------
 
+;; emacs source code
+;; (setq source-directory "/path/to/emacs/source/dir")
+;; (setq source-directory
+;;       (file-name-directory
+;;        (shell-command-to-string
+;;         (concat "locate --limit 1 emacs-" emacs-version "/src"))))
+;; (setq find-function-C-source-directory (concat "~/src/emacs-" emacs-version "/src"))
+;; ~/src/emacs-27.1/src
+;; git clone https://github.com/emacs-mirror/emacs.git
+
 ;;----------------------------------------------------------------------------
 ;; init variables
 ;;----------------------------------------------------------------------------
@@ -829,6 +839,11 @@
 ;; (eval-after-load "c"
 ;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
 ;;           ))
+
+;; (setq c-mode-hook
+;;       '(lambda ()
+;;          (gtags-mode 1)
+;;          ))
 
 ;; python
 (add-hook 'python-mode-hook 'lsp)
