@@ -105,11 +105,11 @@
 
 ;; 设置字体
 ;; "Fira Code Nerd Font Mono"
-;; (set-face-attribute 'default nil
-;;                     :font (font-spec
-;;                            :name "Iosevka"
-;;                            :style "Regular"
-;;                            :size 16))
+(set-face-attribute 'default nil
+                    :font (font-spec
+                           ;; :name "Iosevka"
+                           ;; :style "Regular"
+                           :size 13))
 
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
@@ -125,6 +125,7 @@
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
+(define-key leader-key "fh" (lambda () (interactive) (find-file "~/doc/clang/hackerrank/hackerrank.org")))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "e" 'mu4e)
 
@@ -614,6 +615,7 @@
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
                         "~/doc/org/reading.org"
+                        "~/doc/clang/hackerrank/hackerrank.org"
                         ))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
