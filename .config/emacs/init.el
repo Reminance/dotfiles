@@ -199,6 +199,7 @@
 (setq electric-pair-inhibit-predicate
       (lambda (c)
         (if (char-equal c ?\<) t (electric-pair-default-inhibit c))
+        ;; (if (char-equal c ?\") t (electric-pair-default-inhibit c))
         ))
 (electric-pair-mode t)
 
