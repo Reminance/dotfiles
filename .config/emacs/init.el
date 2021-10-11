@@ -168,7 +168,7 @@
 (when (fboundp 'set-scroll-bar-mode)
   (set-scroll-bar-mode nil))
 (when (fboundp 'menu-bar-mode)
-  (menu-bar-mode 1))
+  (menu-bar-mode -1))
 
 ;; enable mouse in terminal
 (xterm-mouse-mode 1)
