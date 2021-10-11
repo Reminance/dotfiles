@@ -190,18 +190,28 @@
   (add-to-list 'default-frame-alist no-border)
   (add-to-list 'initial-frame-alist no-border))
 
-(setq electric-pair-pairs '(
-                            (?\( . ?\))
-                            (?\[ . ?\])
-                            (?\" . ?\")
-                            (?\{ . ?\})
-                            ))
-(setq electric-pair-inhibit-predicate
-      (lambda (c)
-        (if (char-equal c ?\<) t (electric-pair-default-inhibit c))
-        ;; (if (char-equal c ?\") t (electric-pair-default-inhibit c))
-        ))
-(electric-pair-mode t)
+(defun my/duplicate-line ()
+  "Duplicate current line."
+  (interactive)
+  (move-beginning-of-line 1)
+  (kill-line)
+  (yank)
+  (newline)
+  (yank))
+(global-set-key (kbd "C-,") 'my/duplicate-line)
+
+;; (setq electric-pair-pairs '(
+;;                             (?\( . ?\))
+;;                             (?\[ . ?\])
+;;                             (?\" . ?\")
+;;                             (?\{ . ?\})
+;;                             ))
+;; (setq electric-pair-inhibit-predicate
+;;       (lambda (c)
+;;         (if (char-equal c ?\<) t (electric-pair-default-inhibit c))
+;;         ;; (if (char-equal c ?\") t (electric-pair-default-inhibit c))
+;;         ))
+;; (electric-pair-mode t)
 
 (defun sanityinc/adjust-opacity (frame incr)
   "Adjust the background opacity of FRAME by increment INCR."
@@ -1059,23 +1069,23 @@ With a prefix ARG, remove start location."
 ;; 高亮当前行
 ;; (global-hl-line-mode 1)
 
-;; ;; Move cursor to end of current line
-;; ;; Insert new line below current line
-;; ;; it will also indent newline
-;; (global-set-key (kbd "<S-return>") (lambda ()
-;;                                      (interactive)
-;;                                      (end-of-line)
-;;                                      (newline-and-indent)))
-;; ;; Move cursor to previous line
-;; ;; Go to end of the line
-;; ;; Insert new line below current line (So it actually insert new line above with indentation)
-;; ;; it will also indent newline
-;; (global-set-key (kbd "<C-M-return>") (lambda ()
-;;                                        (interactive)
-;;                                        (previous-line)
-;;                                        (end-of-line)
-;;                                        (newline-and-indent)
-;;                                        ))
+;; Move cursor to end of current line
+;; Insert new line below current line
+;; it will also indent newline
+(global-set-key (kbd "<S-return>") (lambda ()
+                                     (interactive)
+                                     (end-of-line)
+                                     (newline-and-indent)))
+;; Move cursor to previous line
+;; Go to end of the line
+;; Insert new line below current line (So it actually insert new line above with indentation)
+;; it will also indent newline
+(global-set-key (kbd "<C-M-return>") (lambda ()
+                                       (interactive)
+                                       (previous-line)
+                                       (end-of-line)
+                                       (newline-and-indent)
+                                       ))
 
 ;; Window size and features
 ;; (setq-default
