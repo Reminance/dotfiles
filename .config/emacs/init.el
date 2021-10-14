@@ -605,7 +605,9 @@
   (eval-after-load 'org
     (progn
       (define-key org-mode-map (kbd "<C-M-S-right>") nil)
-      (define-key org-mode-map (kbd "<C-M-S-left>") nil)))
+      (define-key org-mode-map (kbd "<C-M-S-left>") nil)
+      (define-key org-mode-map (kbd "C-,") nil)
+      ))
   )
 
 ;; Easy Templates support shortcuts such as: '<s + TAB'
