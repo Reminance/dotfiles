@@ -439,10 +439,10 @@
 
 ;; ---------------------------------------------------------------------------- ido and smex
 
-;; (ido-mode 1)
-;; (setq ido-enable-flex-matching 1)
-;; (setq ido-create-new-buffer 'always)
-;; (ido-everywhere 1)
+(ido-mode 1)
+(setq ido-enable-flex-matching 1)
+(setq ido-create-new-buffer 'always)
+(ido-everywhere 1)
 ;; (global-set-key (kbd "C-M-j") 'ido-switch-buffer)
 
 ;; ;; recentf stuff
