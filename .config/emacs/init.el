@@ -109,7 +109,7 @@
                     :font (font-spec
                            ;; :name "Iosevka"
                            ;; :style "Regular"
-                           :size 16))
+                           :size 15))
 
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
