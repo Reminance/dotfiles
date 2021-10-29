@@ -6,7 +6,7 @@ set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
 set scrolloff=2
 set noshowmode
 " set shortmess+=c
-set nu "rnu
+set nu rnu
 set mouse=a
 set inccommand=split
 set hidden
@@ -353,7 +353,7 @@ Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
 
-Plug 'glepnir/lspsaga.nvim'
+" Plug 'glepnir/lspsaga.nvim'
 Plug 'folke/trouble.nvim'
 Plug 'onsails/lspkind-nvim'
 
@@ -475,13 +475,12 @@ Plug 'junegunn/vim-easy-align'
 " voldikss/vim-translator
 Plug 'voldikss/vim-translator'
 
-
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'connorholyday/vim-snazzy'
-Plug 'morhetz/gruvbox'
-" Plug 'Th3Whit3Wolf/onebuddy'
-" Plug 'tjdevries/colorbuddy.vim'
-" Plug 'tjdevries/gruvbuddy.nvim'
+" Plug 'dracula/vim', { 'as': 'dracula' }
+" Plug 'connorholyday/vim-snazzy'
+" Plug 'morhetz/gruvbox'
+Plug 'sjl/badwolf'
+" Plug 'crusoexia/vim-monokai'
+" Plug 'sainnhe/sonokai'
 
 call plug#end()
 
@@ -494,8 +493,10 @@ set background=dark " light or dark
 " let g:dracula_colorterm = -1
 " let g:dracula_italic = 1
 " colorscheme dracula
-colorscheme gruvbox
-" colorscheme onebuddy
+" colorscheme gruvbox
+colorscheme badwolf
+" colorscheme monokai
+" colorscheme sonokai
 
 " justinmk/vim-sneak {{{
 let g:sneak#label = 1
@@ -509,55 +510,6 @@ map S <Plug>Sneak_S
 
 " kdheepak/lazygit.nvim {{{
 nnoremap <silent> <leader>lg :LazyGit<CR>
-" }}}
-
-" Plug 'onsails/lspkind-nvim' {{{
-lua << EOF
-require('lspkind').init({
-    -- enables text annotations
-    --
-    -- default: true
-    with_text = true,
-
-    -- default symbol map
-    -- can be either 'default' or
-    -- 'codicons' for codicon preset (requires vscode-codicons font installed)
-    --
-    -- default: 'default'
-    preset = 'codicons',
-
-    -- override preset symbols
-    --
-    -- default: {}
-    symbol_map = {
-      Text = "",
-      Method = "",
-      Function = "",
-      Constructor = "",
-      Field = "ﰠ",
-      Variable = "",
-      Class = "ﴯ",
-      Interface = "",
-      Module = "",
-      Property = "ﰠ",
-      Unit = "塞",
-      Value = "",
-      Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
-      EnumMember = "",
-      Constant = "",
-      Struct = "פּ",
-      Event = "",
-      Operator = "",
-      TypeParameter = ""
-    },
-})
-EOF
 " }}}
 
 " Plug 'windwp/nvim-autopairs' {{{
@@ -605,42 +557,125 @@ buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
 buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
 buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+buf_set_keymap('n', '<Leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+buf_set_keymap('n', '<Leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+buf_set_keymap('n', '<Leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+buf_set_keymap('n', '<Leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+buf_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+buf_set_keymap('n', '<Leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+buf_set_keymap('n', '<Leader>el', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
 buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
--- -- lspsaga
--- -- code actio
--- -- buf_set_keymap('n', '<Leader>lc', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
--- -- buf_set_keymap('v', '<Leader>lc', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
--- buf_set_keymap('n', '<A-Enter>', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
--- buf_set_keymap('v', '<A-Enter>', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
--- -- show hover doc
--- buf_set_keymap('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
--- -- scroll down hover doc or scroll in definition preview
--- buf_set_keymap('n', '<C-n>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', opts)
--- -- scroll up hover doc
--- buf_set_keymap('n', '<C-p>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', opts)
--- -- show signature help
--- buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
--- -- rename
--- buf_set_keymap('n', '<Leader>rn', '<cmd>lua require("lspsaga.rename").rename()<CR>', opts)
--- -- show
--- buf_set_keymap('n', '<Leader>el', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>', opts)
--- -- jump diagnostic
--- buf_set_keymap('n', '<Leader>en', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>', opts)
--- buf_set_keymap('n', '<Leader>ep', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>', opts)
+buf_set_keymap('n', '<Leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap('n', '<Leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
+-- Setup nvim-cmp.
+local cmp = require'cmp'
+local lspkind = require('lspkind')
+lspkind.init({
+    -- enables text annotations
+    --
+    -- default: true
+    with_text = true,
+
+    -- default symbol map
+    -- can be either 'default' (requires nerd-fonts font) or
+    -- 'codicons' for codicon preset (requires vscode-codicons font)
+    --
+    -- default: 'default'
+    preset = 'codicons',
+
+    -- override preset symbols
+    --
+    -- default: {}
+    symbol_map = {
+      Text = "",
+      Method = "",
+      Function = "",
+      Constructor = "",
+      Field = "ﰠ",
+      Variable = "",
+      Class = "ﴯ",
+      Interface = "",
+      Module = "",
+      Property = "ﰠ",
+      Unit = "塞",
+      Value = "",
+      Enum = "",
+      Keyword = "",
+      Snippet = "",
+      Color = "",
+      File = "",
+      Reference = "",
+      Folder = "",
+      EnumMember = "",
+      Constant = "",
+      Struct = "פּ",
+      Event = "",
+      Operator = "",
+      TypeParameter = ""
+    },
+})
+
+cmp.setup({
+  formatting = {
+    format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+  },
+  experimental = {
+    native_menu = false,
+    ghost_text = false,
+  },
+  snippet = {
+    expand = function(args)
+      -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+      -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    -- { name = 'vsnip' }, -- For vsnip users.
+    -- { name = 'luasnip' }, -- For luasnip users.
+    { name = 'ultisnips' }, -- For ultisnips users.
+    -- { name = 'snippy' }, -- For snippy users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+-- Use buffer source for `/`.
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
+})
+
+-- Use cmdline & path source for ':'.
+cmp.setup.cmdline(':', {
+  sources = cmp.config.sources({
+    { name = 'path' }
+  }, {
+    { name = 'cmdline' }
+  })
+})
+
+-- Setup lspconfig.
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local nvim_lsp = require('lspconfig')
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'jdtls', 'sumneko_lua', 'pyright', 'tsserver', 'html', 'jsonls', 'cssls'}
@@ -650,7 +685,8 @@ for _, lsp in ipairs(servers) do
         on_attach = on_attach,
         flags = {
             debounce_text_changes = 150,
-            }
+            },
+        capabilities = capabilities
         }
 end
 
@@ -671,6 +707,7 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     update_in_insert = false,
   }
 )
+
 EOF
 " }}}
 
@@ -726,74 +763,6 @@ nnoremap <Leader>cb :lua require'telescope.builtin'.git_branches{}<cr>
 nnoremap <leader>fr :lua require'telescope.builtin'.resume{}<CR>
 nnoremap <leader>cheat :Cheatsheet<cr>
 "}}}
-
-" hrsh7th/nvim-cmp {{{
-lua <<EOF
-  -- Setup nvim-cmp.
-  local cmp = require'cmp'
-
-  local lspkind = require('lspkind')
-  cmp.setup({
-    experimental = {
-      native_menu = false,
-      ghost_text = true,
-    },
-    formatting = {
-      format = lspkind.cmp_format(),
-    },
-    snippet = {
-      expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
-      end,
-    },
-    mapping = {
-      ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      -- { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  -- Use buffer source for `/`.
-  cmp.setup.cmdline('/', {
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  -- Use cmdline & path source for ':'.
-  cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
-  -- Setup lspconfig.
-  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- require('lspconfig')[%YOUR_LSP_SERVER%].setup {
-  --   capabilities = capabilities
-  -- }
-EOF
-" }}}
 
 " nvim-treesitter {{{
 lua <<EOF
