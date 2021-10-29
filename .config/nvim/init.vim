@@ -5,6 +5,7 @@ set ignorecase smartcase incsearch showmatch hlsearch
 set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
 set scrolloff=2
 set noshowmode
+" set shortmess+=c
 set nu "rnu
 set mouse=a
 set inccommand=split
@@ -346,7 +347,12 @@ call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"
 " PlugInstall PlugClean PlugUpdate
 " Language Server Protocol
 Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-cmdline'
+Plug 'hrsh7th/nvim-cmp'
+
 Plug 'glepnir/lspsaga.nvim'
 Plug 'folke/trouble.nvim'
 Plug 'onsails/lspkind-nvim'
@@ -593,46 +599,46 @@ buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 -- Mappings.
 local opts = { noremap=true, silent=true }
 
--- See `:help vim.lsp.*` for documentation on any of the below functions
-buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
--- buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+ -- See `:help vim.lsp.*` for documentation on any of the below functions
+buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
 buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
--- buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-buf_set_keymap('n', '<Leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<Leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-buf_set_keymap('n', '<Leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-buf_set_keymap('n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
--- buf_set_keymap('n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
--- buf_set_keymap('n', '<A-Enter>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
 buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
--- buf_set_keymap('n', '<Leader>le', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
--- buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
--- buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-buf_set_keymap('n', '<Leader>lq', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
--- lspsaga
--- code actio
--- buf_set_keymap('n', '<Leader>lc', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
--- buf_set_keymap('v', '<Leader>lc', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
-buf_set_keymap('n', '<A-Enter>', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
-buf_set_keymap('v', '<A-Enter>', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
--- show hover doc
-buf_set_keymap('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
--- scroll down hover doc or scroll in definition preview
-buf_set_keymap('n', '<C-n>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', opts)
--- scroll up hover doc
-buf_set_keymap('n', '<C-p>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', opts)
--- show signature help
-buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
--- rename
-buf_set_keymap('n', '<Leader>rn', '<cmd>lua require("lspsaga.rename").rename()<CR>', opts)
--- show
-buf_set_keymap('n', '<Leader>el', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>', opts)
--- jump diagnostic
-buf_set_keymap('n', '<Leader>en', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>', opts)
-buf_set_keymap('n', '<Leader>ep', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>', opts)
+-- -- lspsaga
+-- -- code actio
+-- -- buf_set_keymap('n', '<Leader>lc', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
+-- -- buf_set_keymap('v', '<Leader>lc', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
+-- buf_set_keymap('n', '<A-Enter>', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>', opts)
+-- buf_set_keymap('v', '<A-Enter>', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>', opts)
+-- -- show hover doc
+-- buf_set_keymap('n', 'K', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>', opts)
+-- -- scroll down hover doc or scroll in definition preview
+-- buf_set_keymap('n', '<C-n>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>', opts)
+-- -- scroll up hover doc
+-- buf_set_keymap('n', '<C-p>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>', opts)
+-- -- show signature help
+-- buf_set_keymap('n', '<C-k>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>', opts)
+-- -- rename
+-- buf_set_keymap('n', '<Leader>rn', '<cmd>lua require("lspsaga.rename").rename()<CR>', opts)
+-- -- show
+-- buf_set_keymap('n', '<Leader>el', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>', opts)
+-- -- jump diagnostic
+-- buf_set_keymap('n', '<Leader>en', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>', opts)
+-- buf_set_keymap('n', '<Leader>ep', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>', opts)
 end
 
 -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -721,40 +727,73 @@ nnoremap <leader>fr :lua require'telescope.builtin'.resume{}<CR>
 nnoremap <leader>cheat :Cheatsheet<cr>
 "}}}
 
-" 'hrsh7th/nvim-compe' {{{
-set completeopt=menuone,noselect
-let g:compe = {}
-let g:compe.enabled = v:true
-let g:compe.autocomplete = v:true
-let g:compe.debug = v:false
-let g:compe.min_length = 1
-let g:compe.preselect = 'enable'
-let g:compe.throttle_time = 80
-let g:compe.source_timeout = 200
-let g:compe.resolve_timeout = 800
-let g:compe.incomplete_delay = 400
-let g:compe.max_abbr_width = 100
-let g:compe.max_kind_width = 100
-let g:compe.max_menu_width = 100
-let g:compe.documentation = v:true
+" hrsh7th/nvim-cmp {{{
+lua <<EOF
+  -- Setup nvim-cmp.
+  local cmp = require'cmp'
 
-let g:compe.source = {}
-let g:compe.source.path = v:true
-let g:compe.source.buffer = v:true
-let g:compe.source.calc = v:true
-let g:compe.source.nvim_lsp = v:true
-let g:compe.source.nvim_lua = v:true
-let g:compe.source.vsnip = v:false
-let g:compe.source.ultisnips = v:true
-let g:compe.source.luasnip = v:true
-let g:compe.source.emoji = v:true
+  local lspkind = require('lspkind')
+  cmp.setup({
+    experimental = {
+      native_menu = false,
+      ghost_text = true,
+    },
+    formatting = {
+      format = lspkind.cmp_format(),
+    },
+    snippet = {
+      expand = function(args)
+        -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+        -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+        vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
+        -- require'snippy'.expand_snippet(args.body) -- For `snippy` users.
+      end,
+    },
+    mapping = {
+      ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+      ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+      ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
+      ['<C-e>'] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = cmp.config.sources({
+      { name = 'nvim_lsp' },
+      -- { name = 'vsnip' }, -- For vsnip users.
+      -- { name = 'luasnip' }, -- For luasnip users.
+      { name = 'ultisnips' }, -- For ultisnips users.
+      -- { name = 'snippy' }, -- For snippy users.
+    }, {
+      { name = 'buffer' },
+    })
+  })
 
-inoremap <silent><expr> <C-Space> compe#complete()
-inoremap <silent><expr> <CR>      compe#confirm('<CR>')
-" inoremap <silent><expr> <C-e>     compe#close('<C-e>')
-" inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
-" inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
-"}}}
+  -- Use buffer source for `/`.
+  cmp.setup.cmdline('/', {
+    sources = {
+      { name = 'buffer' }
+    }
+  })
+
+  -- Use cmdline & path source for ':'.
+  cmp.setup.cmdline(':', {
+    sources = cmp.config.sources({
+      { name = 'path' }
+    }, {
+      { name = 'cmdline' }
+    })
+  })
+
+  -- Setup lspconfig.
+  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  -- require('lspconfig')[%YOUR_LSP_SERVER%].setup {
+  --   capabilities = capabilities
+  -- }
+EOF
+" }}}
 
 " nvim-treesitter {{{
 lua <<EOF
@@ -798,6 +837,7 @@ require('lualine').setup({
     }
 })
 EOF
+set laststatus=0  " disable status line after lua line plugin
 " }}}
 
 " vimwiki/vimwiki {{{
@@ -805,19 +845,51 @@ nnoremap <leader>vw :VimwikiIndex<CR>
 "}}}
 
 " kyazdani42/nvim-tree.lua {{{
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ]
-let g:nvim_tree_gitignore = 1
-let g:nvim_tree_auto_close = 1
-let g:nvim_tree_auto_ignore_ft = [ 'startify', 'dashboard' ]
-let g:nvim_tree_quit_on_open = 1
-let g:nvim_tree_indent_markers = 1
-let g:nvim_tree_git_hl = 1
-let g:nvim_tree_highlight_opened_files = 1
-let g:nvim_tree_group_empty = 1
-let g:nvim_tree_lsp_diagnostics = 1
-nnoremap tt :NvimTreeToggle<CR>
-nnoremap tr :NvimTreeRefresh<CR>
-nnoremap tf :NvimTreeFindFile<CR>
+" [NvimTree] following options are now set in the setup (:help nvim-tree.setup): nvim_tree_auto_close | nvim_tree_lsp_diagnostics
+lua <<EOF
+ require'nvim-tree'.setup {
+      disable_netrw       = true,
+      hijack_netrw        = true,
+      open_on_setup       = false,
+      ignore_ft_on_setup  = {},
+      update_to_buf_dir   = {
+        enable = true,
+        auto_open = true,
+      },
+      auto_close          = false,
+      open_on_tab         = false,
+      hijack_cursor       = false,
+      update_cwd          = false,
+      diagnostics         = {
+        enable = false,
+        icons = {
+          hint = "",
+          info = "",
+          warning = "",
+          error = "",
+        }
+      },
+      update_focused_file = {
+        enable      = false,
+        update_cwd  = false,
+        ignore_list = {}
+      },
+      system_open = {
+        cmd  = nil,
+        args = {}
+      },
+      view = {
+        width = 30,
+        height = 30,
+        side = 'left',
+        auto_resize = false,
+        mappings = {
+          custom_only = false,
+          list = {}
+        }
+      }
+    }
+EOF
 "}}}
 
 " Tagbar
