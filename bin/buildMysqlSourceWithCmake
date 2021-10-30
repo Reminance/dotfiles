@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+
+# install the latest version of boost
+sudo pacman -S boost
+
+# mysql require boost version @1.73.0
+cd /home/xc/workspace/mysql-server
+mkdir dependency
+cd dependency
+wget https://boostorg.jfrog.io/artifactory/main/release/1.73.0/source/boost_1_73_0.tar.gz\n
+tar -zxvf boost_1_73_0.tar.gz
+
+# mysql require package rpcgen
+spss rpcgen
+# find package contains binaries:rpcgen
+# pkgfile: a pacman .files metadata explorer
+spss pkgfile
+sps pkgfile
+pkgfile --update
+pkgfile --verbose --binaries rpcgen
+# extra/rpcsvc-proto 1.4.2-1      /usr/bin/rpcgen
+sps rpcsvc-proto
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -DWITH_BOOST=../dependency/boost_1_73_0

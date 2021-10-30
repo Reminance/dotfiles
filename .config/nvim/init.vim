@@ -197,10 +197,10 @@ nnoremap <M-s>n <C-w>t<C-w>K
 " nnoremap <M-s>rn <C-w>b<C-w>K
 
 " Use <ALT> + new arrow keys for moving the cursor around windows
-" nnoremap <M-h> <C-w>h
-" nnoremap <M-j> <C-w>j
-" nnoremap <M-k> <C-w>k
-" nnoremap <M-l> <C-w>l
+nnoremap <M-h> <C-w>h
+nnoremap <M-j> <C-w>j
+nnoremap <M-k> <C-w>k
+nnoremap <M-l> <C-w>l
 
 " Use shift arrow keys for moving the windows
 " nnoremap <C-M-h> <C-w>H
@@ -675,7 +675,6 @@ cmp.setup.cmdline(':', {
 
 -- Setup lspconfig.
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-local nvim_lsp = require('lspconfig')
 -- Use a loop to conveniently call 'setup' on multiple servers and
 -- map buffer local keybindings when the language server attaches
 -- local servers = {'bashls', 'gopls', 'vimls', 'rust_analyzer', 'clangd', 'jdtls', 'sumneko_lua', 'pyright', 'tsserver', 'html', 'jsonls', 'cssls'}
