@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+# find package contains binaries:$1
+# pkgfile: a pacman .files metadata explorer
+echo "package-name:"$1
+pkgfile --verbose --binaries $1
