@@ -25,8 +25,8 @@ export BROWSER=google-chrome-stable
 export MYVIMRC=$HOME/.config/nvim/init.vim
 NVIM=nvim
 NVIM_NIGHTLY=$HOME/.config/sandbox/nvim-nightly/nvim-linux64/bin/nvim
-# export VISUAL="$NVIM_NIGHTLY"
-# export EDITOR="$VISUAL"
+# export VISUAL="$NVIM_NIGHTLY" # for nvim nightly
+# export EDITOR="$VISUAL" # for nvim nightly
 export VISUAL="$NVIM"
 export EDITOR="$VISUAL"
 

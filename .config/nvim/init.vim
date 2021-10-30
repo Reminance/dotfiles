@@ -760,6 +760,17 @@ nnoremap <Leader>fs :lua require'telescope.builtin'.file_browser{ cwd = vim.fn.e
 nnoremap <Leader>fc :lua require'telescope.builtin'.git_status{}<cr>
 nnoremap <Leader>cb :lua require'telescope.builtin'.git_branches{}<cr>
 nnoremap <leader>fr :lua require'telescope.builtin'.resume{}<CR>
+
+nnoremap <leader>fS <cmd>Telescope search_history<cr>
+nnoremap <leader>fC <cmd>Telescope command_history<cr>
+nnoremap <leader>fm :lua require'telescope.builtin'.man_pages{}<CR>
+nnoremap <leader>fw :lua require'telescope.builtin'.loclist{}<CR>
+nnoremap <leader>fj :lua require'telescope.builtin'.jumplist{}<CR>
+nnoremap <leader>fk :lua require'telescope.builtin'.keymaps{}<CR>
+nnoremap <leader>ft :lua require'telescope.builtin'.filetypes{}<CR>
+"}}}
+
+" 'sudormrfbin/cheatsheet.nvim' {{{
 nnoremap <leader>cheat :Cheatsheet<cr>
 "}}}
 
@@ -858,6 +869,14 @@ lua <<EOF
       }
     }
 EOF
+
+nnoremap <leader>tt :NvimTreeToggle<CR>
+nnoremap <leader>tr :NvimTreeRefresh<CR>
+nnoremap <leader>tf :NvimTreeFindFile<CR>
+" NvimTreeOpen, NvimTreeClose, NvimTreeFocus, NvimTreeFindFileToggle, and NvimTreeResize are also available if you need them
+" set termguicolors " this variable must be enabled for colors to be applied properly
+" a list of groups can be found at `:help nvim_tree_highlight`
+" highlight NvimTreeFolderIcon guibg=blue
 "}}}
 
 " Tagbar
@@ -974,7 +993,7 @@ nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gd :Gvdiffsplit<CR>
 nnoremap <Leader>gh :diffget //2<CR>
 nnoremap <Leader>gl :diffget //3<CR>
-nnoremap <Leader>G :G<CR>
+nnoremap <Leader>gs :G<CR>
 
 " liuchengxu/vim-which-key
 " let g:mapleader="\<Space>"
@@ -1043,11 +1062,11 @@ nmap <Leader>ea <Plug>(EasyAlign)
 let g:translator_default_engines=['youdao', 'google']
 " Once the translation window is opened, type <C-w>p to jump into it and again to jump back
 " Echo translation in the cmdline
-nmap <silent> <Leader>tt <Plug>Translate
-vmap <silent> <Leader>tt <Plug>TranslateV
+nmap <silent> <Leader>Tt <Plug>Translate
+vmap <silent> <Leader>Tt <Plug>TranslateV
 " Display translation in a window
-nmap <silent> <Leader>tw <Plug>TranslateW
-vmap <silent> <Leader>tw <Plug>TranslateWV
+nmap <silent> <Leader>Tw <Plug>TranslateW
+vmap <silent> <Leader>Tw <Plug>TranslateWV
 
 " Goyo plugin makes text more readable when writing prose:
 map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
