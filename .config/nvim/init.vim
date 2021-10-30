@@ -29,10 +29,6 @@ set nojoinspaces " don't autoinsert two spaces after '.', '?', '!' for join comm
 " set wildignore+=*/node_modules/**
 filetype plugin indent on
 
-" attempt to speed-up vim
-set ttyfast
-set lazyredraw
-
 " syntax highlighting of search results
 au ColorScheme * highlight Search guibg=NONE guifg=Cyan gui=italic,underline,bold
 " highlight Comment cterm=italic gui=italic
