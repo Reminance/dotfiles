@@ -1,0 +1,8 @@
+#!/usr/bin/bash
+
+# Bear is a tool that generates a compilation database for clang tooling.
+sps bear
+
+cd /home/xc/workspace/clang/nginx
+./auto/configure
+bear -- make

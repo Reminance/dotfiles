@@ -47,7 +47,7 @@ export PATH="$PATH:${$(find $GOROOT/bin -type d -printf %p:)%%:}"
 export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
 
 # rust
-export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup
+# export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup # use default server instead
 
 # JAVA
 # export JDK_HOME=/usr/lib/jvm/java-8-openjdk

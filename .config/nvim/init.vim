@@ -475,6 +475,10 @@ Plug 'voldikss/vim-translator'
 " Plug 'connorholyday/vim-snazzy'
 " Plug 'morhetz/gruvbox'
 Plug 'sjl/badwolf'
+" Plug 'kyoz/purify', { 'rtp': 'vim' }
+" Plug 'srcery-colors/srcery-vim'
+" Plug 'ayu-theme/ayu-vim'
+" Plug 'NLKNguyen/papercolor-theme'
 " Plug 'crusoexia/vim-monokai'
 " Plug 'sainnhe/sonokai'
 
@@ -491,6 +495,13 @@ set background=dark " light or dark
 " colorscheme dracula
 " colorscheme gruvbox
 colorscheme badwolf
+" colorscheme purify
+" colorscheme srcery
+" let ayucolor="light"  " for light version of theme
+" let ayucolor="mirage" " for mirage version of theme
+" let ayucolor="dark"   " for dark version of theme
+" colorscheme ayu
+" colorscheme PaperColor
 " colorscheme monokai
 " colorscheme sonokai
 
@@ -565,7 +576,7 @@ buf_set_keymap('n', '<Leader>el', '<cmd>lua vim.lsp.diagnostic.show_line_diagnos
 buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
 buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
 buf_set_keymap('n', '<Leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-buf_set_keymap('n', '<Leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+buf_set_keymap('n', '<Leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 -- Setup nvim-cmp.
@@ -633,8 +644,8 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-u>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
     ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
     ['<C-y>'] = cmp.config.disable, -- If you want to remove the default `<C-y>` mapping, You can specify `cmp.config.disable` value.
     ['<C-e>'] = cmp.mapping({
@@ -757,6 +768,7 @@ nnoremap <Leader>fs :lua require'telescope.builtin'.file_browser{ cwd = vim.fn.e
 nnoremap <Leader>fc :lua require'telescope.builtin'.git_status{}<cr>
 nnoremap <Leader>cb :lua require'telescope.builtin'.git_branches{}<cr>
 nnoremap <leader>fr :lua require'telescope.builtin'.resume{}<CR>
+nnoremap <leader>fp :lua require'telescope.builtin'.registers{}<CR>
 
 nnoremap <leader>fS <cmd>Telescope search_history<cr>
 nnoremap <leader>fC <cmd>Telescope command_history<cr>
