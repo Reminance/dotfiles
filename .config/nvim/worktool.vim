@@ -15,6 +15,10 @@ xnoremap <leader><leader>d :<C-U> call ExecuteSql('false')<CR>
 xnoremap <leader><leader>D :<C-U> call ExecuteSql('true')<CR>
 nnoremap <leader><leader>d V:<C-U> call ExecuteSql('false')<CR>
 nnoremap <leader><leader>D V:<C-U> call ExecuteSql('true')<CR>
+
+" Execute shell command without filtering from Vim
+nnoremap <leader><leader>b V:w !sh<CR>
+
 " xnoremap <leader><leader>e y:tabe<CR>:term <C-r>"<CR>:setl nonu nornu<CR>A
 " nnoremap <leader><leader>q :<C-U> call QueryTable()<CR>:tabe<CR>:term <C-r>"<CR>:setl nonu<CR>:setl nornu<CR>A
 " open in float term
@@ -65,7 +69,9 @@ function! ExecuteSql(explain)
     endif
     echom shellCmdStr
     " floatterm open
-    exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr
+    " exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr
+    " add redraw to avoid the "Hit ENTER to continue" prompts
+    exec "FloatermNew --height=0.6 --width=0.9 " . shellCmdStr | redraw!
     " RunShellCommand
     " call s:RunShellCommand(shellCmdStr)
     " let sql=shellescape(sql)
