@@ -282,7 +282,7 @@ for_window [class="scratchpad_*"] sticky enable
 for_window [class="scratchpad_*"] scratchpad show
 for_window [class="scratchpad_thunderbird"] resize set 1000 800
 
-for_window [instance="scratchpad_scratchpadtmux"] resize set 1200 900
+for_window [instance="scratchpad_scratchpadtmux"] resize set 1800 900
 # for_window [instance="scratchpad_scratchpadcalc"] resize set 800 300
 for_window [instance="scratchpad_scratchpadterm"] resize set 800 400
 for_window [instance="scratchpad_scratchpadcalc"] border pixel 2
