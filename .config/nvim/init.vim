@@ -1081,7 +1081,7 @@ vmap <silent> <Leader>Tw <Plug>TranslateWV
 map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
 
 " 'akinsho/nvim-bufferline.lua' {{{
-lua require('bufferline').setup {}
+lua require('bufferline').setup{}
 " nnoremap <silent> gb :BufferLinePick<CR>
 " }}}
 
