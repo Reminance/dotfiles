@@ -29,8 +29,8 @@ then
     tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m
 
     # Setup an additional shell
-    tmux new-window -t $SESSION:3 -n 'Shell'
-    tmux send-keys -t 'Shell' "zsh" C-m 'clear' C-m
+    tmux new-window -t $SESSION:3 -n 'WorkTool'
+    tmux send-keys -t 'WorkTool' "zsh" C-m 'cd ~/workspace/work-tools/' C-m 'clear' C-m
 
     # # DB
     # tmux new-window -t $SESSION:3 -n 'DB'
