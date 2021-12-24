@@ -481,6 +481,7 @@ Plug 'sjl/badwolf'
 " Plug 'NLKNguyen/papercolor-theme'
 " Plug 'crusoexia/vim-monokai'
 " Plug 'sainnhe/sonokai'
+" Plug 'martinsione/darkplus.nvim'
 
 call plug#end()
 
@@ -495,6 +496,7 @@ set background=dark " light or dark
 " colorscheme dracula
 " colorscheme gruvbox
 colorscheme badwolf
+" colorscheme darkplus
 " colorscheme purify
 " colorscheme srcery
 " let ayucolor="light"  " for light version of theme
