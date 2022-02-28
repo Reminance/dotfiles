@@ -58,7 +58,9 @@ export GOBIN=$HOME/go/bin
 # export JAVA_HOME=/usr/lib/jvm/java-11-zulu-fx
 # export JAVA_HOME=/usr/lib/jvm/java-16-zulu-fx
 # export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
-export JAVA_HOME=$(/usr/libexec/java_home)
+[[ -f /usr/lib/jvm/java-8-zulu-fx ]] && export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
+[[ -f /usr/libexec/java_home ]] && export JAVA_HOME=/usr/libexec/java_home
+# export JAVA_HOME=$(/usr/libexec/java_home)
 # export M2_HOME=/opt/maven
 # export GRADLE_HOME=/usr/share/java/gradle
 # this is for nvim-lsp env
