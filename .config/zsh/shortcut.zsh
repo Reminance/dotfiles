@@ -22,7 +22,8 @@ bindkey '^Q' fkill
 
 # edit config file
 edit-config-file () {
-    local files=($(cat ~/dotfiles/config-file.list | fzf --query="$1" --select-1 --exit-0))
+    # local files=($(cat ~/dotfiles/config-file.list | fzf --query="$1" --select-1 --exit-0))
+    local files=($(eval "echo \"$(cat ~/dotfiles/config-file.list)\"" | fzf --query="$1" --select-1 --exit-0))
     [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
     zle reset-prompt
 }
