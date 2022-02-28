@@ -472,7 +472,7 @@ Plug 'junegunn/vim-easy-align'
 Plug 'voldikss/vim-translator'
 
 " Plug 'dracula/vim', { 'as': 'dracula' }
-" Plug 'connorholyday/vim-snazzy'
+Plug 'connorholyday/vim-snazzy'
 " Plug 'morhetz/gruvbox'
 Plug 'sjl/badwolf'
 " Plug 'kyoz/purify', { 'rtp': 'vim' }
@@ -492,13 +492,13 @@ if !$TERM_PROGRAM =~ "Apple_Terminal"
   set termguicolors
 endif
 set background=dark " light or dark
-" let g:SnazzyTransparent=1
-" colorscheme snazzy
+let g:SnazzyTransparent=1
+colorscheme snazzy
 " let g:dracula_colorterm = -1
 " let g:dracula_italic = 1
 " colorscheme dracula
 " colorscheme gruvbox
-colorscheme badwolf
+" colorscheme badwolf
 " colorscheme darkplus
 " colorscheme purify
 " colorscheme srcery
