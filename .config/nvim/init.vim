@@ -407,7 +407,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'lewis6991/gitsigns.nvim'
 " Plug 'karb94/neoscroll.nvim'
 Plug 'vimwiki/vimwiki', { 'on': ['VimwikiIndex'] }
-Plug 'norcalli/nvim-colorizer.lua', { 'branch': 'color-editor' }
+" Plug 'norcalli/nvim-colorizer.lua', { 'branch': 'color-editor' }
 Plug 'folke/which-key.nvim'
 " Plug 'wesQ3/vim-windowswap' " <leader>ww
 " Plug 'ggandor/lightspeed.nvim'
@@ -531,7 +531,7 @@ EOF
 " }}}
 
 " norcalli/nvim-colorizer.lua {{{
-lua require'colorizer'.setup()
+" lua require'colorizer'.setup()
 " }}}
 
 " lewis6991/gitsigns.nvim {{{
