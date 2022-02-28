@@ -43,8 +43,10 @@ export GOPATH=$HOME/go
 export GOBIN=$HOME/go/bin
 # export PATH=$PATH:$GOROOT/bin
 # export PATH=$PATH:$GOBIN
-export PATH="$PATH:${$(find $GOROOT/bin -type d -printf %p:)%%:}"
-export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
+
+# https://stackoverflow.com/questions/48362901/whats-the-mac-os-x-way-to-execute-this-command
+# export PATH="$PATH:${$(find $GOROOT/bin -type d -printf %p:)%%:}"
+# export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
 
 # rust
 # export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup # use default server instead
@@ -55,9 +57,10 @@ export PATH="$PATH:${$(find $GOBIN -type d -printf %p:)%%:}"
 # export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 # export JAVA_HOME=/usr/lib/jvm/java-11-zulu-fx
 # export JAVA_HOME=/usr/lib/jvm/java-16-zulu-fx
-export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
-export M2_HOME=/opt/maven
-export GRADLE_HOME=/usr/share/java/gradle
+# export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
+export JAVA_HOME=$(/usr/libexec/java_home)
+# export M2_HOME=/opt/maven
+# export GRADLE_HOME=/usr/share/java/gradle
 # this is for nvim-lsp env
 # export JAR=$HOME/workspace/java/jdtls/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar
 # export JDTLS_HOME=$HOME/workspace/java/jdtls/eclipse.jdt.ls

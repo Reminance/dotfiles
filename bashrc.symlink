@@ -32,3 +32,5 @@ alias work='cd /mnt/c/work/workspace'
 bind -x '"\C-t":"$(fd -t f -H -I | fzf)"'
 bind -x '"\C-r":"(history | fzf)"'
 bind -x '"\ec":"cd $(fd -t d --hidden --follow --exclude \".git\" | fzf)"'
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
