@@ -351,15 +351,15 @@ Plug 'hrsh7th/nvim-cmp'
 
 " Plug 'glepnir/lspsaga.nvim'
 Plug 'folke/trouble.nvim'
-Plug 'onsails/lspkind-nvim'
+" Plug 'onsails/lspkind-nvim'
 
 Plug 'kdheepak/lazygit.nvim'
 
 " File Management
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+" Plug 'nvim-telescope/telescope.nvim'
+" Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'sudormrfbin/cheatsheet.nvim'
 
 Plug 'kyazdani42/nvim-tree.lua'
@@ -485,9 +485,9 @@ Plug 'sjl/badwolf'
 
 call plug#end()
 
-if (has("termguicolors"))
-  set termguicolors " enable true colors support
-endif
+" if (has("termguicolors"))
+"   set termguicolors " enable true colors support
+" endif
 set background=dark " light or dark
 " let g:SnazzyTransparent=1
 " colorscheme snazzy
@@ -583,56 +583,56 @@ end
 
 -- Setup nvim-cmp.
 local cmp = require'cmp'
-local lspkind = require('lspkind')
-lspkind.init({
-    -- enables text annotations
-    --
-    -- default: true
-    with_text = true,
-
-    -- default symbol map
-    -- can be either 'default' (requires nerd-fonts font) or
-    -- 'codicons' for codicon preset (requires vscode-codicons font)
-    --
-    -- default: 'default'
-    preset = 'codicons',
-
-    -- override preset symbols
-    --
-    -- default: {}
-    symbol_map = {
-      Text = "",
-      Method = "",
-      Function = "",
-      Constructor = "",
-      Field = "ﰠ",
-      Variable = "",
-      Class = "ﴯ",
-      Interface = "",
-      Module = "",
-      Property = "ﰠ",
-      Unit = "塞",
-      Value = "",
-      Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
-      EnumMember = "",
-      Constant = "",
-      Struct = "פּ",
-      Event = "",
-      Operator = "",
-      TypeParameter = ""
-    },
-})
+-- local lspkind = require('lspkind')
+-- lspkind.init({
+--     -- enables text annotations
+--     --
+--     -- default: true
+--     with_text = true,
+-- 
+--     -- default symbol map
+--     -- can be either 'default' (requires nerd-fonts font) or
+--     -- 'codicons' for codicon preset (requires vscode-codicons font)
+--     --
+--     -- default: 'default'
+--     preset = 'codicons',
+-- 
+--     -- override preset symbols
+--     --
+--     -- default: {}
+--     symbol_map = {
+--       Text = "",
+--       Method = "",
+--       Function = "",
+--       Constructor = "",
+--       Field = "ﰠ",
+--       Variable = "",
+--       Class = "ﴯ",
+--       Interface = "",
+--       Module = "",
+--       Property = "ﰠ",
+--       Unit = "塞",
+--       Value = "",
+--       Enum = "",
+--       Keyword = "",
+--       Snippet = "",
+--       Color = "",
+--       File = "",
+--       Reference = "",
+--       Folder = "",
+--       EnumMember = "",
+--       Constant = "",
+--       Struct = "פּ",
+--       Event = "",
+--       Operator = "",
+--       TypeParameter = ""
+--     },
+-- })
 
 cmp.setup({
-  formatting = {
-    format = lspkind.cmp_format({with_text = false, maxwidth = 50})
-  },
+  -- formatting = {
+  --   format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+  -- },
   experimental = {
     native_menu = false,
     ghost_text = false,
@@ -733,35 +733,35 @@ nnoremap gR <cmd>TroubleToggle lsp_references<cr>
 " }}}
 
 " nvim-telescope/telescope.nvim {{{
-lua << EOF
-require('telescope').setup {
-  defaults = {
-    file_ignore_patterns = { "yarn.lock" }
-  },
-  extensions = {
-    fzf = {
-      fuzzy = true,
-      override_generic_sorter = false,
-      override_file_sorter = true,
-      case_mode = "smart_case"
-    }
-  },
-  pickers = {
-    buffers = {
-      show_all_buffers = true,
-      sort_lastused = true,
-      -- theme = "dropdown",
-      -- previewer = false,
-      mappings = {
-        i = {
-          ["<M-d>"] = "delete_buffer",
-        }
-      }
-    }
-  }
-}
-require('telescope').load_extension('fzf')
-EOF
+" lua << EOF
+" require('telescope').setup {
+"   defaults = {
+"     file_ignore_patterns = { "yarn.lock" }
+"   },
+"   extensions = {
+"     fzf = {
+"       fuzzy = true,
+"       override_generic_sorter = false,
+"       override_file_sorter = true,
+"       case_mode = "smart_case"
+"     }
+"   },
+"   pickers = {
+"     buffers = {
+"       show_all_buffers = true,
+"       sort_lastused = true,
+"       -- theme = "dropdown",
+"       -- previewer = false,
+"       mappings = {
+"         i = {
+"           ["<M-d>"] = "delete_buffer",
+"         }
+"       }
+"     }
+"   }
+" }
+" require('telescope').load_extension('fzf')
+" EOF
 nnoremap <leader>ff :lua require'telescope.builtin'.find_files{ hidden = true }<cr>
 nnoremap <leader>fg <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
