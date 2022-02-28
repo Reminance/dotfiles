@@ -488,6 +488,9 @@ call plug#end()
 " if (has("termguicolors"))
 "   set termguicolors " enable true colors support
 " endif
+if !$TERM_PROGRAM =~ "Apple_Terminal"
+  set termguicolors
+endif
 set background=dark " light or dark
 " let g:SnazzyTransparent=1
 " colorscheme snazzy
