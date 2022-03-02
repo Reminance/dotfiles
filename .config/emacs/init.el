@@ -124,6 +124,7 @@
 (define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
+(define-key leader-key "fm" (lambda () (interactive) (find-file "~/doc/org/members.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
 (define-key leader-key "fh" (lambda () (interactive) (find-file "~/doc/clang/hackerrank/hackerrank.org")))
 (define-key leader-key "al" 'org-agenda-list)
