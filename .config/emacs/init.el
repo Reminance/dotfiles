@@ -130,6 +130,21 @@
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "e" 'mu4e)
 
+(defun my/org-narrow-forward ()
+  "Move to the next subtree at same level, and narrow to it."
+  (interactive)
+  (widen)
+  (org-forward-heading-same-level 1)
+  (org-narrow-to-subtree))
+(defun my/org-narrow-backward ()
+  "Move to the previous subtree at same level, and narrow to it."
+  (interactive)
+  (widen)
+  (org-backward-heading-same-level 1)
+  (org-narrow-to-subtree))
+(global-set-key (kbd "C-c n n") (lambda () (interactive) (my/org-narrow-forward)))
+(global-set-key (kbd "C-c n p") (lambda () (interactive) (my/org-narrow-backward)))
+
 ;;----------------------------------------------------------------------------
 ;; custom common function
 ;;----------------------------------------------------------------------------
