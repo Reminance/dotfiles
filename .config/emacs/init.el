@@ -243,7 +243,7 @@
 
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(98 . 98))
+(defvar my/frame-transparency '(95 . 95))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
