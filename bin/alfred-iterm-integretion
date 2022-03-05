@@ -1,0 +1,5 @@
+#!/bin/sh
+
+curl --silent 'https://raw.githubusercontent.com/vitorgalvao/custom-alfred-iterm-scripts/master/custom_iterm_script.applescript' | pbcopy
+
+

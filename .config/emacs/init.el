@@ -103,14 +103,6 @@
                          (join-line)
                          ))
 
-;; 设置字体
-;; "Fira Code Nerd Font Mono"
-(set-face-attribute 'default nil
-                    :font (font-spec
-                           ;; :name "Iosevka"
-                           ;; :style "Regular"
-                           :size 15))
-
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
 ;;----------------------------------------------------------------------------
@@ -126,9 +118,22 @@
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
 (define-key leader-key "fm" (lambda () (interactive) (find-file "~/doc/org/members.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
-(define-key leader-key "fh" (lambda () (interactive) (find-file "~/doc/clang/hackerrank/hackerrank.org")))
+;; (define-key leader-key "fh" (lambda () (interactive) (find-file "~/doc/clang/hackerrank/hackerrank.org")))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "e" 'mu4e)
+
+(setq org-startup-with-inline-images t)
+(setq org-image-actual-width 200)
+(defun ndk/org-display-inline-image-at-point ()
+  "Useless documetation."
+  (interactive)
+  (let* ((context (org-element-context (org-element-at-point)))
+         (type (org-element-type context))
+         (beg  (plist-get (cadr context) :begin))
+         (end  (plist-get (cadr context) :end)))
+     (when (eq type 'link)
+        (org-display-inline-images nil nil beg end))))
+(define-key org-mode-map (kbd "C-c v") #'ndk/org-display-inline-image-at-point)
 
 (defun my/org-narrow-forward ()
   "Move to the next subtree at same level, and narrow to it."
@@ -1131,34 +1136,44 @@ With a prefix ARG, remove start location."
 ;;           (lambda ()
 ;;             (setq line-spacing 0)))
 
-;; (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
-;; (defconst *is-mac* (eq system-type 'darwin))
-;; (defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
-;; (defconst *is-linux* (eq system-type 'gnu/linux))
-;; (defconst *is-x11* (eq window-system 'x))
-;; (defconst *is-windows* (eq system-type 'windows-nt))
-;; (when *is-mac*
-;;   (setq mac-command-modifier 'meta)
-;;   (setq mac-option-modifier 'none)
-;;   ;; Make mouse wheel / trackpad scrolling less jerky
-;;   (setq mouse-wheel-scroll-amount '(1
-;;                                     ((shift) . 5)
-;;                                     ((control))))
-;;   (dolist (multiple '("" "double-" "triple-"))
-;;     (dolist (direction '("right" "left"))
-;;       (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
-;;   (global-set-key (kbd "M-`") 'ns-next-frame)
-;;   (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-;;   (global-set-key (kbd "M-˙") 'ns-do-hide-others)
-;;   (with-eval-after-load 'nxml-mode
-;;     (define-key nxml-mode-map (kbd "M-h") nil))
-;;   ;; what describe-key reports for cmd-option-h
-;;   (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
+(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
+(defconst *is-mac* (eq system-type 'darwin))
+(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+(defconst *is-linux* (eq system-type 'gnu/linux))
+(defconst *is-x11* (eq window-system 'x))
+(defconst *is-windows* (eq system-type 'windows-nt))
+(when *is-mac*
+  (setq mac-command-modifier 'meta)
+  (setq mac-option-modifier 'none)
+  ;; Make mouse wheel / trackpad scrolling less jerky
+  (setq mouse-wheel-scroll-amount '(1
+                                    ((shift) . 5)
+                                    ((control))))
+  (dolist (multiple '("" "double-" "triple-"))
+    (dolist (direction '("right" "left"))
+      (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
+  (global-set-key (kbd "M-`") 'ns-next-frame)
+  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+  (global-set-key (kbd "M-˙") 'ns-do-hide-others)
+  (with-eval-after-load 'nxml-mode
+    (define-key nxml-mode-map (kbd "M-h") nil))
+  ;; what describe-key reports for cmd-option-h
+  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
 
-;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-;;   ;; Command-Option-f to toggle fullscreen mode
-;;   ;; Hint: Customize `ns-use-native-fullscreen'
-;;   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+  ;; Command-Option-f to toggle fullscreen mode
+  ;; Hint: Customize `ns-use-native-fullscreen'
+  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+;; 设置字体
+(when *is-linux*
+  ;; "Fira Code Nerd Font Mono"
+  (set-face-attribute 'default nil
+                      :font (font-spec
+                             ;; :name "Iosevka"
+                             ;; :style "Regular"
+                             :size 15))
+  )
 
 ;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
