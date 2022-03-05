@@ -118,8 +118,8 @@
 (define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
 (define-key leader-key "fm" (lambda () (interactive) (find-file "~/doc/org/members.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
-;; (define-key leader-key "fh" (lambda () (interactive) (find-file "~/doc/clang/hackerrank/hackerrank.org")))
 (define-key leader-key "al" 'org-agenda-list)
+(define-key leader-key "at" 'org-todo-list)
 (define-key leader-key "e" 'mu4e)
 
 (setq org-startup-with-inline-images t)
