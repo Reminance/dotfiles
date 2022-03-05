@@ -6,7 +6,7 @@
 
 ;;; Code:
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
-(setq debug-on-error nil)
+(setq debug-on-error t)
 
 ;;----------------------------------------------------------------------------
 ;; Adjust garbage collection thresholds during startup, and thereafter
@@ -121,19 +121,6 @@
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "at" 'org-todo-list)
 (define-key leader-key "e" 'mu4e)
-
-(setq org-startup-with-inline-images t)
-(setq org-image-actual-width 200)
-(defun ndk/org-display-inline-image-at-point ()
-  "Useless documetation."
-  (interactive)
-  (let* ((context (org-element-context (org-element-at-point)))
-         (type (org-element-type context))
-         (beg  (plist-get (cadr context) :begin))
-         (end  (plist-get (cadr context) :end)))
-     (when (eq type 'link)
-        (org-display-inline-images nil nil beg end))))
-(define-key org-mode-map (kbd "C-c v") #'ndk/org-display-inline-image-at-point)
 
 (defun my/org-narrow-forward ()
   "Move to the next subtree at same level, and narrow to it."
@@ -325,10 +312,10 @@
 (setq use-package-always-ensure t)
 
 ;; exec-path-from-shell
-(use-package exec-path-from-shell
-  :config
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize)))
+;; (use-package exec-path-from-shell
+;;   :config
+;;   (when (memq window-system '(mac ns x))
+;;     (exec-path-from-shell-initialize)))
 
 ;; Restore old window configurations
 (winner-mode 1)
@@ -464,106 +451,150 @@
 (setq ido-enable-flex-matching 1)
 (setq ido-create-new-buffer 'always)
 (ido-everywhere 1)
-;; (global-set-key (kbd "C-M-j") 'ido-switch-buffer)
+(global-set-key (kbd "C-M-j") 'ido-switch-buffer)
+
+(setq magit-completing-read-function 'magit-ido-completing-read)
+(setq gnus-completing-read-function 'gnus-ido-completing-read)
+
+;; built-in, ido-like behavior
+(require 'icomplete)
+(icomplete-mode 1)
 
 ;; ;; recentf stuff
-;; ;; (require 'recentf)
-;; (recentf-mode 1)
-;; (setq recentf-max-menu-items 25)
-;; (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
-;; (use-package ido-completing-read+
-;;   :config (ido-ubiquitous-mode 1))
+(use-package ido-completing-read+
+  :config (ido-ubiquitous-mode 1))
 
-;; (use-package smex
-;;   :bind (
-;;          ("M-x" . 'smex)
-;;          ("M-X" . 'smex-major-mode-commands)
-;;          ("C-c C-c M-x" . 'execute-extended-command)
-;;          )
-;;   )
+(use-package smex
+  :bind (
+         ("M-x" . 'smex)
+         ("M-X" . 'smex-major-mode-commands)
+         ("C-c C-c M-x" . 'execute-extended-command)
+         )
+  )
 
 ;; ---------------------------------------------------------------------------- ido and smex
 
 ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper start
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
-(use-package swiper
-  :ensure t
-  :bind ("C-s" . 'swiper))
+;; (use-package swiper
+;;   :ensure t
+;;   :bind ("C-s" . 'swiper))
 
-(use-package counsel
-  :bind (
-         ("M-x" . 'counsel-M-x)
-         ("C-x b" . 'counsel-ibuffer)
-         ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
-         ("C-x d" . 'counsel-dired)
-         ("C-x C-f" . 'counsel-find-file)
-         ("C-x C-r" . 'counsel-recentf)
-         ("C-c C-r" . 'ivy-resume)
-         ("<f1> f" . 'counsel-describe-function)
-         ("<f1> v" . 'counsel-describe-variable)
-         ("<f1> o" . 'counsel-describe-symbol)
-         ("<f1> l" . 'counsel-find-library)
-         ("<f2> i" . 'counsel-info-lookup-symbol)
-         ("<f2> u" . 'counsel-unicode-char)
-         ("C-c g" . 'counsel-git)
-         ("C-c j" . 'counsel-git-grep)
-         ;; ("C-x l" . 'counsel-locate)
-         ;; ("C-S-o" . 'counsel-rhythmbox)
-         :map meta-s-prefix
-         ("g" . #'counsel-rg)
-         ("a" . #'counsel-ag)
-         ("f" . #'counsel-fzf)
-         ("G" . #'counsel-git)
-         ("F" . #'counsel-git-grep)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)
-         )
-  :config
-  ;; 默认的 rg 配置
-  ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
-  (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
-  (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
-  ;; Integration with 'projectile'
-  (with-eval-after-load 'projectile
-    (setq projectile-completion-system 'ivy)))
+;; (use-package counsel
+;;   :bind (
+;;          ("M-x" . 'counsel-M-x)
+;;          ("C-x b" . 'counsel-ibuffer)
+;;          ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
+;;          ("C-x d" . 'counsel-dired)
+;;          ("C-x C-f" . 'counsel-find-file)
+;;          ("C-x C-r" . 'counsel-recentf)
+;;          ("C-c C-r" . 'ivy-resume)
+;;          ("<f1> f" . 'counsel-describe-function)
+;;          ("<f1> v" . 'counsel-describe-variable)
+;;          ("<f1> o" . 'counsel-describe-symbol)
+;;          ("<f1> l" . 'counsel-find-library)
+;;          ("<f2> i" . 'counsel-info-lookup-symbol)
+;;          ("<f2> u" . 'counsel-unicode-char)
+;;          ("C-c g" . 'counsel-git)
+;;          ("C-c j" . 'counsel-git-grep)
+;;          ;; ("C-x l" . 'counsel-locate)
+;;          ;; ("C-S-o" . 'counsel-rhythmbox)
+;;          :map meta-s-prefix
+;;          ("g" . #'counsel-rg)
+;;          ("a" . #'counsel-ag)
+;;          ("f" . #'counsel-fzf)
+;;          ("G" . #'counsel-git)
+;;          ("F" . #'counsel-git-grep)
+;;          :map minibuffer-local-map
+;;          ("C-r" . 'counsel-minibuffer-history)
+;;          )
+;;   :config
+;;   ;; 默认的 rg 配置
+;;   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
+;;   (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
+;;   (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
+;;   ;; Integration with 'projectile'
+;;   (with-eval-after-load 'projectile
+;;     (setq projectile-completion-system 'ivy)))
 
-(use-package ivy
-  :diminish ivy-mode
-  :config
-  ;; (setq ivy-re-builders-alist
-  ;;     '((swiper . ivy--regex-fuzzy)
-  ;;       (t      . ivy--regex-plus))) ;; use ivy--regex-plus(default) for the rest of components
-  (use-package ivy-rich
-    :config
-    (ivy-rich-mode 1))
-  (use-package ivy-prescient
-    :after counsel
-    :config
-    (setq prescient-sort-length-enable nil)
-    ;; This is the default value!
-    (setq prescient-filter-method '(literal regexp fuzzy))
-    ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
-    (setq ivy-prescient-enable-filtering nil)
-    ;; Getting the old highlighting back
-    ;; (setq ivy-prescient-retain-classic-highlighting t)
-    (ivy-prescient-mode 1)
-    ;; Remember candidate frequencies across sessions
-    (prescient-persist-mode 1))
-  )
+;; (use-package ivy
+;;   :diminish ivy-mode
+;;   :config
+;;   ;; (setq ivy-re-builders-alist
+;;   ;;     '((swiper . ivy--regex-fuzzy)
+;;   ;;       (t      . ivy--regex-plus))) ;; use ivy--regex-plus(default) for the rest of components
+;;   (use-package ivy-rich
+;;     :config
+;;     (ivy-rich-mode 1))
+;;   (use-package ivy-prescient
+;;     :after counsel
+;;     :config
+;;     (setq prescient-sort-length-enable nil)
+;;     ;; This is the default value!
+;;     (setq prescient-filter-method '(literal regexp fuzzy))
+;;     ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+;;     (setq ivy-prescient-enable-filtering nil)
+;;     ;; Getting the old highlighting back
+;;     ;; (setq ivy-prescient-retain-classic-highlighting t)
+;;     (ivy-prescient-mode 1)
+;;     ;; Remember candidate frequencies across sessions
+;;     (prescient-persist-mode 1))
+;;   )
 
-;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
+;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
 
-(use-package prescient
-  :after counsel
-  :config
-  (prescient-persist-mode 1))
+;; (use-package prescient
+;;   :after counsel
+;;   :config
+;;   (prescient-persist-mode 1))
 
-(use-package company-prescient
-  :after company
-  :config
-  (company-prescient-mode 1))
+;; (use-package company-prescient
+;;   :after company
+;;   :config
+;;   (company-prescient-mode 1))
+
+;; (use-package sudo-edit)
+
+;; (use-package quickrun
+;;   :commands(quickrun)
+;;   :bind (:map leader-key
+;;               ("r" . #'quickrun))
+;;   :init (setq quickrun-timeout-seconds nil)
+;;   (setq quickrun-focus-p nil)
+;;   (setq quickrun-input-file-extension nil)
+;;   :config
+;;   (quickrun-add-command "python"
+;;     '((:command .
+;;                 "python3")
+;;       (:exec .
+;;              "%c %s")
+;;       (:tempfile .
+;;                  nil))
+;;     :default "python")
+;;   (quickrun-add-command "c++/c1z"
+;; 	'((:command . "g++")
+;;       (:exec    . ("%c -std=c++1z %o -o %e %s"
+;; 				   "%e %a"))
+;;       (:remove  . ("%e")))
+;; 	:default "c++"))
+
+;; ;; try
+;; (use-package try)
+
+;; (use-package figlet
+;;   :config
+;;   (setq figlet-default-font "standard"))
+
+;; (use-package editorconfig
+;;   :ensure t
+;;   :config
+;;   (editorconfig-mode 1))
 
 (use-package multiple-cursors
   :bind (
@@ -615,6 +646,16 @@
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
 ;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
+(defun ndk/org-display-inline-image-at-point ()
+  "Toggle inline image at point."
+  (interactive)
+  (let* ((context (org-element-context (org-element-at-point)))
+         (type (org-element-type context))
+         (beg  (plist-get (cadr context) :begin))
+         (end  (plist-get (cadr context) :end)))
+    (when (eq type 'link)
+      (org-display-inline-images nil nil beg end))))
+
 (use-package org
   :diminish org-indent-mode
   :config
@@ -623,11 +664,14 @@
   (add-hook 'org-tab-first-hook 'org-end-of-line)
   ;; (setq org-hide-emphasis-markers t) ;; hide markers like *bold* or /italic/
   (setq org-ellipsis "▾")
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width 200)
   (eval-after-load 'org
     (progn
       (define-key org-mode-map (kbd "<C-M-S-right>") nil)
       (define-key org-mode-map (kbd "<C-M-S-left>") nil)
       (define-key org-mode-map (kbd "C-,") nil)
+      (define-key org-mode-map (kbd "C-c C-v") 'ndk/org-display-inline-image-at-point)
       ))
   )
 
@@ -687,8 +731,6 @@
         'right-fringe)
   )
 
-(use-package sudo-edit)
-
 ;; 回到关闭文件前光标的位置
 (use-package saveplace
   :config
@@ -702,9 +744,6 @@
   (which-key-popup-type 'side-window)
   :config
   (which-key-mode 1))
-
-;; try
-(use-package try)
 
 ;; magit
 (use-package magit
@@ -770,28 +809,7 @@
   (diminish 'flycheck-mode)
   (diminish 'helm-mode))
 
-(use-package quickrun
-  :commands(quickrun)
-  :bind (:map leader-key
-              ("r" . #'quickrun))
-  :init (setq quickrun-timeout-seconds nil)
-  (setq quickrun-focus-p nil)
-  (setq quickrun-input-file-extension nil)
-  :config
-  (quickrun-add-command "python"
-    '((:command .
-                "python3")
-      (:exec .
-             "%c %s")
-      (:tempfile .
-                 nil))
-    :default "python")
-  (quickrun-add-command "c++/c1z"
-	'((:command . "g++")
-      (:exec    . ("%c -std=c++1z %o -o %e %s"
-				   "%e %a"))
-      (:remove  . ("%e")))
-	:default "c++"))
+(use-package posframe :defer t)
 
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
@@ -810,20 +828,12 @@
   (use-package emojify
     :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
 
-(use-package figlet
-  :config
-  (setq figlet-default-font "standard"))
-
 (use-package undo-tree
   :hook (after-init . global-undo-tree-mode)
   :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
   ;; HACK: keep the diff window
   (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
                     (setq-default undo-tree-visualizer-diff t)))
-
-;; (use-package doom-modeline
-;;   :ensure t
-;;   :init (doom-modeline-mode 1))
 
 (use-package zenburn-theme
   :config
@@ -841,230 +851,227 @@
 (use-package json-mode
   :mode "\\.json\\'")
 
-(use-package docker
-  :ensure t
-  :bind ("C-c d" . docker))
+;; (use-package docker
+;;   :ensure t
+;;   :bind ("C-c d" . docker))
 
-(use-package dockerfile-mode
-  :defer t)
+;; (use-package dockerfile-mode
+;;   :defer t)
 
-(use-package hackernews
-  :commands (hackernews)
-  :bind
-  ("C-c h" . hackernews)
-  )
+;; (use-package hackernews
+;;   :commands (hackernews)
+;;   :bind
+;;   ("C-c h" . hackernews)
+;;   )
 
-;; golang
-(use-package go-mode)
-;; Go - lsp-mode
-;; Set up before-save hooks to format buffer and add/delete imports.
-(defun lsp-go-save-hooks ()
-  "Go file before save, format and organize imports."
-  ;; (add-hook 'before-save-hook #'lsp-format-buffer t t) ;; don't auto format, in case of lsp remove unsed import before tmp save
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-save-hooks)
+;; ;; golang
+;; (use-package go-mode)
+;; ;; Go - lsp-mode
+;; ;; Set up before-save hooks to format buffer and add/delete imports.
+;; (defun lsp-go-save-hooks ()
+;;   "Go file before save, format and organize imports."
+;;   ;; (add-hook 'before-save-hook #'lsp-format-buffer t t) ;; don't auto format, in case of lsp remove unsed import before tmp save
+;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
+;; (add-hook 'go-mode-hook #'lsp-go-save-hooks)
 
-;; Start LSP Mode and YASnippet mode
-;; (add-hook 'go-mode-hook #'lsp-deferred)
-(add-hook 'go-mode-hook 'lsp)
+;; ;; Start LSP Mode and YASnippet mode
+;; ;; (add-hook 'go-mode-hook #'lsp-deferred)
+;; (add-hook 'go-mode-hook 'lsp)
 
-;; C/C++
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
-(define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
-;; (eval-after-load "c"
-;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
-;;           ))
+;; ;; C/C++
+;; (add-hook 'c-mode-hook 'lsp)
+;; (add-hook 'c++-mode-hook 'lsp)
+;; (define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
+;; ;; (eval-after-load "c"
+;; ;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
+;; ;;           ))
 
-;; (setq c-mode-hook
-;;       '(lambda ()
-;;          (gtags-mode 1)
-;;          ))
+;; ;; (setq c-mode-hook
+;; ;;       '(lambda ()
+;; ;;          (gtags-mode 1)
+;; ;;          ))
 
-;; python
-(add-hook 'python-mode-hook 'lsp)
+;; ;; python
+;; (add-hook 'python-mode-hook 'lsp)
 
-;; bash
-(add-hook 'shell-mode-hook 'lsp)
-(add-hook 'sh-mode-hook 'lsp)
+;; ;; bash
+;; (add-hook 'shell-mode-hook 'lsp)
+;; (add-hook 'sh-mode-hook 'lsp)
 
-;; lsp
-;; =================================================
-;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
-;; =================================================
-;; = + bash                                        =
-;; =   > `npm i -g bash-language-server'           =
-;; = + python                                      =
-;; =   > `pip install python-language-server[all]' =
-;; = + ruby                                        =
-;; =   > `gem install solargraph'                  =
-;; = + java                                        =
-;; =   > `(use-package lsp-java)'                  =
-;; = + c/c++                                       =
-;; =   > `sudo pacman -S ccls'                     =
-;; = + go                                          =
-;; =   > `sudo pacman -S gopls'                    =
-;; =================================================
-;; The palantir python-language-server (pyls) is unmaintained;
-;; a maintained fork is the python-lsp-server (pylsp) project;
-;; you can install it with pip via: pip install python-lsp-server
-(use-package lsp-mode
-  :defer t
-  :commands lsp
-  :hook (
-         ((java-mode python-mode go-mode rust-mode
-          js-mode js2-mode typescript-mode web-mode
-          c-mode c++-mode objc-mode) . lsp-deferred)
-         (lsp-mode . lsp-enable-which-key-integration)
-         )
-  :bind (:map lsp-mode-map
-              ;; ("C-M-l" . lsp-format-buffer)
-              ("C-M-l" . lsp-format-region)
-              ("M-RET" . lsp-ui-sideline-apply-code-actions)
-              ("M-RET" . lsp-execute-code-action))
-  :config
-  (setq lsp-completion-enable-additional-text-edit nil
-        lsp-enable-symbol-highlighting nil
-        lsp-headerline-breadcrumb-enable nil)
-  )
+;; ;; lsp
+;; ;; =================================================
+;; ;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
+;; ;; =================================================
+;; ;; = + bash                                        =
+;; ;; =   > `npm i -g bash-language-server'           =
+;; ;; = + python                                      =
+;; ;; =   > `pip install python-language-server[all]' =
+;; ;; = + ruby                                        =
+;; ;; =   > `gem install solargraph'                  =
+;; ;; = + java                                        =
+;; ;; =   > `(use-package lsp-java)'                  =
+;; ;; = + c/c++                                       =
+;; ;; =   > `sudo pacman -S ccls'                     =
+;; ;; = + go                                          =
+;; ;; =   > `sudo pacman -S gopls'                    =
+;; ;; =================================================
+;; ;; The palantir python-language-server (pyls) is unmaintained;
+;; ;; a maintained fork is the python-lsp-server (pylsp) project;
+;; ;; you can install it with pip via: pip install python-lsp-server
+;; (use-package lsp-mode
+;;   :defer t
+;;   :commands lsp
+;;   :hook (
+;;          ((java-mode python-mode go-mode rust-mode
+;;           js-mode js2-mode typescript-mode web-mode
+;;           c-mode c++-mode objc-mode) . lsp-deferred)
+;;          (lsp-mode . lsp-enable-which-key-integration)
+;;          )
+;;   :bind (:map lsp-mode-map
+;;               ;; ("C-M-l" . lsp-format-buffer)
+;;               ("C-M-l" . lsp-format-region)
+;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
+;;               ("M-RET" . lsp-execute-code-action))
+;;   :config
+;;   (setq lsp-completion-enable-additional-text-edit nil
+;;         lsp-enable-symbol-highlighting nil
+;;         lsp-headerline-breadcrumb-enable nil)
+;;   )
 
-(use-package lsp-java
-  :after lsp-mode
-  :if (executable-find "mvn")
-  :init
-  (use-package request :defer t)
-  :custom
-  ;; lsp-install-server --> jdtls
-  (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
-  (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
+;; (use-package lsp-java
+;;   :after lsp-mode
+;;   :if (executable-find "mvn")
+;;   :init
+;;   (use-package request :defer t)
+;;   :custom
+;;   ;; lsp-install-server --> jdtls
+;;   (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
+;;   (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
 
-(use-package lsp-ui
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  ;; sideline
-  (setq lsp-ui-sideline-show-diagnostics t
-        lsp-ui-sideline-show-code-actions t
-        lsp-ui-sideline-update-mode 'line
-        lsp-ui-sideline-show-hover nil
-        lsp-ui-sideline-delay 0.1
-        )
-  ;; peek
-  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-  ;; doc
-  (if (display-graphic-p)
-      (setq lsp-ui-doc-enable nil)
-    (setq lsp-ui-doc-enable nil)
-    )
-  (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
-        lsp-ui-doc-delay 1        ;; 显示文档的延迟
-        ))
+;; (use-package lsp-ui
+;;   :hook (lsp-mode . lsp-ui-mode)
+;;   :config
+;;   ;; sideline
+;;   (setq lsp-ui-sideline-show-diagnostics t
+;;         lsp-ui-sideline-show-code-actions t
+;;         lsp-ui-sideline-update-mode 'line
+;;         lsp-ui-sideline-show-hover nil
+;;         lsp-ui-sideline-delay 0.1
+;;         )
+;;   ;; peek
+;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+;;   ;; doc
+;;   (if (display-graphic-p)
+;;       (setq lsp-ui-doc-enable nil)
+;;     (setq lsp-ui-doc-enable nil)
+;;     )
+;;   (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
+;;         lsp-ui-doc-delay 1        ;; 显示文档的延迟
+;;         ))
 
-;; pdf
-(use-package pdf-tools
-  :ensure t
-  :config
-  (pdf-tools-install)
-  )
+;; ;; pdf
+;; (use-package pdf-tools
+;;   :ensure t
+;;   :config
+;;   (pdf-tools-install)
+;;   )
 
-(global-set-key (kbd "C-M-v") (lambda () (interactive) (my/scroll-other-window)))
-(global-set-key (kbd "C-M-S-v") (lambda () (interactive) (my/scroll-other-window-down)))
+;; (defun my/scroll-other-window ()
+;;   "Scroll ather window up."
+;;   (interactive)
+;;   (let* ((wind (other-window-for-scrolling))
+;;          (mode (with-selected-window wind major-mode)))
+;;     (if (eq mode 'pdf-view-mode)
+;;         (with-selected-window wind
+;;           ;; (pdf-view-scroll-up-or-next-page &optional ARG)
+;;           ;; (pdf-view-scroll-up-or-next-page)
+;;           (pdf-view-next-line-or-next-page 2)
+;;           )
+;;       ;; (scroll-other-window 2)
+;;       (scroll-other-window)
+;;       )))
 
-(defun my/scroll-other-window ()
-  "Scroll ather window up."
-  (interactive)
-  (let* ((wind (other-window-for-scrolling))
-         (mode (with-selected-window wind major-mode)))
-    (if (eq mode 'pdf-view-mode)
-        (with-selected-window wind
-          ;; (pdf-view-scroll-up-or-next-page &optional ARG)
-          ;; (pdf-view-scroll-up-or-next-page)
-          (pdf-view-next-line-or-next-page 2)
-          )
-      ;; (scroll-other-window 2)
-      (scroll-other-window)
-      )))
+;; (defun my/scroll-other-window-down ()
+;;   "Scroll ather window down."
+;;   (interactive)
+;;   (let* ((wind (other-window-for-scrolling))
+;;          (mode (with-selected-window wind major-mode)))
+;;     (if (eq mode 'pdf-view-mode)
+;;         (with-selected-window wind
+;;           (progn
+;;             ;; (pdf-view-scroll-down-or-previous-page &optional ARG)
+;;             ;; (pdf-view-scroll-down-or-previous-page)
+;;             (pdf-view-previous-line-or-previous-page 2)
+;;             (other-window 1)))
+;;       ;; (scroll-other-window-down 2)
+;;       (scroll-other-window-down)
+;;       )))
 
-(defun my/scroll-other-window-down ()
-  "Scroll ather window down."
-  (interactive)
-  (let* ((wind (other-window-for-scrolling))
-         (mode (with-selected-window wind major-mode)))
-    (if (eq mode 'pdf-view-mode)
-        (with-selected-window wind
-          (progn
-            ;; (pdf-view-scroll-down-or-previous-page &optional ARG)
-            ;; (pdf-view-scroll-down-or-previous-page)
-            (pdf-view-previous-line-or-previous-page 2)
-            (other-window 1)))
-      ;; (scroll-other-window-down 2)
-      (scroll-other-window-down)
-      )))
+;; (use-package org-pdftools
+;;   :hook (org-mode . org-pdftools-setup-link))
 
-(use-package org-pdftools
-  :hook (org-mode . org-pdftools-setup-link))
+;; (use-package org-noter-pdftools
+;;   :after org-noter
+;;   :config
+;;   ;; Add a function to ensure precise note is inserted
+;;   (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
+;;     (interactive "P")
+;;     (org-noter--with-valid-session
+;;      (let ((org-noter-insert-note-no-questions (if toggle-no-questions
+;;                                                    (not org-noter-insert-note-no-questions)
+;;                                                  org-noter-insert-note-no-questions))
+;;            (org-pdftools-use-isearch-link t)
+;;            (org-pdftools-use-freestyle-annot t))
+;;        (org-noter-insert-note (org-noter--get-precise-info)))))
+;;   ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
+;;   (defun org-noter-set-start-location (&optional arg)
+;;     "When opening a session with this document, go to the current location.
+;; With a prefix ARG, remove start location."
+;;     (interactive "P")
+;;     (org-noter--with-valid-session
+;;      (let ((inhibit-read-only t)
+;;            (ast (org-noter--parse-root))
+;;            (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
+;;        (with-current-buffer (org-noter--session-notes-buffer session)
+;;          (org-with-wide-buffer
+;;           (goto-char (org-element-property :begin ast))
+;;           (if arg
+;;               (org-entry-delete nil org-noter-property-note-location)
+;;             (org-entry-put nil org-noter-property-note-location
+;;                            (org-noter--pretty-print-location location))))))))
+;;   (with-eval-after-load 'pdf-annot
+;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
 
-(use-package org-noter-pdftools
-  :after org-noter
-  :config
-  ;; Add a function to ensure precise note is inserted
-  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
-    (interactive "P")
-    (org-noter--with-valid-session
-     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
-                                                   (not org-noter-insert-note-no-questions)
-                                                 org-noter-insert-note-no-questions))
-           (org-pdftools-use-isearch-link t)
-           (org-pdftools-use-freestyle-annot t))
-       (org-noter-insert-note (org-noter--get-precise-info)))))
-  ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
-  (defun org-noter-set-start-location (&optional arg)
-    "When opening a session with this document, go to the current location.
-With a prefix ARG, remove start location."
-    (interactive "P")
-    (org-noter--with-valid-session
-     (let ((inhibit-read-only t)
-           (ast (org-noter--parse-root))
-           (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
-       (with-current-buffer (org-noter--session-notes-buffer session)
-         (org-with-wide-buffer
-          (goto-char (org-element-property :begin ast))
-          (if arg
-              (org-entry-delete nil org-noter-property-note-location)
-            (org-entry-put nil org-noter-property-note-location
-                           (org-noter--pretty-print-location location))))))))
-  (with-eval-after-load 'pdf-annot
-    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+;; (use-package org-noter
+;;   :config
+;;   ;; Your org-noter config
+;;   (require 'org-noter-pdftools))
 
-(use-package org-noter
-  :config
-  ;; Your org-noter config
-  (require 'org-noter-pdftools))
-
-;; input method
-(use-package pyim
-  :init
-  (use-package posframe :defer t)
-  :diminish pyim-isearch-mode
-  :custom
-  (default-input-method "pyim")
-  (pyim-default-scheme 'xiaohe-shuangpin)
-  (pyim-page-tooltip 'posframe)
-  (pyim-page-length 9)
-  :bind ("C-c C-\\" . toggle-input-method)
-  :config
-  (use-package pyim-basedict
-    :after pyim
-    :config (pyim-basedict-enable))
-  (pyim-isearch-mode 1)
-  (setq-default pyim-english-input-switch-functions
-                '(pyim-probe-isearch-mode
-                  pyim-probe-org-structure-template))
-  (setq-default pyim-punctuation-half-width-functions
-                '(pyim-probe-punctuation-line-beginning
-                  pyim-probe-punctuation-after-punctuation))
-  ;; :bind ("M-j" . pyim-convert-string-at-point) ; M-j 强制将光标前的拼音字符串转换为中文
-  )
+;; ;; input method
+;; (use-package pyim
+;;   :init
+;;   (use-package posframe :defer t)
+;;   :diminish pyim-isearch-mode
+;;   :custom
+;;   (default-input-method "pyim")
+;;   (pyim-default-scheme 'xiaohe-shuangpin)
+;;   (pyim-page-tooltip 'posframe)
+;;   (pyim-page-length 9)
+;;   :bind ("C-c C-\\" . toggle-input-method)
+;;   :config
+;;   (use-package pyim-basedict
+;;     :after pyim
+;;     :config (pyim-basedict-enable))
+;;   (pyim-isearch-mode 1)
+;;   (setq-default pyim-english-input-switch-functions
+;;                 '(pyim-probe-isearch-mode
+;;                   pyim-probe-org-structure-template))
+;;   (setq-default pyim-punctuation-half-width-functions
+;;                 '(pyim-probe-punctuation-line-beginning
+;;                   pyim-probe-punctuation-after-punctuation))
+;;   ;; :bind ("M-j" . pyim-convert-string-at-point) ; M-j 强制将光标前的拼音字符串转换为中文
+;;   )
 
 ;;----------------------------------------------------------------------------
 ;; Allow access from emacsclient
@@ -1308,8 +1315,8 @@ With a prefix ARG, remove start location."
 ;;   ;; (load-theme 'doom-xcode t)
 ;;   )
 
-;; (use-package doom-modeline
-;;   :init (doom-modeline-mode 1))
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
 
 ;; 增强*help* buffer的功能
 ;; (use-package helpful
