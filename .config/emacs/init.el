@@ -739,7 +739,6 @@
                         "~/doc/org/work.org"
                         "~/doc/org/members.org"
                         "~/doc/org/reading.org"
-                        "~/doc/clang/hackerrank/hackerrank.org"
                         ))
 (add-hook 'org-mode-hook 'org-indent-mode)
 
