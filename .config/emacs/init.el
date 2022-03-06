@@ -160,8 +160,6 @@
 (define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
 (define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
-(define-key leader-key "fw" (lambda () (interactive) (find-file "~/doc/org/work.org")))
-(define-key leader-key "fm" (lambda () (interactive) (find-file "~/doc/org/members.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "at" 'org-todo-list)
@@ -690,7 +688,6 @@
 
 ;;; org
 ;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
-;;(setq org-default-notes-file (concat org-directory "~/doc/org/notes.org"))
 (defun ndk/org-display-inline-image-at-point ()
   "Toggle inline image at point."
   (interactive)
@@ -736,11 +733,12 @@
 (setq org-agenda-files (list
                         "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
-                        "~/doc/org/work.org"
-                        "~/doc/org/members.org"
                         "~/doc/org/reading.org"
                         ))
 (add-hook 'org-mode-hook 'org-indent-mode)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
 
 ;;; Archiving
 (setq org-archive-mark-done nil)
