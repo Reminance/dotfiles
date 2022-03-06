@@ -19,6 +19,23 @@ bind-key 'C-\' send-prefix
 # bind-key -n C-F3 set-option -g status
 bind-key space set-option -g status
 
+# Status
+# set -g message-style bg='#202330',fg='#8be9fd'
+# set -g status-style bg='#202330',fg='#4cc4c6'
+set -g message-style bg='default',fg='#8be9fd'
+set -g status-style bg='default',fg='#4cc4c6'
+set -g status-interval 1
+
+set -g status-left ''
+set -g status-right ''
+
+set-window-option -g window-status-style fg='#bd93f9',bg=default
+set-window-option -g window-status-current-style fg='#ff79c6',bg='#282a36'
+
+set -g status-justify centre
+
+# Status end
+
 # enable mouse in tmux
 set -g mouse on
 
@@ -98,8 +115,8 @@ set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 
-set -g @plugin 'egel/tmux-gruvbox'
-set -g @tmux-gruvbox 'dark' # or 'light'
+# set -g @plugin 'egel/tmux-gruvbox'
+# set -g @tmux-gruvbox 'dark' # or 'light'
 
 # https://github.com/wfxr/tmux-power
 # set -g @plugin 'wfxr/tmux-power'
