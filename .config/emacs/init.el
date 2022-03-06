@@ -737,6 +737,7 @@
                         "~/doc/org/notes.org"
                         "~/doc/org/personal.org"
                         "~/doc/org/work.org"
+                        "~/doc/org/members.org"
                         "~/doc/org/reading.org"
                         "~/doc/clang/hackerrank/hackerrank.org"
                         ))
