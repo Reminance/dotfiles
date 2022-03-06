@@ -3,6 +3,9 @@
 # for html and json and cssls
 sudo npm i -g vscode-langservers-extracted
 
+# for typescript tsserver
+npm install -g typescript typescript-language-server
+
 # for bash
 sudo npm i -g bash-language-server
 
@@ -11,12 +14,16 @@ sudo  npm install -g vim-language-server
 
 # for go
 sudo pacman -S gopls
+brew install gopls
 
 # for python
 sudo pacman -S pyright
 
 # for clangd
 sudo pacman -S clang
+# Clangd can be installed (along with LLVM) via Homebrew:
+brew install llvm
+clangd --version
 
 # for rust
 sudo pacman -S rust-analyzer

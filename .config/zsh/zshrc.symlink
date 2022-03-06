@@ -53,3 +53,9 @@ unset config_files
 # bindkey "^[[B" down-line-or-beginning-search # Down
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# mac only
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+
