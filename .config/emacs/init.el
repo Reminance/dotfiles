@@ -740,6 +740,19 @@
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
 
+(setq org-directory "~/doc/org/")
+(setq org-capture-templates
+      '(
+        ("t" "Todo" entry (file+headline "~/doc/org/notes.org" "Tasks")
+         ;; Prompt for tag
+         "* TODO %?\t%^g\n Entered on %U\n  %i\n  %a")
+        ("o" "Someday" entry (file+headline "~/doc/org/personal.org" "Tasks")
+         "* SOMEDAY %?")
+        ("s" "Code Snippet" entry (file+datetree "~/doc/org/snippet.org")
+         ;; Prompt for tag and language
+         "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+        ))
+
 ;;; Archiving
 (setq org-archive-mark-done nil)
 (setq org-archive-location "%s_archive::* Archive")
