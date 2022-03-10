@@ -968,6 +968,23 @@ nnoremap <Leader>gh :diffget //2<CR>
 nnoremap <Leader>gl :diffget //3<CR>
 nnoremap <Leader>gs :G<CR>
 
+" fugitive mergetool command
+nnoremap <expr> <C-h> &diff ? ':diffget //2<CR>' : '<C-h>'
+nnoremap <expr> <C-l> &diff ? ':diffget //3<CR>' : '<C-l>'
+nnoremap <expr> <C-n> &diff ? ']c' : '<C-n>'
+nnoremap <expr> <C-p> &diff ? '[c' : '<C-p>'
+nnoremap <expr> <C-M-q> &diff ? ':call fugitive#DiffClose()<CR>' : ':qa<CR>'
+
+" " normal vimdiff command
+" if &diff
+"     normal vimdiff command
+"     nnoremap <C-h> :diffget LOCAL<CR>
+"     nnoremap <C-Space> :diffget BASE<CR>
+"     nnoremap <C-l> :diffget REMOTE<CR>
+"     nnoremap <C-n> ]c
+"     nnoremap <C-p> [c
+" endif
+
 " liuchengxu/vim-which-key
 " let g:mapleader="\<Space>"
 " nnoremap <silent> <Leader>      :<C-u>WhichKey '<Space>'<CR>

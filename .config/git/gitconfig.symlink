@@ -30,6 +30,12 @@
         whitespace = nowarn
 [mergetool]
         keepBackup = false
+[merge]
+        tool = nvimdiff
+        conflictstyle = diff3
+        ; tool = fugitive
+; [mergetool "fugitive"]
+        ; cmd = nvim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [difftool]
         prompt = false
 [pull]

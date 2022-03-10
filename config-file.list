@@ -6,6 +6,7 @@ $HOME/dotfiles/.config/zsh/env.zsh
 $HOME/dotfiles/.config/zsh/fzf.zsh
 $HOME/dotfiles/.config/zsh/shortcut.zsh
 $HOME/dotfiles/.config/zsh/git.zsh
+$HOME/dotfiles/.config/git/gitconfig.symlink
 $HOME/dotfiles/.config/i3/config
 $HOME/dotfiles/.config/i3status/config
 $HOME/dotfiles/.config/i3blocks/config
