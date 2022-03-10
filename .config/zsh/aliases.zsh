@@ -42,7 +42,7 @@ alias fcl="fc-list"
 alias fcg="fc-list | grep"
 
 # Search where an alias was defined(eg. falias 'git pull')
-alias falias='zsh -ixc : 2>&1 | grep'
+alias fa='zsh -ixc : 2>&1 | grep'
 
 # Search using grep
 # __grep_file() { grep -iRl $1 ./ }
