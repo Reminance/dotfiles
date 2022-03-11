@@ -1,0 +1,31 @@
+#!/bin/sh
+docker version
+docker search redis
+docker pull redis
+docker run -d --name redis -p 6379:6379 redis:latest redis-server --appendonly yes
+docker ps
+docker exec -it redis redis-cli
+docker search mysql
+doker pull mysql
+docker pull mysql
+docker pull mysql:latest
+brew install mycli
+proxys
+brew install mycli
+docker run -d -p 3307:3306 --name mysql --platform linux/x86_64 --env MYSQL_ROOT_PASSWORD=123456 mysql
+docker container ls
+docker container ls -a
+docker container rm mysql
+docker container ls -a
+docker run -d -p 3307:3306 --name mysql --platform linux/x86_64 --env MYSQL_ROOT_PASSWORD=123456 mysql
+netstat -anv | grep 3307
+mycli -u root -h localhost -P 3307 --password 123456
+docker ps
+docker stop mysql
+dps
+a dps
+fa dps
+vim dotfiles/.config/zsh/aliases-docker.zsh
+docker stop redis
+dps
+dstop
