@@ -1206,8 +1206,8 @@
 (defconst *is-x11* (eq window-system 'x))
 (defconst *is-windows* (eq system-type 'windows-nt))
 (when *is-mac*
-  ;; (setq mac-command-modifier 'meta) ;; use command key as meta/alt
-  ;; (setq mac-option-modifier 'none) ;; use command key as meta/alt
+  (setq mac-command-modifier 'meta) ;; use command key as meta/alt
+  (setq mac-option-modifier 'none) ;; use command key as meta/alt
   ;; Make mouse wheel / trackpad scrolling less jerky
   (setq mouse-wheel-scroll-amount '(1
                                     ((shift) . 5)
