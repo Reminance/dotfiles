@@ -19,6 +19,9 @@ export FZF_ALT_C_OPTS='--preview "tree -C {} | head -50"'
 export FZF_TMUX=1
 export FZF_TMUX_HEIGHT='80%'
 
-# not for macos
-# source /usr/share/fzf/completion.zsh
-# source /usr/share/fzf/key-bindings.zsh
+# for macos
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# for archlinux
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh

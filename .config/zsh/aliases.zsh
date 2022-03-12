@@ -44,6 +44,9 @@ alias fcg="fc-list | grep"
 # Search where an alias was defined(eg. falias 'git pull')
 alias fa='zsh -ixc : 2>&1 | grep'
 
+# Search bindkey
+alias fk='bindkey | fzf'
+
 # Search using grep
 # __grep_file() { grep -iRl $1 ./ }
 __grep_file() { grep -iR $1 ./ }
