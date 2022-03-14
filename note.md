@@ -42,6 +42,9 @@ wget https://hub.fastgit.org/goharbor/harbor/releases/download/v2.0.2/harbor-off
 
 git config --global url."https://hub.fastgit.org".insteadOf https://github.com
 
+# ghproxy
+git clone https://ghproxy.com/https://github.com/redis/redis.git
+
 #测试
 git clone https://github.com/kubernetes/kubernetes.git
 
