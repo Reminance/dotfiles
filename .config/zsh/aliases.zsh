@@ -1,5 +1,6 @@
 alias a='alias'
-alias lla='ls -lA'
+alias llt='ls -lht'
+alias lls='ls -lAhS'
 
 # EDITOR from ~/.config/zsh/env.zsh
 alias v="$EDITOR"
