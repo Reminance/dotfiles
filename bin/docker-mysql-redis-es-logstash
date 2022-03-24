@@ -29,3 +29,20 @@ vim dotfiles/.config/zsh/aliases-docker.zsh
 docker stop redis
 dps
 dstop
+
+sudo docker run -it --rm --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:8.1.1
+docker pull logstash:8.1.1
+docker search mysql
+docker pull mysql
+
+# run es
+sudo sysctl -w vm.max_map_count=262145
+# sudo docker run -it --rm --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:8.1.1
+docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:tag
+docker exec -it elasticsearch /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
+https://localhost:9200/
+
+
+
+
+

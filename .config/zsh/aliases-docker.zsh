@@ -29,8 +29,14 @@ alias dki="docker run -i -t -P"
 # Execute interactive container, e.g., $dex base /bin/bash
 alias dex="docker exec -i -t"
 
+# docker stop $1
+alias dstop="docker stop"
+
+# docker start
+alias dstart="docker start"
+
 # Stop all containers
-dstop() { docker stop $(docker ps -a -q); }
+dstopall() { docker stop $(docker ps -a -q); }
 
 # Remove all containers
 drm() { docker rm $(docker ps -a -q); }
