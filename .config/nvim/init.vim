@@ -206,20 +206,26 @@ nnoremap <M-l> <C-w>l
 
 " Tab Management
 " Create a new tab
-nnoremap <M-n> :tabe<CR>
-nnoremap <M-q> :tabclose<CR>
-" nnoremap <M-n> :tabnew
-" switching tabs
-nnoremap <M-,> :-tabnext<CR>
-nnoremap <M-.> :+tabnext<CR>
-" Move the tabs
-nnoremap <M-<> :-tabmove<CR>
-nnoremap <M->> :+tabmove<CR>
-" Map alt-x keys to jump to a tab
-for i in range(1, 8)
-    exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
-endfor
-nnoremap <M-9> :tablast<CR>
+" nnoremap <M-n> :tabe<CR>
+" nnoremap <M-q> :tabclose<CR>
+" " nnoremap <M-n> :tabnew
+" " switching tabs
+" nnoremap <M-,> :-tabnext<CR>
+" nnoremap <M-.> :+tabnext<CR>
+" " Move the tabs
+" nnoremap <M-<> :-tabmove<CR>
+" nnoremap <M->> :+tabmove<CR>
+" " Map alt-x keys to jump to a tab
+" for i in range(1, 8)
+"     exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
+" endfor
+" nnoremap <M-9> :tablast<CR>
+
+" Buffer Management
+nnoremap <M-q> :bd<CR>
+" " switching buffer
+nnoremap <M-,> :bp<CR>
+nnoremap <M-.> :bn<CR>
 
 " Clipboard
 " set clipboard^=unnamed,unnnamedplus
