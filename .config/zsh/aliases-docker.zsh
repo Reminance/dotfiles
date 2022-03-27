@@ -14,6 +14,12 @@ alias dps="docker ps"
 # Get process included stop container
 alias dpa="docker ps -a"
 
+# Search 
+alias ds="docker search"
+
+# log 
+alias dl="docker logs"
+
 # Get images
 alias di="docker images"
 

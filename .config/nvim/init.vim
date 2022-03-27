@@ -1,5 +1,5 @@
 set nocompatible
-let mapleader=","
+let mapleader=" "
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
 set ignorecase smartcase incsearch showmatch hlsearch
 set wrap formatoptions-=t "turn off Auto-wrap text using textwidth
@@ -143,7 +143,7 @@ nnoremap <Left> :vertical resize-1<CR>
 nnoremap <Right> :vertical resize+1<CR>
 
 " Basic Mappings
-nnoremap <Leader><Space> :nohlsearch<CR>
+nnoremap <Leader>, :nohlsearch<CR>
 
 " insert a <++>
 inoremap <M-i> <++>
@@ -322,7 +322,7 @@ endfunc
 
 " Openning Files
 " Open the vimrc file anytime
-nnoremap <Leader><Leader>i :e ~/.config/nvim/init.vim<CR>
+nnoremap <Leader>fi :e ~/.config/nvim/init.vim<CR>
 
 " work tool
 " source ~/.config/nvim/worktool.vim
@@ -858,7 +858,7 @@ command! -bang -nargs=* EditUtilSnips call fzf#run({
             \ })
 
 " Far.vim
-nnoremap <Leader>fa :F  %<left><left>
+nnoremap <Leader>F :F  %<left><left>
 
 
 " nvim-telescope settings {{
@@ -1031,7 +1031,7 @@ xmap <Leader>ea <Plug>(EasyAlign)
 nmap <Leader>ea <Plug>(EasyAlign)
 
 " Goyo plugin makes text more readable when writing prose:
-map <leader>F :Goyo \| set bg=dark \| set linebreak<CR>
+map <leader>G :Goyo \| set bg=dark \| set linebreak<CR>
 
 " 'akinsho/nvim-bufferline.lua' {{{
 lua require('bufferline').setup{}

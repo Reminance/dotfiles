@@ -30,20 +30,70 @@ docker stop redis
 dps
 dstop
 
-sudo docker run -it --rm --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:8.1.1
-docker pull logstash:8.1.1
-docker search mysql
-docker pull mysql
+# sudo docker run -it --rm --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:8.1.1
+# docker pull logstash:8.1.1
+# docker search mysql
+# docker pull mysql
+
+
+# 创建docker网络
+docker network create elastic
+
+
+docker run -d --net elastic -p 3307:3306 --name mysql --platform linux/x86_64 --env MYSQL_ROOT_PASSWORD=123456 mysql
+docker pull elasticsearch:7.14.2
+docker pull logstash:7.14.2
+docker pull mobz/elasticsearch-head:5-alpine
 
 # run es
 sudo sysctl -w vm.max_map_count=262145
 # sudo docker run -it --rm --name elasticsearch -d -p 9200:9200 -p 9300:9300 elasticsearch:8.1.1
 # docker run -d --name elasticsearch --net somenetwork -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:tag
-docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:8.1.1
+# docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch:8.1.1
+
+# vim elasticsearch.yml
+# cluster.name: "docker-cluster"
+# network.host: 0.0.0.0
+# http.cors.enabled: true
+# http.cors.allow-origin: "*"
+
+docker run -d  --net elastic --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" -v /Users/10018944/workspace/elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml elasticsearch:7.14.2
+docker run -d --name=elasticsearch-head --restart=always -p 9100:9100 mobz/elasticsearch-head:5-alpine
 docker exec -it elasticsearch /usr/share/elasticsearch/bin/elasticsearch-reset-password -u elastic
-https://localhost:9200/
+http://localhost:9200/
 
 
+# elasticsearch-head:
+git clone git://github.com/mobz/elasticsearch-head.git
+cd elasticsearch-head
+# npm install
+npm install --registry=https://registry.npm.taobao.org
+npm run start
+open http://localhost:9100/
 
+# logstash_test/ user 表
+CREATE TABLE `user` (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+docker run -d --name logstash  --net elastic -v /Users/10018944/workspace/logstash/pipeline/:/usr/share/logstash/pipeline/ -v /Users/10018944/workspace/logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml logstash:7.14.2
+dex logstash /bin/bash
+#  Installation aborted, plugin 'logstash-input-jdbc' is already provided by 'logstash-integration-jdbc'
+# bin/logstash-plugin install logstash-input-jdbc
+bin/logstash-plugin install logstash-output-elasticsearch
+
+
+https://github.com/dimMaryanto93/docker-logstash-input-jdbc
+# Starting logstash input jdbc
+docker-compose -f compose/db-platform/docker-compose.version.yaml -p project_name up --build
+# Stoping all service
+docker-compose -f compose/db-platform/docker-compose.version.yaml -p project_name down --rmi local
+
+
+docker-compose -f compose/mysql/docker-compose.mysql-8.0.yaml -p mle up --build
 
 
