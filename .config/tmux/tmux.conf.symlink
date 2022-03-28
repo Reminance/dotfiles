@@ -87,7 +87,7 @@ unbind-key M-Down       ; bind-key -n M-Down      select-pane -D
 unbind-key M-Up         ; bind-key -n M-Up        select-pane -U
 unbind-key M-Right      ; bind-key -n M-Right     select-pane -R
 
-unbind-key M-d     ; bind-key -n M-d  detach-client
+# unbind-key M-d     ; bind-key -n M-d  detach-client
 
 unbind-key M-S-left   ; bind-key -n M-S-left    resize-pane -L 1
 unbind-key M-S-down   ; bind-key -n M-S-down    resize-pane -D 1

@@ -26,6 +26,9 @@ alias di="docker images"
 # Get container
 alias dc="docker container"
 
+# Docker compose
+alias dcp="docker-compose"
+
 # Get container IP
 alias dip="docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
 
@@ -48,7 +51,8 @@ alias dstart="docker start"
 dstopall() { docker stop $(docker ps -a -q); }
 
 # Remove all containers
-drm() { docker rm $(docker ps -a -q); }
+# drm() { docker rm $(docker ps -a -q); }
+drm() { docker rm $(docker container ls -a --format '{{.Names}}' | grep $1); }
 
 # Stop and Remove all containers
 alias drmf='docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)'
