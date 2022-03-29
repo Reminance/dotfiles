@@ -56,14 +56,14 @@ services:
       - LOGSTASH_JDBC_USERNAME=admin
       - LOGSTASH_JDBC_PASSWORD=admin
       - LOGSTASH_ELASTICSEARCH_HOST=http://elasticsearch:9200
-      - SET_CONTAINER_TIMEZONE=true
-      - CONTAINER_TIMEZONE=Asia/Shanghai
-      - TZ=Asia/Shanghai
+      # - SET_CONTAINER_TIMEZONE=true
+      # - CONTAINER_TIMEZONE=Asia/Shanghai
+      # - TZ=Asia/Shanghai
     volumes: 
       # - ./mysql-jdbc-input-plugin.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash_test_incremental.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./sql_statement_addition.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
-      - ./.logstash_jdbc_last_run:/usr/share/logstash/pipeline/.logstash_jdbc_last_run
+      # - ./.logstash_jdbc_last_run:/usr/share/logstash/pipeline/.logstash_jdbc_last_run
       - ./mysql-connector-java-8.0.11.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
     ports:
       - 9600:9600
