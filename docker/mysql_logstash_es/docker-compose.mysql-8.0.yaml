@@ -1,20 +1,20 @@
 version: '3.7'
-services: 
+services:
   mysql:
     image: mysql:latest
     platform: linux/amd64
-    ports: 
+    ports:
       - 3307:3306
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=test
       - MYSQL_USER=admin
       - MYSQL_PASSWORD=admin
-      - SET_CONTAINER_TIMEZONE=true
-      - CONTAINER_TIMEZONE=Asia/Shanghai
       - TZ=Asia/Shanghai
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - share-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     ports:
@@ -29,13 +29,15 @@ services:
       - cluster.name=docker-cluster
       - discovery.type=single-node
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - SET_CONTAINER_TIMEZONE=true
-      - CONTAINER_TIMEZONE=Asia/Shanghai
       - TZ=Asia/Shanghai
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - share-network
   # kibana:
   #   image: docker.elastic.co/kibana/kibana:7.14.2
+  #   environment:
+  #     - TZ=Asia/Shanghai
   #   ports:
   #     - 5601:5601
   #   depends_on:
@@ -43,23 +45,22 @@ services:
   logstash:
     # image: docker.elastic.co/logstash/logstash:7.14.2
     image: arm64v8/logstash:7.14.2
-    links:
-      - elasticsearch
-      - mysql
-    # build: 
+    # links:
+    #   - elasticsearch
+    #   - mysql
+    # build:
     #   dockerfile: ${PWD}/Dockerfile
     #   context: ${PWD}/
+    privileged: true
     environment:
-      - LOGSTASH_JDBC_URL=jdbc:mysql://mysql:3306/test?useSSL=false&allowPublicKeyRetrieval=true
+      - LOGSTASH_JDBC_URL=jdbc:mysql://mysql:3306/test?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
       - LOGSTASH_JDBC_DRIVER=com.mysql.cj.jdbc.Driver
       - LOGSTASH_JDBC_DRIVER_JAR_LOCATION=/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
       - LOGSTASH_JDBC_USERNAME=admin
       - LOGSTASH_JDBC_PASSWORD=admin
       - LOGSTASH_ELASTICSEARCH_HOST=http://elasticsearch:9200
-      # - SET_CONTAINER_TIMEZONE=true
-      # - CONTAINER_TIMEZONE=Asia/Shanghai
-      # - TZ=Asia/Shanghai
-    volumes: 
+      - TZ=Asia/Shanghai
+    volumes:
       # - ./mysql-jdbc-input-plugin.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash_test_incremental.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./sql_statement_addition.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
@@ -68,6 +69,8 @@ services:
     ports:
       - 9600:9600
       - 5044:5044
+    networks:
+      - share-network
     depends_on:
       - elasticsearch
       # - kibana
@@ -75,3 +78,5 @@ services:
 volumes:
   elasticsearch_data:
   mysql_data:
+networks:
+  share-network:
