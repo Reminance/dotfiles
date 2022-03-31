@@ -1,4 +1,6 @@
 alias a='alias'
+alias ls='logo-ls'
+# alias ls='exa --icons'
 alias llt='ls -lht'
 alias lls='ls -lAhS'
 

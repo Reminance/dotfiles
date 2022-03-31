@@ -1,0 +1,31 @@
+#!/bin/sh
+
+yay -S logo-ls
+
+# Archlinux
+# git clone https://aur.archlinux.org/logo-ls.git
+# cd logo-ls
+# makepkg -si
+
+# MacOS (Darwin)
+# brew install logo-ls
+# To install logo-ls on darwin you have to download the binary. Support for Homebrew will come soon
+
+# Step 1
+# Download logo-ls_Darwin_x86_64.tar.gz from Github Release Page.
+
+# Step 2
+# Extract a gzipped archive in the current directory.
+
+# $ tar -xzf logo-ls_Darwin_x86_64.tar.gz
+# This will produce logo-ls_Darwin_x86_64 directory in the current directory with the following files: HELP.md, LICENSE, logo-ls and logo-ls.1.gz
+
+# Step 3
+# Install the binary logo-ls by placing it in /usr/local/bin
+
+# $ cd logo-ls_Darwin_x86_64
+# $ sudo cp logo-ls /usr/local/bin
+# Step 4
+# If you want the man page of logo-ls place logo-ls.1.gz in /usr/local/share/man/man1/
+
+# $ sudo cp logo-ls.1.gz /usr/local/share/man/man1/
