@@ -55,7 +55,7 @@ services:
       # - ./logstash_test_incremental.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash_dev.conf:/usr/share/logstash/pipeline/logstash.conf
       # - ./sql_statement_addition.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
-      - ./sql_dev1.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
+      - ./sql_dev.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
       # - ./.logstash_jdbc_last_run:/usr/share/logstash/pipeline/.logstash_jdbc_last_run
       - ./mysql-connector-java-8.0.11.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
       # - ./mysql-connector-java-5.1.46.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
