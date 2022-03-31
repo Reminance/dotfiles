@@ -17,6 +17,7 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
+    # network_mode: "host"
     networks:
       - share-network
   # kibana:
@@ -36,14 +37,16 @@ services:
     # build:
     #   dockerfile: ${PWD}/Dockerfile
     #   context: ${PWD}/
-    privileged: true
+    # privileged: true
     environment:
-      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
-      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
+      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
       - LOGSTASH_JDBC_DRIVER=com.mysql.cj.jdbc.Driver
       # - LOGSTASH_JDBC_DRIVER=com.mysql.jdbc.Driver
       - LOGSTASH_JDBC_DRIVER_JAR_LOCATION=/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
       - LOGSTASH_JDBC_USERNAME=lt_newsitetest_rw_te
+      # - LOGSTASH_JDBC_USERNAME=lt_wms_dev_rw_te
       - LOGSTASH_JDBC_PASSWORD=h80TLA0uFfXhJ1fS
       - LOGSTASH_ELASTICSEARCH_HOST=http://elasticsearch:9200
       - TZ=Asia/Shanghai
@@ -52,13 +55,14 @@ services:
       # - ./logstash_test_incremental.conf:/usr/share/logstash/pipeline/logstash.conf
       - ./logstash_dev.conf:/usr/share/logstash/pipeline/logstash.conf
       # - ./sql_statement_addition.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
-      - ./sql_dev.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
+      - ./sql_dev1.sql:/usr/share/logstash/pipeline/mysql/logstash_test/sql_statement_addition.sql
       # - ./.logstash_jdbc_last_run:/usr/share/logstash/pipeline/.logstash_jdbc_last_run
       - ./mysql-connector-java-8.0.11.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
       # - ./mysql-connector-java-5.1.46.jar:/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
     ports:
       - 9600:9600
       - 5044:5044
+    # network_mode: "host"
     networks:
       - share-network
     depends_on:
@@ -70,3 +74,6 @@ volumes:
   # mysql_data:
 networks:
   share-network:
+#     external:
+#       name: "host"
+
