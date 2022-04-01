@@ -1,5 +1,20 @@
 version: '3.8'
 services:
+  # mysql:
+  #   image: mysql:latest
+  #   platform: linux/amd64
+  #   ports:
+  #     - 3307:3306
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=123456
+  #     - MYSQL_DATABASE=test
+  #     - MYSQL_USER=admin
+  #     - MYSQL_PASSWORD=admin
+  #     - TZ=Asia/Shanghai
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - share-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     ports:
@@ -39,15 +54,18 @@ services:
     #   context: ${PWD}/
     # privileged: true
     environment:
-      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
       # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false
-      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
+      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://mysql:3306/test?useSSL=false&allowPublicKeyRetrieval=true
       - LOGSTASH_JDBC_DRIVER=com.mysql.cj.jdbc.Driver
       # - LOGSTASH_JDBC_DRIVER=com.mysql.jdbc.Driver
       - LOGSTASH_JDBC_DRIVER_JAR_LOCATION=/usr/share/logstash/logstash-core/lib/jars/mysql-connector-java.jar
       - LOGSTASH_JDBC_USERNAME=lt_newsitetest_rw_te
       # - LOGSTASH_JDBC_USERNAME=lt_wms_dev_rw_te
       - LOGSTASH_JDBC_PASSWORD=h80TLA0uFfXhJ1fS
+      # - LOGSTASH_JDBC_USERNAME=admin
+      # - LOGSTASH_JDBC_PASSWORD=admin
       - LOGSTASH_ELASTICSEARCH_HOST=http://elasticsearch:9200
       - TZ=Asia/Shanghai
     volumes:
@@ -62,13 +80,13 @@ services:
     ports:
       - 9600:9600
       - 5044:5044
-    # network_mode: "host"
-    networks:
-      - share-network
-    depends_on:
-      - elasticsearch
-      # - kibana
-      # - mysql
+    network_mode: "host"
+    # networks:
+    #   - share-network
+    # depends_on:
+    #   - mysql
+    #   - elasticsearch
+    #   - kibana
 volumes:
   elasticsearch_data:
   # mysql_data:
