@@ -15,3 +15,4 @@ $HOME/dotfiles/.config/emacs/init.el
 $HOME/dotfiles/.config/mycli/myclirc.symlink
 $HOME/dotfiles/.config/tmux/tmux.conf.symlink
 $HOME/dotfiles/script/package-init.sh
+/opt/homebrew/etc/nginx/nginx.conf

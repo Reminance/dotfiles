@@ -13,8 +13,8 @@ services:
   #     - TZ=Asia/Shanghai
   #   volumes:
   #     - mysql_data:/var/lib/mysql
-  #   networks:
-  #     - share-network
+  #   # networks:
+  #   #   - share-network
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.14.2
     ports:
@@ -33,8 +33,8 @@ services:
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     # network_mode: "host"
-    networks:
-      - share-network
+    # networks:
+    #   - share-network
   # kibana:
   #   image: docker.elastic.co/kibana/kibana:7.14.2
   #   environment:
@@ -54,9 +54,11 @@ services:
     #   context: ${PWD}/
     # privileged: true
     environment:
-      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
+      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
       # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useSSL=false
-      - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://10.123.4.21:3308/wws_test?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://docker.for.mac.host.internal:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true&autoReconnect=true
+      # - LOGSTASH_JDBC_URL=jdbc:mysql://192.168.65.2:3308/wws_test?useSSL=false&allowPublicKeyRetrieval=true
       # - LOGSTASH_JDBC_URL=jdbc:mysql://mysql:3306/test?useSSL=false&allowPublicKeyRetrieval=true
       - LOGSTASH_JDBC_DRIVER=com.mysql.cj.jdbc.Driver
       # - LOGSTASH_JDBC_DRIVER=com.mysql.jdbc.Driver
@@ -80,18 +82,18 @@ services:
     ports:
       - 9600:9600
       - 5044:5044
-    network_mode: "host"
+    # network_mode: "host"
     # networks:
     #   - share-network
-    # depends_on:
-    #   - mysql
-    #   - elasticsearch
-    #   - kibana
+    depends_on:
+      - elasticsearch
+      # - mysql
+      # - kibana
 volumes:
   elasticsearch_data:
-  # mysql_data:
-networks:
-  share-network:
+  mysql_data:
+# networks:
+#   share-network:
 #     external:
 #       name: "host"
 
