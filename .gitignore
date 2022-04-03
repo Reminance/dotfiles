@@ -26,6 +26,7 @@ sandbox/
 .config/fcitx/profile
 .config/git/gitconfig.local.symlink
 .config/nvim/plugged/
+.config/nvim/plugin/
 .config/nvim/tmp/
 .config/nvim/_machine_specific.vim
 .config/nvim/session/
