@@ -8,7 +8,6 @@ set noshowmode
 " set shortmess+=c
 set nu rnu
 set mouse=a
-set inccommand=split
 set hidden
 " set autochdir " auto change cwd
 " Save when losing focus
@@ -19,8 +18,13 @@ au VimResized * :wincmd =
 set synmaxcol=800
 set backspace=indent,eol,start " set backspace=indent,eol,start; eol让退格键可以退到上一行
 
+" change cursor while in normal/insert mode
+let &t_SI="\e[6 q"
+let &t_EI="\e[2 q"
+
 set completeopt=menuone,noinsert,noselect
 " set signcolumn=yes
+set ttimeout ttimeoutlen=10
 set updatetime=100
 set encoding=UTF-8
 set clipboard+=unnamedplus " Copy paste between vim and everything else
@@ -46,15 +50,15 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Backups
 set backup                        " enable backups
 set noswapfile
-silent !mkdir -p ~/.config/vim/tmp/backup
-silent !mkdir -p ~/.config/vim/tmp/undo
-"silent !mkdir -p ~/.config/vim/tmp/sessions
-set backupdir=~/.config/vim/tmp/backup,.
-set directory=~/.config/vim/tmp/backup,.
+silent !mkdir -p ~/.vim/tmp/backup
+silent !mkdir -p ~/.vim/tmp/undo
+"silent !mkdir -p ~/.vim/tmp/sessions
+set backupdir=~/.vim/tmp/backup,.
+set directory=~/.vim/tmp/backup,.
 " use for u(undo) and Ctrl-r(redo)
 if has('persistent_undo')
     set undofile
-    set undodir=~/.config/vim/tmp/undo,.
+    set undodir=~/.vim/tmp/undo,.
 endif
 
 " status line
@@ -75,6 +79,11 @@ nnoremap <Leader>. :call ToggleHiddenStatusLine()<CR>
 set tags=tags;/
 nnoremap <Leader>cg :!ctags --extra=+q --languages=java -R .
 " nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
+
+" enable alt key in vim8, execute "set <M-h>=\eh"
+for i in ['i', 'h', 'j', 'k', 'l', 'f', 'b', 's', 'r', 'q', 'L', 'F', 'A', 'G', 'N', 'E', 'H', 'T', 'C', 'x', ',', '.']
+    exe "set <M-" . i . ">=\e" . i
+endfor
 
 " Cursor Movement
 " insert mode bindings
@@ -178,10 +187,10 @@ nnoremap R :%s//g<Left><Left>
 
 " Window Management
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-nnoremap <M-s>h :set nosplitright<CR>:vsplit<CR>
-nnoremap <M-s>j :set splitbelow<CR>:split<CR>
-nnoremap <M-s>k :set nosplitbelow<CR>:split<CR>
-nnoremap <M-s>l :set splitright<CR>:vsplit<CR>
+nnoremap <m-s>h :set nosplitright<CR>:vsplit<CR>
+nnoremap <m-s>j :set splitbelow<CR>:split<CR>
+nnoremap <m-s>k :set nosplitbelow<CR>:split<CR>
+nnoremap <m-s>l :set splitright<CR>:vsplit<CR>
 
 " Place the two screens side by side (vertical)
 nnoremap <M-s>m <C-w>t<C-w>H
@@ -228,7 +237,7 @@ nnoremap <M-,> :bp<CR>
 nnoremap <M-.> :bn<CR>
 
 " Clipboard
-" set clipboard^=unnamed,unnnamedplus
+set clipboard^=unnamed,unnnamedplus
 
 " use the system clipboard
 " might need to install a system clipboard tool such as : sudo pacman -S xclip / xsel
@@ -322,73 +331,40 @@ endfunc
 
 " Openning Files
 " Open the vimrc file anytime
-nnoremap <Leader>fi :e ~/.config/vim/init.vim<CR>
+nnoremap <Leader>fi :e ~/.vim/vimrc<CR>
 
 " work tool
-" source ~/.config/vim/worktool.vim
+" source ~/.vim/worktool.vim
 
 " Machine Specifisc Settings
 " adjust machine specific stuff
 let has_machine_specific_file=1
-if empty(glob('~/.config/vim/_machine_specific.vim'))
+if empty(glob('~/.vim/_machine_specific.vim'))
     let has_machine_specific_file=0
-    silent! exe "!cp ~/.config/vim/default_configs/_machine_specific_default.vim ~/.config/vim/_machine_specific.vim"
+    silent! exe "!cp ~/.vim/default_configs/_machine_specific_default.vim ~/.vim/_machine_specific.vim"
 endif
-source ~/.config/vim/_machine_specific.vim
+source ~/.vim/_machine_specific.vim
 
 " Vim-plug Auto Load
 " Auto load for the first time
-if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/plug.vim"'))
+if ! filereadable(system('echo -n "$HOME/.vim/autoload/plug.vim"'))
     echo "Downloading junegunn/vim-plug to manage plugins..."
-    silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/
-    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/plug.vim
+    silent !mkdir -p $HOME/.vim/autoload/
+    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > $HOME/.vim/autoload/plug.vim
     autocmd VimEnter * PlugInstall
 endif
 
-call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/vim/plugged"'))
+call plug#begin(system('echo -n "$HOME/.vim/plugged"'))
 " PlugInstall PlugClean PlugUpdate
-" Language Server Protocol
-Plug 'neovim/nvim-lspconfig'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'hrsh7th/cmp-cmdline'
-Plug 'hrsh7th/nvim-cmp'
-
-" cmp For ultisnips users.
-Plug 'quangnguyen30192/cmp-nvim-ultisnips'
-
-Plug 'glepnir/lspsaga.nvim'
-Plug 'folke/trouble.nvim'
-Plug 'onsails/lspkind-nvim'
-
-" File Management
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-
-Plug 'kyazdani42/nvim-tree.lua'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'windwp/nvim-spectre'
-nnoremap <leader>S :lua require('spectre').open()<CR>
-
-" https://github.com/nvim-treesitter/nvim-treesitter/issues/1111
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
-Plug 'hoob3rt/lualine.nvim'
-Plug 'kyazdani42/nvim-web-devicons'
 
 " tpope plugins
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 
-Plug 'lewis6991/gitsigns.nvim'
-Plug 'vimwiki/vimwiki', { 'on': ['VimwikiIndex'] }
-Plug 'norcalli/nvim-colorizer.lua', { 'branch': 'color-editor' }
-Plug 'folke/which-key.nvim'
 Plug 'justinmk/vim-sneak'
 
 " Find & Replace
@@ -399,9 +375,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 
 " Plug 'vim-test/vim-test', { 'on': ['TestNearest', 'TestLast', 'TestFile', 'TestSuite', 'TestVisit'] }
 " Plug 'tweekmonster/startuptime.vim'
-Plug 'akinsho/nvim-bufferline.lua'
 
-Plug 'windwp/nvim-autopairs'
 Plug 'junegunn/goyo.vim'
 
 " vim-peekaboo
@@ -424,12 +398,10 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " Markdown
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
 
 " Other visual enhancement
 Plug 'mhinz/vim-startify'
-" Plug 'glepnir/dashboard-nvim'        " Dashboard
 Plug 'ryanoasis/vim-devicons'
 
 " floaterm
@@ -439,17 +411,15 @@ Plug 'voldikss/vim-floaterm'
 Plug 'junegunn/vim-easy-align'
 
 " Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'connorholyday/vim-snazzy'
-Plug 'marko-cerovac/material.nvim'
+" Plug 'connorholyday/vim-snazzy'
 " Plug 'morhetz/gruvbox'
-" Plug 'sjl/badwolf'
+Plug 'sjl/badwolf'
 " Plug 'kyoz/purify', { 'rtp': 'vim' }
 " Plug 'srcery-colors/srcery-vim'
 " Plug 'ayu-theme/ayu-vim'
 " Plug 'NLKNguyen/papercolor-theme'
 " Plug 'crusoexia/vim-monokai'
 " Plug 'sainnhe/sonokai'
-" Plug 'martinsione/darkplus.nvim'
 
 call plug#end()
 
@@ -460,19 +430,13 @@ if !$TERM_PROGRAM =~ "Apple_Terminal"
   set termguicolors
 endif
 set background=dark " light or dark
-let g:SnazzyTransparent=1
-colorscheme snazzy
-let g:material_style = "darker"
-" let g:material_style = "lighter"
-" let g:material_style = "oceanic"
-" let g:material_style = "palenight"
-" let g:material_style = "deepocean"
-" colorscheme material
+" let g:SnazzyTransparent=1
+" colorscheme snazzy
 " let g:dracula_colorterm = -1
 " let g:dracula_italic = 1
 " colorscheme dracula
 " colorscheme gruvbox
-" colorscheme badwolf
+colorscheme badwolf
 " colorscheme darkplus
 " colorscheme purify
 " colorscheme srcery
@@ -494,349 +458,6 @@ map S <Plug>Sneak_S
 " map T <Plug>Sneak_T
 " }}}
 
-" kdheepak/lazygit.nvim {{{
-" nnoremap <silent> <leader>lg :LazyGit<CR>
-" }}}
-
-" Plug 'windwp/nvim-autopairs' {{{
-lua << EOF
-require('nvim-autopairs').setup()
-EOF
-" }}}
-
-" norcalli/nvim-colorizer.lua {{{
-lua require'colorizer'.setup()
-" }}}
-
-" lewis6991/gitsigns.nvim {{{
-lua << EOF
-  require('gitsigns').setup({})
-EOF
-" }}}
-
-" lspkind-nvim settings {{
-lua << EOF
-require('lspkind').init({
-    -- DEPRECATED (use mode instead): enables text annotations
-    --
-    -- default: true
-    -- with_text = true,
-
-    -- defines how annotations are shown
-    -- default: symbol
-    -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-    mode = 'symbol_text',
-
-    -- default symbol map
-    -- can be either 'default' (requires nerd-fonts font) or
-    -- 'codicons' for codicon preset (requires vscode-codicons font)
-    --
-    -- default: 'default'
-    preset = 'codicons',
-
-    -- override preset symbols
-    --
-    -- default: {}
-    symbol_map = {
-      Text = "",
-      Method = "",
-      Function = "",
-      Constructor = "",
-      Field = "ﰠ",
-      Variable = "",
-      Class = "ﴯ",
-      Interface = "",
-      Module = "",
-      Property = "ﰠ",
-      Unit = "塞",
-      Value = "",
-      Enum = "",
-      Keyword = "",
-      Snippet = "",
-      Color = "",
-      File = "",
-      Reference = "",
-      Folder = "",
-      EnumMember = "",
-      Constant = "",
-      Struct = "פּ",
-      Event = "",
-      Operator = "",
-      TypeParameter = ""
-    },
-})
-EOF
-" }}
-
-" nvim-cmp settings {{{
-lua <<EOF
-  -- Setup nvim-cmp.
-  local cmp = require'cmp'
-  local lspkind = require('lspkind')
-  lspkind.init()
-  cmp.setup({
-    formatting = {
-      format = lspkind.cmp_format({
-      menu = {
-        buffer = "[buf]",
-        nvim_lsp = "[lsp]",
-        nvim_lua = "[api]",
-        path = "[path]",
-        luasnip = "[snip]",
-        ultisnips = "[snip]",
-        tn = "[TabNine]",
-        },
-      mode = 'symbol', -- show only symbol annotations
-      maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-
-      -- The function below will be called before any actual modifications from lspkind
-      -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
-      -- before = function (entry, vim_item)
-      -- ...
-      -- return vim_item
-      -- end
-    })
-    },
-    snippet = {
-      -- REQUIRED - you must specify a snippet engine
-      expand = function(args)
-      -- vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
-      -- require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-      -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
-      vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
-      end,
-    },
-    mapping = {
-      ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-      ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-      ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-      ['<C-y>'] = cmp.config.disable, -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
-      ['<C-e>'] = cmp.mapping({
-        i = cmp.mapping.abort(),
-        c = cmp.mapping.close(),
-      }),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-    },
-    sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
-      -- { name = 'vsnip' }, -- For vsnip users.
-      -- { name = 'luasnip' }, -- For luasnip users.
-      { name = 'ultisnips' }, -- For ultisnips users.
-      -- { name = 'snippy' }, -- For snippy users.
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  -- Set configuration for specific filetype.
-  cmp.setup.filetype('gitcommit', {
-    sources = cmp.config.sources({
-      { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it. 
-    }, {
-      { name = 'buffer' },
-    })
-  })
-
-  -- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline('/', {
-    sources = {
-      { name = 'buffer' }
-    }
-  })
-
-  -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
-
-  -- -- Setup lspconfig.
-  -- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  -- -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  -- require('lspconfig')['<YOUR_LSP_SERVER>'].setup {
-  --   capabilities = capabilities
-  -- }
-EOF
-" }}}
-
-" neovim/nvim-lspconfig {{{
-lua << EOF
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
-local opts = { noremap=true, silent=true }
-vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-local on_attach = function(client, bufnr)
-  -- Enable completion triggered by <c-x><c-o>
-  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gd','<cmd>lua require(\'telescope.builtin\').lsp_definitions()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gt', '<cmd>lua require(\'telescope.builtin\').lsp_type_definitions()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua require(\'telescope.builtin\').lsp_references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<A-CR>', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<leader>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
-
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
--- local servers = { 'bashls', 'clangd', 'gopls', 'tsserver', 'pyright' }
--- for _, lsp in pairs(servers) do
---   require('lspconfig')[lsp].setup {
---     on_attach = on_attach,
---     flags = {
---       -- This will be the default in neovim 0.7+
---       debounce_text_changes = 150,
---     }
---   }
--- end
-
--- Add additional capabilities supported by nvim-cmp
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-local lspconfig = require('lspconfig')
-
--- Enable some language servers with the additional completion capabilities offered by nvim-cmp
-local servers = { 'bashls', 'clangd', 'gopls', 'tsserver', 'pyright', 'rust_analyzer' }
-for _, lsp in ipairs(servers) do
-  lspconfig[lsp].setup {
-    on_attach = on_attach,
-    -- on_attach = my_custom_on_attach,
-    capabilities = capabilities,
-  }
-end
-
-EOF
-" }}}
-
-" nvim-treesitter {{{
-lua <<EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  -- ensure_installed = { "html", "lua", "vim" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  -- ignore_install = { "javascript" }, -- List of parsers to ignore installing
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-    -- disable = { "c", "rust" },  -- list of language that will be disabled
-    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-    -- Using this option may slow down your editor, and you may see some duplicate highlights.
-    -- Instead of true it can also be a list of languages
-    -- additional_vim_regex_highlighting = false,
-  },
-}
-EOF
-" }}}
-
-" Plug 'hoob3rt/lualine.nvim' {{{
-" theme = 'dracula',
-lua << EOF
-require('plenary.reload').reload_module('lualine', true)
-require('lualine').setup({
-  options = {
-    -- theme = 'gruvbox',
-    theme = 'dracula',
-    disabled_types = { 'NvimTree' }
-    },
-  sections = {
-    lualine_a = {"mode"},
-    lualine_b = {"branch", "diff"},
-    lualine_c = {"filename"},
-    lualine_x = {
-      {"diagnostics", sources = {"nvim_lsp"}},
-      "encoding",
-      "fileformat",
-      "filetype"
-      },
-    lualine_y = {"progress"},
-    lualine_z = {"location"}
-    }
-})
-EOF
-set laststatus=0  " disable status line after lua line plugin
-" }}}
-
-" vimwiki/vimwiki {{{
-nnoremap <leader>vw :VimwikiIndex<CR>
-"}}}
-
-" kyazdani42/nvim-tree.lua {{{
-" [NvimTree] following options are now set in the setup (:help nvim-tree.setup): nvim_tree_auto_close | nvim_tree_lsp_diagnostics
-lua <<EOF
- require'nvim-tree'.setup {
-      disable_netrw       = true,
-      hijack_netrw        = true,
-      open_on_setup       = false,
-      ignore_ft_on_setup  = {},
-      update_to_buf_dir   = {
-        enable = true,
-        auto_open = true,
-      },
-      auto_close          = false,
-      open_on_tab         = false,
-      hijack_cursor       = false,
-      update_cwd          = false,
-      diagnostics         = {
-        enable = false,
-        icons = {
-          hint = "",
-          info = "",
-          warning = "",
-          error = "",
-        }
-      },
-      update_focused_file = {
-        enable      = false,
-        update_cwd  = false,
-        ignore_list = {}
-      },
-      system_open = {
-        cmd  = nil,
-        args = {}
-      },
-      view = {
-        width = 30,
-        height = 30,
-        side = 'left',
-        auto_resize = false,
-        mappings = {
-          custom_only = false,
-          list = {}
-        }
-      }
-    }
-EOF
-
-nnoremap <leader>tt :NvimTreeToggle<CR>
-nnoremap <leader>tr :NvimTreeRefresh<CR>
-nnoremap <leader>tf :NvimTreeFindFile<CR>
-" NvimTreeOpen, NvimTreeClose, NvimTreeFocus, NvimTreeFindFileToggle, and NvimTreeResize are also available if you need them
-" set termguicolors " this variable must be enabled for colors to be applied properly
-" a list of groups can be found at `:help nvim_tree_highlight`
-" highlight NvimTreeFolderIcon guibg=blue
-"}}}
-
 " Tagbar
 " Tagbar might need sudo pacman -S ctags
 nnoremap <silent> T :TagbarOpenAutoClose<CR>
@@ -851,15 +472,15 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:UltiSnipsExpandTrigger='<C-\>'
 let g:UltiSnipsJumpForwardTrigger='<C-j>'
 let g:UltiSnipsJumpBackwardTrigger='<C-k>'
-let g:UltiSnipsSnippetDirectories=["~/.config/vim/Ultisnips"]
+let g:UltiSnipsSnippetDirectories=["~/.vim/Ultisnips"]
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
 function! s:edit_snippets(snippets_name)
-    exe 'vsp ~/.config/vim/Ultisnips/'.a:snippets_name
+    exe 'vsp ~/.vim/Ultisnips/'.a:snippets_name
 endfunction
 command! -bang -nargs=* EditUtilSnips call fzf#run({
-            \ 'source': 'ls -1 ~/.config/vim/Ultisnips',
+            \ 'source': 'ls -1 ~/.vim/Ultisnips',
             \   'down': 20,
             \   'sink': function('<sid>edit_snippets')
             \ })
@@ -867,50 +488,22 @@ command! -bang -nargs=* EditUtilSnips call fzf#run({
 " Far.vim
 nnoremap <Leader>F :F  %<left><left>
 
-
-" nvim-telescope settings {{
-" Find files using Telescope command-line sugar.
-nnoremap <M-S-n> <cmd>Telescope find_files<cr>
-nnoremap <M-S-f> <cmd>Telescope live_grep<cr>
-nnoremap <M-S-e> <cmd>Telescope buffers<cr>
-nnoremap <M-S-h> <cmd>Telescope help_tags<cr>
-
-lua << EOF
-require('telescope').setup{
-  pickers = {
-    find_files = {
-      hidden = true -- show hidden files in find_file
-    },
-    live_grep = {
-      additional_args = function(opts)
-        return {"--hidden"}  -- show hidden files in live_grep
-      end
-    },
-  },
-  defaults = {
-       -- prompt_prefix = " ",
-       prompt_prefix = "🔍 ",
-    }
-}
-EOF
-" " }}
-
-" " fzf.vim
-" nnoremap <M-S-l> :Lines<CR>
-" " ripgrep
-" nnoremap <M-S-f> :Rg<CR>
-" " The Silver Searcher
-" nnoremap <M-S-a> :Ag<CR>
-" nnoremap <M-S-g> :GFiles<CR>
-" nnoremap <M-S-d> :GFiles?<CR>
-" nnoremap <M-S-n> :Files<CR>
-" nnoremap <M-S-e> :Buffers<CR>
-" nnoremap <M-S-h> :History<CR>
-" nnoremap <M-S-t> :BTags<CR>
-" nnoremap <M-S-c> :BCommits<CR>
-" let g:fzf_preview_window='right:60%'
-" let g:fzf_commits_log_options='--graph --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr"'
-" " nnoremap <M-S-c> :Commits<CR>
+" fzf.vim
+nnoremap <M-S-l> :Lines<CR>
+" ripgrep
+nnoremap <M-S-f> :Rg<CR>
+" The Silver Searcher
+nnoremap <M-S-a> :Ag<CR>
+nnoremap <M-S-g> :GFiles<CR>
+nnoremap <M-S-d> :GFiles?<CR>
+nnoremap <M-S-n> :Files<CR>
+nnoremap <M-S-e> :Buffers<CR>
+nnoremap <M-S-h> :History<CR>
+nnoremap <M-S-t> :BTags<CR>
+nnoremap <M-S-c> :BCommits<CR>
+let g:fzf_preview_window='right:60%'
+let g:fzf_commits_log_options='--graph --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr"'
+" nnoremap <M-S-c> :Commits<CR>
 
 " rainbow
 " let g:rainbow_active=1
@@ -941,7 +534,7 @@ let g:startify_custom_header='startify#pad(startify#fortune#cowsay())'
 " let g:startify_custom_header='startify#pad(["REMINANCE"])'
 " let g:startify_custom_header=[]
 let g:startify_session_autoload=1
-let g:startify_session_dir='~/.config/vim/session'
+let g:startify_session_dir='~/.vim/session'
 let g:startify_lists=[
             \ { 'type': 'files',     'header': ['   Files']            },
             \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
@@ -950,8 +543,7 @@ let g:startify_lists=[
             \ { 'type': 'commands',  'header': ['   Commands']       },
             \ ]
 let g:startify_bookmarks=[
-            \ { 'c': '~/.config/i3/config' },
-            \ { 'i': '~/.config/vim/init.vim' },
+            \ { 'c': '~/dotfiles/i3/config' },
             \ { 'z': '~/.zshrc' },
             \ '~/workspace',
             \ ]
@@ -998,17 +590,6 @@ nnoremap <expr> <C-M-q> &diff ? ':call fugitive#DiffClose()<CR>' : ':qa<CR>'
 "     nnoremap <C-p> [c
 " endif
 
-" liuchengxu/vim-which-key
-" let g:mapleader="\<Space>"
-" nnoremap <silent> <Leader>      :<C-u>WhichKey '<Space>'<CR>
-" let g:mapleader=','
-" let g:maplocalleader='\'
-" nnoremap <silent> <Leader>      :<C-u>WhichKey ','<CR>
-" nnoremap <silent> <LocalLeader> :<C-u>WhichKey  ','<CR>
-
-" folke/which-key.nvim
-lua require("which-key").setup {}
-
 " floaterm
 " let g:floaterm_keymap_toggle='<Leader>/'
 " let g:floaterm_keymap_next='<Leader>f.'
@@ -1039,9 +620,3 @@ nmap <Leader>ea <Plug>(EasyAlign)
 
 " Goyo plugin makes text more readable when writing prose:
 map <leader>G :Goyo \| set bg=dark \| set linebreak<CR>
-
-" 'akinsho/nvim-bufferline.lua' {{{
-lua require('bufferline').setup{}
-" nnoremap <silent> gb :BufferLinePick<CR>
-" }}}
-

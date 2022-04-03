@@ -22,10 +22,9 @@ export BROWSER=google-chrome-stable
 # export TERM=xterm-256color
 
 # VIM
-export MYVIMRC=$HOME/.config/vim/init.vim
 # export MYVIMRC=$HOME/.config/nvim/init.lua
 # NVIM_NIGHTLY=$HOME/.config/sandbox/nvim-nightly/nvim-linux64/bin/nvim
-export EDITOR=nvim
+export EDITOR=vim
 
 # ranger
 export RANGER_LOAD_DEFAULT_RC=FALSE

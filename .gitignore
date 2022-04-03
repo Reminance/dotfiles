@@ -14,8 +14,8 @@ sandbox/
 .config/emacs/var/
 .config/emacs/workspace/
 .config/emacs/pyim/
-/.config/emacs/hackernews/
-/.config/emacs/projectile-bookmarks.eld
+.config/emacs/hackernews/
+.config/emacs/projectile-bookmarks.eld
 .config/fcitx/cached_layout
 .config/fcitx/clipboard/
 .config/fcitx/data/
@@ -29,7 +29,7 @@ sandbox/
 .config/nvim/tmp/
 .config/nvim/_machine_specific.vim
 .config/nvim/session/
-.config/vim/plugged/
-.config/vim/tmp/
-.config/vim/_machine_specific.vim
-.config/vim/session/
+vim.symlink/plugged/
+vim.symlink/tmp/
+vim.symlink/_machine_specific.vim
+vim.symlink/session/
