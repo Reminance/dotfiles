@@ -1,6 +1,5 @@
 -- statusline
-vim.o.laststatus=0
--- vim.api.nvim_set_option()
+-- vim.o.laststatus=0
 
 -- sneak
 vim.g["sneak#label"] = 1

@@ -94,6 +94,26 @@ nnoremap <Leader>. :call ToggleHiddenStatusLine()<CR>
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
 
+ " Cursor Movement
+" insert mode bindings
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <M-f> <S-Right>
+inoremap <M-b> <S-Left>
+" inoremap <C-k> <C-o>D
+" inoremap <C-n> <Down>
+" inoremap <C-p> <Up>
+
+" command line mode bindings
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+cnoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <M-f> <S-Right>
+cnoremap <M-b> <S-Left>
+
 " Don't move on *
 nnoremap <silent> * mm*`m
 " Visual Mode */# from Scrooloose
