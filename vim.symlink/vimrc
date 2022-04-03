@@ -1,3 +1,4 @@
+set term=xterm-256color
 set nocompatible
 let mapleader=" "
 set shiftwidth=4 tabstop=4 softtabstop=4 expandtab smarttab autoindent smartindent
@@ -423,9 +424,9 @@ call plug#end()
 " if (has("termguicolors"))
 "   set termguicolors " enable true colors support
 " endif
-if !$TERM_PROGRAM =~ "Apple_Terminal"
-  set termguicolors
-endif
+" if !$TERM_PROGRAM =~ "Apple_Terminal"
+"   set termguicolors
+" endif
 set background=dark " light or dark
 let g:SnazzyTransparent=1
 colorscheme snazzy

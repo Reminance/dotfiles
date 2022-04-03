@@ -24,7 +24,7 @@ export BROWSER=google-chrome-stable
 # VIM
 # export MYVIMRC=$HOME/.config/nvim/init.lua
 # NVIM_NIGHTLY=$HOME/.config/sandbox/nvim-nightly/nvim-linux64/bin/nvim
-export EDITOR=vim
+export EDITOR=nvim
 
 # ranger
 export RANGER_LOAD_DEFAULT_RC=FALSE

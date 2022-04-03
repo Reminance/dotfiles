@@ -5,7 +5,9 @@ alias llt='ls -lht'
 alias lls='ls -lAhS'
 
 # EDITOR from ~/.config/zsh/env.zsh
-alias v="$NVIM"
+alias v='nvim'
+alias vim='nvim'
+alias truevim='\vim'
 alias e='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
 alias ec='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
 # alias ec='env LC_CTYPE=zh_CN.UTF-8 emacsclient -c &'
