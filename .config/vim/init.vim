@@ -46,15 +46,15 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 " Backups
 set backup                        " enable backups
 set noswapfile
-silent !mkdir -p ~/.config/nvim/tmp/backup
-silent !mkdir -p ~/.config/nvim/tmp/undo
-"silent !mkdir -p ~/.config/nvim/tmp/sessions
-set backupdir=~/.config/nvim/tmp/backup,.
-set directory=~/.config/nvim/tmp/backup,.
+silent !mkdir -p ~/.config/vim/tmp/backup
+silent !mkdir -p ~/.config/vim/tmp/undo
+"silent !mkdir -p ~/.config/vim/tmp/sessions
+set backupdir=~/.config/vim/tmp/backup,.
+set directory=~/.config/vim/tmp/backup,.
 " use for u(undo) and Ctrl-r(redo)
 if has('persistent_undo')
     set undofile
-    set undodir=~/.config/nvim/tmp/undo,.
+    set undodir=~/.config/vim/tmp/undo,.
 endif
 
 " status line
@@ -322,30 +322,30 @@ endfunc
 
 " Openning Files
 " Open the vimrc file anytime
-nnoremap <Leader>fi :e ~/.config/nvim/init.vim<CR>
+nnoremap <Leader>fi :e ~/.config/vim/init.vim<CR>
 
 " work tool
-" source ~/.config/nvim/worktool.vim
+" source ~/.config/vim/worktool.vim
 
 " Machine Specifisc Settings
 " adjust machine specific stuff
 let has_machine_specific_file=1
-if empty(glob('~/.config/nvim/_machine_specific.vim'))
+if empty(glob('~/.config/vim/_machine_specific.vim'))
     let has_machine_specific_file=0
-    silent! exe "!cp ~/.config/nvim/default_configs/_machine_specific_default.vim ~/.config/nvim/_machine_specific.vim"
+    silent! exe "!cp ~/.config/vim/default_configs/_machine_specific_default.vim ~/.config/vim/_machine_specific.vim"
 endif
-source ~/.config/nvim/_machine_specific.vim
+source ~/.config/vim/_machine_specific.vim
 
 " Vim-plug Auto Load
 " Auto load for the first time
-if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
+if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/plug.vim"'))
     echo "Downloading junegunn/vim-plug to manage plugins..."
-    silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+    silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/
+    silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/vim/autoload/plug.vim
     autocmd VimEnter * PlugInstall
 endif
 
-call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/plugged"'))
+call plug#begin(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/vim/plugged"'))
 " PlugInstall PlugClean PlugUpdate
 " Language Server Protocol
 Plug 'neovim/nvim-lspconfig'
@@ -851,15 +851,15 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:UltiSnipsExpandTrigger='<C-\>'
 let g:UltiSnipsJumpForwardTrigger='<C-j>'
 let g:UltiSnipsJumpBackwardTrigger='<C-k>'
-let g:UltiSnipsSnippetDirectories=["~/.config/nvim/Ultisnips"]
+let g:UltiSnipsSnippetDirectories=["~/.config/vim/Ultisnips"]
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
 function! s:edit_snippets(snippets_name)
-    exe 'vsp ~/.config/nvim/Ultisnips/'.a:snippets_name
+    exe 'vsp ~/.config/vim/Ultisnips/'.a:snippets_name
 endfunction
 command! -bang -nargs=* EditUtilSnips call fzf#run({
-            \ 'source': 'ls -1 ~/.config/nvim/Ultisnips',
+            \ 'source': 'ls -1 ~/.config/vim/Ultisnips',
             \   'down': 20,
             \   'sink': function('<sid>edit_snippets')
             \ })
@@ -941,7 +941,7 @@ let g:startify_custom_header='startify#pad(startify#fortune#cowsay())'
 " let g:startify_custom_header='startify#pad(["REMINANCE"])'
 " let g:startify_custom_header=[]
 let g:startify_session_autoload=1
-let g:startify_session_dir='~/.config/nvim/session'
+let g:startify_session_dir='~/.config/vim/session'
 let g:startify_lists=[
             \ { 'type': 'files',     'header': ['   Files']            },
             \ { 'type': 'dir',       'header': ['   Current Directory '. getcwd()] },
@@ -951,7 +951,7 @@ let g:startify_lists=[
             \ ]
 let g:startify_bookmarks=[
             \ { 'c': '~/.config/i3/config' },
-            \ { 'i': '~/.config/nvim/init.vim' },
+            \ { 'i': '~/.config/vim/init.vim' },
             \ { 'z': '~/.zshrc' },
             \ '~/workspace',
             \ ]
