@@ -29,3 +29,7 @@ sandbox/
 .config/nvim/tmp/
 .config/nvim/_machine_specific.vim
 .config/nvim/session/
+.config/vim/plugged/
+.config/vim/tmp/
+.config/vim/_machine_specific.vim
+.config/vim/session/
