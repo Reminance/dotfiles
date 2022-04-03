@@ -236,9 +236,6 @@ nnoremap <M-q> :bd<CR>
 nnoremap <M-,> :bp<CR>
 nnoremap <M-.> :bn<CR>
 
-" Clipboard
-set clipboard^=unnamed,unnnamedplus
-
 " use the system clipboard
 " might need to install a system clipboard tool such as : sudo pacman -S xclip / xsel
 " let @+=@*<CR> for copying to both the clipboard and primary selection.
@@ -410,9 +407,9 @@ Plug 'voldikss/vim-floaterm'
 Plug 'junegunn/vim-easy-align'
 
 " Plug 'dracula/vim', { 'as': 'dracula' }
-" Plug 'connorholyday/vim-snazzy'
+Plug 'connorholyday/vim-snazzy'
 " Plug 'morhetz/gruvbox'
-Plug 'sjl/badwolf'
+" Plug 'sjl/badwolf'
 " Plug 'kyoz/purify', { 'rtp': 'vim' }
 " Plug 'srcery-colors/srcery-vim'
 " Plug 'ayu-theme/ayu-vim'
@@ -429,13 +426,13 @@ if !$TERM_PROGRAM =~ "Apple_Terminal"
   set termguicolors
 endif
 set background=dark " light or dark
-" let g:SnazzyTransparent=1
-" colorscheme snazzy
+let g:SnazzyTransparent=1
+colorscheme snazzy
 " let g:dracula_colorterm = -1
 " let g:dracula_italic = 1
 " colorscheme dracula
 " colorscheme gruvbox
-colorscheme badwolf
+" colorscheme badwolf
 " colorscheme darkplus
 " colorscheme purify
 " colorscheme srcery
