@@ -105,7 +105,8 @@ font:
     #   - (Windows) Consolas
     # family: monospace
     # family: Source Code Pro
-    family: SauceCodePro Nerd Font
+    # family: SauceCodePro Nerd Font
+    family: JetbrainsMono Nerd Font
     # family: Fira Code Nerd Font
     # family: Iosevka
 

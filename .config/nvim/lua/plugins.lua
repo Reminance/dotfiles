@@ -16,15 +16,70 @@ augroup END
 
 return require('packer').startup {
   function(use)
+    -- package manager
     use 'wbthomason/packer.nvim'
+
+    -- color scheme
+    -- use 'kaicataldo/material.vim'
+    use 'connorholyday/vim-snazzy'
+
+    -- icons
+    use 'ryanoasis/vim-devicons'
+    use 'kyazdani42/nvim-web-devicons'
+
+    -- util
+    use 'nvim-lua/plenary.nvim'
+    use 'nvim-lua/popup.nvim'
+    use 'mhinz/vim-startify'
+    use 'justinmk/vim-sneak'
+    use 'majutsushi/tagbar'
+    use 'Yggdroot/indentLine'
     use 'tpope/vim-surround'
-    use 'tpope/vim-fugitive'
+    use 'tpope/vim-commentary'
     use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install' }
     use 'mbbill/undotree'
+    use {
+      'kyazdani42/nvim-tree.lua',
+      requires = {
+        'kyazdani42/nvim-web-devicons', -- optional, for file icon
+      },
+      -- config = function() require'nvim-tree'.setup {} end
+    }
+    use 'luochen1990/rainbow'
+    use 'windwp/nvim-autopairs'
+    use 'chrisbra/Colorizer'
+    use {'akinsho/bufferline.nvim', requires = 'kyazdani42/nvim-web-devicons'}
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
+
+    -- version control
+    use 'tpope/vim-fugitive'
+    use {
+      'lewis6991/gitsigns.nvim',
+      requires = { 'nvim-lua/plenary.nvim' },
+    }
+
+    -- file navigation
+    use 'junegunn/fzf.vim'
+    -- 🔭telescope
+    use {
+      'nvim-telescope/telescope.nvim',
+      requires = { {'nvim-lua/plenary.nvim'} }
+    }
+
+    -- lsp
     use 'neovim/nvim-lspconfig'
+    use 'folke/lua-dev.nvim'
     use 'williamboman/nvim-lsp-installer'
+    -- use 'glepnir/lspsaga.nvim'
     use 'onsails/lspkind-nvim'
-     -- nvim-cmp
+    use 'ray-x/lsp_signature.nvim'
+    use 'arkav/lualine-lsp-progress'
+
+    -- completion
     use {
       "hrsh7th/nvim-cmp",
       requires = {
@@ -38,34 +93,8 @@ return require('packer').startup {
         { "hrsh7th/vim-vsnip" },
       },
       config = function()
-        require "nvim-cmp"
+        require "nvim-completion"
       end,
-    }
-    -- 🔭telescope
-    use 'nvim-telescope/telescope.nvim'
-    use 'windwp/nvim-autopairs'
-    use 'nvim-lua/popup.nvim'
-    use 'nvim-lua/lsp-status.nvim'
-    use 'folke/lua-dev.nvim'
-    use 'ray-x/lsp_signature.nvim'
-    use {
-      'nvim-treesitter/nvim-treesitter',
-      run = ':TSUpdate',
-    }
-    use 'chrisbra/Colorizer'
-    use 'nvim-lua/plenary.nvim'
-    use 'kyazdani42/nvim-web-devicons'
-    use {
-      'nvim-lualine/lualine.nvim',
-      config = function()
-        -- require 'joel.statusline'
-      end,
-      requires = { 'kyazdani42/nvim-web-devicons', opt = true },
-    }
-    use 'arkav/lualine-lsp-progress'
-    use {
-      'lewis6991/gitsigns.nvim',
-      requires = { 'nvim-lua/plenary.nvim' },
     }
 
     -- setup config after cloning packer

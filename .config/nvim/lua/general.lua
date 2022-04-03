@@ -77,7 +77,7 @@ if has('persistent_undo')
 endif
 
 " status line
-set laststatus=0  " disable status line
+" set laststatus=0  " disable status line
 " set showtabline=0 " disable tab line
 function! ToggleHiddenStatusLine()
     if &laststatus < 2
@@ -312,5 +312,9 @@ endfunc
 " Openning Files
 " Open the vimrc file anytime
 nnoremap <Leader>fi :e ~/.config/nvim/init.lua<CR>
+nnoremap <Leader>fg :e ~/.config/nvim/lua/general.lua<CR>
+nnoremap <Leader>fp :e ~/.config/nvim/lua/plugins.lua<CR>
+nnoremap <Leader>fs :e ~/.config/nvim/lua/plugin-settings.lua<CR>
+nnoremap <Leader>fm :e ~/.config/nvim/lua/mappings.lua<CR>
 
 ]]

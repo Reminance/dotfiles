@@ -370,9 +370,6 @@ Plug 'justinmk/vim-sneak'
 " Find & Replace
 Plug 'brooth/far.vim', { 'on': ['F', 'Far', 'Fardo'] }
 
-" Bookmarks
-Plug 'MattesGroeger/vim-bookmarks'
-
 " Plug 'vim-test/vim-test', { 'on': ['TestNearest', 'TestLast', 'TestFile', 'TestSuite', 'TestVisit'] }
 " Plug 'tweekmonster/startuptime.vim'
 
@@ -399,6 +396,8 @@ Plug 'honza/vim-snippets'
 
 " Markdown
 Plug 'dhruvasagar/vim-table-mode', { 'on': 'TableModeToggle' }
+
+Plug 'luochen1990/rainbow'
 
 " Other visual enhancement
 Plug 'mhinz/vim-startify'
@@ -506,28 +505,7 @@ let g:fzf_commits_log_options='--graph --color=always --format="%C(auto)%h%d %s 
 " nnoremap <M-S-c> :Commits<CR>
 
 " rainbow
-" let g:rainbow_active=1
-
-" vim-bookmarks
-let g:bookmark_no_default_key_mappings=1
-nmap <Leader>mt <Plug>BookmarkToggle
-nmap <Leader>ma <Plug>BookmarkAnnotate
-nmap <Leader>ml <Plug>BookmarkShowAll
-nmap <Leader>mn <Plug>BookmarkNext
-nmap <Leader>mp <Plug>BookmarkPrev
-nmap <Leader>mc <Plug>BookmarkClear
-nmap <Leader>mx <Plug>BookmarkClearAll
-nmap <Leader>mk <Plug>BookmarkMoveUp
-nmap <Leader>mj <Plug>BookmarkMoveDown
-nmap <Leader>mg <Plug>BookmarkMoveToLine
-let g:bookmark_save_per_working_dir=1
-let g:bookmark_auto_save=1
-let g:bookmark_highlight_lines=1
-let g:bookmark_manage_per_buffer=1
-let g:bookmark_save_per_working_dir=1
-let g:bookmark_center=1
-let g:bookmark_auto_close=1
-let g:bookmark_location_list=1
+let g:rainbow_active=1
 
 " vim-startify
 let g:startify_custom_header='startify#pad(startify#fortune#cowsay())'
