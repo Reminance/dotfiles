@@ -54,6 +54,7 @@ return require('packer').startup {
       requires = { 'kyazdani42/nvim-web-devicons', opt = true }
     }
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
+    use 'voldikss/vim-floaterm'
 
     -- version control
     use 'tpope/vim-fugitive'

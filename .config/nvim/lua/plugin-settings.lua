@@ -30,6 +30,12 @@ vim.g.colorizer_auto_color = 1
 -- bufferline.nvim
 require("bufferline").setup{}
 
+-- vim-floaterm
+-- " Set floaterm window's background to black
+vim.cmd[[hi Floaterm guibg=black]]
+-- " Set floating window border line color to cyan, and background to orange
+vim.cmd[[hi FloatermBorder guifg=cyan]]
+
 -- lualine.nvim
 require('lualine').setup {
   options = {

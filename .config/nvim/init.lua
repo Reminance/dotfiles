@@ -1,4 +1,5 @@
 require('general')
+require('bindings')
 require('plugins')
 require('plugin-settings')
 require('mappings')

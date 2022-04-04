@@ -1,10 +1,6 @@
 local map = vim.api.nvim_set_keymap
 -- ** Key Mappings ***
 
--- -- map the leader key
-map('n', '<Space>', '', {})
-vim.g.mapleader = ' '  -- 'vim.g' sets global variables
-
 -- vim-sneak
 options = { noremap = true, silent = true }
 map('n', 's', '<Plug>Sneak_s', {})
