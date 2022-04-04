@@ -111,4 +111,23 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 
+vim.cmd[[
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+set foldlevel=99
+function MyFoldText()
+  let nucolwidth = &fdc + &number*&numberwidth
+  let foldlinecount = foldclosedend(v:foldstart) - foldclosed(v:foldstart) + 1
+  let winwd = winwidth(0) - nucolwidth - 2
+  " let prefix = " _______>>> "
+  " let fdnfo = prefix . string(v:foldlevel) . "," . string(foldlinecount)
+  let fdnfo = "[" . string(v:foldlevel) . "," . string(foldlinecount) . "]"
+  let line =  strpart(getline(v:foldstart), 0 , winwd - len(fdnfo))
+  let fillcharcount = winwd - len(line) - len(fdnfo)
+  return line . repeat(" ",fillcharcount) . fdnfo
+endfunction
+set foldtext=MyFoldText()
+highlight Folded guibg=none guifg=cyan ctermbg=none
+]]
+
 
