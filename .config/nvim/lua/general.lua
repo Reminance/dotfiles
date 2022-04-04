@@ -96,8 +96,8 @@ inoremap <M-b> <S-Left>
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
 " inoremap <C-k> <C-o>D
-" inoremap <C-n> <Down>
-" inoremap <C-p> <Up>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 
 " command line mode bindings
 cnoremap <C-a> <Home>
