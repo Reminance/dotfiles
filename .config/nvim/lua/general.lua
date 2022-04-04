@@ -23,7 +23,7 @@ set synmaxcol=200
 set backspace=indent,eol,start " set backspace=indent,eol,start; eol让退格键可以退到上一行
 
 set completeopt=menuone,noinsert,noselect
-" set signcolumn=yes
+set signcolumn=yes
 set updatetime=100
 set encoding=UTF-8
 set clipboard+=unnamedplus " Copy paste between vim and everything else

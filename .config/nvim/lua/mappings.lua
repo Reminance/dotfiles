@@ -54,20 +54,28 @@ vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', op
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 vim.api.nvim_set_keymap('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 
--- vim.diagnostic.config({
---   virtual_text = true,
---   signs = false, -- disable the diagnostic sign column
---   underline = true,
---   update_in_insert = false,
---   severity_sort = false,
--- })
+vim.diagnostic.config({
+  -- virtual_text = true,
+  virtual_text = {
+    prefix = '●', -- Could be '●', '■', '▎', 'x'
+  },
+  signs = false, -- disable the diagnostic sign column
+  underline = true,
+  update_in_insert = false,
+  severity_sort = false,
+})
 
-vim.cmd[[set signcolumn=yes]]
+-- vim.cmd[[set signcolumn=yes]]
 local signs = { Error = " ", Warn = "", Hint = "", Info = "" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
+-- Show line diagnostics automatically in hover window
+vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+-- For diagnostics for specific cursor position
+-- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})]]
 
 -- nvim-lspconfig
 -- Use an on_attach function to only map the following keys
