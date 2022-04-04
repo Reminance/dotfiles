@@ -59,7 +59,7 @@ vim.diagnostic.config({
   virtual_text = {
     prefix = '●', -- Could be '●', '■', '▎', 'x'
   },
-  signs = false, -- disable the diagnostic sign column
+  signs = true,
   underline = true,
   update_in_insert = false,
   severity_sort = false,

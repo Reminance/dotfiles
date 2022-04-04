@@ -36,6 +36,9 @@ vim.cmd[[hi Floaterm guibg=black]]
 -- " Set floating window border line color to cyan, and background to orange
 vim.cmd[[hi FloatermBorder guifg=cyan]]
 
+-- gitsigns.nvim
+require('gitsigns').setup()
+
 -- lualine.nvim
 require('lualine').setup {
   options = {
