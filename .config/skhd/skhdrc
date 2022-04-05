@@ -36,7 +36,7 @@ ctrl + alt - l : yabai -m window --resize right:10:0; \
                   yabai -m window --resize left:10:0
 
 # create desktop, move window and follow focus - uses jq for parsing json (brew install jq)
-shift + cmd - n : yabai -m space --create && \
+ctrl + alt - n : yabai -m space --create && \
                   index="$(yabai -m query --spaces --display | jq 'map(select(."native-fullscreen" == 0))[-1].index')" && \
                   yabai -m window --space "${index}" && \
 
