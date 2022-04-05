@@ -15,5 +15,7 @@ $HOME/dotfiles/.config/nvim/init.vim
 $HOME/dotfiles/.config/emacs/init.el
 $HOME/dotfiles/.config/mycli/myclirc.symlink
 $HOME/dotfiles/.config/tmux/tmux.conf.symlink
+$HOME/dotfiles/.config/yabai/yabairc
+$HOME/dotfiles/.config/skhd/skhdrc
 $HOME/dotfiles/script/package-init.sh
 /opt/homebrew/etc/nginx/nginx.conf
