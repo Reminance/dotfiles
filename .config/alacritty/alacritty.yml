@@ -551,6 +551,7 @@ alt_send_esc: true
 key_bindings:
   - { key: Q,      mods: Control,     chars: "\x11"              }
   - { key: Slash,  mods: Control,     chars: "\x1f"              }
+  - { key: C,      mods: Alt,         chars: "\x1bc"             }
   - { key: A,      mods: Alt,         chars: "\x1ba"             }
   - { key: E,      mods: Alt,         chars: "\x1be"             }
   - { key: D,      mods: Alt,         chars: "\x1bd"             }
