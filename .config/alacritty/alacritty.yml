@@ -147,7 +147,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 11.0
+  size: 12.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -551,6 +551,17 @@ alt_send_esc: true
 key_bindings:
   - { key: Q,      mods: Control,     chars: "\x11"              }
   - { key: Slash,  mods: Control,     chars: "\x1f"              }
+  # - { key: Slash,  mods: Control|Shift,     chars: "\x1f"              }  # todo shell redo
+  - { key: Backslash,  mods: Control,    chars: "\x1c"              }
+  - { key: Key1,      mods: Alt,         chars: "\x1b1"             }
+  - { key: Key2,      mods: Alt,         chars: "\x1b2"             }
+  - { key: Key3,      mods: Alt,         chars: "\x1b3"             }
+  - { key: Key4,      mods: Alt,         chars: "\x1b4"             }
+  - { key: Key5,      mods: Alt,         chars: "\x1b5"             }
+  - { key: Key6,      mods: Alt,         chars: "\x1b6"             }
+  - { key: Key7,      mods: Alt,         chars: "\x1b7"             }
+  - { key: Key8,      mods: Alt,         chars: "\x1b8"             }
+  - { key: Key9,      mods: Alt,         chars: "\x1b9"             }
   - { key: C,      mods: Alt,         chars: "\x1bc"             }
   - { key: A,      mods: Alt,         chars: "\x1ba"             }
   - { key: E,      mods: Alt,         chars: "\x1be"             }
