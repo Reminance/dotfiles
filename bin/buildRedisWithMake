@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+# Bear is a tool that generates a compilation database for clang tooling.
+# sps bear
+
+cd ~/workspace/redis
+bear -- make

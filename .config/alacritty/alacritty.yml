@@ -147,7 +147,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 10.0
+  size: 11.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -345,7 +345,7 @@ working_directory: None
 #winpty_backend: false
 
 # Send ESC (\x1b) before characters when alt is pressed.
-#alt_send_esc: true
+alt_send_esc: true
 
 #mouse:
   # Click settings
@@ -546,6 +546,28 @@ working_directory: None
   #- { key: PageDown,  mods: Shift,   action: ScrollPageDown, mode: ~Alt       }
   #- { key: Home,      mods: Shift,   action: ScrollToTop,    mode: ~Alt       }
   #- { key: End,       mods: Shift,   action: ScrollToBottom, mode: ~Alt       }
+
+# (macOS only)
+key_bindings:
+  - { key: Q,      mods: Control,     chars: "\x11"              }
+  - { key: Slash,  mods: Control,     chars: "\x1f"              }
+  - { key: A,      mods: Alt,         chars: "\x1ba"             }
+  - { key: E,      mods: Alt,         chars: "\x1be"             }
+  - { key: D,      mods: Alt,         chars: "\x1bd"             }
+  - { key: F,      mods: Alt,         chars: "\x1bf"             }
+  - { key: B,      mods: Alt,         chars: "\x1bb"             }
+  - { key: N,      mods: Alt,         chars: "\x1bn"             }
+  - { key: M,      mods: Alt,         chars: "\x1bm"             }
+  - { key: E,      mods: Alt,         chars: "\x1be"             }
+  - { key: S,      mods: Alt,         chars: "\x1bs"             }
+  - { key: X,      mods: Alt,         chars: "\x1bx"             }
+  - { key: H,      mods: Alt,         chars: "\x1bh"             }
+  - { key: J,      mods: Alt,         chars: "\x1bj"             }
+  - { key: K,      mods: Alt,         chars: "\x1bk"             }
+  - { key: L,      mods: Alt,         chars: "\x1bl"             }
+  - { key: F,      mods: Command|Control, action: ToggleFullscreen }
+  - { key: V,      mods: Command,         action: Paste            }
+  - { key: C,      mods: Command,         action: Copy             }
 
 #debug:
   # Display the time it takes to redraw each frame.

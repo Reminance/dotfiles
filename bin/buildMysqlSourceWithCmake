@@ -21,3 +21,5 @@ pkgfile --verbose --binaries rpcgen
 # extra/rpcsvc-proto 1.4.2-1      /usr/bin/rpcgen
 sps rpcsvc-proto
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -DWITH_BOOST=../dependency/boost_1_73_0
+
+extra: brew install openssl
