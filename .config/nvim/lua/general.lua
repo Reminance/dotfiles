@@ -79,33 +79,17 @@ function! ToggleHiddenStatusLine()
         " set showtabline=0
     endif
 endfunction
-nnoremap <Leader>. :call ToggleHiddenStatusLine()<CR>
+nnoremap <C-Space> :call ToggleHiddenStatusLine()<CR>
 
 " for ctags
 set tags=tags;/
 " nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
 
 " Cursor Movement
-" insert mode bindings
-inoremap <C-a> <Home>
-inoremap <C-e> <End>
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <M-f> <S-Right>
-inoremap <M-b> <S-Left>
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
-" inoremap <C-k> <C-o>D
 inoremap <C-n> <Down>
 inoremap <C-p> <Up>
-
-" command line mode bindings
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-cnoremap <C-f> <Right>
-cnoremap <C-b> <Left>
-cnoremap <M-f> <S-Right>
-cnoremap <M-b> <S-Left>
 
 " Don't move on *
 nnoremap <silent> * mm*`m
@@ -121,44 +105,32 @@ vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
 
 " Save & quit
 nnoremap s <nop>
+nnoremap S <nop>
 nnoremap R <nop>
 nnoremap Q <nop>
 nnoremap <C-q> :q<CR>
 inoremap <C-q> <Esc>:q<CR>
-nnoremap <Leader>qq :q!<CR>
-" quit all the other windows except for current  " (:h only)(<C-w>o)
-nnoremap <Leader>qw :only<CR>
-" quit all the other tabs except for current  " (:h tabonly)
-nnoremap <Leader>qt :tabonly<CR>
-nnoremap <C-M-q> :qa<CR>
-inoremap <C-M-q> :qa<CR>
 inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> :w<CR>
 
 " Source
-nnoremap <M-s> <nop>
-nnoremap <M-s>i :source $MYVIMRC<CR>
-nnoremap <M-s>. :so %<CR>
-vnoremap <M-s>v y:execute @@<CR>:echo 'Sourced selection.'<CR>
-nnoremap <M-s>L ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
+nnoremap <Leader>s <nop>
+nnoremap <Leader>si :source $MYVIMRC<CR>
+nnoremap <Leader>s. :so %<CR>
+vnoremap <Leader>sv y:execute @@<CR>:echo 'Sourced selection.'<CR>
+nnoremap <Leader>sL ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 
 " Save file as sudo on files that require root permission(by typing [Ctrl-s !]), note the '' symbol is type through Ctrl-v ctrl-s
 cnoremap ! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
 
 " normal mode bindings
-nnoremap <Down> :res +1<CR>
-nnoremap <Up> :res -1<CR>
-nnoremap <Left> :vertical resize-1<CR>
-nnoremap <Right> :vertical resize+1<CR>
+nnoremap <S-Down> :res +1<CR>
+nnoremap <S-Up> :res -1<CR>
+nnoremap <S-Left> :vertical resize-1<CR>
+nnoremap <S-Right> :vertical resize+1<CR>
 
 " Basic Mappings
 nnoremap <Leader><Space> :nohlsearch<CR>
-
-" insert a <++>
-inoremap <M-i> <++>
-" jump to next <++> and replace it
-nnoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
-inoremap <M-Space> <Esc>/<++><CR>:nohlsearch<CR>c4l
 
 " move selected lines up/down and keep selected
 vnoremap J :move '>+1<CR>gv=gv
@@ -174,9 +146,9 @@ nnoremap <Leader>cp :<C-r>"
 " Clean trailing whitespace
 nnoremap <Leader>ww mz:%s/\s\+$//<cr>:let @/=''<CR>`z
 " Panic Button
-nnoremap <M-x>e mzggg?G`z
+nnoremap <Leader>xe mzggg?G`z
 " Rot13 encode {motion} text.
-vnoremap <M-x>e mzg?`z
+vnoremap <Leader>xe mzg?`z
 " Select (charwise) the contents of the current line, excluding indentation.
 " Great for pasting Python lines into REPLs.
 nnoremap <Leader>vv ^vg_
@@ -187,31 +159,10 @@ nnoremap R :%s//g<Left><Left>
 
 " Window Management
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
-nnoremap <M-s>h :set nosplitright<CR>:vsplit<CR>
-nnoremap <M-s>j :set splitbelow<CR>:split<CR>
-nnoremap <M-s>k :set nosplitbelow<CR>:split<CR>
-nnoremap <M-s>l :set splitright<CR>:vsplit<CR>
-
-" Place the two screens side by side (vertical)
-nnoremap <M-s>m <C-w>t<C-w>H
-" Place the two screens up and down (horizontal)
-nnoremap <M-s>n <C-w>t<C-w>K
-
-" Rotate screens
-" nnoremap <M-s>rm <C-w>b<C-w>H
-" nnoremap <M-s>rn <C-w>b<C-w>K
-
-" Use <ALT> + new arrow keys for moving the cursor around windows
-nnoremap <M-h> <C-w>h
-nnoremap <M-j> <C-w>j
-nnoremap <M-k> <C-w>k
-nnoremap <M-l> <C-w>l
-
-" Use shift arrow keys for moving the windows
-" nnoremap <C-M-h> <C-w>H
-" nnoremap <C-M-j> <C-w>J
-" nnoremap <C-M-k> <C-w>K
-" nnoremap <C-M-l> <C-w>L
+nnoremap <Leader>sh :set nosplitright<CR>:vsplit<CR>
+nnoremap <Leader>sj :set splitbelow<CR>:split<CR>
+nnoremap <Leader>sk :set nosplitbelow<CR>:split<CR>
+nnoremap <Leader>sl :set splitright<CR>:vsplit<CR>
 
 " Tab Management
 " Create a new tab
@@ -231,10 +182,10 @@ nnoremap <M-l> <C-w>l
 " nnoremap <M-9> :tablast<CR>
 
 " Buffer Management
-nnoremap <M-q> :bd<CR>
-" " switching buffer
-nnoremap <M-,> :bp<CR>
-nnoremap <M-.> :bn<CR>
+nnoremap <Leader>q :bd<CR>
+" switching buffer
+nnoremap <Leader>bp :bp<CR>
+nnoremap <Leader>bn :bn<CR>
 
 " Clipboard
 " set clipboard^=unnamed,unnnamedplus
@@ -260,7 +211,7 @@ vmap <silent> <expr> p <sid>Repl()
 
 " Compile Function
 " noremap <M-r> :call CompileRunGcc()<CR>
-nnoremap <M-r> :call CompileRunGcc()<CR>
+noremap <Leader>R :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w"
     if &filetype == 'c'
