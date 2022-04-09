@@ -26,7 +26,7 @@ set completeopt=menuone,noinsert,noselect
 set signcolumn=yes
 set updatetime=100
 set encoding=UTF-8
-set clipboard+=unnamedplus " Copy paste between vim and everything else
+" set clipboard+=unnamedplus " Copy paste between vim and everything else
 set nojoinspaces " don't autoinsert two spaces after '.', '?', '!' for join command
 " set showcmd " extra info at end of command line
 " set wildignore+=*/node_modules/**

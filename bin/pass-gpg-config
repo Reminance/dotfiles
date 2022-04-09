@@ -1,0 +1,25 @@
+#!/bin/sh
+
+gpg --list-keys
+gpg --gen-key
+gpg --list-keys
+
+gpg --edit-key xucheng
+# gpg>  list
+# lists the available subkeys
+# gpg>  key [subkey]
+# choose the number of the subkey you want to edit; e.g. key 1
+# gpg> expire
+# expire lets you set a new experation date for the subkey.
+# gpg> save
+
+gpg --export-secret-keys > xucheng.gpg
+gpg --import xucheng.gpg
+
+pass init xucheng
+pass insert Work/ulp
+pass edit Work/work.weixin.qq.com
+pass Work/work.weixin.qq.com
+pass ls
+
+
