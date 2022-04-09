@@ -18,6 +18,9 @@ export LANGUAGE=en_US.UTF-8
 export TERMINAL=alacritty
 export BROWSER=google-chrome-stable
 
+# gpg
+export GPG_TTY=$(tty)
+
 # terminal
 # export TERM=xterm-256color
 

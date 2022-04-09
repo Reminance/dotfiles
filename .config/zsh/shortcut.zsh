@@ -30,6 +30,15 @@ edit-config-file () {
 zle -N edit-config-file
 bindkey '\ee' edit-config-file
 
+# copy password
+copy_password () {
+    local gpg=($(eval "cd ~/dotfiles/password-store.symlink && print -rl -- **/*.gpg(D.om)" | sed 's/.gpg//g' | fzf --query="$1" --select-1 --exit-0))
+    [[ -n "$gpg" ]] && pass -c "${gpg[@]}"
+    zle reset-prompt
+}
+zle -N copy_password
+bindkey '\ep' copy_password
+
 # edit config file
 git-worktree-add-branch () {
     local branch=($(git branch -a | fzf --query="$1" --select-1 --exit-0))
