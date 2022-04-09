@@ -1,5 +1,3 @@
--- statusline
--- vim.o.laststatus=0
 
 -- sneak
 vim.g["sneak#label"] = 1
@@ -44,8 +42,12 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
+    -- component_separators = { left = "⦚", right = "  " },
+    -- section_separators = { left = "", right = " " },
+    -- component_separators = { left = '', right = ''},
+    -- section_separators = { left = '', right = ''},
+    component_separators = { left = "", right = "" },
+    section_separators = { left = "", right = "" },
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = false,
@@ -72,6 +74,9 @@ require('lualine').setup {
   tabline = {},
   extensions = {}
 }
+
+-- statusline
+vim.o.laststatus=0
 
 -- lua-dev.nvim
 local luadev = require("lua-dev").setup({

@@ -1,3 +1,5 @@
+ZSH_DISABLE_COMPFIX=true
+
 # shortcut to this dotfiles path is $ZSH_CONF_ROOT
 export ZSH_CONF_ROOT=$HOME/dotfiles
 source $ZSH_CONF_ROOT/.config/zsh/env.zsh
@@ -52,8 +54,35 @@ unset config_files
 # bindkey "^[[A" up-line-or-beginning-search # Up
 # bindkey "^[[B" down-line-or-beginning-search # Down
 
-# mac only
-export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+# os specific
+# for ZSH  `OSTYPE` is set by ZSH the shell itself.
+case "$OSTYPE" in
+  darwin*)
+    export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+    # chmod 755 /usr/local/share/zsh
+    # chmod 755 /usr/local/share/zsh/site-functions
+    # chmod 755 $(brew --prefix)/share/zsh-completions
+    # chmod 755 $(brew --prefix)/share/zsh/site-functions
+    # compaudit | xargs chmod g-w,o-w
+    FPATH=$(brew --prefix)/share/zsh-completions:$(brew --prefix)/share/zsh/site-functions:$FPATH
+    ;;
+  linux*)
+    # do nth for now
+    ;;
+  dragonfly*|freebsd*|netbsd*|openbsd*)
+    # do nth for now
+    ;;
+esac
+
+# # Do we have systemd on board?
+# if command systemctl > /dev/null; then
+#   source $ZSH_CUSTOM/os/systemd.zsh
+# fi
+
+# # Ditto Kubernetes?
+# if command kubectl > /dev/null; then
+#   source $ZSH_CUSTOM/os/kubernetes.zsh
+# fi
 

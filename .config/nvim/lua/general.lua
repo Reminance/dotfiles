@@ -86,6 +86,10 @@ set tags=tags;/
 " nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
 
 " Cursor Movement
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
 inoremap <C-g> <Esc>
 map <C-g> <Esc>
 inoremap <C-n> <Down>
