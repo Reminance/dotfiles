@@ -12,6 +12,7 @@ alias gwt='git worktree'
 alias gadd='git add .'
 alias gcm='git commit -av'
 alias gca='git add . && git commit -av'
+alias gcount='git ls-files | wc -l'
 
 # Logging helpers
 alias gls='git log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate'

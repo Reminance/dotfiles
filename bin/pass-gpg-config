@@ -22,4 +22,7 @@ pass edit Work/work.weixin.qq.com
 pass Work/work.weixin.qq.com
 pass ls
 
+# pass key rename
+pass mv xx/xx xx/xx
+
 
