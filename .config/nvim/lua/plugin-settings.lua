@@ -76,7 +76,7 @@ require('lualine').setup {
 }
 
 -- statusline
-vim.o.laststatus=0
+-- vim.o.laststatus=0
 
 -- lua-dev.nvim
 local luadev = require("lua-dev").setup({
