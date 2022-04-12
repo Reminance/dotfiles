@@ -90,8 +90,8 @@ lspconfig.sumneko_lua.setup(luadev)
 
 -- nvim-treesitter
 require'nvim-treesitter.configs'.setup {
-  -- One of "all", "maintained" (parsers with maintainers), or a list of languages
-  ensure_installed = "maintained",
+  -- A list of parser names, or "all"
+  ensure_installed = { "c", "cpp", "make", "cmake", "commonlisp", "dockerfile", "go", "java", "lua", "python", "rust", "html", "javascript", "css", "toml", "vim", "vue", "json", "yaml" },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,

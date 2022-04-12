@@ -1,6 +1,5 @@
 sandbox/
 .config/clash/
-.config/lazygit/
 .config/flameshot/
 .config/dmenu/*.o
 .config/emacs/ido.last

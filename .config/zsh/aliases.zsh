@@ -1,6 +1,11 @@
 alias a='alias'
-alias ls='logo-ls'
+
+# alias ls='logo-ls'
+
 # alias ls='exa --icons'
+# alias la='ls -lah'
+# alias lls='ls -lahS'
+
 alias llt='ls -lht'
 alias lls='ls -lAhS'
 

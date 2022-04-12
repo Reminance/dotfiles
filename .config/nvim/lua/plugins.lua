@@ -7,12 +7,12 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- sync plugins on write/save
-vim.cmd([[
-augroup SyncPackerPlugins
-autocmd!
-autocmd BufWritePost plugins.lua source <afile> | PackerSync
-augroup END
-]])
+-- vim.cmd([[
+-- augroup SyncPackerPlugins
+-- autocmd!
+-- autocmd BufWritePost plugins.lua source <afile> | PackerSync
+-- augroup END
+-- ]])
 
 return require('packer').startup {
   function(use)
@@ -55,6 +55,7 @@ return require('packer').startup {
     }
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
     use 'voldikss/vim-floaterm'
+    -- use 'akinsho/toggleterm.nvim'
 
     -- version control
     use 'tpope/vim-fugitive'
