@@ -188,8 +188,11 @@ nnoremap <Leader>sl :set splitright<CR>:vsplit<CR>
 " Buffer Management
 nnoremap <Leader>q :bd<CR>
 " switching buffer
-nnoremap <Leader>bp :bp<CR>
-nnoremap <Leader>bn :bn<CR>
+nnoremap <Leader><Left> :bp<CR>
+nnoremap <Leader><Right> :bn<CR>
+
+" terminal mode
+tnoremap <Esc> <C-\><C-n>
 
 " Clipboard
 " set clipboard^=unnamed,unnnamedplus
