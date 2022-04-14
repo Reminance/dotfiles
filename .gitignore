@@ -1,5 +1,7 @@
 sandbox/
 .config/clash/
+.config/lazygit/*
+!.config/lazygit/config.yml
 .config/flameshot/
 .config/dmenu/*.o
 .config/emacs/ido.last
