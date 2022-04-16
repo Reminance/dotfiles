@@ -55,7 +55,7 @@ return require('packer').startup {
     }
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
     use 'voldikss/vim-floaterm'
-    -- use 'akinsho/toggleterm.nvim'
+    use 'akinsho/toggleterm.nvim'
 
     -- version control
     use 'tpope/vim-fugitive'

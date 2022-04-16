@@ -78,7 +78,7 @@ for type, icon in pairs(signs) do
 end
 
 -- Show line diagnostics automatically in hover window
-vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]]
+-- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false})]] -- don't automatically popup diagnostic window
 -- For diagnostics for specific cursor position
 -- vim.cmd [[autocmd! CursorHold,CursorHoldI * lua vim.diagnostic.open_float(nil, {focus=false, scope="cursor"})]]
 

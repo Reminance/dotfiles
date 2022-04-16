@@ -1120,6 +1120,7 @@
   (use-package emojify
     :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
 
+;; C-x u runs the command undo-tree-visualize (found in undo-tree-map)
 (use-package undo-tree
   :hook (after-init . global-undo-tree-mode)
   :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
@@ -1472,6 +1473,13 @@
                              ;; :name "Iosevka"
                              ;; :style "Regular"
                              :size 15))
+  )
+(when *is-mac*
+  (set-face-attribute 'default nil
+                      :font (font-spec
+                             :name "JetbrainsMono Nerd Font"
+                             ;; :style "Regular"
+                             :size 12))
   )
 
 ;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))

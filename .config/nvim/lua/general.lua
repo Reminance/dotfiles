@@ -88,6 +88,8 @@ set tags=tags;/
 " Cursor Movement
 inoremap <C-b> <Left>
 inoremap <C-f> <Right>
+inoremap <C-a> <C-o>I
+inoremap <C-e> <C-o>$
 cnoremap <C-b> <Left>
 cnoremap <C-f> <Right>
 inoremap <C-g> <Esc>
@@ -114,6 +116,8 @@ nnoremap R <nop>
 nnoremap Q <nop>
 nnoremap <C-q> :q<CR>
 inoremap <C-q> <Esc>:q<CR>
+nnoremap <C-M-q> :qa<CR>
+inoremap <C-M-q> <Esc>:qa<CR>
 inoremap <C-s> <Esc>:w<CR>
 nnoremap <C-s> :w<CR>
 
@@ -162,6 +166,10 @@ vnoremap . :normal .<CR>
 nnoremap R :%s//g<Left><Left>
 
 " Window Management
+nnoremap <M-h> <Esc><C-w>h
+nnoremap <M-j> <Esc><C-w>j
+nnoremap <M-k> <Esc><C-w>k
+nnoremap <M-l> <Esc><C-w>l
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 nnoremap <Leader>sh :set nosplitright<CR>:vsplit<CR>
 nnoremap <Leader>sj :set splitbelow<CR>:split<CR>
@@ -215,6 +223,9 @@ function! s:Repl()
     return "p@=RestoreRegister()\<CR>"
 endfunction
 vmap <silent> <expr> p <sid>Repl()
+
+let g:floaterm_width=0.8 " Default: 0.6
+let g:floaterm_height=0.8 " Default: 0.6
 
 " Compile Function
 " noremap <M-r> :call CompileRunGcc()<CR>
