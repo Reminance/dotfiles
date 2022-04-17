@@ -1466,21 +1466,25 @@
   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
 ;; 设置字体
-(when *is-linux*
-  ;; "Fira Code Nerd Font Mono"
-  (set-face-attribute 'default nil
-                      :font (font-spec
-                             ;; :name "Iosevka"
-                             ;; :style "Regular"
-                             :size 15))
-  )
-(when *is-mac*
-  (set-face-attribute 'default nil
-                      :font (font-spec
-                             :name "JetbrainsMono Nerd Font"
-                             ;; :style "Regular"
-                             :size 12))
-  )
+;; (when *is-linux*
+;;   ;; "Fira Code Nerd Font Mono"
+;;   (set-face-attribute 'default nil
+;;                       :font (font-spec
+;;                              ;; :name "Iosevka"
+;;                              ;; :style "Regular"
+;;                              :size 15))
+;;   )
+;; (when *is-mac*
+;;   (set-face-attribute 'default nil
+;;                       :font (font-spec
+;;                              ;; :style "Regular"
+;;                              :size 12))
+;;   )
+(set-face-attribute 'default nil
+                    :font (font-spec
+                           :name "JetbrainsMono Nerd Font"
+                           :size 12))
+
 
 ;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
 
