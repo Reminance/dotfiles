@@ -37,15 +37,15 @@ cmp.setup {
     end,
   },
   mapping = {
-    ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+    -- ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+    -- ["<C-f>"] = cmp.mapping.scroll_docs(4),
     ["<C-Space>"] = cmp.mapping.complete(),
     ["<CR>"] = cmp.mapping {
       i = cmp.mapping.confirm { select = true },
     },
-    ["<Right>"] = cmp.mapping {
-      i = cmp.mapping.confirm { select = true },
-    },
+    -- ["<Right>"] = cmp.mapping {
+    --   i = cmp.mapping.confirm { select = true },
+    -- },
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s" }),
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s" }),
     ["<C-e>"] = cmp.mapping.abort(),
