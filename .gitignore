@@ -36,3 +36,4 @@ vim.symlink/plugged/
 vim.symlink/tmp/
 vim.symlink/_machine_specific.vim
 vim.symlink/session/
+__pycache__/
