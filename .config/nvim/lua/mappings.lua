@@ -11,6 +11,10 @@ map('n', '<Leader>\\', ':Startify<CR>', options)
 map('n', 's', '<Plug>Sneak_s', {})
 map('n', 'S', '<Plug>Sneak_S', {})
 
+-- vim-easy-align
+map('n', 'ga', '<Plug>EasyAlign', {})
+map('x', 'ga', '<Plug>EasyAlign', {})
+
 -- tagbar
 map('n', '<Leader>T', ':TagbarOpenAutoClose<CR>', options)
 
@@ -32,24 +36,24 @@ map('n', '<Leader>gl', ':diffget //3<CR>', options)
 map('n', '<Leader>gs', ':G<CR>', options)
 
 -- -- fzf.vim
--- map('n', '<C-M-l>', ':Lines<CR>', options)
--- map('n', '<C-M-f>', ':Rg<CR>', options)
--- map('n', '<C-M-a>', ':Ag<CR>', options)
--- map('n', '<C-M-g>', ':GFiles<CR>', options)
--- map('n', '<C-M-d>', ':GFiles?<CR>', options)
--- map('n', '<C-M-n>', ':Files<CR>', options)
--- map('n', '<C-M-e>', ':Buffers<CR>', options)
--- map('n', '<C-M-h>', ':History<CR>', options)
--- map('n', '<C-M-t>', ':BTags<CR>', options)
--- map('n', '<C-M-c>', ':BCommits<CR>', options)
+-- map('n', '<M-S-l>', ':Lines<CR>', options)
+-- map('n', '<M-S-f>', ':Rg<CR>', options)
+-- map('n', '<M-S-a>', ':Ag<CR>', options)
+-- map('n', '<M-S-g>', ':GFiles<CR>', options)
+-- map('n', '<M-S-d>', ':GFiles?<CR>', options)
+-- map('n', '<M-S-o>', ':Files<CR>', options)
+-- map('n', '<M-S-e>', ':Buffers<CR>', options)
+-- map('n', '<M-S-h>', ':History<CR>', options)
+-- map('n', '<M-S-t>', ':BTags<CR>', options)
+-- map('n', '<M-S-c>', ':BCommits<CR>', options)
 -- vim.g.fzf_preview_window='right:60%'
 -- vim.g.fzf_commits_log_options='--graph --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr"'
 
 -- telescope.nvim
-map('n', '<C-M-f>', '<cmd>Telescope live_grep<cr>', options)
-map('n', '<C-M-n>', '<cmd>Telescope find_files<cr>', options)
-map('n', '<C-M-e>', '<cmd>Telescope buffers<cr>', options)
-map('n', '<C-M-h>', '<cmd>Telescope help_tags<cr>', options)
+map('n', '<M-S-f>', '<cmd>Telescope live_grep<cr>', options)
+map('n', '<M-S-o>', '<cmd>Telescope find_files<cr>', options)
+map('n', '<M-S-e>', '<cmd>Telescope buffers<cr>', options)
+map('n', '<M-S-h>', '<cmd>Telescope help_tags<cr>', options)
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions

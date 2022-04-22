@@ -1,58 +1,98 @@
+#!/bin/sh
 ZSH_DISABLE_COMPFIX=true
+# export ZDOTDIR=$HOME/.config/zsh
 
-# shortcut to this dotfiles path is $ZSH_CONF_ROOT
-export ZSH_CONF_ROOT=$HOME/dotfiles
-source $ZSH_CONF_ROOT/.config/zsh/env.zsh
-source $ZSH_CONF_ROOT/.config/zsh/ohmyzsh-setup
+# for ohmyzsh
+source $HOME/.config/zsh/ohmyzsh-setup
 
-# your project folder that we can `c [tab]` to
-export PROJECTS=$HOME/workspace
+# # Enable vi mode
+# export KEYTIMEOUT=1
+# bindkey -v
 
-# Stash your environment variables in ~/.localrc. This means they'll stay out
-# of your main dotfiles repository (which may be public, like this one), but
-# you'll have access to them in your scripts.
+# # some useful options (man zshoptions)
+# setopt autocd extendedglob nomatch menucomplete
+# setopt interactive_comments
+# stty stop undef		# Disable ctrl-s to freeze terminal.
+# zle_highlight=('paste:none')
+
+# beeping is annoying
+unsetopt BEEP
+
+# # completions
+# autoload -Uz compinit
+# zstyle ':completion:*' menu select
+# # zstyle ':completion::complete:lsof:*' menu yes select
+# zmodload zsh/complist
+# _comp_options+=(globdots)		# Include hidden files.
+# compinit
+
+# autoload -U up-line-or-beginning-search
+# autoload -U down-line-or-beginning-search
+# zle -N up-line-or-beginning-search
+# zle -N down-line-or-beginning-search
+
+# # Colors
+# autoload -Uz colors && colors
+
+
+# Useful Functions
+source "$HOME/.config/zsh/zsh-functions.zsh"
+
+# Normal files to source
+zsh_add_file "env.zsh"
+zsh_add_file "git.zsh"
+zsh_add_file "aliases.zsh"
+zsh_add_file "aliases-docker.zsh"
+zsh_add_file "shortcut.zsh"
+zsh_add_file "fzf.zsh"
+
+# Plugins
+# zsh_add_plugin "zsh-users/zsh-autosuggestions"
+# zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
+# zsh_add_plugin "hlissner/zsh-autopair"
+# zsh_add_completion "esc/conda-zsh-completion" false
+# For more plugins: https://github.com/unixorn/awesome-zsh-plugins
+# More completions https://github.com/zsh-users/zsh-completions
+
+## your project folder that we can `c [tab]` to
+#export PROJECTS=$HOME/workspace
+
+## Stash your environment variables in ~/.localrc. This means they'll stay out
+## of your main dotfiles repository (which may be public, like this one), but
+## you'll have access to them in your scripts.
 if [[ -a ~/.localrc ]]
 then
   source ~/.localrc
 fi
 
-# all of our zsh files
-typeset -U config_files
-# exclude for .dotfiles/.config/nvim/tmp/*.zsh
-config_files=($ZSH_CONF_ROOT/.config/**[^tmp]/*.zsh)
+## all of our zsh files
+#typeset -U config_files
+## exclude for .dotfiles/.config/nvim/tmp/*.zsh
+#config_files=($HOME/.config/**[^tmp]/*.zsh)
 
-# load the path files
-for file in ${(M)config_files:#*/path.zsh}
-do
-  source $file
-done
+## load the path files
+#for file in ${(M)config_files:#*/path.zsh}
+#do
+#  source $file
+#done
 
-# load everything but the path and completion files
-for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
-do
-  source $file
-done
+## load everything but the path and completion files
+#for file in ${${config_files:#*/path.zsh}:#*/completion.zsh}
+#do
+#  source $file
+#done
 
-# initialize autocomplete here, otherwise functions won't be loaded
-#autoload -U compinit
-#compinit
+## initialize autocomplete here, otherwise functions won't be loaded
+##autoload -U compinit
+##compinit
 
-# load every completion after autocomplete loads
-for file in ${(M)config_files:#*/completion.zsh}
-do
-  source $file
-done
+## load every completion after autocomplete loads
+#for file in ${(M)config_files:#*/completion.zsh}
+#do
+#  source $file
+#done
 
-unset config_files
-
-# Better history
-# Credits to https://coderwall.com/p/jpj_6q/zsh-better-history-searching-with-arrow-keys
-# autoload -U up-line-or-beginning-search
-# autoload -U down-line-or-beginning-search
-# zle -N up-line-or-beginning-search
-# zle -N down-line-or-beginning-search
-# bindkey "^[[A" up-line-or-beginning-search # Up
-# bindkey "^[[B" down-line-or-beginning-search # Down
+#unset config_files
 
 # os specific
 # for ZSH  `OSTYPE` is set by ZSH the shell itself.
@@ -75,6 +115,22 @@ case "$OSTYPE" in
     # do nth for now
     ;;
 esac
+
+# case "$(uname -s)" in
+#   Darwin)
+#     # echo 'Mac OS X'
+#     alias ls='ls -G'
+#     ;;
+#   Linux)
+#     alias ls='ls --color=auto'
+#     ;;
+#   CYGWIN* | MINGW32* | MSYS* | MINGW*)
+#     # echo 'MS Windows'
+#     ;;
+#   *)
+#     # echo 'Other OS'
+#     ;;
+# esac
 
 # # Do we have systemd on board?
 # if command systemctl > /dev/null; then

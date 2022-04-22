@@ -34,6 +34,7 @@ return require('packer').startup {
     use 'justinmk/vim-sneak'
     use 'majutsushi/tagbar'
     use 'Yggdroot/indentLine'
+    use 'junegunn/vim-easy-align'
     use 'tpope/vim-surround'
     use 'tpope/vim-commentary'
     use { 'iamcco/markdown-preview.nvim', run = 'cd app && yarn install' }
