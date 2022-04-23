@@ -34,6 +34,8 @@ sandbox/
 .config/nvim/session/
 .config/zsh/.zcompdump-*
 .config/zsh/.zsh_history
+.config/iterm2/*
+!.config/iterm2/iterm2.itermkeymap
 vim.symlink/plugged/
 vim.symlink/tmp/
 vim.symlink/_machine_specific.vim
