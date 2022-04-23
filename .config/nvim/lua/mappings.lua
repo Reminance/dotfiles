@@ -54,6 +54,15 @@ map('n', '<M-S-f>', '<cmd>Telescope live_grep<cr>', options)
 map('n', '<M-S-o>', '<cmd>Telescope find_files theme=dropdown previewer=false<cr>', options) -- theme: default(null) dropdown cursor ivy
 map('n', '<M-S-e>', '<cmd>Telescope buffers<cr>', options)
 map('n', '<M-S-h>', '<cmd>Telescope help_tags<cr>', options)
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<esc>"] = "close"
+      }
+    }
+  }
+}
 
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
