@@ -51,7 +51,7 @@ map('n', '<Leader>gs', ':G<CR>', options)
 
 -- telescope.nvim
 map('n', '<M-S-f>', '<cmd>Telescope live_grep<cr>', options)
-map('n', '<M-S-o>', '<cmd>Telescope find_files<cr>', options)
+map('n', '<M-S-o>', '<cmd>Telescope find_files theme=dropdown previewer=false<cr>', options) -- theme: default(null) dropdown cursor ivy
 map('n', '<M-S-e>', '<cmd>Telescope buffers<cr>', options)
 map('n', '<M-S-h>', '<cmd>Telescope help_tags<cr>', options)
 
