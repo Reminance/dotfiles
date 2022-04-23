@@ -22,6 +22,15 @@ return require('packer').startup {
     -- color scheme
     -- use 'kaicataldo/material.vim'
     use 'connorholyday/vim-snazzy'
+    -- use 'olimorris/onedarkpro.nvim'
+    -- use 'ayu-theme/ayu-vim'
+    -- use 'folke/tokyonight.nvim'
+    -- use 'dracula/vim'
+    -- use 'arcticicestudio/nord-vim'
+    -- use 'sickill/vim-monokai'
+    -- use 'jacoborus/tender.vim'
+    -- use 'sainnhe/gruvbox-material'
+    -- use 'sainnhe/sonokai'
 
     -- icons
     use 'ryanoasis/vim-devicons'

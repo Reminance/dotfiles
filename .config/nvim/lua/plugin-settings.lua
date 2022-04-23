@@ -6,9 +6,56 @@ vim.g["sneak#label"] = 1
 vim.g["rainbow_active"] = 1
 
 -- colorscheme
+-- material
 -- vim.cmd('colorscheme material')
+
+-- vim-snazzy
 vim.g["SnazzyTransparent"] = 1
 vim.cmd('colorscheme snazzy')
+
+-- onedarkpro
+-- require('onedarkpro').load()
+-- vim.cmd('colorscheme onedarkpro')
+
+-- ayu-vim
+-- vim.g["ayucolor"] = "dark" -- for dark version of theme
+-- vim.cmd('colorscheme ayu')
+
+-- tokyonight
+-- vim.g.tokyonight_style = "night"
+-- vim.cmd[[colorscheme tokyonight]]
+
+-- dracula
+-- vim.g.colorscheme_bg = "dark"
+-- vim.cmd('colorscheme dracula')
+
+-- nord-vim
+-- vim.cmd('colorscheme nord')
+
+-- vim-monokai
+-- vim.cmd('colorscheme monokai')
+
+-- tender
+-- vim.g.NVIM_TUI_ENABLE_TRUE_COLOR=1
+-- vim.cmd('colorscheme tender')
+
+-- gruvbox-material
+-- -- Set contrast.
+-- vim.g.gruvbox_material_palette='material' -- material, mix, original
+-- vim.g.gruvbox_material_background = 'hard' -- hard, medium, soft
+-- vim.g.gruvbox_material_enable_bold=1
+-- -- vim.g.gruvbox_material_enable_italic=1
+-- vim.g.gruvbox_material_transparent_background=1
+-- -- For better performance
+-- vim.g.gruvbox_material_better_performance = 1
+-- vim.cmd('colorscheme gruvbox-material')
+
+-- sonokai
+-- -- vim.g.sonokai_style = 'andromeda' -- 'default', 'atlantis', 'andromeda', 'shusia', 'maia', 'espresso'
+-- vim.g.sonokai_style = 'default'
+-- vim.g.sonokai_transparent_background=1
+-- vim.g.sonokai_better_performance = 1
+-- vim.cmd('colorscheme sonokai')
 
 -- indentline
 vim.g["indentLine_char_list"] = "['|', '¦', '┆', '┊']"
