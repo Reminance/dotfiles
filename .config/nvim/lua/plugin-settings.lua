@@ -182,7 +182,7 @@ require('lualine').setup {
 }
 
 -- statusline
--- vim.o.laststatus=0
+vim.o.laststatus=3
 
 -- lua-dev.nvim
 local luadev = require("lua-dev").setup({

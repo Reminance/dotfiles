@@ -71,8 +71,8 @@ endif
 " set laststatus=0  " disable status line
 " set showtabline=0 " disable tab line
 function! ToggleHiddenStatusLine()
-    if &laststatus < 2
-        set laststatus=2
+    if &laststatus < 3
+        set laststatus=3
         " set showtabline=2
     else
         set laststatus=0
