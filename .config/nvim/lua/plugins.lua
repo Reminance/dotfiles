@@ -66,6 +66,13 @@ return require('packer').startup {
     use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', }
     use 'voldikss/vim-floaterm'
     use 'akinsho/toggleterm.nvim'
+    use {
+      "folke/trouble.nvim",
+      config = function()
+        require("trouble").setup {}
+      end
+    }
+    use "nvim-pack/nvim-spectre" -- search and replace pane
 
     -- version control
     use 'tpope/vim-fugitive'
@@ -73,6 +80,7 @@ return require('packer').startup {
       'lewis6991/gitsigns.nvim',
       requires = { 'nvim-lua/plenary.nvim' },
     }
+    use 'sindrets/diffview.nvim'
 
     -- file navigation
     use 'junegunn/fzf.vim'

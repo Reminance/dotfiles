@@ -1,6 +1,6 @@
 local map = vim.api.nvim_set_keymap
 
-options = { noremap = true, silent = true }
+local options = { noremap = true, silent = true }
 
 -- ** Key Mappings ***
 
@@ -34,6 +34,17 @@ map('n', '<Leader>gd', ':Gvdiffsplit<CR>', options)
 map('n', '<Leader>gh', ':diffget //2<CR>', options)
 map('n', '<Leader>gl', ':diffget //3<CR>', options)
 map('n', '<Leader>gs', ':G<CR>', options)
+
+-- diffview
+map('n', '<Leader>dvf', '<cmd>DiffviewFileHistory<CR>', options)  -- File History
+map('n', '<Leader>dvp', '<cmd>DiffviewOpen<CR>', options)  -- Diff Project
+
+-- nvim-spectre
+-- search and replace
+map('n', '<Leader>Sp', '<cmd>lua require("spectre").open()<CR>', options)  -- Replace in Project
+map('n', '<Leader>Sw', '<cmd>lua require("spectre").open_visual({select_word=true})<CR>', options)  -- search current word
+map('v', '<Leader>Sv', '<cmd>lua require("spectre").open_visual()<CR>', options)  -- search current word
+map('n', '<Leader>Sf', '<cmd>lua require("spectre").open_file_search()<CR>', options)  -- search in current file
 
 -- -- fzf.vim
 -- map('n', '<M-S-l>', ':Lines<CR>', options)
@@ -70,7 +81,12 @@ local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-vim.api.nvim_set_keymap('n', '<space>dl', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+-- vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>', opts)
+-- vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
+-- vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
+-- vim.api.nvim_set_keymap('n', '<space>dl', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.api.nvim_set_keymap('n', '<space>dl', '<cmd>Trouble document_diagnostics<cr>', opts)
+vim.api.nvim_set_keymap('n', '<space>dp', '<cmd>Trouble workspace_diagnostics<cr>', opts)
 
 vim.diagnostic.config({
   -- virtual_text = true,
@@ -81,7 +97,21 @@ vim.diagnostic.config({
   underline = true,
   update_in_insert = false,
   severity_sort = false,
+  -- float = {
+  --   focusable = false,
+  --   style = "minimal",
+  --   border = "rounded",
+  --   source = "always",
+  --   header = "",
+  --   prefix = "",
+  -- },
 })
+
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+--   border = "rounded",
+-- }) vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+--   border = "rounded",
+-- })
 
 -- vim.cmd[[set signcolumn=yes]]
 local signs = { Error = " ", Warn = "", Hint = "", Info = "" }
@@ -139,8 +169,11 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  -- vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>Trouble lsp_references<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>lf', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ss', '<cmd>lua require("telescope.builtin").lsp_document_symbols()<cr>', opts)
+  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>sS', '<cmd>lua require("telescope.builtin").lsp_dynamic_workspace_symbols()<cr>', opts)
 end
 
 -- snippet support
@@ -162,6 +195,10 @@ for _, lsp in pairs(servers) do
     }
   }
 end
+
+-- Trouble
+map('n', '<Leader>tt', '<cmd>TroubleToggle<cr>', options)  -- ToggleTrouble
+map('n', '<Leader>tq', '<cmd>Trouble quickfix<cr>', options)  -- Quick Fix
 
 -- vsnip jump through snippets with <Tab>
 map("i", "<Tab>", [[vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']], { noremap = false, expr = true })
