@@ -6,6 +6,11 @@ alias a='alias'
 # alias la='ls -lah'
 # alias lls='ls -lahS'
 
+#file access
+alias cp="cp -riv"
+alias mv="mv -iv"
+alias mkdir="mkdir -vp"
+
 alias llt='ls -lht'
 alias lls='ls -lAhS'
 

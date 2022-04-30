@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# install
+pip install virtualenv
+
+# make a new environment
+virtualenv venv
+
+# active the new virtualenv
+. venv/bin/activate
+
