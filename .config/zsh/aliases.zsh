@@ -39,7 +39,6 @@ alias sps="sudo pacman -S "
 alias spss="sudo pacman -Ss "
 alias spr="sudo pacman -R "
 
-
 # Search your history
 alias h='history | grep'
 
@@ -63,3 +62,9 @@ alias fk='bindkey | fzf'
 # __grep_file() { grep -iRl $1 ./ }
 __grep_file() { grep -iR $1 ./ }
 alias g=__grep_file
+
+# python virtualenv
+alias pv='virtualenv venv'
+alias pva='. venv/bin/activate'
+alias pvd=deactivate
+
