@@ -23,6 +23,8 @@ map('n', '<F5>', ':UndotreeToggle<CR>', options)
 
 -- nvim-tree
 map('n', 'T', ':NvimTreeToggle<CR>', options)
+map('n', '<Leader>tf', ':NvimTreeFindFile<CR>', options)
+map('n', '<Leader>tr', ':NvimTreeRefresh<CR>', options)
 
 -- vim-fugitive
 map('n', '<Leader>gb', ':Git blame<CR>', options)

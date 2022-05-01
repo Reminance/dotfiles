@@ -171,6 +171,7 @@ nnoremap <M-j> <Esc><C-w>j
 nnoremap <M-k> <Esc><C-w>k
 nnoremap <M-l> <Esc><C-w>l
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
+set splitright
 nnoremap <Leader>sh :set nosplitright<CR>:vsplit<CR>
 nnoremap <Leader>sj :set splitbelow<CR>:split<CR>
 nnoremap <Leader>sk :set nosplitbelow<CR>:split<CR>

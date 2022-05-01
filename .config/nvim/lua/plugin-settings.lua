@@ -62,7 +62,18 @@ vim.cmd('highlight Special guifg=#ff6ac1 gui=italic,underline,bold')  -- for tel
 vim.cmd("let g:indentLine_char_list = ['|', '¦', '┆', '┊']")
 
 -- nvim-tree.lua
-require('nvim-tree').setup{}
+require('nvim-tree').setup{
+  view = {
+    width = 30,
+    height = 30,
+    side = "left",
+  },
+  actions = {
+    open_file = {
+      resize_window = true
+    }
+  },
+ }
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
