@@ -12,7 +12,7 @@ vim.g["rainbow_active"] = 1
 -- vim-snazzy
 vim.g["SnazzyTransparent"] = 1
 vim.cmd('colorscheme snazzy')
-vim.cmd('highlight Special guifg=#ff6ac1 gui=italic,underline,bold')  -- for telescope: highlight matching chars fg
+vim.cmd('highlight Special guifg=#ff6ac1 gui=italic,bold')  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
 
 -- onedarkpro
 -- require('onedarkpro').load()
