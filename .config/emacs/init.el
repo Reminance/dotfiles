@@ -278,7 +278,7 @@
 
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(95 . 95))
+(defvar my/frame-transparency '(98 . 98))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -355,10 +355,10 @@
 (setq use-package-always-ensure t)
 
 ;; exec-path-from-shell
-;; (use-package exec-path-from-shell
-;;   :config
-;;   (when (memq window-system '(mac ns x))
-;;     (exec-path-from-shell-initialize)))
+(use-package exec-path-from-shell
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 ;; Restore old window configurations
 (winner-mode 1)
@@ -387,57 +387,57 @@
          ("C-M-S-<right>" . enlarge-window-horizontally)
          ))
 
-;; evil
-(use-package evil
-  ;; :disabled
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (eval-after-load "evil-maps"
-    (dolist (map '(evil-motion-state-map
-                   evil-normal-state-map
-                   evil-operator-state-map
-                   evil-replace-state-map
-                   evil-insert-state-map
-                   evil-visual-state-map
-                   evil-emacs-state-map))
-      (define-key (eval map) "\C-n" nil)
-      (define-key (eval map) "\C-p" nil)
-      (define-key (eval map) "\C-a" nil)
-      (define-key (eval map) "\C-e" nil)
-      (define-key (eval map) "\C-f" nil)
-      (define-key (eval map) "\C-b" nil)
-      (define-key (eval map) "\C-y" nil)
-      (define-key (eval map) "\C-k" nil)
-      (define-key (eval map) "\C-u" nil)
-      (define-key (eval map) "\C-d" nil)
-      ;; (define-key (eval map) "\C-z" nil)
-      (define-key (eval map) "\M-." nil)
-      ;; (define-key (eval map) "\C-w" nil)
-      ;; (define-key (eval map) (kbd "SPC") nil)
-      ;; (define-key (eval map) (kbd "RET") nil)
-      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
-      )
-    )
-  (eval-after-load "evil-maps"
-    (dolist (map '(
-                   evil-insert-state-map
-                   ))
-      (define-key (eval map) "\C-i" nil)
-      (define-key (eval map) "\C-o" nil)
-      (define-key (eval map) "\C-w" nil)
-      (define-key (eval map) "\C-v" nil)
-      )
-    )
-  (setq evil-disable-insert-state-bindings t)
-  (evil-mode 1))
+;; ;; evil
+;; (use-package evil
+;;   ;; :disabled
+;;   :init
+;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(evil-motion-state-map
+;;                    evil-normal-state-map
+;;                    evil-operator-state-map
+;;                    evil-replace-state-map
+;;                    evil-insert-state-map
+;;                    evil-visual-state-map
+;;                    evil-emacs-state-map))
+;;       (define-key (eval map) "\C-n" nil)
+;;       (define-key (eval map) "\C-p" nil)
+;;       (define-key (eval map) "\C-a" nil)
+;;       (define-key (eval map) "\C-e" nil)
+;;       (define-key (eval map) "\C-f" nil)
+;;       (define-key (eval map) "\C-b" nil)
+;;       (define-key (eval map) "\C-y" nil)
+;;       (define-key (eval map) "\C-k" nil)
+;;       (define-key (eval map) "\C-u" nil)
+;;       (define-key (eval map) "\C-d" nil)
+;;       ;; (define-key (eval map) "\C-z" nil)
+;;       (define-key (eval map) "\M-." nil)
+;;       ;; (define-key (eval map) "\C-w" nil)
+;;       ;; (define-key (eval map) (kbd "SPC") nil)
+;;       ;; (define-key (eval map) (kbd "RET") nil)
+;;       (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+;;       )
+;;     )
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(
+;;                    evil-insert-state-map
+;;                    ))
+;;       (define-key (eval map) "\C-i" nil)
+;;       (define-key (eval map) "\C-o" nil)
+;;       (define-key (eval map) "\C-w" nil)
+;;       (define-key (eval map) "\C-v" nil)
+;;       )
+;;     )
+;;   (setq evil-disable-insert-state-bindings t)
+;;   (evil-mode 1))
 
-(use-package evil-collection
-  ;; :disabled
-  :after evil
-  :config
-  (evil-collection-init))
+;; (use-package evil-collection
+;;   ;; :disabled
+;;   :after evil
+;;   :config
+;;   (evil-collection-init))
 
 ;; Use Ibuffer for Buffer List
 (use-package ibuffer
@@ -646,6 +646,7 @@
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
+         ("C-s" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s m" . consult-multi-occur)
          ("M-s k" . consult-keep-lines)
@@ -1171,19 +1172,6 @@
 ;; ;; (add-hook 'go-mode-hook #'lsp-deferred)
 ;; (add-hook 'go-mode-hook 'lsp)
 
-;; ;; C/C++
-;; (add-hook 'c-mode-hook 'lsp)
-;; (add-hook 'c++-mode-hook 'lsp)
-;; (define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
-;; ;; (eval-after-load "c"
-;; ;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
-;; ;;           ))
-
-;; ;; (setq c-mode-hook
-;; ;;       '(lambda ()
-;; ;;          (gtags-mode 1)
-;; ;;          ))
-
 ;; ;; python
 ;; (add-hook 'python-mode-hook 'lsp)
 
@@ -1191,45 +1179,85 @@
 ;; (add-hook 'shell-mode-hook 'lsp)
 ;; (add-hook 'sh-mode-hook 'lsp)
 
-;; ;; lsp
-;; ;; =================================================
-;; ;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
-;; ;; =================================================
-;; ;; = + bash                                        =
-;; ;; =   > `npm i -g bash-language-server'           =
-;; ;; = + python                                      =
-;; ;; =   > `pip install python-language-server[all]' =
-;; ;; = + ruby                                        =
-;; ;; =   > `gem install solargraph'                  =
-;; ;; = + java                                        =
-;; ;; =   > `(use-package lsp-java)'                  =
-;; ;; = + c/c++                                       =
-;; ;; =   > `sudo pacman -S ccls'                     =
-;; ;; = + go                                          =
-;; ;; =   > `sudo pacman -S gopls'                    =
-;; ;; =================================================
-;; ;; The palantir python-language-server (pyls) is unmaintained;
-;; ;; a maintained fork is the python-lsp-server (pylsp) project;
-;; ;; you can install it with pip via: pip install python-lsp-server
-;; (use-package lsp-mode
-;;   :defer t
-;;   :commands lsp
-;;   :hook (
-;;          ((java-mode python-mode go-mode rust-mode
-;;           js-mode js2-mode typescript-mode web-mode
-;;           c-mode c++-mode objc-mode) . lsp-deferred)
-;;          (lsp-mode . lsp-enable-which-key-integration)
-;;          )
-;;   :bind (:map lsp-mode-map
-;;               ;; ("C-M-l" . lsp-format-buffer)
-;;               ("C-M-l" . lsp-format-region)
-;;               ("M-RET" . lsp-ui-sideline-apply-code-actions)
-;;               ("M-RET" . lsp-execute-code-action))
-;;   :config
-;;   (setq lsp-completion-enable-additional-text-edit nil
-;;         lsp-enable-symbol-highlighting nil
-;;         lsp-headerline-breadcrumb-enable nil)
-;;   )
+;; lsp
+;; =================================================
+;; = LSP-MODE SERVERS INSTALLATION INSTRUCTIONS    =
+;; =================================================
+;; = + bash                                        =
+;; =   > `npm i -g bash-language-server'           =
+;; = + python                                      =
+;; =   > `pip install python-language-server[all]' =
+;; = + ruby                                        =
+;; =   > `gem install solargraph'                  =
+;; = + java                                        =
+;; =   > `(use-package lsp-java)'                  =
+;; = + c/c++                                       =
+;; =   > `sudo pacman -S ccls'                     =
+;; = + go                                          =
+;; =   > `sudo pacman -S gopls'                    =
+;; =================================================
+;; The palantir python-language-server (pyls) is unmaintained;
+;; a maintained fork is the python-lsp-server (pylsp) project;
+;; you can install it with pip via: pip install python-lsp-server
+(use-package lsp-mode
+  :defer t
+  :commands lsp
+  :hook (
+         ((java-mode python-mode go-mode rust-mode
+          js-mode js2-mode typescript-mode web-mode
+          c-mode c++-mode objc-mode) . lsp-deferred)
+         (lsp-mode . lsp-enable-which-key-integration)
+         )
+  :bind (:map lsp-mode-map
+              ;; ("C-M-l" . lsp-format-buffer)
+              ("C-M-l" . lsp-format-region)
+              ("M-RET" . lsp-ui-sideline-apply-code-actions)
+              ("M-RET" . lsp-execute-code-action))
+  :config
+  (setq lsp-completion-enable-additional-text-edit nil
+        lsp-enable-symbol-highlighting nil
+        lsp-headerline-breadcrumb-enable nil)
+  )
+
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  ;; sideline
+  (setq lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-code-actions t
+        lsp-ui-sideline-update-mode 'line
+        lsp-ui-sideline-show-hover nil
+        lsp-ui-sideline-delay 0.1
+        )
+  ;; peek
+  (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
+  (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
+  ;; doc
+  (if (display-graphic-p)
+      (setq lsp-ui-doc-enable nil)
+    (setq lsp-ui-doc-enable nil)
+    )
+  (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
+        lsp-ui-doc-delay 1        ;; 显示文档的延迟
+        ))
+
+;; C/C++
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
+(define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
+;; (eval-after-load "c"
+;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
+;;           ))
+;; (setq c-mode-hook
+;;       '(lambda ()
+;;          (gtags-mode 1)
+;;          ))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
 
 ;; (use-package lsp-java
 ;;   :after lsp-mode
@@ -1240,28 +1268,6 @@
 ;;   ;; lsp-install-server --> jdtls
 ;;   (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
 ;;   (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
-
-;; (use-package lsp-ui
-;;   :hook (lsp-mode . lsp-ui-mode)
-;;   :config
-;;   ;; sideline
-;;   (setq lsp-ui-sideline-show-diagnostics t
-;;         lsp-ui-sideline-show-code-actions t
-;;         lsp-ui-sideline-update-mode 'line
-;;         lsp-ui-sideline-show-hover nil
-;;         lsp-ui-sideline-delay 0.1
-;;         )
-;;   ;; peek
-;;   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;;   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-;;   ;; doc
-;;   (if (display-graphic-p)
-;;       (setq lsp-ui-doc-enable nil)
-;;     (setq lsp-ui-doc-enable nil)
-;;     )
-;;   (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
-;;         lsp-ui-doc-delay 1        ;; 显示文档的延迟
-;;         ))
 
 ;; ;; pdf
 ;; (use-package pdf-tools
