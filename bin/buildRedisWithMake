@@ -3,5 +3,17 @@
 # Bear is a tool that generates a compilation database for clang tooling.
 # sps bear
 
-cd ~/workspace/redis
-bear -- make
+# cd ~/workspace/redis
+# bear -- make
+
+# using compiledb
+# Tool for generating Clang's JSON Compilation Database file for GNU make-based build systems.
+# https://github.com/nickdiego/compiledb
+pip install compiledb
+compiledb make
+
+make CFLAGS="-g -O0"
+
+# w3cschool:
+# Redis设计与实现(第二版)
+# https://www.w3cschool.cn/hdclil/cnv2lozt.html

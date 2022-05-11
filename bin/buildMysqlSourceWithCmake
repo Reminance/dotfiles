@@ -23,3 +23,8 @@ sps rpcsvc-proto
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 .. -DWITH_BOOST=../dependency/boost_1_73_0
 
 extra: brew install openssl
+
+
+MySQL Internals Manual  /  A Guided Tour Of The MySQL Source Code
+mysql源码阅读指引
+https://dev.mysql.com/doc/internals/en/guided-tour.html
