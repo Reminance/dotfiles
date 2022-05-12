@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/sh
 git remote -v || exit 1
 echo
 if [ ! -s ~/github.token ]; then echo -e "token not exists\n";exit 1; fi

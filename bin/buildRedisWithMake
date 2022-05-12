@@ -1,4 +1,12 @@
-#!/usr/bin/bash
+#!/bin/sh
+
+# git repo
+# git clone https://ghproxy.com/https://github.com/redis/redis.git
+
+# my annotated version repo
+# https://github.com/Reminance/redis-annotated
+# add official remmote
+# git remote add redis-official https://ghproxy.com/https://github.com/redis/redis.git
 
 # Bear is a tool that generates a compilation database for clang tooling.
 # sps bear
