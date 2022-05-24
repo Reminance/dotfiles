@@ -163,7 +163,9 @@
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "at" 'org-todo-list)
-(define-key leader-key "e" 'mu4e)
+(global-set-key (kbd "M-L") 'org-agenda-list)
+(global-set-key (kbd "M-T") 'org-todo-list)
+;; (define-key leader-key "e" 'mu4e)
 
 (defun my/org-narrow-forward ()
   "Move to the next subtree at same level, and narrow to it."

@@ -66,12 +66,26 @@ map('n', '<Leader>Sf', '<cmd>lua require("spectre").open_file_search()<CR>', opt
 map('n', '<M-S-f>', '<cmd>Telescope live_grep<cr>', options)
 map('n', '<M-S-o>', '<cmd>Telescope find_files theme=dropdown previewer=false<cr>', options) -- theme: default(null) dropdown cursor ivy
 map('n', '<M-S-e>', '<cmd>Telescope buffers<cr>', options)
+-- map('n', '<M-S-e>', ':lua require("telescope-delete-buf").my_buffer()<cr>', options)
 map('n', '<M-S-h>', '<cmd>Telescope help_tags<cr>', options)
 require('telescope').setup{
   defaults = {
     mappings = {
       i = {
         ["<esc>"] = "close"
+      }
+    }
+  },
+   pickers = {
+    buffers = {
+      show_all_buffers = true,
+      sort_lastused = true,
+      theme = "dropdown",
+      previewer = false,
+      mappings = {
+        i = {
+          ["<c-k>"] = "delete_buffer",
+        }
       }
     }
   }

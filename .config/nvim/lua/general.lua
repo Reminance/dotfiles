@@ -86,16 +86,22 @@ set tags=tags;/
 " nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
 
 " Cursor Movement
-inoremap <C-b> <Left>
-inoremap <C-f> <Right>
-inoremap <C-a> <C-o>I
-inoremap <C-e> <C-o>$
-cnoremap <C-b> <Left>
-cnoremap <C-f> <Right>
-inoremap <C-g> <Esc>
-map <C-g> <Esc>
 inoremap <C-n> <Down>
 inoremap <C-p> <Up>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <M-b> <S-Left>
+inoremap <M-f> <S-Right>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+cnoremap <C-b> <Left>
+cnoremap <C-f> <Right>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+inoremap <C-g> <Esc>
+map <C-g> <Esc>
 
 " Don't move on *
 nnoremap <silent> * mm*`m
@@ -199,6 +205,7 @@ nnoremap <Leader>q :bd<CR>
 " switching buffer
 nnoremap <Leader><Left> :bp<CR>
 nnoremap <Leader><Right> :bn<CR>
+nnoremap <C-x>k :bd<CR>
 
 " terminal mode
 tnoremap <Esc> <C-\><C-n>
