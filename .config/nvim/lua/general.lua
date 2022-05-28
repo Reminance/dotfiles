@@ -170,6 +170,8 @@ nnoremap <Leader>vv ^vg_
 vnoremap . :normal .<CR>
 " Replace all is aliased to R.
 nnoremap R :%s//g<Left><Left>
+" count the number of occurrences of a word 
+nnoremap <Leader>o :%s///ng<Left><Left><Left><Left>
 
 " Window Management
 nnoremap <M-h> <Esc><C-w>h
