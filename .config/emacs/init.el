@@ -89,51 +89,6 @@
 (global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
 
-;; mark manipulation
-;; (defun marker-is-point-p (marker)
-;;   "Test if MARKER is current point."
-;;   (and (eq (marker-buffer marker) (current-buffer))
-;;        (= (marker-position marker) (point))))
-
-;; (defun push-mark-maybe ()
-;;   "Push mark onto `global-mark-ring' if mark head or tail is not current location."
-;;   (if (not global-mark-ring) (error "Global-mark-ring empty")
-;;     (unless (or (marker-is-point-p (car global-mark-ring))
-;;                 (marker-is-point-p (car (reverse global-mark-ring))))
-;;       (push-mark))))
-
-;; (defun backward-global-mark ()
-;;   "Use `pop-global-mark', pushing current point if not on ring."
-;;   (interactive)
-;;   (push-mark-maybe)
-;;   (when (marker-is-point-p (car global-mark-ring))
-;;     (call-interactively 'pop-global-mark))
-;;   (call-interactively 'pop-global-mark))
-
-;; (defun forward-global-mark ()
-;;   "Hack `pop-global-mark' to go in reverse, pushing current point if not on ring."
-;;   (interactive)
-;;   (push-mark-maybe)
-;;   (setq global-mark-ring (nreverse global-mark-ring))
-;;   (when (marker-is-point-p (car global-mark-ring))
-;;     (call-interactively 'pop-global-mark))
-;;   (call-interactively 'pop-global-mark)
-;;   (setq global-mark-ring (nreverse global-mark-ring)))
-
-(defun unpop-to-mark-command ()
-  "Unpop off mark ring.  Does nothing if mark ring is empty."
-  (interactive)
-      (when mark-ring
-        (setq mark-ring (cons (copy-marker (mark-marker)) mark-ring))
-        (set-marker (mark-marker) (car (last mark-ring)) (current-buffer))
-        (when (null (mark t)) (ding))
-        (setq mark-ring (nbutlast mark-ring))
-        (goto-char (marker-position (car (last mark-ring))))))
-
-(global-set-key "\M-;" (lambda() (interactive) (push-mark)))
-(global-set-key [C-M-left] (quote pop-to-mark-command))
-(global-set-key [C-M-right] (quote unpop-to-mark-command))
-
 ;; dired alternate open(avoid of too many buffers)
 (put 'dired-find-alternate-file 'disabled nil)
 (add-hook 'dired-mode-hook
@@ -501,7 +456,8 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
+;; (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+(global-set-key (kbd "C-x C-r") 'fzf-recentf)
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
@@ -509,7 +465,11 @@
   (savehist-mode))
 
 ;; fzf
-(use-package fzf)
+(use-package fzf
+  :bind (("M-O" . fzf)))
+
+;; rg
+(use-package rg)
 
 ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
 
@@ -648,7 +608,6 @@
          ("M-s G" . consult-git-grep)
          ("M-s r" . consult-ripgrep)
          ("M-s l" . consult-line)
-         ("C-s" . consult-line)
          ("M-s L" . consult-line-multi)
          ("M-s m" . consult-multi-occur)
          ("M-s k" . consult-keep-lines)
@@ -706,6 +665,8 @@
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key (kbd "M-."))
+
+  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number --hidden -g \"!.git\" .")
 
   ;; Optionally configure the narrowing key.
   ;; Both < and C-+ work reasonably well.
