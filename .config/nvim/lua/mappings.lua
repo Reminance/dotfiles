@@ -231,16 +231,16 @@ nnoremap <silent> <F8> <Cmd>lua require'dap'.step_over()<CR>
 nnoremap <silent> <F9> <Cmd>lua require'dap'.continue()<CR>
 nnoremap <silent> <F7> <Cmd>lua require'dap'.step_into()<CR>
 nnoremap <silent> <F6> <Cmd>lua require'dap'.step_out()<CR>
-nnoremap <silent> <Leader>b <Cmd>lua require'dap'.toggle_breakpoint()<CR>
-nnoremap <silent> <Leader>B <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
-" nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <Leader>db <Cmd>lua require'dap'.toggle_breakpoint(); require'dap.dap-util'.store_breakpoints(true)<CR>
+nnoremap <silent> <Leader>dB <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
 nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>
-nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
+" nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+"" nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
 ]]
 
 -- telescope-dap.nvim
+-- map('n', '<Leader>db', "<cmd>lua require'telescope'.extensions.dap.configurations{}<CR>", options)  -- Replace in Project
 map('n', '<Leader>dc', "<cmd>lua require'telescope'.extensions.dap.commands{}<CR>", options)  -- Replace in Project
-map('n', '<Leader>db', "<cmd>lua require'telescope'.extensions.dap.configurations{}<CR>", options)  -- Replace in Project
 map('n', '<Leader>dl', "<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<CR>", options)  -- Replace in Project
 map('n', '<Leader>dv', "<cmd>lua require'telescope'.extensions.dap.variables{}<CR>", options)  -- Replace in Project
 map('n', '<Leader>df', "<cmd>lua require'telescope'.extensions.dap.frames{}<CR>", options)  -- Replace in Project
