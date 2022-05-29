@@ -40,7 +40,25 @@ return require('packer').startup {
     use 'nvim-lua/plenary.nvim'
     use 'nvim-lua/popup.nvim'
     use 'mhinz/vim-startify'
-    use 'justinmk/vim-sneak'
+    -- use 'justinmk/vim-sneak'
+    use {
+      'phaazon/hop.nvim',
+      branch = 'v1', -- optional but strongly recommended
+      config = function()
+        -- you can configure Hop the way you like here; see :h hop-config
+        require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+      end
+    }
+    use {
+      "folke/which-key.nvim",
+      config = function()
+        require("which-key").setup {
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        }
+      end
+    }
     use 'majutsushi/tagbar'
     use 'Yggdroot/indentLine'
     use 'junegunn/vim-easy-align'
@@ -98,6 +116,11 @@ return require('packer').startup {
     use 'onsails/lspkind-nvim'
     use 'ray-x/lsp_signature.nvim'
     use 'arkav/lualine-lsp-progress'
+
+    -- nvim-dap
+    use "nvim-telescope/telescope-dap.nvim"
+    use { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} }
+    use "theHamsta/nvim-dap-virtual-text"
 
     -- completion
     use {

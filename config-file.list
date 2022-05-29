@@ -11,7 +11,7 @@ $HOME/dotfiles/.config/git/gitconfig.symlink
 $HOME/dotfiles/.config/i3/config
 $HOME/dotfiles/.config/i3status/config
 $HOME/dotfiles/.config/i3blocks/config
-$HOME/dotfiles/.config/nvim/init.vim
+$HOME/dotfiles/.config/nvim/init.lua
 $HOME/dotfiles/.config/emacs/init.el
 $HOME/dotfiles/.config/mycli/myclirc.symlink
 $HOME/dotfiles/.config/tmux/tmux.conf.symlink

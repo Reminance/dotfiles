@@ -7,9 +7,9 @@ local options = { noremap = true, silent = true }
 -- vim-startify
 map('n', '<Leader>\\', ':Startify<CR>', options)
 
--- vim-sneak
-map('n', 's', '<Plug>Sneak_s', {})
-map('n', 'S', '<Plug>Sneak_S', {})
+-- -- vim-sneak
+-- map('n', 's', '<Plug>Sneak_s', {})
+-- map('n', 'S', '<Plug>Sneak_S', {})
 
 -- vim-easy-align
 map('n', 'ga', '<Plug>EasyAlign', {})
@@ -95,8 +95,8 @@ require('telescope').setup{
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local opts = { noremap=true, silent=true }
 vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+vim.api.nvim_set_keymap('n', '[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+vim.api.nvim_set_keymap('n', ']e', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 -- vim.api.nvim_set_keymap('n', '<space>e', '<cmd>lua vim.diagnostic.open_float({ border = "rounded" })<CR>', opts)
 -- vim.api.nvim_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev({ border = "rounded" })<CR>', opts)
 -- vim.api.nvim_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next({ border = "rounded" })<CR>', opts)
@@ -220,6 +220,37 @@ map('n', '<Leader>tq', '<cmd>Trouble quickfix<cr>', options)  -- Quick Fix
 -- vsnip jump through snippets with <Tab>
 map("i", "<Tab>", [[vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']], { noremap = false, expr = true })
 map("s", "<Tab>", [[vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']], { noremap = false, expr = true })
-map( "i", "<S-Tab>", [[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']], { noremap = false, expr = true })
-map( "s", "<S-Tab>", [[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']], { noremap = false, expr = true })
+map("i", "<S-Tab>", [[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']], { noremap = false, expr = true })
+map("s", "<S-Tab>", [[vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']], { noremap = false, expr = true })
 
+-- nvim-dap
+vim.cmd[[
+nnoremap <silent> <F12> <Cmd>lua require'dap'.terminate()<CR>
+vnoremap <silent> <M-k> <Cmd>lua require("dapui").eval()<CR>
+nnoremap <silent> <F8> <Cmd>lua require'dap'.step_over()<CR>
+nnoremap <silent> <F9> <Cmd>lua require'dap'.continue()<CR>
+nnoremap <silent> <F7> <Cmd>lua require'dap'.step_into()<CR>
+nnoremap <silent> <F6> <Cmd>lua require'dap'.step_out()<CR>
+nnoremap <silent> <Leader>b <Cmd>lua require'dap'.toggle_breakpoint()<CR>
+nnoremap <silent> <Leader>B <Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>
+" nnoremap <silent> <Leader>lp <Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>
+nnoremap <silent> <Leader>dr <Cmd>lua require'dap'.repl.open()<CR>
+nnoremap <silent> <Leader>dl <Cmd>lua require'dap'.run_last()<CR>
+]]
+
+-- telescope-dap.nvim
+map('n', '<Leader>dc', "<cmd>lua require'telescope'.extensions.dap.commands{}<CR>", options)  -- Replace in Project
+map('n', '<Leader>db', "<cmd>lua require'telescope'.extensions.dap.configurations{}<CR>", options)  -- Replace in Project
+map('n', '<Leader>dl', "<cmd>lua require'telescope'.extensions.dap.list_breakpoints{}<CR>", options)  -- Replace in Project
+map('n', '<Leader>dv', "<cmd>lua require'telescope'.extensions.dap.variables{}<CR>", options)  -- Replace in Project
+map('n', '<Leader>df', "<cmd>lua require'telescope'.extensions.dap.frames{}<CR>", options)  -- Replace in Project
+
+-- hop.nvim
+-- place this in one of your configuration file(s)
+vim.api.nvim_set_keymap('n', '<leader>hw', "<cmd>HopWord<cr>", {})
+-- vim.api.nvim_set_keymap('n', '<leader>hl', "<cmd>HopLine<cr>", {})
+-- vim.api.nvim_set_keymap('n', '<leader>hc', "<cmd>HopChar1<cr>", {})
+-- vim.api.nvim_set_keymap('n', '<leader>hC', "<cmd>HopChar2<cr>", {})
+-- vim.api.nvim_set_keymap('n', '<leader>hp', "<cmd>HopPattern<cr>", {})
+vim.api.nvim_set_keymap('n', 's', "<cmd>HopChar2<cr>", {})
+vim.api.nvim_set_keymap('n', 'S', "<cmd>HopWord<cr>", {})
