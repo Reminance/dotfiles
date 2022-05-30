@@ -150,3 +150,12 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 }
+
+# cat data.csv | sed 's/,/ ,/g' | column -t -s, | less -S
+# function pretty_csv_sh {
+#     column -t -s, -n "$@" | less -F -S -X -K
+# }
+
+function pretty_csv_sh {
+    perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
+}
