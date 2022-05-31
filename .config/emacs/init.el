@@ -1387,6 +1387,7 @@
 
 ;; 设置光标样式
 ;; (setq-default cursor-type t)
+(setq-default cursor-type 'bar)
 
 ;; 高亮当前行
 ;; (global-hl-line-mode 1)
