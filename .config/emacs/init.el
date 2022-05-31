@@ -497,7 +497,7 @@
 
 ;; fzf
 (use-package fzf
-  :bind (("M-O" . fzf)))
+  :bind (("C-M-o" . fzf)))
 
 ;; rg
 (use-package rg)
