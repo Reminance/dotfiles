@@ -46,7 +46,7 @@
 ;; 关闭字体缓存gc
 (setq inhibit-compacting-font-caches nil)
 ;; 关闭烦人的提示
-(setq ring-bell-function 'ignore blink-cursor-mode nil)
+(setq ring-bell-function 'ignore)
 
 ;; 关闭自动调节行高
 (setq auto-window-vscroll nil)
@@ -1388,6 +1388,7 @@
 ;; 设置光标样式
 ;; (setq-default cursor-type t)
 (setq-default cursor-type 'bar)
+(blink-cursor-mode 1)
 
 ;; 高亮当前行
 ;; (global-hl-line-mode 1)
