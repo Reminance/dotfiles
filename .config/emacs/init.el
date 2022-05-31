@@ -258,6 +258,36 @@
 (global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
 (global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
 
+;; Use region as the isearch text
+(defun jrh-isearch-with-region ()
+  "Use region as the isearch text."
+  (when mark-active
+    (let ((region (funcall region-extract-function nil)))
+      (deactivate-mark)
+      (isearch-push-state)
+      (isearch-yank-string region))))
+(add-hook 'isearch-mode-hook #'jrh-isearch-with-region)
+
+(defun toggle-camelcase-underscores (first-lower-p)
+  "Toggle between camelcase and underscore notation for the symbol at point.  FIRST-LOWER-P."
+  (interactive "P")
+  (save-excursion
+    (let* ((bounds (bounds-of-thing-at-point 'symbol))
+           (start (car bounds))
+           (end (cdr bounds))
+           (currently-using-underscores-p (progn (goto-char start)
+                                                 (re-search-forward "_" end t))))
+      (if currently-using-underscores-p
+          (progn
+            (replace-string "_" " " nil start end)
+            (upcase-initials-region start end)
+            (replace-string " " "" nil start end)
+            (when first-lower-p
+              (downcase-region start (1+ start))))
+        (replace-regexp "\\([A-Z]\\)" "_\\1" nil (1+ start) end)
+        (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
+(global-set-key (kbd "M-U") (lambda () (interactive) (toggle-camelcase-underscores nil)))
+
 ;; split window and change focus
 (defadvice split-window (after move-point-to-new-window activate)
   "Move the point to the newly created window after splitting."
