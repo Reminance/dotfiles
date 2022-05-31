@@ -375,57 +375,57 @@
          ("C-M-S-<right>" . enlarge-window-horizontally)
          ))
 
-;; ;; evil
-;; (use-package evil
-;;   ;; :disabled
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(evil-motion-state-map
-;;                    evil-normal-state-map
-;;                    evil-operator-state-map
-;;                    evil-replace-state-map
-;;                    evil-insert-state-map
-;;                    evil-visual-state-map
-;;                    evil-emacs-state-map))
-;;       (define-key (eval map) "\C-n" nil)
-;;       (define-key (eval map) "\C-p" nil)
-;;       (define-key (eval map) "\C-a" nil)
-;;       (define-key (eval map) "\C-e" nil)
-;;       (define-key (eval map) "\C-f" nil)
-;;       (define-key (eval map) "\C-b" nil)
-;;       (define-key (eval map) "\C-y" nil)
-;;       (define-key (eval map) "\C-k" nil)
-;;       (define-key (eval map) "\C-u" nil)
-;;       (define-key (eval map) "\C-d" nil)
-;;       ;; (define-key (eval map) "\C-z" nil)
-;;       (define-key (eval map) "\M-." nil)
-;;       ;; (define-key (eval map) "\C-w" nil)
-;;       ;; (define-key (eval map) (kbd "SPC") nil)
-;;       ;; (define-key (eval map) (kbd "RET") nil)
-;;       (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
-;;       )
-;;     )
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(
-;;                    evil-insert-state-map
-;;                    ))
-;;       (define-key (eval map) "\C-i" nil)
-;;       (define-key (eval map) "\C-o" nil)
-;;       (define-key (eval map) "\C-w" nil)
-;;       (define-key (eval map) "\C-v" nil)
-;;       )
-;;     )
-;;   (setq evil-disable-insert-state-bindings t)
-;;   (evil-mode 1))
+;; evil
+(use-package evil
+  ;; :disabled
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-normal-state-map
+                   evil-operator-state-map
+                   evil-replace-state-map
+                   evil-insert-state-map
+                   evil-visual-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-n" nil)
+      (define-key (eval map) "\C-p" nil)
+      (define-key (eval map) "\C-a" nil)
+      (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\C-f" nil)
+      (define-key (eval map) "\C-b" nil)
+      (define-key (eval map) "\C-y" nil)
+      (define-key (eval map) "\C-k" nil)
+      (define-key (eval map) "\C-u" nil)
+      (define-key (eval map) "\C-d" nil)
+      ;; (define-key (eval map) "\C-z" nil)
+      (define-key (eval map) "\M-." nil)
+      ;; (define-key (eval map) "\C-w" nil)
+      ;; (define-key (eval map) (kbd "SPC") nil)
+      ;; (define-key (eval map) (kbd "RET") nil)
+      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+      )
+    )
+  (eval-after-load "evil-maps"
+    (dolist (map '(
+                   evil-insert-state-map
+                   ))
+      (define-key (eval map) "\C-i" nil)
+      (define-key (eval map) "\C-o" nil)
+      (define-key (eval map) "\C-w" nil)
+      (define-key (eval map) "\C-v" nil)
+      )
+    )
+  (setq evil-disable-insert-state-bindings t)
+  (evil-mode 1))
 
-;; (use-package evil-collection
-;;   ;; :disabled
-;;   :after evil
-;;   :config
-;;   (evil-collection-init))
+(use-package evil-collection
+  ;; :disabled
+  :after evil
+  :config
+  (evil-collection-init))
 
 ;; Use Ibuffer for Buffer List
 (use-package ibuffer
