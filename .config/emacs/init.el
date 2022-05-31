@@ -110,6 +110,7 @@
 ;; (global-unset-key (kbd "M-SPC"))
 (global-unset-key (kbd "C-z"))
 (define-prefix-command 'leader-key)
+;; (global-set-key (kbd "M-SPC") 'leader-key)
 (global-set-key (kbd "C-\\") 'leader-key)
 (define-key leader-key (kbd "<f5>") 'revert-buffer)
 (define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
