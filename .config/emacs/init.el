@@ -74,7 +74,7 @@
 (setq eshell-history-file-name (expand-file-name "var/eshell/history" user-emacs-directory))
 (setq recentf-save-file  (expand-file-name "var/recentf" user-emacs-directory))
 ;; 自动刷新被修改过的文件
-(global-auto-revert-mode +1)
+(global-auto-revert-mode t)
 (setq desktop-dirname  (expand-file-name "var/desktop-save" user-emacs-directory))
 ;; 设置自动保存路径前缀
 (setq auto-save-list-file-prefix  (expand-file-name "var/auto-save-list/.saves-" user-emacs-directory))
@@ -184,7 +184,7 @@
 
 ;; line number column
 ;; (setq display-line-numbers-type 'relative)
-(global-display-line-numbers-mode +1)
+(global-display-line-numbers-mode t)
 
 ;; show in mode line
 ;; show modeline column number
@@ -193,7 +193,14 @@
 (size-indication-mode 1)
 
 ;; 选中文本后输入会覆盖
-(delete-selection-mode +1)
+(delete-selection-mode t)
+
+;; setting initial frame size
+(setq initial-frame-alist
+       '((height . 55)
+         (width . 160)
+         (left . 10)
+         (top . 40)))
 
 (let ((no-border '(internal-border-width . 0)))
   (add-to-list 'default-frame-alist no-border)
@@ -458,7 +465,7 @@
 (use-package projectile
   :ensure t
   :config
-  (projectile-mode +1)
+  (projectile-mode t)
   ;; Recommended keymap prefix on macOS
   ;; (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   ;; Recommended keymap prefix on Windows/Linux
@@ -970,6 +977,10 @@
 (global-set-key (kbd "C-c l") #'org-store-link)
 (global-set-key (kbd "C-c a") #'org-agenda)
 (global-set-key (kbd "C-c c") #'org-capture)
+
+;; Type C-h v org-agenda-window-setup for other options.
+(setq org-agenda-window-setup 'only-window)
+(setq org-agenda-restore-windows-after-quit t)
 
 (setq org-directory "~/doc/org/")
 (setq org-capture-templates
@@ -1648,12 +1659,12 @@
 ;;   :hook (prog-mode . smartparens-mode))
 
 ;; 如果不喜欢ivy可以用这个包替换
-;; (use-package selectrum :config (selectrum-mode +1))
+;; (use-package selectrum :config (selectrum-mode t))
 
 ;; (use-package selectrum-prescient
 ;;     :config
-;;     (prescient-persist-mode +1)
-;;     (selectrum-prescient-mode +1))
+;;     (prescient-persist-mode t)
+;;     (selectrum-prescient-mode t))
 
 ;; for hydra
 ;; (use-package hydra :defer 0)
@@ -1665,7 +1676,7 @@
 ;;             :fetcher github
 ;;             :repo "Ladicle/hydra-posframe"))
 ;;   :hook (after-init . (lambda ()
-;;                         (hydra-posframe-mode +1) ) ))
+;;                         (hydra-posframe-mode t) ) ))
 
 ;; ;; lsp-java
 ;; (use-package lsp-java
