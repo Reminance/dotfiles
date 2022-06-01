@@ -1123,6 +1123,9 @@
   (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
                     (setq-default undo-tree-visualizer-diff t)))
 
+;; ;; Failed to verify signature queue-0.2.el.sig: No public key for 066DAFCB81E42C40 created at 2019-09-22T01:54:25+0800 using RSA
+;; (setq package-check-signature nil)
+
 (use-package zenburn-theme
   :config
   (setq zenburn-override-colors-alist
