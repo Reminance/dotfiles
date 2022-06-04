@@ -103,6 +103,70 @@
                          (join-line)
                          ))
 
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (setq col (current-column))
+  (beginning-of-line) (setq start (point))
+  (end-of-line) (forward-char) (setq end (point))
+  (let ((line-text (delete-and-extract-region start end)))
+    (forward-line n)
+    (insert line-text)
+    ;; restore point to original column in moved line
+    (forward-line -1)
+    (forward-char col)))
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
+(global-set-key (kbd "M-S-<up>") 'move-line-up)
+(global-set-key (kbd "M-S-<down>") 'move-line-down)
+
+;;  // -*- compile-command: "gcc -Wall -o test test.c && ./test" -*-
+;; (require 'compile)
+(add-hook 'c-mode-hook
+          (lambda ()
+	        (unless (file-exists-p "Makefile")
+	          (set (make-local-variable 'compile-command)
+                   ;; emulate make's .c.o implicit pattern rule, but with
+                   ;; different defaults for the CC, CPPFLAGS, and CFLAGS
+                   ;; variables:
+                   ;; $(CC) -c -o $@ $(CPPFLAGS) $(CFLAGS) $<
+		           (let ((file (file-name-nondirectory buffer-file-name)))
+                     (format "%s -o %s %s %s %s && ./%s"
+                             (or (getenv "CC") "gcc")
+                             (file-name-sans-extension file)
+                             (or (getenv "CPPFLAGS") "-O0")
+                             (or (getenv "CFLAGS") "-Wall -Werror -Wextra -pedantic -g")  ;; (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+			                 file
+                             (file-name-sans-extension file)
+                             ))))))
+(add-hook 'go-mode-hook
+          (lambda ()
+	        (set (make-local-variable 'compile-command)
+                 (format "go run %s" (file-name-nondirectory buffer-file-name))
+                 )))
+(add-hook 'python-mode-hook
+          (lambda ()
+	        (set (make-local-variable 'compile-command)
+                 (format "python %s" (file-name-nondirectory buffer-file-name))
+                 )))
+(add-hook 'sh-mode-hook
+          (lambda ()
+	        (set (make-local-variable 'compile-command)
+                 (format "sh %s" (file-name-nondirectory buffer-file-name))
+                 )))
+(add-hook 'java-mode-hook
+          (lambda ()
+	        (set (make-local-variable 'compile-command)
+                 (format "javac %s && java %s" (file-name-nondirectory buffer-file-name) (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+                 )))
+
+                   
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
 ;;----------------------------------------------------------------------------
@@ -357,6 +421,13 @@
 
 ;; Restore old window configurations
 (winner-mode 1)
+
+(use-package quickrun)
+
+(use-package org-num
+  :load-path "lisp/"
+  :after org
+  :hook (org-mode . org-num-mode))
 
 (use-package windmove
   :config (use-package buffer-move)
@@ -842,29 +913,6 @@
 
 ;; (use-package sudo-edit)
 
-;; (use-package quickrun
-;;   :commands(quickrun)
-;;   :bind (:map leader-key
-;;               ("r" . #'quickrun))
-;;   :init (setq quickrun-timeout-seconds nil)
-;;   (setq quickrun-focus-p nil)
-;;   (setq quickrun-input-file-extension nil)
-;;   :config
-;;   (quickrun-add-command "python"
-;;     '((:command .
-;;                 "python3")
-;;       (:exec .
-;;              "%c %s")
-;;       (:tempfile .
-;;                  nil))
-;;     :default "python")
-;;   (quickrun-add-command "c++/c1z"
-;; 	'((:command . "g++")
-;;       (:exec    . ("%c -std=c++1z %o -o %e %s"
-;; 				   "%e %a"))
-;;       (:remove  . ("%e")))
-;; 	:default "c++"))
-
 ;; ;; try
 ;; (use-package try)
 
@@ -1167,25 +1215,25 @@
 ;;   )
 
 ;; ;; golang
-;; (use-package go-mode)
-;; ;; Go - lsp-mode
-;; ;; Set up before-save hooks to format buffer and add/delete imports.
-;; (defun lsp-go-save-hooks ()
-;;   "Go file before save, format and organize imports."
-;;   ;; (add-hook 'before-save-hook #'lsp-format-buffer t t) ;; don't auto format, in case of lsp remove unsed import before tmp save
-;;   (add-hook 'before-save-hook #'lsp-organize-imports t t))
-;; (add-hook 'go-mode-hook #'lsp-go-save-hooks)
+(use-package go-mode)
+;; Go - lsp-mode
+;; Set up before-save hooks to format buffer and add/delete imports.
+(defun lsp-go-save-hooks ()
+  "Go file before save, format and organize imports."
+  ;; (add-hook 'before-save-hook #'lsp-format-buffer t t) ;; don't auto format, in case of lsp remove unsed import before tmp save
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-save-hooks)
 
-;; ;; Start LSP Mode and YASnippet mode
-;; ;; (add-hook 'go-mode-hook #'lsp-deferred)
-;; (add-hook 'go-mode-hook 'lsp)
+;; Start LSP Mode and YASnippet mode
+;; (add-hook 'go-mode-hook #'lsp-deferred)
+(add-hook 'go-mode-hook 'lsp)
 
-;; ;; python
+;; ;; python  use lsp-pyright to setup lsp instead
 ;; (add-hook 'python-mode-hook 'lsp)
 
 ;; ;; bash
-;; (add-hook 'shell-mode-hook 'lsp)
-;; (add-hook 'sh-mode-hook 'lsp)
+(add-hook 'shell-mode-hook 'lsp)
+(add-hook 'sh-mode-hook 'lsp)
 
 ;; lsp
 ;; =================================================
@@ -1211,9 +1259,10 @@
   :defer t
   :commands lsp
   :hook (
-         ((java-mode python-mode go-mode rust-mode
-          js-mode js2-mode typescript-mode web-mode
-          c-mode c++-mode objc-mode) . lsp-deferred)
+         ((
+           python-mode go-mode rust-mode
+           js-mode js2-mode typescript-mode web-mode
+           c-mode c++-mode objc-mode) . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
          )
   :bind (:map lsp-mode-map
@@ -1241,13 +1290,14 @@
   (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
   (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
   ;; doc
-  (if (display-graphic-p)
-      (setq lsp-ui-doc-enable nil)
-    (setq lsp-ui-doc-enable nil)
-    )
-  (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
-        lsp-ui-doc-delay 1        ;; 显示文档的延迟
-        ))
+  ;; (if (display-graphic-p)
+  ;;     (setq lsp-ui-doc-enable t)
+  ;;   (setq lsp-ui-doc-enable nil)
+  ;;   )
+  ;; (setq lsp-ui-doc-position 'at-point        ;; 文档显示的位置
+  ;;       lsp-ui-doc-delay 0.1        ;; 显示文档的延迟
+  ;;       )
+  )
 
 ;; C/C++
 (add-hook 'c-mode-hook 'lsp)
@@ -1264,18 +1314,19 @@
 (use-package lsp-pyright
   :ensure t
   :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
 
 ;; (use-package lsp-java
 ;;   :after lsp-mode
 ;;   :if (executable-find "mvn")
 ;;   :init
 ;;   (use-package request :defer t)
-;;   :custom
+;;   ;; :custom
 ;;   ;; lsp-install-server --> jdtls
-;;   (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
-;;   (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/")))
+;;   ;; (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
+;;   ;; (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/"))
+;;   )
 
 ;; ;; pdf
 ;; (use-package pdf-tools
@@ -1401,8 +1452,7 @@
 ;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
 
 ;; 设置光标样式
-;; (setq-default cursor-type t)
-(setq-default cursor-type 'bar)
+(setq-default cursor-type t)
 (blink-cursor-mode 1)
 
 ;; 高亮当前行
@@ -1460,7 +1510,7 @@
 (defconst *is-windows* (eq system-type 'windows-nt))
 (when *is-mac*
   ;; (setq mac-command-modifier 'meta) ;; use command key as meta/alt
-  ;; (setq mac-option-modifier 'none) ;; use command key as meta/alt
+  ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
   ;; Make mouse wheel / trackpad scrolling less jerky
   (setq mouse-wheel-scroll-amount '(1
                                     ((shift) . 5)
@@ -1468,18 +1518,19 @@
   (dolist (multiple '("" "double-" "triple-"))
     (dolist (direction '("right" "left"))
       (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
-  (global-set-key (kbd "M-`") 'ns-next-frame)
-  (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-  (global-set-key (kbd "M-˙") 'ns-do-hide-others)
-  (with-eval-after-load 'nxml-mode
-    (define-key nxml-mode-map (kbd "M-h") nil))
-  ;; what describe-key reports for cmd-option-h
-  (global-set-key (kbd "M-ˍ") 'ns-do-hide-others))
+  ;; (global-set-key (kbd "M-`") 'ns-next-frame)
+  ;; (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+  ;; (global-set-key (kbd "M-˙") 'ns-do-hide-others)
+  ;; (with-eval-after-load 'nxml-mode
+  ;;   (define-key nxml-mode-map (kbd "M-h") nil))
+  ;; ;; what describe-key reports for cmd-option-h
+  ;; (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
+  )
 
-(when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-  ;; Command-Option-f to toggle fullscreen mode
-  ;; Hint: Customize `ns-use-native-fullscreen'
-  (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+;;   ;; Command-Option-f to toggle fullscreen mode
+;;   ;; Hint: Customize `ns-use-native-fullscreen'
+;;   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
 
 ;; 设置字体
 ;; (when *is-linux*
