@@ -575,7 +575,7 @@
 
 ;; fzf
 (use-package fzf
-  :bind (("M-o" . fzf)))
+  :bind (("M-O" . fzf)))
 
 ;; rg
 (use-package rg)
@@ -1509,7 +1509,7 @@
 (defconst *is-x11* (eq window-system 'x))
 (defconst *is-windows* (eq system-type 'windows-nt))
 (when *is-mac*
-  ;; (setq mac-command-modifier 'meta) ;; use command key as meta/alt
+  (setq mac-command-modifier 'meta) ;; use command key as meta/alt
   ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
   ;; Make mouse wheel / trackpad scrolling less jerky
   (setq mouse-wheel-scroll-amount '(1
