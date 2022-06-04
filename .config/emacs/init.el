@@ -32,6 +32,101 @@
 ;; git clone https://github.com/emacs-mirror/emacs.git
 
 ;;----------------------------------------------------------------------------
+;; Allow access from emacsclient
+;;----------------------------------------------------------------------------
+(add-hook 'after-init-hook
+          (lambda ()
+            (require 'server)
+            (unless (server-running-p)
+              (server-start))))
+
+;;----------------------------------------------------------------------------
+;; Variables configured via the interactive 'customize' interface
+;;----------------------------------------------------------------------------
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
+;; init message
+;; (setq-default initial-scratch-message
+;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
+
+;; 设置光标样式
+(setq-default cursor-type t)
+(blink-cursor-mode 1)
+
+;; 高亮当前行
+;; (global-hl-line-mode 1)
+
+;; Move cursor to end of current line
+;; Insert new line below current line
+;; it will also indent newline
+(global-set-key (kbd "<S-return>") (lambda ()
+                                     (interactive)
+                                     (end-of-line)
+                                     (newline-and-indent)))
+;; Move cursor to previous line
+;; Go to end of the line
+;; Insert new line below current line (So it actually insert new line above with indentation)
+;; it will also indent newline
+(global-set-key (kbd "<C-M-return>") (lambda ()
+                                       (interactive)
+                                       (previous-line)
+                                       (end-of-line)
+                                       (newline-and-indent)
+                                       ))
+
+(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
+(defconst *is-mac* (eq system-type 'darwin))
+(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
+(defconst *is-linux* (eq system-type 'gnu/linux))
+(defconst *is-x11* (eq window-system 'x))
+(defconst *is-windows* (eq system-type 'windows-nt))
+(when *is-mac*
+  (setq mac-command-modifier 'meta) ;; use command key as meta/alt
+  ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
+  ;; Make mouse wheel / trackpad scrolling less jerky
+  (setq mouse-wheel-scroll-amount '(1
+                                    ((shift) . 5)
+                                    ((control))))
+  (dolist (multiple '("" "double-" "triple-"))
+    (dolist (direction '("right" "left"))
+      (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
+  ;; (global-set-key (kbd "M-`") 'ns-next-frame)
+  ;; (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
+  ;; (global-set-key (kbd "M-˙") 'ns-do-hide-others)
+  ;; (with-eval-after-load 'nxml-mode
+  ;;   (define-key nxml-mode-map (kbd "M-h") nil))
+  ;; ;; what describe-key reports for cmd-option-h
+  ;; (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
+  )
+
+;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
+;;   ;; Command-Option-f to toggle fullscreen mode
+;;   ;; Hint: Customize `ns-use-native-fullscreen'
+;;   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+
+;; 设置字体
+;; (when *is-linux*
+;;   ;; "Fira Code Nerd Font Mono"
+;;   (set-face-attribute 'default nil
+;;                       :font (font-spec
+;;                              ;; :name "Iosevka"
+;;                              ;; :style "Regular"
+;;                              :size 15))
+;;   )
+;; (when *is-mac*
+;;   (set-face-attribute 'default nil
+;;                       :font (font-spec
+;;                              ;; :style "Regular"
+;;                              :size 12))
+;;   )
+(set-face-attribute 'default nil
+                    :font (font-spec
+                           :name "JetbrainsMono Nerd Font"
+                           :size 12))
+
+;;----------------------------------------------------------------------------
 ;; init variables
 ;;----------------------------------------------------------------------------
 
@@ -123,8 +218,8 @@
   "Move the current line down by N lines."
   (interactive "p")
   (move-line (if (null n) 1 n)))
-(global-set-key (kbd "M-S-<up>") 'move-line-up)
-(global-set-key (kbd "M-S-<down>") 'move-line-down)
+(global-set-key (kbd "C-S-<up>") 'move-line-up)
+(global-set-key (kbd "C-S-<down>") 'move-line-down)
 
 ;;  // -*- compile-command: "gcc -Wall -o test test.c && ./test" -*-
 ;; (require 'compile)
@@ -163,9 +258,10 @@
 (add-hook 'java-mode-hook
           (lambda ()
 	        (set (make-local-variable 'compile-command)
-                 (format "javac %s && java %s" (file-name-nondirectory buffer-file-name) (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
+                 (format "javac %s && java %s"
+                         (file-name-nondirectory buffer-file-name)
+                         (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
                  )))
-
                    
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
@@ -174,6 +270,11 @@
 ;; (global-unset-key (kbd "M-SPC"))
 (global-unset-key (kbd "C-z"))
 (define-prefix-command 'leader-key)
+
+;; M-s -- extra search utilities
+(global-set-key (kbd "M-s") 'meta-s-prefix)
+(define-prefix-command 'meta-s-prefix)
+
 ;; (global-set-key (kbd "M-SPC") 'leader-key)
 (global-set-key (kbd "C-\\") 'leader-key)
 (define-key leader-key (kbd "<f5>") 'revert-buffer)
@@ -199,8 +300,16 @@
   (widen)
   (org-backward-heading-same-level 1)
   (org-narrow-to-subtree))
-(global-set-key (kbd "C-c n n") (lambda () (interactive) (my/org-narrow-forward)))
-(global-set-key (kbd "C-c n p") (lambda () (interactive) (my/org-narrow-backward)))
+(global-set-key (kbd "C-c o n") (lambda () (interactive) (my/org-narrow-forward)))
+(global-set-key (kbd "C-c o p") (lambda () (interactive) (my/org-narrow-backward)))
+(global-set-key (kbd "C-c o SPC") 'org-toggle-narrow-to-subtree)
+
+;; recentf stuff
+(require 'recentf)
+(recentf-mode 1)
+(setq recentf-max-menu-items 25)
+;; (global-set-key (kbd "C-x C-r") 'recentf-open-files)
+;; (global-set-key (kbd "C-x C-r") 'fzf-recentf)
 
 ;;----------------------------------------------------------------------------
 ;; custom common function
@@ -216,17 +325,6 @@
         (message "proxy on."))
     (setq url-proxy-services nil)
     (message "proxy off.")))
-
-;; for using with i3 keybinding, like:
-;;     bindsym $mod+Ctrl+c exec "emacsclient -ne '(make-capture-frame)'"
-;; (use-package noflet)
-;; (defun make-capture-frame ()
-;;   "Create a new frame and run 'org-capture'."
-;;   (interactive)
-;;   (make-frame '((name . "capture")))
-;;   (select-frame-by-name "capture")
-;;   (delete-other-windows)
-;;   (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf))) (org-capture)))
 
 ;;----------------------------------------------------------------------------
 ;; basic configuation
@@ -307,7 +405,7 @@
 
 ;;;###autoload
 ;; Make frame transparency overridable
-(defvar my/frame-transparency '(98 . 98))
+(defvar my/frame-transparency '(96 . 96))
 (defun my/toggle-transparency ()
   "Toggle-transparency."
   (interactive)
@@ -324,11 +422,10 @@
 (set-frame-parameter (selected-frame) 'alpha my/frame-transparency)
 (add-to-list 'default-frame-alist `(alpha . ,my/frame-transparency))
 
-;;(global-set-key (kbd "M-C-7") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
-(global-set-key (kbd "C-M-7") (lambda () (interactive) (my/toggle-transparency)))
 (global-set-key (kbd "C-M-8") (lambda () (interactive) (sanityinc/adjust-opacity nil -2)))
 (global-set-key (kbd "C-M-9") (lambda () (interactive) (sanityinc/adjust-opacity nil 2)))
-(global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-proxy)))
+(global-set-key (kbd "C-M-0") (lambda () (interactive) (my/toggle-transparency)))
+;;(global-set-key (kbd "C-M-0") (lambda () (interactive) (modify-frame-parameters nil `((alpha . 100)))))
 
 ;; Use region as the isearch text
 (defun jrh-isearch-with-region ()
@@ -419,9 +516,6 @@
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
-;; Restore old window configurations
-(winner-mode 1)
-
 (use-package quickrun)
 
 (use-package org-num
@@ -429,18 +523,16 @@
   :after org
   :hook (org-mode . org-num-mode))
 
+;; Restore old window configurations
+;; (winner-mode 1)
+
 (use-package windmove
   :config (use-package buffer-move)
   :bind (
-         ("C-<left>" . windmove-left)
-         ("C-<down>" . windmove-down)
-         ("C-<up>" . windmove-up)
-         ("C-<right>" . windmove-right)
-
-         ("C-c C-<left>" . windmove-left)
-         ("C-c C-<down>" . windmove-down)
-         ("C-c C-<up>" . windmove-up)
-         ("C-c C-<right>" . windmove-right)
+         ("C-M-<left>" . windmove-left)
+         ("C-M-<down>" . windmove-down)
+         ("C-M-<up>" . windmove-up)
+         ("C-M-<right>" . windmove-right)
 
          ("C-c S-<left>" . windmove-swap-states-left)
          ("C-c S-<down>" . windmove-swap-states-down)
@@ -452,58 +544,6 @@
          ("C-M-S-<up>" . shrink-window)
          ("C-M-S-<right>" . enlarge-window-horizontally)
          ))
-
-;; ;; evil
-;; (use-package evil
-;;   ;; :disabled
-;;   :init
-;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;;   (setq evil-want-keybinding nil)
-;;   :config
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(evil-motion-state-map
-;;                    evil-normal-state-map
-;;                    evil-operator-state-map
-;;                    evil-replace-state-map
-;;                    evil-insert-state-map
-;;                    evil-visual-state-map
-;;                    evil-emacs-state-map))
-;;       (define-key (eval map) "\C-n" nil)
-;;       (define-key (eval map) "\C-p" nil)
-;;       (define-key (eval map) "\C-a" nil)
-;;       (define-key (eval map) "\C-e" nil)
-;;       (define-key (eval map) "\C-f" nil)
-;;       (define-key (eval map) "\C-b" nil)
-;;       (define-key (eval map) "\C-y" nil)
-;;       (define-key (eval map) "\C-k" nil)
-;;       (define-key (eval map) "\C-u" nil)
-;;       (define-key (eval map) "\C-d" nil)
-;;       ;; (define-key (eval map) "\C-z" nil)
-;;       (define-key (eval map) "\M-." nil)
-;;       ;; (define-key (eval map) "\C-w" nil)
-;;       ;; (define-key (eval map) (kbd "SPC") nil)
-;;       ;; (define-key (eval map) (kbd "RET") nil)
-;;       (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
-;;       )
-;;     )
-;;   (eval-after-load "evil-maps"
-;;     (dolist (map '(
-;;                    evil-insert-state-map
-;;                    ))
-;;       (define-key (eval map) "\C-i" nil)
-;;       (define-key (eval map) "\C-o" nil)
-;;       (define-key (eval map) "\C-w" nil)
-;;       (define-key (eval map) "\C-v" nil)
-;;       )
-;;     )
-;;   (setq evil-disable-insert-state-bindings t)
-;;   (evil-mode 1))
-;; 
-;; (use-package evil-collection
-;;   ;; :disabled
-;;   :after evil
-;;   :config
-;;   (evil-collection-init))
 
 ;; Use Ibuffer for Buffer List
 (use-package ibuffer
@@ -526,6 +566,11 @@
 	           (ibuffer-switch-to-saved-filter-groups "home")))
   :bind ([remap list-buffers] . ibuffer))
 
+;; Persist history over Emacs restarts. Vertico sorts by history position.
+(use-package savehist
+  :init
+  (savehist-mode))
+
 (defun kill-current-buffer ()
   "Kill the current buffer."
   (interactive)
@@ -543,15 +588,10 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   )
 
-;; extra search utilities
-(define-prefix-command 'meta-s-prefix)
-(global-set-key (kbd "M-s") 'meta-s-prefix)
-
 (defun my/avy-goto-end-of-line ()
   "Call avy-goto-char for RET(13)."
   (interactive)
   (avy-goto-char 13))
-
 (use-package avy
   :ensure t
   :bind (
@@ -561,369 +601,8 @@
          ("<RET>" . my/avy-goto-end-of-line)
          ))
 
-;; recentf stuff
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-;; (global-set-key (kbd "C-x C-r") 'recentf-open-files)
-(global-set-key (kbd "C-x C-r") 'fzf-recentf)
-
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
-
-;; fzf
-(use-package fzf
-  :bind (("M-O" . fzf)))
-
 ;; rg
 (use-package rg)
-
-;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
-
-;; Enable vertico
-(use-package vertico
-  :init
-  (vertico-mode)
-
-  ;; Different scroll margin
-  ;; (setq vertico-scroll-margin 0)
-
-  ;; Show more candidates
-  ;; (setq vertico-count 20)
-
-  ;; Grow and shrink the Vertico minibuffer
-  ;; (setq vertico-resize t)
-
-  ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
-  ;; (setq vertico-cycle t)
-  )
-
-;; Optionally use the `orderless' completion style. See
-;; `+orderless-dispatch' in the Consult wiki for an advanced Orderless style
-;; dispatcher. Additionally enable `partial-completion' for file path
-;; expansion. `partial-completion' is important for wildcard support.
-;; Multiple files can be opened at once with `find-file' if you enter a
-;; wildcard. You may also give the `initials' completion style a try.
-(use-package orderless
-  :init
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (setq orderless-style-dispatchers '(+orderless-dispatch)
-  ;;       orderless-component-separator #'orderless-escapable-split-on-space)
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
-
-;; A few more useful configurations...
-(use-package emacs
-  :init
-  ;; Add prompt indicator to `completing-read-multiple'.
-  ;; Alternatively try `consult-completing-read-multiple'.
-  (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-
-  ;; Do not allow the cursor in the minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-
-  ;; Emacs 28: Hide commands in M-x which do not work in the current mode.
-  ;; Vertico commands are hidden in normal buffers.
-  ;; (setq read-extended-command-predicate
-  ;;       #'command-completion-default-include-p)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
-
-;; Enable richer annotations using the Marginalia package
-(use-package marginalia
-  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
-
-  ;; The :init configuration is always executed (Not lazy!)
-  :init
-
-  ;; Must be in the :init section of use-package such that the mode gets
-  ;; enabled right away. Note that this forces loading the package.
-  (marginalia-mode))
-
-(use-package embark
-  :bind
-  (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-
-  :init
-  ;; Optionally replace the key help with a completing-read interface
-  (setq prefix-help-command #'embark-prefix-help-command)
-
-  :config
-  ;; Hide the mode line of the Embark live/completions buffers
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-;; Consult users will also want the embark-consult package.
-(use-package embark-consult
-  :after (embark consult)
-  :demand t ; only necessary if you have the hook below
-  ;; if you want to have consult previews as you move around an
-  ;; auto-updating embark collect buffer
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-(setq prefix-help-command 'embark-prefix-help-command)
-
-;; Example configuration for Consult
-(use-package consult
-  ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (;; C-c bindings (mode-specific-map)
-         ("C-c h" . consult-history)
-         ("C-c m" . consult-mode-command)
-         ("C-c k" . consult-kmacro)
-         ;; C-x bindings (ctl-x-map)
-         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-M-j" . consult-buffer)                ;; orig. switch-to-buffer
-         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-         ;; Custom M-# bindings for fast register access
-         ("M-#" . consult-register-load)
-         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ("C-M-#" . consult-register)
-         ;; Other custom bindings
-         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ("<help> a" . consult-apropos)            ;; orig. apropos-command
-         ;; M-g bindings (goto-map)
-         ("M-g e" . consult-compile-error)
-         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ("M-g m" . consult-mark)
-         ("M-g k" . consult-global-mark)
-         ("M-g i" . consult-imenu)
-         ("M-g I" . consult-imenu-multi)
-         ;; M-s bindings (search-map)
-         ("M-s d" . consult-find)
-         ("M-s D" . consult-locate)
-         ("M-s g" . consult-grep)
-         ("M-s G" . consult-git-grep)
-         ("M-s r" . consult-ripgrep)
-         ("M-s l" . consult-line)
-         ("M-s L" . consult-line-multi)
-         ("M-s m" . consult-multi-occur)
-         ("M-s k" . consult-keep-lines)
-         ("M-s u" . consult-focus-lines)
-         ;; Isearch integration
-         ("M-s e" . consult-isearch-history)
-         :map isearch-mode-map
-         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-         ;; Minibuffer history
-         :map minibuffer-local-map
-         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
-
-  ;; Enable automatic preview at point in the *Completions* buffer. This is
-  ;; relevant when you use the default completion UI.
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-
-  ;; The :init configuration is always executed (Not lazy)
-  :init
-  ;; Optionally configure the register formatting. This improves the register
-  ;; preview for `consult-register', `consult-register-load',
-  ;; `consult-register-store' and the Emacs built-ins.
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
-
-  ;; Optionally tweak the register preview window.
-  ;; This adds thin lines, sorting and hides the mode line of the window.
-  (advice-add #'register-preview :override #'consult-register-window)
-
-  ;; Optionally replace `completing-read-multiple' with an enhanced version.
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
-  ;; Use Consult to select xref locations with preview
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-
-  ;; Configure other variables and modes in the :config section,
-  ;; after lazily loading the package.
-  :config
-  ;; Optionally configure preview. The default value
-  ;; is 'any, such that any key triggers the preview.
-  ;; (setq consult-preview-key 'any)
-  ;; (setq consult-preview-key (kbd "M-."))
-  ;; (setq consult-preview-key (list (kbd "<S-down>") (kbd "<S-up>")))
-  ;; For some commands and buffer sources it is useful to configure the
-  ;; :preview-key on a per-command basis using the `consult-customize' macro.
-  (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key (kbd "M-."))
-
-  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number --hidden -g \"!.git\" .")
-
-  ;; Optionally configure the narrowing key.
-  ;; Both < and C-+ work reasonably well.
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-
-  ;; Optionally make narrowing help available in the minibuffer.
-  ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  ;; (define-key consult-narrow-map (vconcat consult-narrow-key "?") #'consult-narrow-help)
-
-  ;; By default `consult-project-function' uses `project-root' from project.el.
-  ;; Optionally configure a different project root function.
-  ;; There are multiple reasonable alternatives to chose from.
-  ;;;; 1. project.el (the default)
-  ;; (setq consult-project-function #'consult--default-project--function)
-  ;;;; 2. projectile.el (projectile-project-root)
-  ;; (autoload 'projectile-project-root "projectile")
-  ;; (setq consult-project-function (lambda (_) (projectile-project-root)))
-  ;;;; 3. vc.el (vc-root-dir)
-  ;; (setq consult-project-function (lambda (_) (vc-root-dir)))
-  ;;;; 4. locate-dominating-file
-  ;; (setq consult-project-function (lambda (_) (locate-dominating-file "." ".git")))
-
-  (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
-)
-
-;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult end
-
-;; ;; ---------------------------------------------------------------------------- ido and smex
-
-;; (ido-mode 1)
-;; (setq ido-enable-flex-matching 1)
-;; (setq ido-create-new-buffer 'always)
-;; (ido-everywhere 1)
-;; (global-set-key (kbd "C-M-j") 'ido-switch-buffer)
-
-;; (setq magit-completing-read-function 'magit-ido-completing-read)
-;; (setq gnus-completing-read-function 'gnus-ido-completing-read)
-
-;; ;; built-in, ido-like behavior
-;; (require 'icomplete)
-;; (icomplete-mode 1)
-
-;; (use-package ido-completing-read+
-;;   :config (ido-ubiquitous-mode 1))
-
-;; (use-package smex
-;;   :bind (
-;;          ("M-x" . 'smex)
-;;          ("M-X" . 'smex-major-mode-commands)
-;;          ("C-c C-c M-x" . 'execute-extended-command)
-;;          )
-;;   )
-
-;; ;; ---------------------------------------------------------------------------- ido and smex
-
-;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper start
-;; other similar packages to prescient: vertico consult selectrum prescient for completion
-
-;; (use-package swiper
-;;   :ensure t
-;;   :bind ("C-s" . 'swiper))
-
-;; (use-package counsel
-;;   :bind (
-;;          ("M-x" . 'counsel-M-x)
-;;          ("C-x b" . 'counsel-ibuffer)
-;;          ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
-;;          ("C-x d" . 'counsel-dired)
-;;          ("C-x C-f" . 'counsel-find-file)
-;;          ("C-x C-r" . 'counsel-recentf)
-;;          ("C-c C-r" . 'ivy-resume)
-;;          ("<f1> f" . 'counsel-describe-function)
-;;          ("<f1> v" . 'counsel-describe-variable)
-;;          ("<f1> o" . 'counsel-describe-symbol)
-;;          ("<f1> l" . 'counsel-find-library)
-;;          ("<f2> i" . 'counsel-info-lookup-symbol)
-;;          ("<f2> u" . 'counsel-unicode-char)
-;;          ("C-c g" . 'counsel-git)
-;;          ("C-c j" . 'counsel-git-grep)
-;;          ;; ("C-x l" . 'counsel-locate)
-;;          ;; ("C-S-o" . 'counsel-rhythmbox)
-;;          :map meta-s-prefix
-;;          ("g" . #'counsel-rg)
-;;          ("a" . #'counsel-ag)
-;;          ("f" . #'counsel-fzf)
-;;          ("G" . #'counsel-git)
-;;          ("F" . #'counsel-git-grep)
-;;          :map minibuffer-local-map
-;;          ("C-r" . 'counsel-minibuffer-history)
-;;          )
-;;   :config
-;;   ;; 默认的 rg 配置
-;;   ;; (setq counsel-rg-base-command "rg -M 240 --with-filename --no-heading --line-number --color never %s")
-;;   (setq counsel-rg-base-command "rg -i -M 240 --with-filename --no-heading --line-number --color never %s -g !doc -g !themes -g !quelpa")
-;;   (setq counsel-fzf-cmd "fd -I --exclude={site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/} --type f | fzf -f \"%s\" --algo=v1")
-;;   ;; Integration with 'projectile'
-;;   (with-eval-after-load 'projectile
-;;     (setq projectile-completion-system 'ivy)))
-
-;; (use-package ivy
-;;   :diminish ivy-mode
-;;   :config
-;;   ;; (setq ivy-re-builders-alist
-;;   ;;     '((swiper . ivy--regex-fuzzy)
-;;   ;;       (t      . ivy--regex-plus))) ;; use ivy--regex-plus(default) for the rest of components
-;;   (use-package ivy-rich
-;;     :config
-;;     (ivy-rich-mode 1))
-;;   (use-package ivy-prescient
-;;     :after counsel
-;;     :config
-;;     (setq prescient-sort-length-enable nil)
-;;     ;; This is the default value!
-;;     (setq prescient-filter-method '(literal regexp fuzzy))
-;;     ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
-;;     (setq ivy-prescient-enable-filtering nil)
-;;     ;; Getting the old highlighting back
-;;     ;; (setq ivy-prescient-retain-classic-highlighting t)
-;;     (ivy-prescient-mode 1)
-;;     ;; Remember candidate frequencies across sessions
-;;     (prescient-persist-mode 1))
-;;   )
-
-;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
-
-;; (use-package prescient
-;;   :after counsel
-;;   :config
-;;   (prescient-persist-mode 1))
-
-;; (use-package company-prescient
-;;   :after company
-;;   :config
-;;   (company-prescient-mode 1))
-
-;; (use-package sudo-edit)
-
-;; ;; try
-;; (use-package try)
-
-;; (use-package figlet
-;;   :config
-;;   (setq figlet-default-font "standard"))
-
-;; (use-package editorconfig
-;;   :ensure t
-;;   :config
-;;   (editorconfig-mode 1))
 
 (use-package multiple-cursors
   :bind (
@@ -1157,15 +836,9 @@
 
 (use-package posframe :defer t)
 
-(use-package youdao-dictionary
-  :commands (youdao-dictionary-search-at-point-posframe)
-  :config (setq url-automatic-caching t)
-  (which-key-add-key-based-replacements "C-c y" "有道翻译")
-  :bind (("C-c y y" . 'youdao-dictionary-search-at-point+)
-         ("C-c y g" . 'youdao-dictionary-search-at-point-posframe)
-         ("C-c y p" . 'youdao-dictionary-play-voice-at-point)
-         ("C-c y r" . 'youdao-dictionary-search-and-replace)
-         ("C-c y i" . 'youdao-dictionary-search-from-input)))
+(use-package yaml-mode :defer t)
+(use-package json-mode
+  :mode "\\.json\\'")
 
 (progn
   (use-package all-the-icons)
@@ -1173,17 +846,6 @@
     :hook ('dired-mode . 'all-the-icons-dired-mode))
   (use-package emojify
     :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
-
-;; C-x u runs the command undo-tree-visualize (found in undo-tree-map)
-(use-package undo-tree
-  :hook (after-init . global-undo-tree-mode)
-  :init (setq undo-tree-visualizer-timestamps t undo-tree-enable-undo-in-region nil undo-tree-auto-save-history nil)
-  ;; HACK: keep the diff window
-  (with-no-warnings (make-variable-buffer-local 'undo-tree-visualizer-diff)
-                    (setq-default undo-tree-visualizer-diff t)))
-
-;; ;; Failed to verify signature queue-0.2.el.sig: No public key for 066DAFCB81E42C40 created at 2019-09-22T01:54:25+0800 using RSA
-;; (setq package-check-signature nil)
 
 (use-package zenburn-theme
   :config
@@ -1197,22 +859,18 @@
           ))
   (load-theme 'zenburn t))
 
-(use-package yaml-mode :defer t)
-(use-package json-mode
-  :mode "\\.json\\'")
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
 
-;; (use-package docker
-;;   :ensure t
-;;   :bind ("C-c d" . docker))
-
-;; (use-package dockerfile-mode
-;;   :defer t)
-
-;; (use-package hackernews
-;;   :commands (hackernews)
-;;   :bind
-;;   ("C-c h" . hackernews)
-;;   )
+(use-package youdao-dictionary
+  :commands (youdao-dictionary-search-at-point-posframe)
+  :config (setq url-automatic-caching t)
+  (which-key-add-key-based-replacements "C-c y" "有道翻译")
+  :bind (("C-c y y" . 'youdao-dictionary-search-at-point+)
+         ("C-c y g" . 'youdao-dictionary-search-at-point-posframe)
+         ("C-c y p" . 'youdao-dictionary-play-voice-at-point)
+         ("C-c y r" . 'youdao-dictionary-search-and-replace)
+         ("C-c y i" . 'youdao-dictionary-search-from-input)))
 
 ;; ;; golang
 (use-package go-mode)
@@ -1302,7 +960,7 @@
 ;; C/C++
 (add-hook 'c-mode-hook 'lsp)
 (add-hook 'c++-mode-hook 'lsp)
-(define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
+;; (define-key c-mode-map (kbd "C-c C-\\") nil) ;; use it for toggle-input-method, instead of c-backslash-region
 ;; (eval-after-load "c"
 ;;   '(progn (define-key c-mode-map (kbd "C-c C-\\") nil)
 ;;           ))
@@ -1317,571 +975,66 @@
                          (require 'lsp-pyright)
                          (lsp))))  ; or lsp-deferred
 
-;; (use-package lsp-java
-;;   :after lsp-mode
-;;   :if (executable-find "mvn")
-;;   :init
-;;   (use-package request :defer t)
-;;   ;; :custom
-;;   ;; lsp-install-server --> jdtls
-;;   ;; (lsp-java-server-install-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/server/"))
-;;   ;; (lsp-java-workspace-dir (expand-file-name "~/.config/emacs/eclipse.jdt.ls/workspace/"))
-;;   )
+;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper start
+;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
-;; ;; pdf
-;; (use-package pdf-tools
-;;   :ensure t
-;;   :config
-;;   (pdf-tools-install)
-;;   )
-
-;; (defun my/scroll-other-window ()
-;;   "Scroll ather window up."
-;;   (interactive)
-;;   (let* ((wind (other-window-for-scrolling))
-;;          (mode (with-selected-window wind major-mode)))
-;;     (if (eq mode 'pdf-view-mode)
-;;         (with-selected-window wind
-;;           ;; (pdf-view-scroll-up-or-next-page &optional ARG)
-;;           ;; (pdf-view-scroll-up-or-next-page)
-;;           (pdf-view-next-line-or-next-page 2)
-;;           )
-;;       ;; (scroll-other-window 2)
-;;       (scroll-other-window)
-;;       )))
-
-;; (defun my/scroll-other-window-down ()
-;;   "Scroll ather window down."
-;;   (interactive)
-;;   (let* ((wind (other-window-for-scrolling))
-;;          (mode (with-selected-window wind major-mode)))
-;;     (if (eq mode 'pdf-view-mode)
-;;         (with-selected-window wind
-;;           (progn
-;;             ;; (pdf-view-scroll-down-or-previous-page &optional ARG)
-;;             ;; (pdf-view-scroll-down-or-previous-page)
-;;             (pdf-view-previous-line-or-previous-page 2)
-;;             (other-window 1)))
-;;       ;; (scroll-other-window-down 2)
-;;       (scroll-other-window-down)
-;;       )))
-
-;; (use-package org-pdftools
-;;   :hook (org-mode . org-pdftools-setup-link))
-
-;; (use-package org-noter-pdftools
-;;   :after org-noter
-;;   :config
-;;   ;; Add a function to ensure precise note is inserted
-;;   (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
-;;     (interactive "P")
-;;     (org-noter--with-valid-session
-;;      (let ((org-noter-insert-note-no-questions (if toggle-no-questions
-;;                                                    (not org-noter-insert-note-no-questions)
-;;                                                  org-noter-insert-note-no-questions))
-;;            (org-pdftools-use-isearch-link t)
-;;            (org-pdftools-use-freestyle-annot t))
-;;        (org-noter-insert-note (org-noter--get-precise-info)))))
-;;   ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
-;;   (defun org-noter-set-start-location (&optional arg)
-;;     "When opening a session with this document, go to the current location.
-;; With a prefix ARG, remove start location."
-;;     (interactive "P")
-;;     (org-noter--with-valid-session
-;;      (let ((inhibit-read-only t)
-;;            (ast (org-noter--parse-root))
-;;            (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
-;;        (with-current-buffer (org-noter--session-notes-buffer session)
-;;          (org-with-wide-buffer
-;;           (goto-char (org-element-property :begin ast))
-;;           (if arg
-;;               (org-entry-delete nil org-noter-property-note-location)
-;;             (org-entry-put nil org-noter-property-note-location
-;;                            (org-noter--pretty-print-location location))))))))
-;;   (with-eval-after-load 'pdf-annot
-;;     (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
-
-;; (use-package org-noter
-;;   :config
-;;   ;; Your org-noter config
-;;   (require 'org-noter-pdftools))
-
-;; ;; input method
-;; (use-package pyim
-;;   :init
-;;   (use-package posframe :defer t)
-;;   :diminish pyim-isearch-mode
-;;   :custom
-;;   (default-input-method "pyim")
-;;   (pyim-default-scheme 'xiaohe-shuangpin)
-;;   (pyim-page-tooltip 'posframe)
-;;   (pyim-page-length 9)
-;;   :bind ("C-c C-\\" . toggle-input-method)
-;;   :config
-;;   (use-package pyim-basedict
-;;     :after pyim
-;;     :config (pyim-basedict-enable))
-;;   (pyim-isearch-mode 1)
-;;   (setq-default pyim-english-input-switch-functions
-;;                 '(pyim-probe-isearch-mode
-;;                   pyim-probe-org-structure-template))
-;;   (setq-default pyim-punctuation-half-width-functions
-;;                 '(pyim-probe-punctuation-line-beginning
-;;                   pyim-probe-punctuation-after-punctuation))
-;;   ;; :bind ("M-j" . pyim-convert-string-at-point) ; M-j 强制将光标前的拼音字符串转换为中文
-;;   )
-
-;;----------------------------------------------------------------------------
-;; Allow access from emacsclient
-;;----------------------------------------------------------------------------
-(add-hook 'after-init-hook
-          (lambda ()
-            (require 'server)
-            (unless (server-running-p)
-              (server-start))))
-
-;;----------------------------------------------------------------------------
-;; Variables configured via the interactive 'customize' interface
-;;----------------------------------------------------------------------------
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(when (file-exists-p custom-file)
-  (load custom-file))
-
-;; init message
-;; (setq-default initial-scratch-message
-;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
-
-;; 设置光标样式
-(setq-default cursor-type t)
-(blink-cursor-mode 1)
-
-;; 高亮当前行
-;; (global-hl-line-mode 1)
-
-;; Move cursor to end of current line
-;; Insert new line below current line
-;; it will also indent newline
-(global-set-key (kbd "<S-return>") (lambda ()
-                                     (interactive)
-                                     (end-of-line)
-                                     (newline-and-indent)))
-;; Move cursor to previous line
-;; Go to end of the line
-;; Insert new line below current line (So it actually insert new line above with indentation)
-;; it will also indent newline
-(global-set-key (kbd "<C-M-return>") (lambda ()
-                                       (interactive)
-                                       (previous-line)
-                                       (end-of-line)
-                                       (newline-and-indent)
-                                       ))
-
-;; Window size and features
-;; (setq-default
-;;  window-resize-pixelwise t
-;;  frame-resize-pixelwise t)
-
-;; fringe setup (clear line wrap symbol)
-;; (setf (cdr (assq 'continuation fringe-indicator-alist))
-;;       '(nil nil) ;; no continuation indicators
-;;       ;; '(nil right-curly-arrow) ;; right indicator only
-;;       ;; '(left-curly-arrow nil) ;; left indicator only
-;;       ;; '(left-curly-arrow right-curly-arrow) ;; default
-;;       )
-;; disable fringe column
-;; (fringe-mode '(0 . 0))
-
-;; (setq frame-title-format
-;;       '((:eval (if (buffer-file-name)
-;;                    (abbreviate-file-name (buffer-file-name))
-;;                  "%b"))))
-
-;; Non-zero values for `line-spacing' can mess up ansi-term and co,
-;; so we zero it explicitly in those cases.
-;; (add-hook 'term-mode-hook
-;;           (lambda ()
-;;             (setq line-spacing 0)))
-
-(defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
-(defconst *is-mac* (eq system-type 'darwin))
-(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
-(defconst *is-linux* (eq system-type 'gnu/linux))
-(defconst *is-x11* (eq window-system 'x))
-(defconst *is-windows* (eq system-type 'windows-nt))
-(when *is-mac*
-  (setq mac-command-modifier 'meta) ;; use command key as meta/alt
-  ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
-  ;; Make mouse wheel / trackpad scrolling less jerky
-  (setq mouse-wheel-scroll-amount '(1
-                                    ((shift) . 5)
-                                    ((control))))
-  (dolist (multiple '("" "double-" "triple-"))
-    (dolist (direction '("right" "left"))
-      (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
-  ;; (global-set-key (kbd "M-`") 'ns-next-frame)
-  ;; (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-  ;; (global-set-key (kbd "M-˙") 'ns-do-hide-others)
-  ;; (with-eval-after-load 'nxml-mode
-  ;;   (define-key nxml-mode-map (kbd "M-h") nil))
-  ;; ;; what describe-key reports for cmd-option-h
-  ;; (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
+(use-package swiper
+  :ensure t
+  :bind ("C-S-s" . 'swiper)
   )
 
-;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
-;;   ;; Command-Option-f to toggle fullscreen mode
-;;   ;; Hint: Customize `ns-use-native-fullscreen'
-;;   (global-set-key (kbd "M-ƒ") 'toggle-frame-fullscreen))
+(use-package counsel
+  :bind (
+         ("M-x" . 'counsel-M-x)
+         ("C-x b" . 'counsel-ibuffer)
+         ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
+         ("C-x d" . 'counsel-dired)
+         ("C-x C-f" . 'counsel-find-file)
+         ("C-x C-r" . 'counsel-recentf)
+         ("C-c C-r" . 'ivy-resume)
+         ("C-c g" . 'counsel-git)
+         ("C-c j" . 'counsel-git-grep)
+         :map meta-s-prefix
+         ("g" . #'counsel-rg)
+         ("a" . #'counsel-ag)
+         ("f" . #'counsel-fzf)
+         ("n" . #'counsel-git)
+         ("G" . #'counsel-git-grep)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)
+         )
+  :config
+  ;; 默认的 rg 配置
+  (setq counsel-rg-base-command "rg --hidden --ignore-case --max-columns 240 --with-filename --no-heading --line-number --color never %s -g \"!.git\" -g !doc -g !themes -g !quelpa -g !backup ")
+  (setq counsel-fzf-cmd "fd --hidden --exclude={.git,site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/,backup} --type f | fzf -f \"%s\" --algo=v1")
+  ;; Integration with 'projectile'
+  (with-eval-after-load 'projectile
+    (setq projectile-completion-system 'ivy)))
 
-;; 设置字体
-;; (when *is-linux*
-;;   ;; "Fira Code Nerd Font Mono"
-;;   (set-face-attribute 'default nil
-;;                       :font (font-spec
-;;                              ;; :name "Iosevka"
-;;                              ;; :style "Regular"
-;;                              :size 15))
-;;   )
-;; (when *is-mac*
-;;   (set-face-attribute 'default nil
-;;                       :font (font-spec
-;;                              ;; :style "Regular"
-;;                              :size 12))
-;;   )
-(set-face-attribute 'default nil
-                    :font (font-spec
-                           :name "JetbrainsMono Nerd Font"
-                           :size 12))
+(use-package ivy
+  :diminish ivy-mode
+  :config
+  (setq ivy-re-builders-alist
+        '((t . ivy--regex-fuzzy)))
+  (use-package ivy-rich
+    :config
+    (ivy-rich-mode 1))
+  (use-package ivy-prescient
+    :after counsel
+    :config
+    (setq prescient-sort-length-enable nil)
+    ;; This is the default value!
+    (setq prescient-filter-method '(literal regexp fuzzy))
+    ;; If you are too used to Ivy’s filtering styles, you can use those while still keeping Prescient’s sorting:
+    (setq ivy-prescient-enable-filtering nil)
+    ;; Getting the old highlighting back
+    ;; (setq ivy-prescient-retain-classic-highlighting t)
+    (ivy-prescient-mode 1)
+    ;; Remember candidate frequencies across sessions
+    (prescient-persist-mode 1))
+  )
 
-
-;; (when *is-windows* (set-next-selection-coding-system 'utf-16-le)  (set-selection-coding-system 'utf-16-le)  (set-clipboard-coding-system 'utf-16-le))
-
-;; 任何地方都使用UTF-8
-;; (set-charset-priority 'unicode)
-;; (setq locale-coding-system   'utf-8)
-;; (set-terminal-coding-system  'utf-8)
-;; (set-keyboard-coding-system  'utf-8)
-;; (set-selection-coding-system 'utf-8)
-;; (prefer-coding-system        'utf-8)
-;; (setq default-process-coding-system '(utf-8 . utf-8))
-
-;; (use-package centaur-tabs
-;;   :demand
-;;   :init
-;;   (setq centaur-tabs-enable-key-bindings t)
-;;   :config
-;;   (setq
-;;    centaur-tabs-style "bar"
-;;    centaur-tabs-set-bar 'over
-;;    centaur-tabs-set-icons t
-;;    centaur-tabs-set-modified-marker t
-;;    centaur-tabs-modified-marker "*"
-;;    ;; centaur-tabs-height 32
-;;    ;; centaur-tabs-plain-icons t
-;;    ;; centaur-tabs-gray-out-icons 'buffer
-;;    ;; centaur-tabs--buffer-show-groups t
-;;    ;; centaur-tabs-show-navigation-buttons t
-;;    )
-;;   (centaur-tabs-headline-match)
-;;   (centaur-tabs-mode t)
-;;   :hook
-;;   (dired-mode . centaur-tabs-local-mode)
-;;   ;; :bind (
-;;   ;;        ("C-<prior>" . centaur-tabs-backward)
-;;   ;;        ("C-<next>" . centaur-tabs-forward)
-;;   ;;        ;; :map evil-normal-state-map
-;;   ;;        ;; ("g t" . centaur-tabs-forward)
-;;   ;;        ;; ("g T" . centaur-tabs-backward)
-;;   ;;        )
-;;   )
-
-;; (use-package command-log-mode
-;;   :ensure t)
-
-;; ;; for test
-;; (defun my/check-cursor-end-of-line ()
-;;   "Check end of line."
-;;   (interactive)
-;;   (if
-;;       (eq ?\n (char-after))
-;;       (message "yes")
-;;     (message "no")
-;;     )
-;;   )
-
-;; REST
-;; (use-package restclient
-;;   :mode ("\\.http\\'" . restclient-mode)
-;;   :config
-;;   (use-package ob-restclient)
-;;   (use-package restclient-test
-;;     :diminish
-;;     :hook (restclient-mode . restclient-test-mode))
-;;   (with-eval-after-load 'company
-;;     (use-package company-restclient
-;;       :defines company-backends
-;;       :init (add-to-list 'company-backends 'company-restclient))))
-;; (evil-leader/set-key-for-mode 'restclient-mode
-;;                               "mn" 'restclient-jump-next
-;;                               "mp" 'restclient-jump-prev
-;;                               "ms" 'restclient-http-send-current-stay-in-window
-;;                               "mS" 'restclient-http-send-current
-;;                               "mr" 'spacemacs/restclient-http-send-current-raw-stay-in-window
-;;                               "mR" 'restclient-http-send-current-raw
-;;                               "my" 'restclient-copy-curl-command)
-
-;; 切换buffer焦点时高亮动画
-;; (use-package beacon
-;;   :hook (after-init . beacon-mode))
-
-;; themes config
-;; (use-package doom-themes
-;;   :config
-;;   ;; Global settings (defaults)
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-monokai-pro t)
-;;   ;; (load-theme 'doom-molokai t)
-;;   ;; (load-theme 'doom-gruvbox t)
-;;   ;; (load-theme 'doom-Iosvkem t)
-;;   ;; (load-theme 'doom-one t)
-;;   ;; (load-theme 'doom-dracula t)
-;;   ;; Enable flashing mode-line on errors
-;;   ;; (doom-themes-visual-bell-config)
-;;   )
-
-;; (if (display-graphic-p)
-;;     (load-theme 'doom-molokai t)
-;;   ;; (load-theme 'doom-gruvbox t)
-;;   ;; (load-theme 'doom-molokai t)
-;;   (load-theme 'doom-monokai-pro t)
-;;   )
-
-;; (use-package monokai-alt-theme
-;;   :config
-;;   (load-theme 'monokai-alt t)
-;;   )
-;; (use-package monokai-pro-theme
-;;   :config
-;;   (load-theme 'monokai-pro t)
-;;   )
-;; (use-package monokai-theme
-;;   :config
-;;   (load-theme 'monokai t)
-;;   )
-;; (use-package gruvbox-theme
-;;   :config
-;;   (load-theme 'gruvbox t)
-;;   )
-;; (use-package flatland-theme
-;;   :config
-;;   (load-theme 'flatland t)
-;;   )
-;; (use-package doom-themes
-;;   :config
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-gruvbox t)
-;;   ;; (load-theme 'doom-molokai t)
-;;   ;; (load-theme 'doom-monokai-pro t)
-;;   ;; (load-theme 'doom-xcode t)
-;;   )
-
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
-
-;; 增强*help* buffer的功能
-;; (use-package helpful
-;;   :bind
-;;   (("C-h f" . helpful-callable)
-;;    ("C-h v" . helpful-variable)
-;;    ("C-h k" . helpful-key)))
-
-;; 为*help*中的函数提供elisp例子
-;; (use-package elisp-demos
-;;   :config
-;;   (advice-add 'helpful-update :after #'elisp-demos-advice-helpful-update))
-
-;; 关闭鼠标功能
-;; (use-package disable-mouse
-;;   :hook (after-init . (lambda ()
-;;                         (global-disable-mouse-mode -1))))
-
-;; (use-package smartparens
-;;   :hook (prog-mode . smartparens-mode))
-
-;; 如果不喜欢ivy可以用这个包替换
-;; (use-package selectrum :config (selectrum-mode t))
-
-;; (use-package selectrum-prescient
-;;     :config
-;;     (prescient-persist-mode t)
-;;     (selectrum-prescient-mode t))
-
-;; for hydra
-;; (use-package hydra :defer 0)
-;; (use-package major-mode-hydra
-;;   :defer 0
-;;   :after hydra)
-;; (use-package hydra-posframe
-;;   :quelpa ((hydra-posframe
-;;             :fetcher github
-;;             :repo "Ladicle/hydra-posframe"))
-;;   :hook (after-init . (lambda ()
-;;                         (hydra-posframe-mode t) ) ))
-
-;; ;; lsp-java
-;; (use-package lsp-java
-;;   :config
-;;   (add-hook 'java-mode-hook 'lsp)
-;;   (setq lsp-java-server-install-dir (expand-file-name "var/jdt-lsp" user-emacs-directory)))
-
-;; ;; 各个语言的Debug工具
-;; (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
-;; (use-package dap-java :ensure nil)
-
-;; ;; 写js可用的模式
-;; (use-package js2-mode)
-
-;; mu4e
-;; (use-package mu4e
-;;   :ensure nil
-;;   :load-path "/usr/share/emacs/site-lisp/mu4e"
-;;   :config
-;;   (setq mu4e-change-filenames-when-moving t)
-;;   (setq mu4e-get-mail-command "mbsync -a")
-;;   (setq mu4e-update-interval (* 5 60))
-;;   (setq mu4e-maildir "~/email")
-;;   (setq mu4e-attachment-dir "~/Downloads")
-;;   (setq mu4e-compose-signature-auto-include nil)
-;;   (setq mu4e-use-fancy-chars t)
-;;   (setq mu4e-view-show-addresses t)
-;;   (setq mu4e-view-show-images t)
-;;   (add-to-list 'mu4e-bookmarks '("m:/qq/INBOX or m:/work/Inbox" "All Inboxes" ?i))
-;;   (setq message-send-mail-function 'smtpmail-send-it)
-;;   (setq mu4e-compose-context-policy 'ask-if-none)
-;;   (setq mu4e-contexts
-;;         (list
-;;          ;; personal account
-;;          (make-mu4e-context
-;;           :name "qq"
-;;           :match-func (lambda (msg)
-;;                         (when msg
-;;                           (string-match-p "^/qq" (mu4e-message-field msg :maildir))))
-;;           :vars '((user-mail-address . "872666026@qq.com")
-;;                   (user-full-name    . "xucheng")
-;;                   (smtpmail-smtp-user     . "872666026@qq.com")
-;;                   (smtpmail-smtp-server  . "smtp.qq.com")
-;;                   (smtpmail-smtp-service . 465)
-;;                   (smtpmail-stream-type  . ssl)
-;;                   (mu4e-compose-signature . "xucheng via qq mail")
-;;                   (mu4e-drafts-folder  . "/qq/Drafts")
-;;                   (mu4e-sent-folder . "/qq/Sent Messages")
-;;                   (mu4e-refile-folder . "/qq/Archive")
-;;                   (mu4e-trash-folder  . "/qq/Deleted Messages")
-;;                   (mu4e-maildir-shortcuts . (("/qq/INBOX" . ?i)
-;;                                              ("/qq/Deleted Messages" . ?d)
-;;                                              ("/qq/Drafts" . ?D)
-;;                                              ("/qq/Sent Messages" . ?s)
-;;                                              ("/qq/Junk" . ?j)))
-;;                   ))
-;;          ;; work account
-;;          (make-mu4e-context
-;;           :name "work"
-;;           :match-func (lambda (msg)
-;;                         (when msg
-;;                           (string-match-p "^/work" (mu4e-message-field msg :maildir))))
-;;           :vars '((user-mail-address . "xucheng2@shein.com")
-;;                   (user-full-name . "xucheng2")
-;;                   (smtpmail-smtp-user  . "xucheng2@shein.com")
-;;                   (smtpmail-smtp-server  . "smtp.exmail.qq.com")
-;;                   (smtpmail-smtp-service . 465)
-;;                   (smtpmail-stream-type  . ssl)
-;;                   (mu4e-compose-signature . "xucheng via qq exmail")
-;;                   (mu4e-drafts-folder . "/work/Drafts")
-;;                   (mu4e-sent-folder . "/work/Sent Messages")
-;;                   (mu4e-refile-folder . "/work/Archive")
-;;                   (mu4e-trash-folder . "/work/Deleted Messages")
-;;                   (mu4e-maildir-shortcuts . (("/work/INBOX" . ?i)
-;;                                              ("/work/Deleted Messages" . ?d)
-;;                                              ("/work/Drafts" . ?D)
-;;                                              ("/work/Sent Messages" . ?s)
-;;                                              ("/work/Junk" . ?j)))
-;;                   ))))
-;;   ;; (mu4e t)
-;;   )
-
-;; 用GUI tooltips来显示检查到的错误
-;; (progn
-;;   (use-package flycheck-posframe
-;;                :custom-face (flycheck-posframe-border-face ((t
-;;                                                               (:inherit default))))
-;;                :hook (flycheck-mode . flycheck-posframe-mode)
-;;                :init (setq flycheck-posframe-border-width 1 flycheck-posframe-inhibit-functions '((lambda
-;;                                                                                                     (&rest _)
-;;                                                                                                     (bound-and-true-p
-;;                                                                                                       company-backend)))))
-;;   (use-package flycheck-pos-tip
-;;                :defines flycheck-pos-tip-timeout
-;;                :hook (global-flycheck-mode . flycheck-pos-tip-mode)
-;;                :config (setq flycheck-pos-tip-timeout 30))
-;;   (use-package flycheck-popup-tip
-;;                :hook (flycheck-mode . flycheck-popup-tip-mode)))
-
-;;   ;; 浮动窗口支持
-;;   (use-package posframe
-;;                :custom
-;;                (posframe-mouse-banish nil))
-
-;; 彩虹猫进度条
-;; (use-package nyan-mode
-;;              :hook (after-init . nyan-mode)
-;;              :config
-;;              (setq nyan-wavy-trail t
-;;                    nyan-animate-nyancat t))
-
-;; 安装quelpa包管理器（用于安装github上的插件）
-;; (unless (package-installed-p 'quelpa)
-;;   (with-temp-buffer
-;;     (url-insert-file-contents "https://raw.githubusercontent.com/quelpa/quelpa/master/quelpa.el")
-;;     (eval-buffer)
-;;     (quelpa-self-upgrade))
-;;   (quelpa
-;;    '(quelpa-use-package
-;;      :fetcher git
-;;      :url "https://github.com/quelpa/quelpa-use-package.git")))
-;; (require 'quelpa-use-package)
-
-;; (setq quelpa-upgrade-interval 7
-;;       quelpa-update-melpa-p nil
-;;       use-package-ensure-function 'quelpa)
-;; (setq use-package-always-defer t)
-
-;; for lisp
-;; (use-package sly
-;;   :hook (common-lisp-mode . sly-edit-mode))
-;; (use-package sly-macrostep
-;;   :hook (common-lisp-mode . sly-macrostep-mode))
-;;
-;; (use-package sly-repl-ansi-color
-;;   :hook (common-lisp-mode . sly-repl-ansi-color))
-
-;; for elisp
-;; (use-package lispy
-;;   :hook (emacs-lisp-mode . lispy-mode))
-
-;; lisp符号操作工具
-;; (use-package symbol-overlay
-;;   :hook (emacs-lisp-mode . symbol-overlay-mode))
-
-;;(use-package markdown-mode
-;;  :mode "\\.md\\'"
-;;  :mode "\\.text\\'"
-;;  :mode "\\.markdown\\'")
-;;(use-package markdown-mode+
-;;  :defer t
-;;  :hook (markdown-mode . (lambda () (require 'markdown-mode+)))
-;;  :config
-;;  ())
+;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
 
 (provide 'init)
 ;; Local Variables:
