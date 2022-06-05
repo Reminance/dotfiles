@@ -47,6 +47,14 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+(defun remove-dos-eol ()
+  "Do not show ^M in files containing mixed UNIX and DOS line endings."
+  (interactive)
+  (setq buffer-display-table (make-display-table))
+  (aset buffer-display-table ?\^M []))
+(add-hook 'text-mode-hook 'remove-dos-eol)
+(add-hook 'special-mode-hook 'remove-dos-eol)  ;;  *LLDB::Run out*      buffer is special-mode, to get rid of ^M character
+
 ;; init message
 ;; (setq-default initial-scratch-message
 ;;               (concat ";; Hi, " user-login-name ", Emacs ♥ you!\n\n"))
@@ -71,14 +79,13 @@
 ;; it will also indent newline
 (global-set-key (kbd "<C-M-return>") (lambda ()
                                        (interactive)
-                                       (previous-line)
-                                       (end-of-line)
+                                       (beginning-of-line)
                                        (newline-and-indent)
-                                       ))
+                                       (previous-line)
+                                       (indent-for-tab-command)))
 
 (defconst *spell-check-support-enabled* nil) ;; Enable with t if you prefer
 (defconst *is-mac* (eq system-type 'darwin))
-(defconst *is-cocoa-emacs* (and *is-mac* (eq window-system 'ns)))
 (defconst *is-linux* (eq system-type 'gnu/linux))
 (defconst *is-x11* (eq window-system 'x))
 (defconst *is-windows* (eq system-type 'windows-nt))
@@ -89,16 +96,6 @@
   (setq mouse-wheel-scroll-amount '(1
                                     ((shift) . 5)
                                     ((control))))
-  (dolist (multiple '("" "double-" "triple-"))
-    (dolist (direction '("right" "left"))
-      (global-set-key (read-kbd-macro (concat "<" multiple "wheel-" direction ">")) 'ignore)))
-  ;; (global-set-key (kbd "M-`") 'ns-next-frame)
-  ;; (global-set-key (kbd "M-h") 'ns-do-hide-emacs)
-  ;; (global-set-key (kbd "M-˙") 'ns-do-hide-others)
-  ;; (with-eval-after-load 'nxml-mode
-  ;;   (define-key nxml-mode-map (kbd "M-h") nil))
-  ;; ;; what describe-key reports for cmd-option-h
-  ;; (global-set-key (kbd "M-ˍ") 'ns-do-hide-others)
   )
 
 ;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
@@ -159,7 +156,7 @@
 ;; 制表符宽度
 (setq-default tab-width 4)
 ;; 显示跟踪空白
-(setq-local show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
 
 ;; 高亮对应的括号
 (show-paren-mode 1)
@@ -167,12 +164,12 @@
 ;; 设置eshell历史记录
 (setq url-configuration-directory (expand-file-name "var/url" user-emacs-directory))
 (setq eshell-history-file-name (expand-file-name "var/eshell/history" user-emacs-directory))
-(setq recentf-save-file  (expand-file-name "var/recentf" user-emacs-directory))
+(setq recentf-save-file (expand-file-name "var/recentf" user-emacs-directory))
 ;; 自动刷新被修改过的文件
 (global-auto-revert-mode t)
-(setq desktop-dirname  (expand-file-name "var/desktop-save" user-emacs-directory))
+(setq desktop-dirname (expand-file-name "var/desktop-save" user-emacs-directory))
 ;; 设置自动保存路径前缀
-(setq auto-save-list-file-prefix  (expand-file-name "var/auto-save-list/.saves-" user-emacs-directory))
+(setq auto-save-list-file-prefix (expand-file-name "var/auto-save-list/.saves-" user-emacs-directory))
 ;; minibuffer history
 (setq savehist-file (expand-file-name "var/savehist" user-emacs-directory))
 ;; emacs bookmarks
@@ -188,8 +185,10 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (add-hook 'dired-mode-hook
           (lambda ()
+            (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
             (define-key dired-mode-map (kbd "^")
-              (lambda () (interactive) (find-alternate-file "..")))))
+              (lambda () (interactive) (find-alternate-file "..")))
+            ))
 
 ;; join-line
 (global-set-key "\M-J" (lambda ()
@@ -262,7 +261,7 @@
                          (file-name-nondirectory buffer-file-name)
                          (file-name-sans-extension (file-name-nondirectory buffer-file-name)))
                  )))
-                   
+
 ;;----------------------------------------------------------------------------
 ;; global common keybindings
 ;;----------------------------------------------------------------------------
@@ -457,11 +456,6 @@
         (downcase-region start (cdr (bounds-of-thing-at-point 'symbol)))))))
 (global-set-key (kbd "M-U") (lambda () (interactive) (toggle-camelcase-underscores nil)))
 
-;; split window and change focus
-(defadvice split-window (after move-point-to-new-window activate)
-  "Move the point to the newly created window after splitting."
-  (other-window 1))
-
 ;;----------------------------------------------------------------------------
 ;; Allow users to provide an optional "init-preload-local.el"
 ;;----------------------------------------------------------------------------
@@ -478,19 +472,19 @@
       (expand-file-name (format "elpa-%s.%s" emacs-major-version emacs-minor-version)
                         user-emacs-directory))
 
-;;; Standard package repositories
-;; (add-to-list 'package-archives '( "melpa" . "http://melpa.org/packages/") t)
+;; ;; Standard package repositories
+;; ;; (add-to-list 'package-archives '( "melpa" . "http://melpa.org/packages/") t)
 ;; (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
 ;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
 ;;                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
 ;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
 ;;                          ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
 ;;                          ))
-(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                         ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
-                         ("org" . "http://elpa.emacs-china.org/org/")
-                         ))
+;; (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+;;                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
+;;                          ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
+;;                          ("org" . "http://elpa.emacs-china.org/org/")
+;;                          ))
 
 ;;; Fire up package.el
 (package-initialize) ;; You might already have this line
@@ -527,7 +521,6 @@
 ;; (winner-mode 1)
 
 (use-package windmove
-  :config (use-package buffer-move)
   :bind (
          ("C-M-<left>" . windmove-left)
          ("C-M-<down>" . windmove-down)
@@ -918,9 +911,7 @@
   :commands lsp
   :hook (
          ((
-           python-mode go-mode rust-mode
-           js-mode js2-mode typescript-mode web-mode
-           c-mode c++-mode objc-mode) . lsp-deferred)
+           python-mode go-mode c-mode c++-mode) . lsp-deferred)
          (lsp-mode . lsp-enable-which-key-integration)
          )
   :bind (:map lsp-mode-map
@@ -1032,6 +1023,35 @@
     (ivy-prescient-mode 1)
     ;; Remember candidate frequencies across sessions
     (prescient-persist-mode 1))
+  )
+
+;; 各个语言的Debug工具
+(use-package dap-mode
+  :after lsp-mode
+  :config
+  (dap-auto-configure-mode)
+  (dap-mode 1)
+  ;; ;; The modes below are optional
+  ;; (dap-ui-mode 1)
+  ;; ;; enables mouse hover support
+  ;; (dap-tooltip-mode 1)
+  ;; ;; use tooltips for mouse hover
+  ;; ;; if it is not enabled `dap-mode' will use the minibuffer.
+  ;; (tooltip-mode 1)
+  ;; ;; displays floating panel with debug buttons
+  ;; ;; requies emacs 26+
+  ;; (dap-ui-controls-mode 1)
+
+  (require 'dap-python)
+  (require 'dap-lldb)
+  (require 'dap-dlv-go)
+
+  ;; ;; set the debugger executable (c++)
+  ;; ;; (setq dap-lldb-debug-program '("/usr/bin/lldb-vscode"))
+  (setq dap-lldb-debug-program '("/opt/homebrew/opt/llvm/bin/lldb-vscode"))
+
+  ;; ask user for executable to debug if not specified explicitly (c++)
+  (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
   )
 
 ;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end

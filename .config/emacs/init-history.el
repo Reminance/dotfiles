@@ -449,8 +449,7 @@
 ;;   :hook (after-init . (lambda ()
 ;;                         (hydra-posframe-mode t) ) ))
 
-;; ;; 各个语言的Debug工具
-;; (use-package dap-mode :after lsp-mode :config (dap-auto-configure-mode))
+;; ;; dap-java
 ;; (use-package dap-java :ensure nil)
 
 ;; mu4e
