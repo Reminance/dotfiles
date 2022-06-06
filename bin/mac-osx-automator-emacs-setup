@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# 1. open Automator
+# 2. create a new application
+# 3. add the "Run Shell Script" action
+# 4. paste in your command
+# 5. Select "Save..." from the file menu
+# 6. name it xxxxx.app
+
+# &>/dev/null &
+# 重定向其输出 是为了让automator的齿轮自动消失
+export PATH="/opt/homebrew/bin:$PATH" && source ~/.zshrc && /opt/homebrew/bin/emacs &>/dev/null &

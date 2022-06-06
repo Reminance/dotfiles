@@ -75,3 +75,22 @@ export GOPROXY=https://goproxy.cn,https://gocenter.io,https://goproxy.io,direct
 #export QT_IM_MODULE=fcitx
 #export XMODIFIERS="@im=fcitx"
 #export _JAVA_AWT_WM_NONREPARENTING=1
+
+# C/C++
+# os specific
+# for ZSH  `OSTYPE` is set by ZSH the shell itself.
+case "$OSTYPE" in
+  darwin*)
+    export CPATH=/opt/homebrew/include
+    export LIBRARY_PATH=/opt/homebrew/lib
+    export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+    ;;
+  linux*)
+    # do nth for now
+    ;;
+  dragonfly*|freebsd*|netbsd*|openbsd*)
+    # do nth for now
+    ;;
+esac

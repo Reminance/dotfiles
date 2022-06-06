@@ -28,6 +28,7 @@ then
     tmux new-window -t $SESSION:2 -n 'Doc'
     tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m
     # tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m 'temacs' C-m
+    # tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m 'emacs --daemon' C-m 'emacsclient -c'
 
     # Setup an additional shell
     tmux new-window -t $SESSION:3 -n 'WorkTool'

@@ -98,9 +98,6 @@ fi
 # for ZSH  `OSTYPE` is set by ZSH the shell itself.
 case "$OSTYPE" in
   darwin*)
-    export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
     # chmod 755 /usr/local/share/zsh
     # chmod 755 /usr/local/share/zsh/site-functions
     # chmod 755 $(brew --prefix)/share/zsh-completions
