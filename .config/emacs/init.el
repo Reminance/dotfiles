@@ -66,6 +66,14 @@
 ;; 高亮当前行
 ;; (global-hl-line-mode 1)
 
+;; hide continuation indicators ;; 隐藏连续行指示器
+(setf (cdr (assq 'continuation fringe-indicator-alist))
+      '(nil nil) ;; no continuation indicators
+      ;; '(nil right-curly-arrow) ;; right indicator only
+      ;; '(left-curly-arrow nil) ;; left indicator only
+      ;; '(left-curly-arrow right-curly-arrow) ;; default
+      )
+
 ;; Move cursor to end of current line
 ;; Insert new line below current line
 ;; it will also indent newline
@@ -157,6 +165,14 @@
 (setq-default tab-width 4)
 ;; 显示跟踪空白
 (setq-default show-trailing-whitespace t)
+;; disable `show-trailing-whitespace` in unpropriate place
+(dolist (hook '(special-mode-hook
+                term-mode-hook
+                comint-mode-hook
+                compilation-mode-hook
+                minibuffer-setup-hook))
+  (add-hook hook
+            (lambda () (setq-local show-trailing-whitespace nil))))
 
 ;; 高亮对应的括号
 (show-paren-mode 1)
@@ -277,31 +293,7 @@
 ;; (global-set-key (kbd "M-SPC") 'leader-key)
 (global-set-key (kbd "C-\\") 'leader-key)
 (define-key leader-key (kbd "<f5>") 'revert-buffer)
-(define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
-(define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
-(define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
-(define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
-(define-key leader-key "al" 'org-agenda-list)
-(define-key leader-key "at" 'org-todo-list)
-(global-set-key (kbd "M-L") 'org-agenda-list)
-(global-set-key (kbd "M-T") 'org-todo-list)
 ;; (define-key leader-key "e" 'mu4e)
-
-(defun my/org-narrow-forward ()
-  "Move to the next subtree at same level, and narrow to it."
-  (interactive)
-  (widen)
-  (org-forward-heading-same-level 1)
-  (org-narrow-to-subtree))
-(defun my/org-narrow-backward ()
-  "Move to the previous subtree at same level, and narrow to it."
-  (interactive)
-  (widen)
-  (org-backward-heading-same-level 1)
-  (org-narrow-to-subtree))
-(global-set-key (kbd "C-c o n") (lambda () (interactive) (my/org-narrow-forward)))
-(global-set-key (kbd "C-c o p") (lambda () (interactive) (my/org-narrow-backward)))
-(global-set-key (kbd "C-c o SPC") 'org-toggle-narrow-to-subtree)
 
 ;; recentf stuff
 (require 'recentf)
@@ -462,8 +454,103 @@
 (require 'init-preload-local nil t)
 
 ;;----------------------------------------------------------------------------
-;; melpa package
+;; org-mode
+;; ----------------------------------------------------------------------------
+(define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
+(define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
+(define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
+(define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
+(define-key leader-key "al" 'org-agenda-list)
+(define-key leader-key "at" 'org-todo-list)
+(global-set-key (kbd "M-L") 'org-agenda-list)
+(global-set-key (kbd "M-T") 'org-todo-list)
+
+(with-eval-after-load 'org
+  ;; This can be solved by adding a hook to org-tab-first-hook which adds org-end-of-line.
+  ;; Every time TAB is used it jumps to last visible character of the org-line, but before the ellipsis, and then opens/closes the container as usual.
+  (add-hook 'org-tab-first-hook 'org-end-of-line)
+  ;; (setq org-hide-emphasis-markers t) ;; hide markers like *bold* or /italic/
+  (setq org-startup-with-inline-images t)
+  (setq org-image-actual-width 200)
+  (setq org-ellipsis "▾") ;; todo. not working
+  (define-key org-mode-map (kbd "<C-M-S-right>") nil)
+  (define-key org-mode-map (kbd "<C-M-S-left>") nil)
+  (define-key org-mode-map (kbd "C-,") nil)
+  )
+
+;; Easy Templates support shortcuts such as: '<s + TAB'
+(require 'org-tempo)
+
+(global-set-key (kbd "C-c '") 'org-edit-src-code)
+(setq org-src-fontify-natively t)
+(setq org-src-tab-acts-natively t)
+(setq org-confirm-babel-evaluate nil)
+(setq org-babel-confirm-evaluate nil)
+(setq org-src-window-setup 'current-window)
+(setq org-display-inline-images t)
+(setq org-redisplay-inline-images t)
+(setq org-startup-with-inline-images nil)
+(setq org-default-notes-file "~/doc/org/notes.org")
+(setq org-agenda-files (list
+                        "~/doc/org/notes.org"
+                        "~/doc/org/personal.org"
+                        "~/doc/org/reading.org"
+                        ))
+(add-hook 'org-mode-hook 'org-indent-mode)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c a") #'org-agenda)
+(global-set-key (kbd "C-c c") #'org-capture)
+
+;; Type C-h v org-agenda-window-setup for other options.
+(setq org-agenda-window-setup 'only-window)
+(setq org-agenda-restore-windows-after-quit t)
+
+(setq org-directory "~/doc/org/")
+(setq org-capture-templates
+      '(
+        ("t" "Todo" entry (file+headline "~/doc/org/notes.org" "Tasks")
+         ;; Prompt for tag
+         "* TODO %?\t%^g\n Entered on %U\n  %i\n  %a")
+        ("o" "Someday" entry (file+headline "~/doc/org/personal.org" "Tasks")
+         "* SOMEDAY %?")
+        ("s" "Code Snippet" entry (file+datetree "~/doc/org/snippet.org")
+         ;; Prompt for tag and language
+         "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
+        ))
+
+;;; Archiving
+(setq org-archive-mark-done nil)
+(setq org-archive-location "%s_archive::* Archive")
+
+(setq org-todo-keywords
+      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
+              (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
+              (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")))
+      org-todo-repeat-to-state "NEXT")
+
+(setq org-todo-keyword-faces
+      (quote (("NEXT" :inherit warning)
+              ("PROJECT" :inherit font-lock-string-face))))
+
+(defun my/org-narrow-forward ()
+  "Move to the next subtree at same level, and narrow to it."
+  (interactive)
+  (widen)
+  (org-forward-heading-same-level 1)
+  (org-narrow-to-subtree))
+(defun my/org-narrow-backward ()
+  "Move to the previous subtree at same level, and narrow to it."
+  (interactive)
+  (widen)
+  (org-backward-heading-same-level 1)
+  (org-narrow-to-subtree))
+(global-set-key (kbd "C-c o n") (lambda () (interactive) (my/org-narrow-forward)))
+(global-set-key (kbd "C-c o p") (lambda () (interactive) (my/org-narrow-backward)))
+(global-set-key (kbd "C-c o SPC") 'org-toggle-narrow-to-subtree)
+
 ;;----------------------------------------------------------------------------
+;; package
+;; ----------------------------------------------------------------------------
 (require 'package)
 ;; (require 'cl-lib)
 
@@ -480,11 +567,11 @@
 ;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
 ;;                          ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
 ;;                          ))
-;; (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-;;                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
-;;                          ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
-;;                          ("org" . "http://elpa.emacs-china.org/org/")
-;;                          ))
+(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
+                         ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
+                         ("org" . "http://elpa.emacs-china.org/org/")
+                         ))
 
 ;;; Fire up package.el
 (package-initialize) ;; You might already have this line
@@ -496,6 +583,9 @@
 ;; (when (and (version< emacs-version "26.3") (boundp 'libgnutls-version) (>= libgnutls-version 30604))
 ;;   (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
+;;----------------------------------------------------------------------------
+;; custom package
+;;----------------------------------------------------------------------------
 ;;; for use-package
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -628,106 +718,6 @@
 (setq kill-ring-max 500)
 (use-package popup-kill-ring
   :bind ("M-y" . popup-kill-ring))
-
-(require 'url-util)
-(use-package ob-go)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (C . t)
-   (shell . t)
-   (sql . t)
-   (java . t)
-   (go . t)
-   (emacs-lisp . t)
-   (shell . t)))
-(global-set-key (kbd "C-c r") 'org-babel-remove-result)
-
-;;; org
-;;(image-type-available-p 'imagemagick) ;; It will evaluate to t if your Emacs has Imagemagick support.
-(defun ndk/org-display-inline-image-at-point ()
-  "Toggle inline image at point."
-  (interactive)
-  (let* ((context (org-element-context (org-element-at-point)))
-         (type (org-element-type context))
-         (beg  (plist-get (cadr context) :begin))
-         (end  (plist-get (cadr context) :end)))
-    (when (eq type 'link)
-      (org-display-inline-images nil nil beg end))))
-
-(use-package org
-  :diminish org-indent-mode
-  :config
-  ;; This can be solved by adding a hook to org-tab-first-hook which adds org-end-of-line.
-  ;; Every time TAB is used it jumps to last visible character of the org-line, but before the ellipsis, and then opens/closes the container as usual.
-  (add-hook 'org-tab-first-hook 'org-end-of-line)
-  ;; (setq org-hide-emphasis-markers t) ;; hide markers like *bold* or /italic/
-  (setq org-ellipsis "▾")
-  (setq org-startup-with-inline-images t)
-  (setq org-image-actual-width 200)
-  (eval-after-load 'org
-    (progn
-      (define-key org-mode-map (kbd "<C-M-S-right>") nil)
-      (define-key org-mode-map (kbd "<C-M-S-left>") nil)
-      (define-key org-mode-map (kbd "C-,") nil)
-      (define-key org-mode-map (kbd "C-c C-v") 'ndk/org-display-inline-image-at-point)
-      ))
-  )
-
-;; Easy Templates support shortcuts such as: '<s + TAB'
-(require 'org-tempo)
-
-(global-set-key (kbd "C-c '") 'org-edit-src-code)
-(setq org-src-fontify-natively t)
-(setq org-src-tab-acts-natively t)
-(setq org-confirm-babel-evaluate nil)
-(setq org-babel-confirm-evaluate nil)
-(setq org-src-window-setup 'current-window)
-(setq org-display-inline-images t)
-(setq org-redisplay-inline-images t)
-(setq org-startup-with-inline-images nil)
-(setq org-default-notes-file "~/doc/org/notes.org")
-(setq org-agenda-files (list
-                        "~/doc/org/notes.org"
-                        "~/doc/org/personal.org"
-                        "~/doc/org/reading.org"
-                        ))
-(add-hook 'org-mode-hook 'org-indent-mode)
-(global-set-key (kbd "C-c l") #'org-store-link)
-(global-set-key (kbd "C-c a") #'org-agenda)
-(global-set-key (kbd "C-c c") #'org-capture)
-
-;; Type C-h v org-agenda-window-setup for other options.
-(setq org-agenda-window-setup 'only-window)
-(setq org-agenda-restore-windows-after-quit t)
-
-(setq org-directory "~/doc/org/")
-(setq org-capture-templates
-      '(
-        ("t" "Todo" entry (file+headline "~/doc/org/notes.org" "Tasks")
-         ;; Prompt for tag
-         "* TODO %?\t%^g\n Entered on %U\n  %i\n  %a")
-        ("o" "Someday" entry (file+headline "~/doc/org/personal.org" "Tasks")
-         "* SOMEDAY %?")
-        ("s" "Code Snippet" entry (file+datetree "~/doc/org/snippet.org")
-         ;; Prompt for tag and language
-         "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
-        ))
-
-;;; Archiving
-(setq org-archive-mark-done nil)
-(setq org-archive-location "%s_archive::* Archive")
-
-(setq org-todo-keywords
-      (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!/!)")
-              (sequence "PROJECT(p)" "|" "DONE(d!/!)" "CANCELLED(c@/!)")
-              (sequence "WAITING(w@/!)" "DELEGATED(e!)" "HOLD(h)" "|" "CANCELLED(c@/!)")))
-      org-todo-repeat-to-state "NEXT")
-
-(setq org-todo-keyword-faces
-      (quote (("NEXT" :inherit warning)
-              ("PROJECT" :inherit font-lock-string-face))))
 
 (use-package org-bullets
   :init
