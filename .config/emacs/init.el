@@ -475,6 +475,8 @@
   (setq org-ellipsis "▾") ;; todo. not working
   (define-key org-mode-map (kbd "<C-M-S-right>") nil)
   (define-key org-mode-map (kbd "<C-M-S-left>") nil)
+  (define-key org-mode-map (kbd "<C-S-up>") nil)
+  (define-key org-mode-map (kbd "<C-S-down>") nil)
   (define-key org-mode-map (kbd "C-,") nil)
   )
 
