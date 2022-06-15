@@ -700,7 +700,7 @@
          ("M-N" . mc/mark-next-like-this)
          ("M-P" . mc/unmark-next-like-this)
          ;; ("M-P" . mc/mark-previous-like-this)
-         ;; ("C-c C-<" . mc/mark-all-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)
          ("M-S-<mouse-1>" . mc/add-cursor-on-click)
          ))
 
