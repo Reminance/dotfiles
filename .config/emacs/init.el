@@ -1187,7 +1187,7 @@
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key (kbd "M-."))
-  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number --hidden -g \"!.git\" .")
+  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=240 --ignore-case --no-heading --line-number --hidden -g \"!.git\" -g !themes -g !quelpa -g !backup .")
   (setq consult-narrow-key "<") ;; (kbd "C-+")
   (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
   )
