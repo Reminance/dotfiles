@@ -47,6 +47,13 @@
 (when (file-exists-p custom-file)
   (load custom-file))
 
+;;----------------------------------------------------------------------------
+;; Variables configured via the interactive 'customize' interface
+;;----------------------------------------------------------------------------
+(setq machine-specific-file (expand-file-name "machine-specific.el" user-emacs-directory))
+(when (file-exists-p machine-specific-file)
+  (load machine-specific-file))
+
 (defun remove-dos-eol ()
   "Do not show ^M in files containing mixed UNIX and DOS line endings."
   (interactive)
@@ -1196,7 +1203,7 @@
 (defvar dbadmin-cookie "")
 (defvar dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))
 (defvar dbadmin-page-no 1)
-(defvar dbadmin-page-size 50)
+(defvar dbadmin-page-size 1000)
 (defvar dbadmin-buffer-name "*dbadmin*")
 (defvar dbadmin-database-alist '(
                                  (?1 "wws" (lambda () (message "Choosen: wws") (setq dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))))
@@ -1234,7 +1241,7 @@
   )
 
 (defun decode-hex-string (hex-string)
-  "How do I convert a string of hex into ASCII using elisp?  HEX-STRING.  https://stackoverflow.com/questions/12003231/how-do-i-convert-a-string-of-hex-into-ascii-using-elisp."
+  "How do I convert a HEX-STRING into ASCII using elisp?  https://stackoverflow.com/questions/12003231/how-do-i-convert-a-string-of-hex-into-ascii-using-elisp."
   (let ((res nil))
     (dotimes (i (/ (length hex-string) 2) (apply #'concat (reverse res)))
       (let ((hex-byte (substring hex-string (* 2 i) (* 2 (+ i 1)))))
@@ -1266,11 +1273,11 @@
            ;; (github-pass (password-store-get-field "code/github" "token"))
            (archive-response
             (request
-              (cond ((string= operation "executeSql") "https://dbadmin-cn-new.dev.sheincorp.cn/database/executeSql")
-                    ((string= operation "explainSql") "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql")
-                    ((string= operation "queryTable") "https://dbadmin-cn-new.dev.sheincorp.cn/database/queryTable")
-                    ((string= operation "showTableStruct") "https://dbadmin-cn-new.dev.sheincorp.cn/database/showTableStruct")
-                    (t "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql"))
+              (cond ((string= operation "executeSql") (concat dbadmin-host "/database/executeSql"))
+                    ((string= operation "explainSql") (concat dbadmin-host "/database/explainSql"))
+                    ((string= operation "queryTable") (concat dbadmin-host "/database/queryTable"))
+                    ((string= operation "showTableStruct") (concat dbadmin-host "/database/showTableStruct"))
+                    (t (concat dbadmin-host "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql")))
               :type "POST" :parser 'json-read
               :headers `(("cookie" . ,dbadmin-cookie)) ;; ("Content-Type" . "application/json") ("charset" . "UTF-8")
               :data (cond
@@ -1365,6 +1372,12 @@
 (global-set-key (kbd "C-c E") (lambda () (interactive) (dbadmin-exec "explainSql")))
 (global-set-key (kbd "C-c t") (lambda () (interactive) (dbadmin-exec "queryTable")))
 (global-set-key (kbd "C-c s") (lambda () (interactive) (dbadmin-exec "showTableStruct")))
+(global-set-key (kbd "C-c M-c") (lambda () (interactive) (dbadmin-set-cookie)))
+(global-set-key (kbd "C-c M-d") (lambda () (interactive) (dbadmin-choose-database)))
+
+;; format table macro-function; F3; F4; name-last-kbd-macro; insert-kbd-macro;
+(fset 'my/format-table
+   (kmacro-lambda-form [?\M-< ?\C-s ?+ ?- return ?\C-a ?\C-  ?\M-< ?\C-w ?\C-k ?\C-k ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?[ ? ?] ?* return ?| return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?^ ?| return return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?$ return return ?\M-< ?\M-x ?q ?u ?e ?r ?y ?- ?r ?e ?p ?l ?a ?c ?e return ?| return tab return ?! ?\M-<] 0 "%d"))
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin end
 

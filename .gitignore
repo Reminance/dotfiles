@@ -6,6 +6,7 @@ sandbox/
 .config/dmenu/*.o
 !.config/emacs/init.el
 !.config/emacs/init-history.el
+!.config/emacs/machine-specific-default.el
 !.config/emacs/etc
 .config/emacs/
 .config/fcitx
