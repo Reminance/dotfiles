@@ -63,6 +63,9 @@
 (setq-default cursor-type t)
 (blink-cursor-mode 1)
 
+;; 补全忽略大小写
+(setq completion-ignore-case t)
+
 ;; 高亮当前行
 ;; (global-hl-line-mode 1)
 
@@ -351,7 +354,7 @@
 ;; setting initial frame size
 (setq initial-frame-alist
        '((height . 55)
-         (width . 160)
+         (width . 200)
          (left . 10)
          (top . 40)))
 
@@ -472,7 +475,9 @@
   ;; (setq org-hide-emphasis-markers t) ;; hide markers like *bold* or /italic/
   (setq org-startup-with-inline-images t)
   (setq org-image-actual-width 200)
-  (setq org-ellipsis "▾") ;; todo. not working
+  ;; (setq org-ellipsis "▾") ;; todo. not working
+  ;; (setq org-ellipsis "↴") ;; todo. not working
+  (setq org-ellipsis "⤵") ;; todo. not working
   (define-key org-mode-map (kbd "<C-M-S-right>") nil)
   (define-key org-mode-map (kbd "<C-M-S-left>") nil)
   (define-key org-mode-map (kbd "<C-S-up>") nil)
@@ -968,8 +973,8 @@
 
 (use-package counsel
   :bind (
-         ("M-x" . 'counsel-M-x)
-         ("C-x b" . 'counsel-ibuffer)
+         ;; ("M-x" . 'counsel-M-x)
+         ;; ("C-x b" . 'counsel-ibuffer)
          ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
          ("C-x d" . 'counsel-dired)
          ("C-x C-f" . 'counsel-find-file)
@@ -1047,6 +1052,321 @@
   )
 
 ;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
+
+
+;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
+
+;; Enable vertico
+(use-package vertico
+  :init
+  (vertico-mode))
+
+(use-package orderless
+  :init
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles partial-completion)))))
+
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+  (setq enable-recursive-minibuffers t))
+
+(use-package marginalia
+  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  :bind (("M-A" . marginalia-cycle)
+         :map minibuffer-local-map
+         ("M-A" . marginalia-cycle))
+  :init
+  (marginalia-mode))
+
+(use-package embark
+  :bind
+  (("C-." . embark-act)         ;; pick some comfortable binding
+   ("C-;" . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+  :init
+  (setq prefix-help-command #'embark-prefix-help-command)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
+
+;; Consult users will also want the embark-consult package.
+(use-package embark-consult
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+(setq prefix-help-command 'embark-prefix-help-command)
+
+;; Example configuration for Consult
+(use-package consult
+  ;; ;; Replace bindings. Lazily loaded due by `use-package'.
+  :bind (;; C-c bindings (mode-specific-map)
+  ;;        ("C-c h" . consult-history)
+  ;;        ("C-c m" . consult-mode-command)
+  ;;        ("C-c k" . consult-kmacro)
+  ;;        ;; C-x bindings (ctl-x-map)
+  ;;        ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+  ;;        ("C-M-j" . consult-buffer)                ;; orig. switch-to-buffer
+  ;;        ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+  ;;        ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+  ;;        ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+  ;;        ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+  ;;        ;; Custom M-# bindings for fast register access
+  ;;        ("M-#" . consult-register-load)
+  ;;        ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+  ;;        ("C-M-#" . consult-register)
+  ;;        ;; Other custom bindings
+  ;;        ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+  ;;        ("<help> a" . consult-apropos)            ;; orig. apropos-command
+  ;;        ;; M-g bindings (goto-map)
+  ;;        ("M-g e" . consult-compile-error)
+  ;;        ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+  ;;        ("M-g g" . consult-goto-line)             ;; orig. goto-line
+  ;;        ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+  ;;        ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+  ;;        ("M-g m" . consult-mark)
+  ;;        ("M-g k" . consult-global-mark)
+  ;;        ("M-g i" . consult-imenu)
+  ;;        ("M-g I" . consult-imenu-multi)
+  ;;        ;; M-s bindings (search-map)
+  ;;        ("M-s d" . consult-find)
+  ;;        ("M-s D" . consult-locate)
+  ;;        ("M-s g" . consult-grep)
+  ;;        ("M-s G" . consult-git-grep)
+  ;;        ("M-s r" . consult-ripgrep)
+  ;;        ("M-s l" . consult-line)
+  ;;        ("M-s L" . consult-line-multi)
+  ;;        ("M-s m" . consult-multi-occur)
+  ;;        ("M-s k" . consult-keep-lines)
+  ;;        ("M-s u" . consult-focus-lines)
+  ;;        ;; Isearch integration
+  ;;        ("M-s e" . consult-isearch-history)
+  ;;        :map isearch-mode-map
+  ;;        ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+  ;;        ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+  ;;        ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+  ;;        ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+  ;;        ;; Minibuffer history
+  ;;        :map minibuffer-local-map
+  ;;        ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+  ;;        ("M-r" . consult-history)                ;; orig. previous-matching-history-element
+         )
+
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  (setq register-preview-delay 0.5
+        register-preview-function #'consult-register-format)
+  (advice-add #'register-preview :override #'consult-register-window)
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  :config
+  (consult-customize
+   consult-theme
+   :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-recent-file
+   consult--source-project-recent-file
+   :preview-key (kbd "M-."))
+  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=1000 --path-separator / --smart-case --no-heading --line-number --hidden -g \"!.git\" .")
+  (setq consult-narrow-key "<") ;; (kbd "C-+")
+  (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
+)
+
+;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult end
+
+(use-package ctable)
+
+(use-package request)
+
+;; ;; ---------------------------------------------------------------------------- dbadmin start
+
+(defvar dbadmin-cookie "")
+(defvar dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))
+(defvar dbadmin-page-no 1)
+(defvar dbadmin-page-size 50)
+(defvar dbadmin-buffer-name "*dbadmin*")
+(defvar dbadmin-database-alist '(
+                                 (?1 "wws" (lambda () (message "Choosen: wws") (setq dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))))
+                                 (?2 "wss" (lambda () (message "Choosen: wss") (setq dbadmin-database '(("dbId" . "104") ("dbName" . "newsitetest")))))
+                                 (?3 "wms" (lambda () (message "Choosen: wms") (setq dbadmin-database '(("dbId" . "25") ("dbName" . "newsitetest")))))
+                                 (?4 "stat" (lambda () (message "Choosen: stat") (setq dbadmin-database '(("dbId" . "147") ("dbName" . "wms_stat")))))
+                                 (?5 "archive_1" (lambda () (message "Choosen: archive_1") (setq dbadmin-database '(("dbId" . "90") ("dbName" . "wms_archiver")))))
+                                 ))
+
+(defun dbadmin-choose-database ()
+  "Dbadmin choose database."
+  (interactive)
+  (let ((choice (read-char-choice (mapconcat (lambda (item) (format "%c: %s" (car item) (cadr item))) dbadmin-database-alist "; ")
+                  (mapcar #'car dbadmin-database-alist))))
+    (funcall (nth 2 (assoc choice dbadmin-database-alist)))))
+
+(defun dbadmin-set-page-size ()
+  "Please enter dbadmin page size."
+  (interactive)
+  (let* (
+         (page-size (read-number "Please enter dbadmin page size:"))
+         )
+    (setq dbadmin-page-size page-size)
+    (message "Successfully set dbadmin-page-size: %s" page-size))
+  )
+
+(defun dbadmin-set-cookie ()
+  "Please enter dbadmin cookie."
+  (interactive)
+  (let* (
+         (cookie-input (read-string "Dbadmin cookie:"))
+         )
+    (setq dbadmin-cookie cookie-input)
+    (message "Successfully set dbadmin-cookie: %s" cookie-input))
+  )
+
+(defun decode-hex-string (hex-string)
+  "How do I convert a string of hex into ASCII using elisp?  HEX-STRING.  https://stackoverflow.com/questions/12003231/how-do-i-convert-a-string-of-hex-into-ascii-using-elisp."
+  (let ((res nil))
+    (dotimes (i (/ (length hex-string) 2) (apply #'concat (reverse res)))
+      (let ((hex-byte (substring hex-string (* 2 i) (* 2 (+ i 1)))))
+        (push (format "%c" (string-to-number hex-byte 16)) res)))))
+
+(defun dbadmin-check-buffer-exist()
+  "Dbadmin check buffer exist, get or create it."
+  (interactive)
+  (cond ((eq (get-buffer dbadmin-buffer-name) (window-buffer (selected-window))) ;; (message "Visible and focused")
+         )
+        ((get-buffer-window (get-buffer dbadmin-buffer-name)) ;; (message "Visible and unfocused")
+         )
+        (t
+         (split-window-below)
+         (windmove-down)
+         (switch-to-buffer dbadmin-buffer-name) ;; (message "Not visible")
+         ))
+  )
+
+(defun dbadmin-exec (operation)
+  "Exec OPERATION via dbadmin http request."
+  (interactive)
+  (if (and (string= (buffer-substring-no-properties (region-beginning) (region-end)) "")
+           (or (string= operation "executeSql") (string= operation "explainSql") (string= operation "showTableStruct")))
+      (user-error "Error, because: %s" "sql cannot be null")
+    nil)
+  (save-excursion
+    (let* (
+           ;; (github-pass (password-store-get-field "code/github" "token"))
+           (archive-response
+            (request
+              (cond ((string= operation "executeSql") "https://dbadmin-cn-new.dev.sheincorp.cn/database/executeSql")
+                    ((string= operation "explainSql") "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql")
+                    ((string= operation "queryTable") "https://dbadmin-cn-new.dev.sheincorp.cn/database/queryTable")
+                    ((string= operation "showTableStruct") "https://dbadmin-cn-new.dev.sheincorp.cn/database/showTableStruct")
+                    (t "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql"))
+              :type "POST" :parser 'json-read
+              :headers `(("cookie" . ,dbadmin-cookie)) ;; ("Content-Type" . "application/json") ("charset" . "UTF-8")
+              :data (cond
+                     ((or (string= operation "executeSql") (string= operation "explainSql"))
+                      `(
+                        ("sql" . ,(buffer-substring-no-properties (region-beginning) (region-end)))
+                        ("id" . ,(assoc-default "dbId" dbadmin-database))
+                        ("dataBaseName" . ,(assoc-default "dbName" dbadmin-database))
+                        ("page" . ,dbadmin-page-no)
+                        ("limit" . ,dbadmin-page-size)
+                        ("sqlNoCache" . "true")))
+                     ((string= operation "queryTable")
+                      `(
+                        ("databaseId" . ,(assoc-default "dbId" dbadmin-database))
+                        ("databaseName" . ,(assoc-default "dbName" dbadmin-database))))
+                     ((string= operation "showTableStruct")
+                      `(
+                        ("databaseId" . ,(assoc-default "dbId" dbadmin-database))
+                        ("databaseName" . ,(assoc-default "dbName" dbadmin-database))
+                        ("tableName" . ,(buffer-substring-no-properties (region-beginning) (region-end)))))
+                     (t ()))
+              :sync t))
+           (rsp (request-response-data archive-response))
+           (status (request-response-status-code archive-response)))
+      (if (eq status 200)
+          (cond
+           ((or (string= operation "executeSql") (string= operation "explainSql"))
+            (let* ((rows (assoc-default 'data rsp)))
+              (if (eq (assoc-default 'code rsp) 0)
+                  (if (eq rows [])
+                      (progn
+                        (dbadmin-check-buffer-exist)
+                        (with-current-buffer (get-buffer-create dbadmin-buffer-name)
+                          (let ((inhibit-read-only t))
+                            (erase-buffer)
+                            (insert (format "查询结果为空, pageNo:%s, pageSize:%s, 查询时间:%s, 条数:%s\n"
+                                            dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp))))))
+                    (let* (
+                           (title (mapcar (lambda (item) (decode-hex-string (string-replace "pre" "" (symbol-name (car item))))) (aref rows 0)))
+                           (rows-decrypted ())
+                           )
+                      (dotimes (i (length rows))
+                        (let* ((decrypted-item ()))
+                          (dolist (item (aref rows i))
+                            (push (string-replace "</xmp>" "" (string-replace "<xmp>" "" (cdr item))) decrypted-item)
+                            )
+                          (push (nreverse decrypted-item) rows-decrypted)
+                          )
+                        )
+                      ;; (print title) ;; (print rows) ;; (print rows-decrypted)
+                      (ctbl:create-table-component-buffer
+                       :buffer (get-buffer-create dbadmin-buffer-name)
+                       :model (ctbl:make-model-from-list
+                               (nreverse rows-decrypted)
+                               title
+                               ))
+                      (dbadmin-check-buffer-exist)
+                      (with-current-buffer (get-buffer-create dbadmin-buffer-name)
+                        (let ((inhibit-read-only t))
+                          (goto-char (point-min))
+                          (insert (format "pageNo:%s, pageSize:%s, 查询时间:%s, 条数:%s\n"
+                                          dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                          ))
+                      )
+                    )
+                (message (assoc-default 'msg rsp)))
+              ))
+           ((string= operation "queryTable")
+            (dbadmin-check-buffer-exist)
+            (with-current-buffer (get-buffer-create dbadmin-buffer-name)
+              (let ((inhibit-read-only t))
+                (erase-buffer)
+                (goto-char (point-min))
+                (insert (format "查询时间:%s, 条数:%s\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                (dotimes (i (length (assoc-default 'data rsp)))
+                  (insert (format "%s\n"(aref (assoc-default 'data rsp) i)))
+                  )
+                )))
+           ((string= operation "showTableStruct")
+            (dbadmin-check-buffer-exist)
+            (with-current-buffer (get-buffer-create dbadmin-buffer-name)
+              (let ((inhibit-read-only t))
+                (erase-buffer)
+                (goto-char (point-min))
+                (insert (format "查询时间:%s, 条数:%s\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                (insert (format "%s" (assoc-default 'data rsp)))
+                )))
+           (t ()))
+        status))))
+
+(global-set-key (kbd "C-c e") (lambda () (interactive) (dbadmin-exec "executeSql")))
+(global-set-key (kbd "C-c E") (lambda () (interactive) (dbadmin-exec "explainSql")))
+(global-set-key (kbd "C-c t") (lambda () (interactive) (dbadmin-exec "queryTable")))
+(global-set-key (kbd "C-c s") (lambda () (interactive) (dbadmin-exec "showTableStruct")))
+
+;; ;; ---------------------------------------------------------------------------- dbadmin end
 
 (provide 'init)
 ;; Local Variables:

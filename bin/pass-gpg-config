@@ -25,4 +25,5 @@ pass ls
 # pass key rename
 pass mv xx/xx xx/xx
 
-
+# insert jira gpginfo
+pass insert Jira/jira.xxxx.cn
