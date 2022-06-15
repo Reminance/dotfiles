@@ -1277,7 +1277,7 @@
                     ((string= operation "explainSql") (concat dbadmin-host "/database/explainSql"))
                     ((string= operation "queryTable") (concat dbadmin-host "/database/queryTable"))
                     ((string= operation "showTableStruct") (concat dbadmin-host "/database/showTableStruct"))
-                    (t (concat dbadmin-host "https://dbadmin-cn-new.dev.sheincorp.cn/database/explainSql")))
+                    (t (concat dbadmin-host "/database/explainSql")))
               :type "POST" :parser 'json-read
               :headers `(("cookie" . ,dbadmin-cookie)) ;; ("Content-Type" . "application/json") ("charset" . "UTF-8")
               :data (cond
