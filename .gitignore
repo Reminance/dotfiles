@@ -5,6 +5,7 @@ sandbox/
 .config/emacs/request
 .config/emacs/transient
 .config/emacs/var
+.config/emacs/dict
 .config/emacs/.mc-lists.el
 .config/emacs/.org-id-locations
 .config/emacs/machine-specific.el
