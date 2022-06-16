@@ -108,13 +108,8 @@
 (defconst *is-x11* (eq window-system 'x))
 (defconst *is-windows* (eq system-type 'windows-nt))
 (when *is-mac*
-  (pixel-scroll-mode)
   (setq mac-command-modifier 'meta) ;; use command key as meta/alt
   ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
-  ;; Make mouse wheel / trackpad scrolling less jerky
-  (setq mouse-wheel-scroll-amount '(1
-                                    ((shift) . 5)
-                                    ((control))))
   )
 
 ;; (when (and *is-mac* (fboundp 'toggle-frame-fullscreen))
@@ -203,10 +198,18 @@
 (setq bookmark-default-file (expand-file-name "var/bookmarks" user-emacs-directory))
 
 ;; 更友好及平滑的滚动
+;; (pixel-scroll-mode)
 (setq scroll-conservatively 100)
-;;; scroll
 (global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
+(setq hscroll-step 1)
+(setq hscroll-margin 0)
+(global-set-key [wheel-right] (lambda() (interactive) (scroll-left 5)))
+(global-set-key [wheel-left] (lambda() (interactive) (scroll-right 5)))
+;; ;; Make mouse wheel / trackpad scrolling less jerky
+;; (setq mouse-wheel-scroll-amount '(1
+;;                                   ((shift) . 5)
+;;                                   ((control))))
 
 ;; dired alternate open(avoid of too many buffers)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -803,7 +806,7 @@
           company-echo-delay 0
           company-tooltip-align-annotations t
           company-tooltip-limit 10
-          company-minimum-prefix-length 2
+          company-minimum-prefix-length 1
           company-show-numbers t
           company-require-match nil
           company-dabbrev-ignore-case nil
@@ -1205,7 +1208,7 @@
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin start
 
-(defvar dbadmin-cookie "")
+;; (defvar dbadmin-cookie "")  ;; define it in machine-specific.el
 (defvar dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))
 (defvar dbadmin-page-no 1)
 (defvar dbadmin-page-size 1000)
@@ -1379,7 +1382,16 @@
 
 ;; format table macro-function; F3; F4; name-last-kbd-macro; insert-kbd-macro;
 (fset 'my/format-table
-   (kmacro-lambda-form [?\M-< ?\C-s ?+ ?- return ?\C-a ?\C-  ?\M-< ?\C-w ?\C-k ?\C-k ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?[ ? ?] ?* return ?| return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?^ ?| return return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?$ return return ?\M-< ?\M-x ?q ?u ?e ?r ?y ?- ?r ?e ?p ?l ?a ?c ?e return ?| return tab return ?! ?\M-<] 0 "%d"))
+      (kmacro-lambda-form [?\M-< ?\C-s ?+ ?- return ?\C-a ?\C-  ?\M-< ?\C-w ?\C-k ?\C-k ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?\[ ? ?\] ?* return ?| return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?^ ?| return return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?$ return return ?\M-< ?\M-x ?q ?u ?e ?r ?y ?- ?r ?e ?p ?l ?a ?c ?e return ?| return tab return ?! ?\M-<] 0 "%d"))
+
+(use-package company-dict
+  :config
+  ;; Where to look for dictionary files. Default is ~/.emacs.d/dict
+  (setq company-dict-dir (concat user-emacs-directory "dict/"))
+  ;; Optional: if you want it available everywhere
+  (add-to-list 'company-backends 'company-dict)
+  ;;  script to load dbadmin table to dict/sql-mode file
+  )
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin end
 
