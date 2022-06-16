@@ -108,6 +108,7 @@
 (defconst *is-x11* (eq window-system 'x))
 (defconst *is-windows* (eq system-type 'windows-nt))
 (when *is-mac*
+  (pixel-scroll-mode)
   (setq mac-command-modifier 'meta) ;; use command key as meta/alt
   ;; (setq mac-option-modifier 'none) ;; If ‘none’, the key is ignored by Emacs and retains its standard meaning.
   ;; Make mouse wheel / trackpad scrolling less jerky
@@ -1375,6 +1376,7 @@
         ))))
 
 (global-set-key (kbd "C-c e") (lambda () (interactive) (dbadmin-exec "executeSql")))
+(global-set-key (kbd "C-c C-e") (lambda () (interactive) (dbadmin-exec "executeSql")))
 (global-set-key (kbd "C-c E") (lambda () (interactive) (dbadmin-exec "explainSql")))
 (global-set-key (kbd "C-c t") (lambda () (interactive) (dbadmin-exec "queryTable")))
 (global-set-key (kbd "C-c s") (lambda () (interactive) (dbadmin-exec "showTableStruct")))
