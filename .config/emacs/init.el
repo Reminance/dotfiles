@@ -1301,7 +1301,7 @@
                 ("databaseName" . ,(assoc-default "dbName" dbadmin-database))
                 ("tableName" . ,(buffer-substring-no-properties (region-beginning) (region-end)))))
              (t ()))
-      :sync t
+      ;; :sync t  ;; 异步请求和渲染 不阻塞操作
       :complete
       (cl-function
        (lambda (&key response &allow-other-keys)
