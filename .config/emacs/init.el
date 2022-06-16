@@ -1384,13 +1384,14 @@
 (fset 'my/format-table
       (kmacro-lambda-form [?\M-< ?\C-s ?+ ?- return ?\C-a ?\C-  ?\M-< ?\C-w ?\C-k ?\C-k ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?\[ ? ?\] ?* return ?| return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?^ ?| return return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?$ return return ?\M-< ?\M-x ?q ?u ?e ?r ?y ?- ?r ?e ?p ?l ?a ?c ?e return ?| return tab return ?! ?\M-<] 0 "%d"))
 
+;; python ~/workspace/work-tools/python/fetch_dbadmin_dict.py
+;; script to load dbadmin table fields to dict/sql-mode file
 (use-package company-dict
   :config
   ;; Where to look for dictionary files. Default is ~/.emacs.d/dict
   (setq company-dict-dir (concat user-emacs-directory "dict/"))
   ;; Optional: if you want it available everywhere
   (add-to-list 'company-backends 'company-dict)
-  ;;  script to load dbadmin table to dict/sql-mode file
   )
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin end
