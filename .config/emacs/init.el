@@ -856,6 +856,10 @@
           ))
   (load-theme 'zenburn t))
 
+;; (use-package spacemacs-theme
+;;   :config
+;;   (load-theme 'spacemacs-theme t))
+
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
@@ -1366,7 +1370,9 @@
                 (insert (format "%s" (assoc-default 'data rsp)))
                 )))
            (t ()))
-        status))))
+        ;; status ;; 405
+        (message "cookie已过期")
+        ))))
 
 (global-set-key (kbd "C-c e") (lambda () (interactive) (dbadmin-exec "executeSql")))
 (global-set-key (kbd "C-c E") (lambda () (interactive) (dbadmin-exec "explainSql")))
