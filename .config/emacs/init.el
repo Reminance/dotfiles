@@ -171,7 +171,7 @@
 (setq-default tab-width 4)
 ;; 显示跟踪空白
 (setq-default show-trailing-whitespace t)
-;; disable `show-trailing-whitespace` in unpropriate place
+;; disable `show-trailing-whitespace' in unpropriate place
 (dolist (hook '(special-mode-hook
                 term-mode-hook
                 comint-mode-hook
@@ -463,6 +463,57 @@
 (global-set-key (kbd "M-U") (lambda () (interactive) (toggle-camelcase-underscores nil)))
 
 ;;----------------------------------------------------------------------------
+;; sql-mode from sql.el
+;;----------------------------------------------------------------------------
+
+(defun sql-add-newline-first (output)
+  "Add newline to beginning of OUTPUT for `comint-preoutput-filter-functions'."
+  (end-of-buffer) ;; could be optional ?
+  (concat "\n" output))
+
+(defun sqli-add-hooks ()
+  "Add hooks to `sql-interactive-mode-hook'."
+  (add-hook 'comint-preoutput-filter-functions
+            'sql-add-newline-first
+            (lambda ()
+              (toggle-truncate-lines t))
+            ))
+
+(add-hook 'sql-interactive-mode-hook 'sqli-add-hooks)
+
+;; (frgd fdy-pbaarpgvba-nyvfg
+;;       '(
+;;         (ybpnyubfg
+;;          (fdy-cebqhpg 'zlfdy)
+;;          (fdy-freire "127.0.0.1")
+;;          (fdy-hfre "ebbg")
+;;          (fdy-cnffjbeq "")
+;;          (fdy-qngnonfr "grfg")
+;;          (fdy-cbeg 3306))
+;;         (jzf_qri
+;;          (fdy-cebqhpg 'zlfdy)
+;;          (fdy-freire "bcf-jzf-qo-qri01.furva.pbz")
+;;          (fdy-hfre "yg_jzf_qri_ej_gr")
+;;          (fdy-cnffjbeq "u80GYN0hSsKuW1sF")
+;;          (fdy-qngnonfr "jzf_qri")
+;;          (fdy-cbeg 3310))
+;;         (jjf_grfg
+;;          (fdy-cebqhpg 'zlfdy)
+;;          (fdy-freire "10.123.4.21")
+;;          (fdy-hfre "yg_arjfvgrgrfg_ej_gr")
+;;          (fdy-cnffjbeq "u80GYN0hSsKuW1sF")
+;;          (fdy-qngnonfr "jjf_grfg")
+;;          (fdy-cbeg 3308))
+;;         (jzq_grfg
+;;          (fdy-cebqhpg 'zlfdy)
+;;          (fdy-freire "10.123.4.21")
+;;          (fdy-hfre "yg_jzq_grfg_ej_gr")
+;;          (fdy-cnffjbeq "75gxcIyFU3NZsd18NpcL")
+;;          (fdy-qngnonfr "jzq_grfg")
+;;          (fdy-cbeg 3308))
+;;         ))
+
+;;----------------------------------------------------------------------------
 ;; Allow users to provide an optional "init-preload-local.el"
 ;;----------------------------------------------------------------------------
 (require 'init-preload-local nil t)
@@ -677,7 +728,6 @@
   (interactive)
   (kill-buffer (current-buffer)))
 (global-set-key (kbd "C-x k") 'kill-current-buffer)
-(global-set-key (kbd "C-q") 'delete-window)
 
 (use-package projectile
   :ensure t
@@ -848,6 +898,10 @@
   (use-package emojify
     :custom (emojify-emojis-dir (expand-file-name "var/emojis" user-emacs-directory))))
 
+;; ;;;;; ctable  ;; custom zenburn themes
+;;    `(ctbl:face-cell-select ((t (:background nil :foreground ,zenburn-green))))
+;;    `(ctbl:face-continue-bar ((t (:background ,zenburn-bg-05 :foreground ,zenburn-bg))))
+;;    `(ctbl:face-row-select ((t (:background nil :foreground ,zenburn-green))))
 (use-package zenburn-theme
   :config
   (setq zenburn-override-colors-alist
@@ -860,12 +914,26 @@
           ))
   (load-theme 'zenburn t))
 
-;; (use-package spacemacs-theme
-;;   :config
-;;   (load-theme 'spacemacs-theme t))
-
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-one t)
+
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;   (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
 
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
@@ -1094,7 +1162,7 @@
   (setq enable-recursive-minibuffers t))
 
 (use-package marginalia
-  ;; Either bind `marginalia-cycle` globally or only in the minibuffer
+  ;; Either bind `marginalia-cycle' globally or only in the minibuffer
   :bind (("M-A" . marginalia-cycle)
          :map minibuffer-local-map
          ("M-A" . marginalia-cycle))
@@ -1208,7 +1276,9 @@
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin start
 
-;; (defvar dbadmin-cookie "")  ;; define it in machine-specific.el
+;; define it in machine-specific.el
+;; (defvar dbadmin-host "uggcf://qonqzva-pa-arj.qri.furvapbec.pa")
+(defvar dbadmin-cookie "db_ticket=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkYmFkbWluIiwianNvbiI6Ik1FcXJITDVDcmtnWWVVVE41b29xZjFvdjMzRjVCSGwyam1lTDdydkVWSDFjWElwRzdsOWhsVmFBTFEwQ1ZRNmJHOWpEakVOZjdDSy1HRWdjNHNZTndRLi4iLCJjcmVhdGUiOjE2NTU0Njc1MzczMzh9.8M5AkmHRxhvEwRAKzrfonYlzD7TB-DsdAbsZxrLcQ20")
 (defvar dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))
 (defvar dbadmin-page-no 1)
 (defvar dbadmin-page-size 1000)
