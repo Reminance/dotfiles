@@ -82,7 +82,7 @@ endfunction
 nnoremap <C-Space> :call ToggleHiddenStatusLine()<CR>
 
 " for ctags
-set tags=tags;/
+set tags=./tags;,tags
 " nnoremap <Leader>cg :!ctags --extra=+q --exclude=android-dto --languages=java -R .
 
 " Cursor Movement

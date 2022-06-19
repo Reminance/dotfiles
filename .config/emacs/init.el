@@ -342,8 +342,7 @@
 (when (fboundp 'tool-bar-mode)
   (tool-bar-mode -1))
 (when (fboundp 'set-scroll-bar-mode)
-  (set-scroll-bar-mode nil))
-(when (fboundp 'menu-bar-mode)
+  (set-scroll-bar-mode nil))(when (fboundp 'menu-bar-mode)
   (menu-bar-mode -1))
 
 ;; enable mouse in terminal
@@ -382,6 +381,12 @@
   (newline)
   (yank))
 (global-set-key (kbd "C-,") 'my/duplicate-line)
+
+(defun kill-current-buffer ()
+  "Kill the current buffer."
+  (interactive)
+  (kill-buffer (current-buffer)))
+(global-set-key (kbd "C-x k") 'kill-current-buffer)
 
 (setq electric-pair-pairs '(
                             (?\( . ?\))
@@ -723,11 +728,42 @@
   :init
   (savehist-mode))
 
-(defun kill-current-buffer ()
-  "Kill the current buffer."
-  (interactive)
-  (kill-buffer (current-buffer)))
-(global-set-key (kbd "C-x k") 'kill-current-buffer)
+;; ======================================== gtags start ========================================
+;; ;; (setq load-path (cons "/opt/homebrew/bin/global" load-path))
+;; ;; (setq load-path (cons "/opt/homebrew/bin/gtags" load-path))
+;; (setq load-path (cons "/opt/homebrew/Cellar/global/6.6.8/share/gtags/gtags.el" load-path))
+;; ;; (autoload 'gtags-mode "gtags" "" t)
+;; (require 'gtags)
+;; (use-package ggtags)
+
+;; ;; (defun gtags-root-dir ()
+;; ;;   "Return GTAGS root directory or nil if doesn't exist."
+;; ;;   ;; (interactive)
+;; ;;   (with-temp-buffer
+;; ;;     (if (zerop (call-process "global" nil t nil "-pr"))
+;; ;;         (buffer-substring (point-min) (1- (point-max)))
+;; ;;       nil)))
+;; ;; (defun gtags-update ()
+;; ;;   "Make GTAGS incremental update."
+;; ;;   (call-process "global" nil nil nil "-u"))
+;; ;; (defun gtags-update-hook ()
+;; ;;   "Add hook while in gtags-mode."
+;; ;;   (when (gtags-root-dir)
+;; ;;     (gtags-update)))
+;; ;; (add-hook 'after-save-hook #'gtags-update-hook)
+
+;; ;; (setq gtags-mode-hook
+;; ;;       '(lambda ()
+;; ;;          (local-set-key "\M-t" 'gtags-find-tag)
+;; ;;          (local-set-key "\M-r" 'gtags-find-rtag)
+;; ;;          (local-set-key "\M-s" 'gtags-find-symbol)
+;; ;;          (local-set-key "\C-t" 'gtags-pop-stack)
+;; ;;          ))
+
+;; (setq java-mode-hook
+;;       '(lambda ()
+;;          (gtags-mode 1)))
+;; ======================================== gtags end ========================================
 
 (use-package projectile
   :ensure t
@@ -914,8 +950,8 @@
           ))
   (load-theme 'zenburn t))
 
-(use-package doom-modeline
-  :init (doom-modeline-mode 1))
+;; (use-package doom-modeline
+;;   :init (doom-modeline-mode 1))
 
 ;; (use-package doom-themes
 ;;   :ensure t
@@ -1065,6 +1101,7 @@
          ("C-c C-r" . 'ivy-resume)
          ("C-c g" . 'counsel-git)
          ("C-c j" . 'counsel-git-grep)
+         ("C-c f" . 'counsel-fzf)
          :map meta-s-prefix
          ("g" . #'counsel-rg)
          ("a" . #'counsel-ag)
@@ -1076,7 +1113,7 @@
          )
   :config
   ;; 默认的 rg 配置
-  (setq counsel-rg-base-command "rg --hidden --ignore-case --max-columns 240 --with-filename --no-heading --line-number --color never %s -g \"!.git\" -g !doc -g !themes -g !quelpa -g !backup ")
+  (setq counsel-rg-base-command "rg --hidden --ignore-case --max-columns 300 --no-heading --line-number --color never %s -g \"!.git\" -g !doc -g !themes -g !quelpa -g !backup ")
   (setq counsel-fzf-cmd "fd --hidden --exclude={.git,site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/,backup} --type f | fzf -f \"%s\" --algo=v1")
   ;; Integration with 'projectile'
   (with-eval-after-load 'projectile
@@ -1227,7 +1264,8 @@
          ;;        ("M-s D" . consult-locate)
          ;;        ("M-s g" . consult-grep)
          ;;        ("M-s G" . consult-git-grep)
-         ;;        ("M-s r" . consult-ripgrep)
+                ("M-s r" . consult-ripgrep)
+                ("M-S-f" . consult-ripgrep)
          ;;        ("M-s l" . consult-line)
          ;;        ("M-s L" . consult-line-multi)
          ;;        ("M-s m" . consult-multi-occur)
@@ -1263,7 +1301,7 @@
    consult--source-bookmark consult--source-recent-file
    consult--source-project-recent-file
    :preview-key (kbd "M-."))
-  (setq consult-ripgrep-args "rg --null --column --line-buffered --color=never --max-columns=240 --ignore-case --no-heading --line-number --hidden -g \"!.git\" -g !themes -g !quelpa -g !backup .")
+  (setq consult-ripgrep-args "rg --null --color=never --max-columns=300 --ignore-case --no-heading --line-number --hidden -g \"!.git\" -g !themes -g !quelpa -g !backup .")
   (setq consult-narrow-key "<") ;; (kbd "C-+")
   (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
   )

@@ -59,6 +59,7 @@ return require('packer').startup {
         }
       end
     }
+    use 'ludovicchabant/vim-gutentags' -- for gtags
     use 'majutsushi/tagbar'
     use 'Yggdroot/indentLine'
     use 'junegunn/vim-easy-align'

@@ -8,6 +8,8 @@ sandbox/
 .config/emacs/dict
 .config/emacs/.mc-lists.el
 .config/emacs/.org-id-locations
+.config/emacs/.lsp-session-v1
+.config/emacs/.dap-breakpoints
 .config/emacs/machine-specific.el
 .config/emacs/projectile-bookmarks.eld
 .config/emacs/custom.el
