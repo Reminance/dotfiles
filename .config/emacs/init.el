@@ -1316,7 +1316,7 @@
 
 ;; define it in machine-specific.el
 ;; (defvar dbadmin-host "uggcf://qonqzva-pa-arj.qri.furvapbec.pa")
-(defvar dbadmin-cookie "db_ticket=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJkYmFkbWluIiwianNvbiI6Ik1FcXJITDVDcmtnWWVVVE41b29xZjFvdjMzRjVCSGwyam1lTDdydkVWSDFjWElwRzdsOWhsVmFBTFEwQ1ZRNmJHOWpEakVOZjdDSy1HRWdjNHNZTndRLi4iLCJjcmVhdGUiOjE2NTU0Njc1MzczMzh9.8M5AkmHRxhvEwRAKzrfonYlzD7TB-DsdAbsZxrLcQ20")
+;; (defvar dbadmin-cookie "")
 (defvar dbadmin-database '(("dbId" . "199") ("dbName" . "wms_warehouse_within")))
 (defvar dbadmin-page-no 1)
 (defvar dbadmin-page-size 1000)
