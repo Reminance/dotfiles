@@ -28,3 +28,16 @@ extra: brew install openssl
 MySQL Internals Manual  /  A Guided Tour Of The MySQL Source Code
 mysql源码阅读指引
 https://dev.mysql.com/doc/internals/en/guided-tour.html
+
+brew install openssl@1.1
+
+cmake options:
+-DCMAKE_BUILD_TYPE=Debug
+-DWITH_BOOST=/Users/10018944/workspace/clang/boost/boost_1_73_0
+-DCMAKE_INSTALL_PREFIX=/Users/10018944/workspace/mysql-server/build
+#编译路径与安装路径需一致
+-DMYSQL_DATADIR==/Users/10018944/workspace/mysql-server/build/data
+#数据库初始化路径
+-DSYSCONFDIR==/Users/10018944/workspace/mysql-server/build
+-DMYSQL_UNIX_ADDR=/Users/10018944/workspace/mysql-server/build/data/mysql.sock
+-DWITH_SSL=/opt/homebrew/Cellar/openssl@1.1/1.1.1o
