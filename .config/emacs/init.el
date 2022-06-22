@@ -198,18 +198,15 @@
 (setq bookmark-default-file (expand-file-name "var/bookmarks" user-emacs-directory))
 
 ;; 更友好及平滑的滚动
-;; (pixel-scroll-mode)
-(setq scroll-conservatively 100)
+(setq scroll-conservatively 101)
 (global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
 (setq hscroll-step 1)
 (setq hscroll-margin 0)
 (global-set-key [wheel-right] (lambda() (interactive) (scroll-left 5)))
 (global-set-key [wheel-left] (lambda() (interactive) (scroll-right 5)))
-;; ;; Make mouse wheel / trackpad scrolling less jerky
-;; (setq mouse-wheel-scroll-amount '(1
-;;                                   ((shift) . 5)
-;;                                   ((control))))
+;; ;; t means point keeps its screen position if the scroll command moved it to next screen
+;; (setq scroll-preserve-screen-position t)
 
 ;; dired alternate open(avoid of too many buffers)
 (put 'dired-find-alternate-file 'disabled nil)
