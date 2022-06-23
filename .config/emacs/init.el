@@ -1369,6 +1369,14 @@
          (cookie-input (read-string "Dbadmin cookie:"))
          )
     (setq dbadmin-cookie cookie-input)
+    (save-excursion
+      (let ((buf (find-file-noselect (expand-file-name "machine-specific.el" user-emacs-directory))))
+        (set-buffer buf)
+        (beginning-of-buffer)
+        (while (search-forward-regexp "(defvar dbadmin-cookie \".*\")" nil t)
+          (replace-match (format "(defvar dbadmin-cookie \"%s\")" cookie-input) t nil))
+        (save-buffer)
+        (kill-buffer)))
     (message "Successfully set dbadmin-cookie: %s" cookie-input))
   )
 
@@ -1443,8 +1451,8 @@
                              (with-current-buffer (get-buffer-create dbadmin-buffer-name)
                                (let ((inhibit-read-only t))
                                  (erase-buffer)
-                                 (insert (format "查询结果为空, pageNo:%s, pageSize:%s, 查询时间:%s, 条数:%s\n"
-                                                 dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp))))))
+                                 (insert (format "无数据, page:%s, size:%s, cost:%s, count:%s, 查询时间:[%s]\n"
+                                                 dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp) (format-time-string "%Y-%m-%d %H:%M:%S.%3N"))))))
                          (let* (
                                 (title (mapcar (lambda (item) (decode-hex-string (string-replace "pre" "" (symbol-name (car item))))) (aref rows 0)))
                                 (rows-decrypted ()))
@@ -1465,8 +1473,8 @@
                            (with-current-buffer (get-buffer-create dbadmin-buffer-name)
                              (let ((inhibit-read-only t))
                                (goto-char (point-min))
-                               (insert (format "pageNo:%s, pageSize:%s, 查询时间:%s, 条数:%s\n"
-                                               dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                               (insert (format "page:%s, size:%s, cost:%s, count:%s, 查询时间:[%s]\n"
+                                               dbadmin-page-no dbadmin-page-size (assoc-default 'executeTime rsp) (assoc-default 'count rsp) (format-time-string "%Y-%m-%d %H:%M:%S.%3N")))
                                ))
                            ))
                      (message (assoc-default 'msg rsp)))
@@ -1477,7 +1485,7 @@
                    (let ((inhibit-read-only t))
                      (erase-buffer)
                      (goto-char (point-min))
-                     (insert (format "查询时间:%s, 条数:%s\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                     (insert (format "cost:%s, count:%s, 查询时间:[%s]\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp) (format-time-string "%Y-%m-%d %H:%M:%S.%3N")))
                      (dotimes (i (length (assoc-default 'data rsp)))
                        (insert (format "%s\n"(aref (assoc-default 'data rsp) i))))
                      )))
@@ -1487,7 +1495,7 @@
                    (let ((inhibit-read-only t))
                      (erase-buffer)
                      (goto-char (point-min))
-                     (insert (format "查询时间:%s, 条数:%s\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp)))
+                     (insert (format "cost:%s, count:%s, 查询时间:[%s]\n" (assoc-default 'executeTime rsp) (assoc-default 'count rsp) (format-time-string "%Y-%m-%d %H:%M:%S.%3N")))
                      (insert (format "%s" (assoc-default 'data rsp)))
                      )))
                 (t ()))
