@@ -634,17 +634,17 @@
 
 ;; ;; Standard package repositories
 ;; ;; (add-to-list 'package-archives '( "melpa" . "http://melpa.org/packages/") t)
-;; (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-;;                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
-;;                          ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa-stable/")
-;;                          ("marmalade" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/marmalade/")
-;;                          ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
-;;                          ))
-(setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
-                         ("melpa" . "http://elpa.emacs-china.org/melpa/")
-                         ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
-                         ("org" . "http://elpa.emacs-china.org/org/")
+(setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")
+                         ("melpa-stable" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/stable-melpa/")
+                         ("org" . "http://mirrors.tuna.tsinghuna.edu.cn/elpa/org/")
                          ))
+;; (setq package-archives '(("gnu"   . "http://elpa.emacs-china.org/gnu/")
+;;                          ("melpa" . "http://elpa.emacs-china.org/melpa/")
+;;                          ("melpa-stable" . "http://elpa.emacs-china.org/stable-melpa/")
+;;                          ("org" . "http://elpa.emacs-china.org/org/")
+;;                          ))
 
 ;;; Fire up package.el
 (package-initialize) ;; You might already have this line
@@ -877,10 +877,9 @@
   (git-gutter:hide-gutter t))
 
 (use-package company
-  :hook (prog-mode . company-mode)
   :demand t
   :diminish company-mode
-  ;; :bind (("C-<tab>" . company-complete)
+  :bind (("C-<tab>" . company-complete))
   :bind (
          :map company-active-map
          ("C-n" . company-select-next)
@@ -890,7 +889,7 @@
          )
   :config
   (progn
-    (add-hook 'prog-mode-hook 'company-mode)
+    (add-hook 'after-init-hook 'global-company-mode)
     (setq company-idle-delay 0
           company-echo-delay 0
           company-tooltip-align-annotations t
@@ -900,12 +899,22 @@
           company-require-match nil
           company-dabbrev-ignore-case nil
           company-dabbrev-downcase nil
-          company-global-modes '(not magit-status-mode))
-    ))
+          company-global-modes '(not magit-status-mode)
+          )))
 
 (use-package company-box
   :diminish company-box-mode
   :hook (company-mode . company-box-mode))
+
+;; python ~/workspace/work-tools/python/fetch_dbadmin_dict.py
+;; script to load dbadmin table fields to dict/sql-mode file
+(use-package company-dict
+  :config
+  ;; Where to look for dictionary files. Default is ~/.emacs.d/dict
+  (setq company-dict-dir (concat user-emacs-directory "dict/"))
+  ;; Optional: if you want it available everywhere
+  (add-to-list 'company-backends 'company-dict)
+  )
 
 (use-package diminish
   :init
@@ -925,10 +934,6 @@
   (diminish 'helm-mode))
 
 (use-package posframe :defer t)
-
-(use-package yaml-mode :defer t)
-(use-package json-mode
-  :mode "\\.json\\'")
 
 (progn
   (use-package all-the-icons)
@@ -984,8 +989,14 @@
          ("C-c y r" . 'youdao-dictionary-search-and-replace)
          ("C-c y i" . 'youdao-dictionary-search-from-input)))
 
-;; ;; golang
+;; golang
 (use-package go-mode)
+(use-package yaml-mode :defer t)
+(use-package json-mode
+  :mode "\\.json\\'")
+
+
+;; ---------------------------------------------------------------------------- lsp-mode start
 ;; Go - lsp-mode
 ;; Set up before-save hooks to format buffer and add/delete imports.
 (defun lsp-go-save-hooks ()
@@ -1085,6 +1096,37 @@
                          (require 'lsp-pyright)
                          (lsp))))  ; or lsp-deferred
 
+;; 各个语言的Debug工具
+(use-package dap-mode
+  :after lsp-mode
+  :config
+  (dap-auto-configure-mode)
+  (dap-mode 1)
+  ;; ;; The modes below are optional
+  ;; (dap-ui-mode 1)
+  ;; ;; enables mouse hover support
+  ;; (dap-tooltip-mode 1)
+  ;; ;; use tooltips for mouse hover
+  ;; ;; if it is not enabled `dap-mode' will use the minibuffer.
+  ;; (tooltip-mode 1)
+  ;; ;; displays floating panel with debug buttons
+  ;; ;; requies emacs 26+
+  ;; (dap-ui-controls-mode 1)
+
+  (require 'dap-python)
+  (require 'dap-lldb)
+  (require 'dap-dlv-go)
+
+  ;; ;; set the debugger executable (c++)
+  ;; ;; (setq dap-lldb-debug-program '("/usr/bin/lldb-vscode"))
+  (setq dap-lldb-debug-program '("/opt/homebrew/opt/llvm/bin/lldb-vscode"))
+
+  ;; ask user for executable to debug if not specified explicitly (c++)
+  (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
+  )
+
+;; ---------------------------------------------------------------------------- lsp-mode end
+
 ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper start
 ;; other similar packages to prescient: vertico consult selectrum prescient for completion
 
@@ -1143,35 +1185,6 @@
     (ivy-prescient-mode 1)
     ;; Remember candidate frequencies across sessions
     (prescient-persist-mode 1))
-  )
-
-;; 各个语言的Debug工具
-(use-package dap-mode
-  :after lsp-mode
-  :config
-  (dap-auto-configure-mode)
-  (dap-mode 1)
-  ;; ;; The modes below are optional
-  ;; (dap-ui-mode 1)
-  ;; ;; enables mouse hover support
-  ;; (dap-tooltip-mode 1)
-  ;; ;; use tooltips for mouse hover
-  ;; ;; if it is not enabled `dap-mode' will use the minibuffer.
-  ;; (tooltip-mode 1)
-  ;; ;; displays floating panel with debug buttons
-  ;; ;; requies emacs 26+
-  ;; (dap-ui-controls-mode 1)
-
-  (require 'dap-python)
-  (require 'dap-lldb)
-  (require 'dap-dlv-go)
-
-  ;; ;; set the debugger executable (c++)
-  ;; ;; (setq dap-lldb-debug-program '("/usr/bin/lldb-vscode"))
-  (setq dap-lldb-debug-program '("/opt/homebrew/opt/llvm/bin/lldb-vscode"))
-
-  ;; ask user for executable to debug if not specified explicitly (c++)
-  (setq dap-lldb-debugged-program-function (lambda () (read-file-name "Select file to debug.")))
   )
 
 ;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
@@ -1494,16 +1507,6 @@
 ;; format table macro-function; F3; F4; name-last-kbd-macro; insert-kbd-macro;
 (fset 'my/format-table
       (kmacro-lambda-form [?\M-< ?\C-s ?+ ?- return ?\C-a ?\C-  ?\M-< ?\C-w ?\C-k ?\C-k ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?\[ ? ?\] ?* return ?| return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?^ ?| return return ?\M-< ?\M-x ?r ?e ?p ?l ?a ?c ?e ?- ?r ?e ?g ?e ?x ?p return ?| ?$ return return ?\M-< ?\M-x ?q ?u ?e ?r ?y ?- ?r ?e ?p ?l ?a ?c ?e return ?| return tab return ?! ?\M-<] 0 "%d"))
-
-;; python ~/workspace/work-tools/python/fetch_dbadmin_dict.py
-;; script to load dbadmin table fields to dict/sql-mode file
-(use-package company-dict
-  :config
-  ;; Where to look for dictionary files. Default is ~/.emacs.d/dict
-  (setq company-dict-dir (concat user-emacs-directory "dict/"))
-  ;; Optional: if you want it available everywhere
-  (add-to-list 'company-backends 'company-dict)
-  )
 
 ;; ;; ---------------------------------------------------------------------------- dbadmin end
 
