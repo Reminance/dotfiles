@@ -524,6 +524,8 @@
 ;; org-mode
 ;; ----------------------------------------------------------------------------
 (define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
+(define-key leader-key "fc" (lambda () (interactive) (find-file (expand-file-name "custom.el" user-emacs-directory))))
+(define-key leader-key "fm" (lambda () (interactive) (find-file (expand-file-name "machine-specific.el" user-emacs-directory))))
 (define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
 (define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
 (define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
@@ -807,7 +809,11 @@
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
 
 (use-package expand-region
-  :bind ("M-@" . er/expand-region))
+  ;; :bind ("M-@" . er/expand-region))
+  :bind
+  ("C-=" . 'er/expand-region)
+  ("C--" . 'er/contract-region)
+  )
 
 (use-package yasnippet
   :config
