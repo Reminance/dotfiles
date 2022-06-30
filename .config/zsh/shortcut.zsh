@@ -159,3 +159,4 @@ ex ()
 function pretty_csv_sh {
     perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
 }
+
