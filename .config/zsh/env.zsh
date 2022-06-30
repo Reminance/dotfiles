@@ -82,12 +82,16 @@ export GOPROXY=https://goproxy.cn,https://gocenter.io,https://goproxy.io,direct
 # for ZSH  `OSTYPE` is set by ZSH the shell itself.
 case "$OSTYPE" in
   darwin*)
+    # for homebrew
     export CPATH=/opt/homebrew/include
     export LIBRARY_PATH=/opt/homebrew/lib
     export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
-    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
-    export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
+    export LDFLAGS="-L/opt/homebrew/opt/llvm/lib -L/opt/homebrew/opt/openssl@3/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/llvm/include -I/opt/homebrew/opt/openssl@3/include"
     export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.aliyun.com/homebrew/homebrew-bottles
+    # for openssl
+    export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@3/lib/pkgconfig"
+    export PATH="/opt/homebrew/opt/openssl@3/bin:$PATH"
     ;;
   linux*)
     # do nth for now
