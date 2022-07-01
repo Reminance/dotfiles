@@ -69,5 +69,5 @@ alias pva='. venv/bin/activate'
 alias pvd=deactivate
 
 # sort && uniq file
-alias sort_uniq='sort -u '
+alias sort-uniq='sort -u '
 
