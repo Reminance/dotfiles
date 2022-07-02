@@ -12,8 +12,9 @@ export LANGUAGE=en_US.UTF-8
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin/i3cmds && -z $(echo $PATH | grep -o $HOME/dotfiles/bin/i3cmds) ]] && export PATH="${PATH}:$HOME/dotfiles/bin/i3cmds"
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin/tmux && -z $(echo $PATH | grep -o $HOME/dotfiles/bin/tmux) ]] && export PATH="${PATH}:$HOME/dotfiles/bin/tmux"
 [[ $UID -ge 1000 && -d $HOME/dotfiles/bin/statusbar && -z $(echo $PATH | grep -o $HOME/dotfiles/bin/statusbar) ]] && export PATH="${PATH}:$HOME/dotfiles/bin/statusbar"
-[[ $UID -ge 1000 && -d $HOME/workspace/work-tools/shell && -z $(echo $PATH | grep -o $HOME/workspace/work-tools/shell) ]] && export PATH="${PATH}:$HOME/workspace/work-tools/shell"
+# [[ $UID -ge 1000 && -d $HOME/workspace/work-tools/shell && -z $(echo $PATH | grep -o $HOME/workspace/work-tools/shell) ]] && export PATH="${PATH}:$HOME/workspace/work-tools/shell"
 [[ $UID -ge 1000 && -d $HOME/workspace/work-tools/jira && -z $(echo $PATH | grep -o $HOME/workspace/work-tools/jira) ]] && export PATH="${PATH}:$HOME/workspace/work-tools/jira"
+[[ $UID -ge 1000 && -d $HOME/workspace/work-tools/python && -z $(echo $PATH | grep -o $HOME/workspace/work-tools/python) ]] && export PATH="${PATH}:$HOME/workspace/work-tools/python"
 # export PATH="$PATH:${$(find $HOME/dotfiles/bin -type d -printf %p:)%%:}"
 
 export TERMINAL=alacritty
