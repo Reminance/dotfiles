@@ -261,8 +261,10 @@
                      (format "%s -o %s %s %s %s && ./%s"
                              (or (getenv "CC") "gcc")
                              (file-name-sans-extension file)
-                             (or (getenv "CPPFLAGS") "-O0")
-                             (or (getenv "CFLAGS") "-Wall -Werror -Wextra -pedantic -g")  ;; (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+                             ;; (or (getenv "CPPFLAGS") "-O0")
+                             ;; (or (getenv "CFLAGS") "-Wall -Werror -Wextra -pedantic -g")  ;; (or (getenv "CFLAGS") "-ansi -pedantic -Wall -g")
+                             "-O0"
+                             "-Wall -Werror -Wextra -pedantic -g"
 			                 file
                              (file-name-sans-extension file)
                              ))))))
