@@ -3,6 +3,7 @@ $HOME/dotfiles/bashrc.symlink
 $HOME/dotfiles/.config/zsh/zshrc.symlink
 $HOME/dotfiles/.config/zsh/ohmyzsh-setup
 $HOME/dotfiles/.config/zsh/aliases.zsh
+$HOME/dotfiles/.config/zsh/aliases-docker.zsh
 $HOME/dotfiles/.config/zsh/env.zsh
 $HOME/dotfiles/.config/zsh/fzf.zsh
 $HOME/dotfiles/.config/zsh/shortcut.zsh
