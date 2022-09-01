@@ -18,6 +18,7 @@
         excludesfile = ~/.gitignore
         pager = delta
 	compression = 0
+	autocrlf = input
 [interactive]
         diffFilter = delta --color-only
 [delta]
