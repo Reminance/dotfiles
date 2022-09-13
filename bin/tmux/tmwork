@@ -34,9 +34,9 @@ then
     tmux new-window -t $SESSION:3 -n 'WorkTool'
     tmux send-keys -t 'WorkTool' "zsh" C-m 'cd ~/workspace/work-tools/' C-m 'clear' C-m
 
-    # # DB
-    # tmux new-window -t $SESSION:3 -n 'DB'
-    # tmux send-keys -t 'DB' "zsh" C-m 'clear' C-m
+    # DB
+    tmux new-window -t $SESSION:4 -n 'DB'
+    tmux send-keys -t 'DB' "zsh" C-m 'clear' C-m
 
 fi
 
