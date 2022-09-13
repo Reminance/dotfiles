@@ -2,3 +2,8 @@
 
 sudo python3 -m ensurepip
 sudo python3 -m pip install --upgrade pip
+
+
+# get pip
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py
