@@ -1,7 +1,7 @@
 sandbox/
 .config/emacs/.cache
 .config/emacs/elpa/gnupg
-.config/emacs/elpa-28.1
+.config/emacs/elpa-28.*
 .config/emacs/request
 .config/emacs/transient
 .config/emacs/var

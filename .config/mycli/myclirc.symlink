@@ -154,15 +154,18 @@ output.null = "#808080"
 
 # sample connect
 # zlpyv -h ebbg -u qri.frrh.vax -C 3306 --cnff 11111112
+# zlpyv -u 127.0.0.1 -h ebbg -C 3307 --cnffjbeq 123456
 # zlpyv -h yg_jzf_qri_ej_gr -u bcf-jzf-qo-qri01.furva.pbz -C 3310 --cnffjbeq u80GYN0hSsKuW1sF
 # zlpyv -h yg_arjfvgrgrfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq u80GYN0hSsKuW1sF
 # zlpyv -h yg_jzq_grfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq 75gxcIyFU3NZsd18NpcL
+# zlpyv -h njf_qri-g_jff_sybj_qri-yg_jff_sybj_qri -u 10.122.4.32 -C 2883 --cnffjbeq qrZ1#@Ea2FVRcVl
 
 # sps mysql-clients
 # mysql_config_editor set --login-path
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=ybpnyubfg --ubfg=127.0.0.1 --cbeg 3306 --hfre=ebbg --cnffjbeq
-# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=qbpxre --ubfg=127.0.0.1 --cbeg 3307 --hfre=ebbg --cnffjbeq
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=qbpxre --ubfg=127.0.0.1 --cbeg 3307 --hfre=ebbg --cnffjbeq 123456
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=nyvlha --ubfg=qri.frrh.vax --cbeg 3306 --hfre=ebbg --cnffjbeq
-# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=qri --ubfg=bcf-jzf-qo-qri01.furva.pbz --cbeg 3310 --hfre=yg_jzf_qri_ej_gr --cnffjbeq
-# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_arjfvgrgrfg_ej_gr --cnffjbeq
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=qri --ubfg=bcf-jzf-qo-qri01.furva.pbz --cbeg 3310 --hfre=yg_jzf_qri_ej_gr --cnffjbeq u80GYN0hSsKuW1sF
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_arjfvgrgrfg_ej_gr --cnffjbeq u80GYN0hSsKuW1sF
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jzq-grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_jzq_grfg_ej_gr --cnffjbeq 75gxcIyFU3NZsd18NpcL
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jff-sybj-grfg --ubfg=10.122.4.32 --cbeg 2883 --hfre=njf_qri-g_jff_sybj_qri-yg_jff_sybj_qri --cnffjbeq qrZ1#@Ea2FVRcVl
