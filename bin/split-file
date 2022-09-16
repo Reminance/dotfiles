@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# split [参数] 需要分割的文件
+# -b size :对file进行切分，每个小文件大小为SIZE。可以指定单位b,k,m。
+# -C size ：与-b选项类似，但是切割时尽量维持每行的完整性。
+# -l lines : 按行分割,每个文件有 lines行
+# -a num : 以num个数字或字母做尾数
+# -d : 添加数字后缀
+# prefix : 分割后产生的文件名前缀。
+# 举个栗子:按行分隔，每1000行切割test.txt文件，添加数字后缀，以3位数数字做尾数,test_:分割后的文件的前缀
+
+split -l 1000 -d -a 3 export_fix_invt.txt wws_inner_fix_
