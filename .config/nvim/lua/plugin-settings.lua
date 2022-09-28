@@ -65,7 +65,6 @@ vim.cmd("let g:indentLine_char_list = ['|', '¦', '┆', '┊']")
 require('nvim-tree').setup{
   view = {
     width = 30,
-    height = 30,
     side = "left",
   },
   actions = {
