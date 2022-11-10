@@ -1,0 +1,3 @@
+#!/bin/sh
+
+wget -O config.yaml https://portal.meomiao.xyz/api/v1/client/subscribe\?token\=$1
