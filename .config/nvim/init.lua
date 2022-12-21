@@ -96,6 +96,9 @@ vim.keymap.set("n", "<Leader>sl", ":set splitright<CR>:vsplit<CR>")
 -- yank to system clipboard
 vim.keymap.set("v", "Y", [["*y :let @+=@*<CR>]])
 
+-- Rot13 encode {motion} text.
+vim.keymap.set("v", "<Leader>xe", "mzg?`z")
+
 -- Remap for dealing with word wrap
 vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
