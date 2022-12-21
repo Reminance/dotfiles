@@ -200,10 +200,6 @@ endfunc
 -- Only required if you have packer configured as `opt`
 vim.cmd.packadd('packer.nvim')
 
--- for transparency
-vim.g["SnazzyTransparent"] = 1
-vim.cmd('highlight Special guifg=#ff6ac1 gui=italic,bold')  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
-
 require('packer').startup(function(use)
 
   -- Packer can manage itself
@@ -214,15 +210,15 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  use 'connorholyday/vim-snazzy'
   use({
-    'connorholyday/vim-snazzy',
-    config = function()
-      vim.cmd('colorscheme snazzy')
-    end
+	  'rose-pine/neovim',
+	  as = 'rose-pine',
+	  config = function()
+		  vim.cmd('colorscheme rose-pine')
+	  end
   })
-
   use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
-  use('nvim-treesitter/playground')
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
   use 'lewis6991/gitsigns.nvim'
@@ -288,8 +284,12 @@ require('packer').startup(function(use)
 		  {'rafamadriz/friendly-snippets'},
 	  }
   }
-
 end)
+
+-- -- for snazzy
+-- vim.g["SnazzyTransparent"] = 1
+-- vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
+-- vim.cmd('colorscheme snazzy')
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
@@ -311,6 +311,10 @@ require('indent_blankline').setup {
   char = '┊',
   show_trailing_blankline_indent = false,
 }
+
+-- Colorizer
+vim.g.colorizer_auto_color = 1
+-- vim.g.colorizer_auto_filetype = "yaml,zsh,zsh-theme,lua,vim,json"
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
@@ -342,7 +346,7 @@ pcall(require('telescope').load_extension, 'fzf')
 
 -- telescope.nvim
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
+vim.keymap.set('n', '<leader>sH', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
@@ -381,8 +385,8 @@ local options = { noremap = true, silent = true }
 vim.keymap.set('n', '<Leader>\\', ':Startify<CR>', options)
 
 -- vim-easy-align
-vim.keymap.set('n', 'ga', '<Plug>EasyAlign', {})
-vim.keymap.set('x', 'ga', '<Plug>EasyAlign', {})
+vim.keymap.set('n', '<Leader>ea', '<Plug>EasyAlign', {})
+vim.keymap.set('x', '<Leader>ea', '<Plug>EasyAlign', {})
 
 -- undotree
 vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
@@ -423,6 +427,37 @@ for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
+
+-- nvim-treesitter
+require'nvim-treesitter.configs'.setup {
+  -- A list of parser names, or "all"
+  ensure_installed = { "c", "cpp", "make", "cmake", "commonlisp", "dockerfile", "go", "java", "lua", "python", "rust", "html", "javascript", "css", "toml", "vim", "vue", "json", "yaml" },
+
+  -- Install languages synchronously (only applied to `ensure_installed`)
+  sync_install = false,
+
+  -- List of parsers to ignore installing
+  -- ignore_install = { "javascript" },
+  ignore_install = {},
+
+  highlight = {
+    -- `false` will disable the whole extension
+    enable = true,
+
+    -- NOTE: these are the names of the parsers and not the filetype. (for example if you want to
+    -- disable highlighting for the `tex` filetype, you need to include `latex` in this list as this is
+    -- the name of the parser)
+    -- list of language that will be disabled
+    -- disable = { "c", "rust" },
+    disable = {},
+
+    -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+    -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+    -- Using this option may slow down your editor, and you may see some duplicate highlights.
+    -- Instead of true it can also be a list of languages
+    additional_vim_regex_highlighting = false,
+  },
+}
 
 -- lsp-zero
 local lsp = require('lsp-zero')
