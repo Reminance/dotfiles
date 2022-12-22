@@ -39,6 +39,9 @@ vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
 vim.o.termguicolors = true
+-- for transparency
+-- vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+-- vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
@@ -290,6 +293,11 @@ end)
 -- vim.g["SnazzyTransparent"] = 1
 -- vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
 -- vim.cmd('colorscheme snazzy')
+
+-- for rose-pine
+require('rose-pine').setup({
+    disable_background = true
+})
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
