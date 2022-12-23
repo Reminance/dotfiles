@@ -128,6 +128,10 @@ vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
 -- nohlsearch
 vim.keymap.set("n", "<Leader><Space>", ":nohlsearch<CR>", { noremap = true, silent = true })
 
+-- Openning Files
+-- Open the vimrc file anytime
+vim.keymap.set("n", "<Leader>fi", ":e ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
+
 -- Compile Function
 vim.cmd[[
 noremap <Leader>R :call CompileRunGcc()<CR>
@@ -510,7 +514,7 @@ cmp.setup {
     -- 'crates' is lazy loaded
     { name = "nvim_lsp" },
     { name = "treesitter" },
-    { name = "vsnip" },
+    { name = "luasnip" },
     { name = "path" },
     {
       name = "buffer",
