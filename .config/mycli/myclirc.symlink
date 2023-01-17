@@ -159,6 +159,8 @@ output.null = "#808080"
 # zlpyv -h yg_arjfvgrgrfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq u80GYN0hSsKuW1sF
 # zlpyv -h yg_jzq_grfg_ej_gr -u 10.123.4.21 -C 3308 --cnffjbeq 75gxcIyFU3NZsd18NpcL
 # zlpyv -h njf_qri-g_jff_sybj_qri-yg_jff_sybj_qri -u 10.122.4.32 -C 2883 --cnffjbeq qrZ1#@Ea2FVRcVl
+# zlpyv -h yg_jjf_rhe_qri_ej -u 10.122.3.11 -C 4406 --cnffjbeq jjfuhunjs78628
+# zlpyv -h yg_jjf_rhe_grfg_ej -u 10.123.3.40 -C 4404 --cnffjbeq jjfuhunjs78628
 
 # sps mysql-clients
 # mysql_config_editor set --login-path
@@ -169,3 +171,5 @@ output.null = "#808080"
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_arjfvgrgrfg_ej_gr --cnffjbeq u80GYN0hSsKuW1sF
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jzq-grfg --ubfg=10.123.4.21 --cbeg 3308 --hfre=yg_jzq_grfg_ej_gr --cnffjbeq 75gxcIyFU3NZsd18NpcL
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jff-sybj-grfg --ubfg=10.122.4.32 --cbeg 2883 --hfre=njf_qri-g_jff_sybj_qri-yg_jff_sybj_qri --cnffjbeq qrZ1#@Ea2FVRcVl
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jjf-rhe-qri --ubfg=10.122.3.11 --cbeg 4406 --hfre=yg_jjf_rhe_qri_ej --cnffjbeq jjfuhunjs78628
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jjf-rhe-grfg --ubfg=10.123.3.40 --cbeg 4004 --hfre=yg_jjf_rhe_grfg_ej--cnffjbeq jjfuhunjs78628
