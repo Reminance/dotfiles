@@ -233,16 +233,16 @@ require('packer').startup(function(use)
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
   use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'mhinz/vim-startify'
-  use {
-    "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+  -- use {
+  --   "folke/which-key.nvim",
+  --   config = function()
+  --     require("which-key").setup {
+  --       -- your configuration comes here
+  --       -- or leave it empty to use the default settings
+  --       -- refer to the configuration section below
+  --     }
+  --   end
+  -- }
 
   use 'junegunn/vim-easy-align'
   use 'tpope/vim-surround'
@@ -472,8 +472,14 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- lsp-zero
-local lsp = require('lsp-zero')
-lsp.preset('recommended')
+local lsp = require('lsp-zero').preset({
+  name = 'minimal',
+  set_lsp_keymaps = true,
+  manage_nvim_cmp = true,
+  suggest_lsp_servers = false,
+})
+-- (Optional) Configure lua language server for neovim
+lsp.nvim_workspace()
 lsp.setup()
 
 -- nvim-cmp

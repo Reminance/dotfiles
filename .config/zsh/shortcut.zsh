@@ -50,7 +50,7 @@ bindkey '\eg' git-worktree-add-branch
 
 # mycli-login
 mycli-login() {
-    local db=($(echo -e 'localhost\ndocker\naliyun\ndev\nwws-eur-dev\nwws-eur-test\nwmd-eur-dev\nwmd-eur-test\ntest\nwmd-test\nwss-flow-test\netyer_binlog_dump_eur' | fzf --query="$1" --select-1 --exit-0 --height 8))
+    local db=($(echo -e 'localhost\ndocker\naliyun\ndev\nwws-eur-dev\nwws-eur-test\nwmd-eur-dev\nwmd-eur-test\ntest\nwmd-test\nwss-flow-test\netyer_binlog_dump_eur\nwss-eur-test' | fzf --query="$1" --select-1 --exit-0 --height 8))
     [[ -n "$db" ]] && mycli --login-path "${db[@]}" < $TTY
     zle reset-prompt
 }

@@ -161,6 +161,7 @@ output.null = "#808080"
 # zlpyv -h njf_qri-g_jff_sybj_qri-yg_jff_sybj_qri -u 10.122.4.32 -C 2883 --cnffjbeq qrZ1#@Ea2FVRcVl
 # zlpyv -h yg_jjf_rhe_qri_ej -u 10.122.3.11 -C 4406 --cnffjbeq jjfuhunjs78628
 # zlpyv -h yg_jjf_rhe_grfg_ej -u 10.123.3.40 -C 4004 --cnffjbeq jjfuhunjs78628
+# zlpyv -h yg_jff_grfg_rhe_ej -u 10.123.3.40 -C 4004 --cnffjbeq huhunjs78124
 # zlpyv -h rglre_ovaybt_qhzc -u 10.122.3.37 -C 3306 --cnffjbeq jrfqhunjs7892r
 
 # sps mysql-clients
@@ -175,5 +176,6 @@ output.null = "#808080"
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jjf-rhe-qri --ubfg=10.122.3.11 --cbeg 4406 --hfre=yg_jjf_rhe_qri_ej --cnffjbeq jjfuhunjs78628
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jjf-rhe-grfg --ubfg=10.123.3.40 --cbeg 4004 --hfre=yg_jjf_rhe_grfg_ej --cnffjbeq jjfuhunjs78628
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jzq-rhe-qri --ubfg=10.122.3.11 --cbeg 4406 --hfre=yg_jzq_rhe_qri_ej --cnffjbeq jzqqhunjs7892p
-# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jzq-rhe-grfg --ubfg=10.123.3.40 --cbeg 4004 --hfre=yg_jzq_rhe_grfg_ej --cnffjbeq jzqqhunjs7892p
+# mysql_config_editor set --login-path=wmd-eur-test --host=10.123.3.40 --port 4004 --user=lt_wmd_eur_test_rw --password wmdduhawf7892c
+# zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=jff-rhe-grfg --ubfg=10.123.3.40 --cbeg 4004 --hfre=yg_jff_grfg_rhe_ej --cnffjbeq huhunjs78124
 # zlfdy_pbasvt_rqvgbe frg --ybtva-cngu=rglre_ovaybt_qhzc_rhe --ubfg=10.122.4.37 --cbeg 3306 --hfre=rglre_ovaybt_qhzc --cnffjbeq jrfqhunjs7892r
