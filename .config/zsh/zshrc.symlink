@@ -139,3 +139,6 @@ esac
 #   source $ZSH_CUSTOM/os/kubernetes.zsh
 # fi
 
+# curl -L https://iterm2.com/shell_integration/install_shell_integration.sh | bash
+# test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh" || true
+

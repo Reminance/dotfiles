@@ -96,6 +96,12 @@ vim.keymap.set("n", "<Leader>sj", ":set splitbelow<CR>:split<CR>")
 vim.keymap.set("n", "<Leader>sk", ":set nosplitbelow<CR>:split<CR>")
 vim.keymap.set("n", "<Leader>sl", ":set splitright<CR>:vsplit<CR>")
 
+-- normal mode bindings
+vim.keymap.set("n", "<S-Down>", ":res +1<CR>")
+vim.keymap.set("n", "<S-Up>", ":res -1<CR>")
+vim.keymap.set("n", "<S-Left>", ":vertical resize-1<CR>")
+vim.keymap.set("n", "<S-Right>", ":vertical resize+1<CR>")
+
 -- yank to system clipboard
 vim.keymap.set("v", "Y", [["*y :let @+=@*<CR>]])
 
@@ -505,7 +511,11 @@ cmp.setup {
     -- },
     ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "s" }),
     ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "s" }),
-    ["<C-e>"] = cmp.mapping.abort(),
+    -- ["<C-e>"] = cmp.mapping.abort(),
+    ["<C-e>"] = cmp.mapping({
+        i = cmp.mapping.abort(),
+        c = cmp.mapping.close(),
+      }),
     ["<Up>"] = cmp.mapping(cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, { "i" }),
     ["<Down>"] = cmp.mapping(cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert }, { "i" }),
   },
