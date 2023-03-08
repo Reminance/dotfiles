@@ -348,27 +348,42 @@ require('gitsigns').setup {
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
+require('telescope').setup{
   defaults = {
     mappings = {
       i = {
         ['<C-u>'] = false,
         ['<C-d>'] = false,
-      },
-    },
+        ["<esc>"] = "close",
+      }
+    }
   },
+  pickers = {
+    buffers = {
+      show_all_buffers = true,
+      sort_lastused = true,
+      theme = "dropdown",
+      previewer = false,
+      mappings = {
+        i = {
+          ["<c-k>"] = "delete_buffer",
+        }
+      }
+    }
+  }
 }
+
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
 
 -- telescope.nvim
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<M-O>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
+vim.keymap.set('n', '<M-F>', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
+vim.keymap.set('n', '<M-E>', require('telescope.builtin').buffers, { desc = '[S]earch [B]uffers' })
 vim.keymap.set('n', '<leader>sH', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[S]earch [B]uffers' })
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
@@ -478,6 +493,19 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- lsp-zero
+-- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v1.x/doc/md/lsp.md#default-keybindings
+-- K: Displays hover information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.hover().
+-- gd: Jumps to the definition of the symbol under the cursor. See :help vim.lsp.buf.definition().
+-- gD: Jumps to the declaration of the symbol under the cursor. Some servers don't implement this feature. See :help vim.lsp.buf.declaration().
+-- gi: Lists all the implementations for the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.implementation().
+-- go: Jumps to the definition of the type of the symbol under the cursor. See :help vim.lsp.buf.type_definition().
+-- gr: Lists all the references to the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.references().
+-- <Ctrl-k>: Displays signature information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.signature_help(). If a mapping already exists for this key this function is not bound.
+-- <F2>: Renames all references to the symbol under the cursor. See :help vim.lsp.buf.rename().
+-- <F4>: Selects a code action available at the current cursor position. See :help vim.lsp.buf.code_action().
+-- gl: Show diagnostics in a floating window. See :help vim.diagnostic.open_float().
+-- [d: Move to the previous diagnostic in the current buffer. See :help vim.diagnostic.goto_prev().
+-- ]d: Move to the next diagnostic. See :help vim.diagnostic.goto_next().
 local lsp = require('lsp-zero').preset({
   name = 'minimal',
   set_lsp_keymaps = true,
@@ -487,6 +515,15 @@ local lsp = require('lsp-zero').preset({
 -- (Optional) Configure lua language server for neovim
 lsp.nvim_workspace()
 lsp.setup()
+-- diagnostic setup
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = false,
+  float = true,
+})
 
 -- nvim-cmp
 local cmp = require('cmp')
