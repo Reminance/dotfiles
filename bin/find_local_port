@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# netstat -anvp tcp | awk 'NR<3 || /LISTEN/'
+[ -z "$1" ] && echo "checking local port: all" && lsof -n -i | grep LISTEN && exit 0
+echo "checking local port: $1"
+lsof -n -i:$1 | grep LISTEN

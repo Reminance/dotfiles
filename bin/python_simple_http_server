@@ -1,0 +1,6 @@
+#!/bin/sh
+
+DEFAULT_PORT=9999
+[ -z "$1" ] && echo "starting simple http server with port: $DEFAULT_PORT" && python -m http.server $DEFAULT_PORT && exit 0
+echo "starting simple http server with port: $1"
+python -m http.server $1
