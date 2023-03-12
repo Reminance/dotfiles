@@ -42,8 +42,8 @@ vim.keymap.set('v', 'p', 'P')
 -- vim.keymap.set('v', 'c', '"_c')
 -- vim.keymap.set('n', 'C', '"_C')
 -- vim.keymap.set('v', 'C', '"_C')
-vim.keymap.set('n', 'x', '"_x')
-vim.keymap.set('v', 'x', '"_x')
+-- vim.keymap.set('n', 'x', '"_x')
+-- vim.keymap.set('v', 'x', '"_x')
 
 -- Enable break indent
 vim.o.breakindent = true
