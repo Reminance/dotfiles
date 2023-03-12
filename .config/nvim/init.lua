@@ -23,6 +23,28 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- Finding files - Search down into subfolders
+vim.opt.path:append { '**' }
+
+-- Use P to paste without yanking the deleted text. :help v_P
+vim.keymap.set('v', 'p', 'P')
+
+-- inccommand
+vim.opt.inccommand = 'split'
+
+-- -- These are to cancel the default behavior of d, D, c, C, x, X to put the text they delete in the default register.
+-- -- Note that this means e.g. "ad won't copy the text into register a anymore. You have to explicitly yank it.
+-- vim.keymap.set('n', 'd', '"_d')
+-- vim.keymap.set('v', 'd', '"_d')
+-- vim.keymap.set('n', 'D', '"_D')
+-- vim.keymap.set('v', 'D', '"_D')
+-- vim.keymap.set('n', 'c', '"_c')
+-- vim.keymap.set('v', 'c', '"_c')
+-- vim.keymap.set('n', 'C', '"_C')
+-- vim.keymap.set('v', 'C', '"_C')
+vim.keymap.set('n', 'x', '"_x')
+vim.keymap.set('v', 'x', '"_x')
+
 -- Enable break indent
 vim.o.breakindent = true
 
@@ -359,6 +381,12 @@ require('telescope').setup{
     }
   },
   pickers = {
+    -- find_files = {
+    --   theme = "dropdown",
+    -- },
+    -- live_grep = {
+    --   theme = "dropdown"
+    -- },
     buffers = {
       show_all_buffers = true,
       sort_lastused = true,
