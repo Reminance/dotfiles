@@ -29,8 +29,8 @@ vim.opt.path:append { '**' }
 -- Use P to paste without yanking the deleted text. :help v_P
 vim.keymap.set('v', 'p', 'P')
 
--- inccommand
-vim.opt.inccommand = 'split'
+-- inccommand, The command formerly known as live substitution
+-- vim.opt.inccommand = 'split'
 
 -- -- These are to cancel the default behavior of d, D, c, C, x, X to put the text they delete in the default register.
 -- -- Note that this means e.g. "ad won't copy the text into register a anymore. You have to explicitly yank it.
