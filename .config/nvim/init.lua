@@ -249,10 +249,11 @@ require('packer').startup(function(use)
   use({
 	  'rose-pine/neovim',
 	  as = 'rose-pine',
-	  config = function()
-		  vim.cmd('colorscheme rose-pine')
-	  end
+	  -- config = function()
+		 --  vim.cmd('colorscheme rose-pine')
+	  -- end
   })
+  use { "ellisonleao/gruvbox.nvim" }
   use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
@@ -326,10 +327,30 @@ end)
 -- vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
 -- vim.cmd('colorscheme snazzy')
 
--- for rose-pine
-require('rose-pine').setup({
-    disable_background = true
+-- -- for rose-pine
+-- require('rose-pine').setup({
+--     disable_background = true
+-- })
+
+-- for gruvbox setup must be called before loading the colorscheme
+require("gruvbox").setup({
+  undercurl = true,
+  underline = true,
+  bold = true,
+  italic = true,
+  strikethrough = true,
+  invert_selection = false,
+  invert_signs = false,
+  invert_tabline = false,
+  invert_intend_guides = false,
+  inverse = true, -- invert background for search, diffs, statuslines and errors
+  contrast = "", -- can be "hard", "soft" or empty string
+  palette_overrides = {},
+  overrides = {},
+  dim_inactive = false,
+  transparent_mode = true,
 })
+vim.cmd("colorscheme gruvbox")
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
