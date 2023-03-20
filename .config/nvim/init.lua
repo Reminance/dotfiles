@@ -106,6 +106,10 @@ vim.keymap.set("n", "R", ":%s//g<Left><Left>")
 -- count the number of occurrences of a word
 vim.keymap.set("n", "<Leader>o", ":%s///ng<Left><Left><Left><Left>")
 
+-- sort and uniq current buffer
+vim.keymap.set("n", "<Leader>su", ":sort u<CR>")
+vim.keymap.set("v", "<Leader>su", ":'<,'>sort u<CR>")
+
 -- Window Management
 vim.keymap.set("n", "<M-h>", "<Esc><C-w>h")
 vim.keymap.set("n", "<M-j>", "<Esc><C-w>j")
@@ -337,7 +341,12 @@ require("gruvbox").setup({
   undercurl = true,
   underline = true,
   bold = true,
-  italic = true,
+  italic = {
+    strings = true,
+    operators = true,
+    comments = true,
+    ...
+  },
   strikethrough = true,
   invert_selection = false,
   invert_signs = false,
