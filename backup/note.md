@@ -188,3 +188,5 @@ The project also demonstrates how to manage and install these configurations thr
 # 有趣的项目
 https://github.com/visit1985/mdp
 https://github.com/hairrrrr/C-CrashCourse
+https://github.com/jesrui/althttpd-mirror.git
+https://www.sqlite.org/althttpd/doc/trunk/althttpd.md
