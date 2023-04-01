@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# aliyun mirrors: https://developer.aliyun.com/mirror/homebrew
+
 # bash
 ## 替换brew.git:
 #cd "$(brew --repo)"
@@ -38,3 +40,27 @@ source ~/.zshrc
 # cd "$(brew --repo)/Library/Taps/homebrew/homebrew-core"
 # git remote set-url origin https://github.com/Homebrew/homebrew-core.git
 
+
+# HomeBrew LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to xxx解决方法
+# # 背景
+# HomeBrew 安装某些软件报SSL错误：
+# curl :LibreSSL SSL_connect: SSL_ERROR_SYSCALL in connection to xxx:443
+# HomeBrew配置了代理
+# 不想关闭代理
+# 问题原因
+# 使用homebrew 安装时，有部分软件会发送ipv6请求。但是由于种种原因，你的网络或者代理不支持ipv6，就是发生SSL请求错误。
+#
+# 解决方法
+# 可以使用curl -v xxx选项先查看一下SSL报错的原因（xxx就是homebrew安装软件时，Downloading 后面的地址「https://xxx」）。
+#
+# 使用如下命令查看你的网络设备
+# $ networksetup -listallnetworkservices
+# # 这里是我查看的结果，每个人都不一样
+# Wi-Fi
+# Bluetooth PAN
+#
+# 使用以下命令关闭mac 的ipv6
+# # 这里我连接的网络是Wi-Fi，所以就关闭Wi-Fi的ipv6
+# networksetup -setv6off Wi-Fi
+#
+# 关闭终端，重新打开一个。在使用brew install xxx就不会报错了。
