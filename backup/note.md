@@ -190,3 +190,11 @@ https://github.com/visit1985/mdp
 https://github.com/hairrrrr/C-CrashCourse
 https://github.com/jesrui/althttpd-mirror.git
 https://www.sqlite.org/althttpd/doc/trunk/althttpd.md
+https://github.com/DoctorWkt/acwj
+https://github.com/EZLippi/Tinyhttpd
+https://github.com/qinguoyi/TinyWebServer
+https://github.com/Light-City/CPlusPlusThings
+https://github.com/TheAlgorithms/C-Plus-Plus
+https://github.com/nothings/stb
+https://github.com/oz123/awesome-c
+https://github.com/fffaraz/awesome-cpp
