@@ -186,6 +186,7 @@ This project provides a series of easy-to-use Linux configurations, including so
 The project also demonstrates how to manage and install these configurations through makefile or symblolic link and shell scripts.
 
 # 有趣的项目
+https://github.com/cstack/db_tutorial
 https://github.com/visit1985/mdp
 https://github.com/hairrrrr/C-CrashCourse
 https://github.com/jesrui/althttpd-mirror.git
