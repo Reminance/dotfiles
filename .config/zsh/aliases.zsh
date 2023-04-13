@@ -71,3 +71,6 @@ alias pvd=deactivate
 # sort && uniq file
 alias sort-uniq='sort -u '
 
+# https://github.com/man-pages-zh/manpages-zh
+alias cman='man -M /usr/local/share/man/zh_CN'
+

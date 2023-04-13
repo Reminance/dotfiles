@@ -1,0 +1,30 @@
+#!/bin/sh
+
+git clone https://github.com/man-pages-zh/manpages-zh.git
+cd manpages-zh
+  autoreconf --install --force
+  ./configure
+  make
+  sudo make install
+或者
+  mkdir build && cd build/
+  cmake ..
+  make
+  make install # 需要超级用户权限
+man -aw
+
+# # 可以看到没有加载
+# /usr/local/share/man:/usr/share/man:/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/share/man:/Library/Developer/CommandLineTools/usr/share/man
+
+
+sudo vim /etc/man.conf
+...
+MANPATH /usr/local/X11/man              #line 44
+MANPATH /usr/local/share/man/zh_CN        #添加中文手册路径
+...
+
+man -aw
+/usr/local/share/man:/usr/share/man:/usr/local/share/man/zh_CN:/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/share/man:/Library/Developer/CommandLineTools/usr/share/man # 中文手册已经加载
+
+echo "alias cman='man -M /usr/local/share/man/zh_CN'" >> ~/.zshrc
+source ~/.zshrc
