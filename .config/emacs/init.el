@@ -886,7 +886,7 @@
          :map company-active-map
          ("C-n" . company-select-next)
          ("C-p" . company-select-previous)
-         ("<tab>" . company-complete-selection)
+         ;; ("<tab>" . company-complete-selection)
          ;; ("SPC" . company-abort)
          )
   :config
