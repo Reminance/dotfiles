@@ -331,40 +331,40 @@ require('packer').startup(function(use)
   }
 end)
 
--- -- for snazzy
--- vim.g["SnazzyTransparent"] = 1
--- vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
--- vim.cmd('colorscheme snazzy')
+-- for snazzy
+vim.g["SnazzyTransparent"] = 1
+vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
+vim.cmd('colorscheme snazzy')
 
 -- -- for rose-pine
 -- require('rose-pine').setup({
 --     disable_background = true
 -- })
 
--- for gruvbox setup must be called before loading the colorscheme
-require("gruvbox").setup({
-  undercurl = true,
-  underline = true,
-  bold = true,
-  italic = {
-    strings = true,
-    operators = true,
-    comments = true,
-    ...
-  },
-  strikethrough = true,
-  invert_selection = false,
-  invert_signs = false,
-  invert_tabline = false,
-  invert_intend_guides = false,
-  inverse = true, -- invert background for search, diffs, statuslines and errors
-  contrast = "", -- can be "hard", "soft" or empty string
-  palette_overrides = {},
-  overrides = {},
-  dim_inactive = false,
-  transparent_mode = true,
-})
-vim.cmd("colorscheme gruvbox")
+-- -- for gruvbox setup must be called before loading the colorscheme
+-- require("gruvbox").setup({
+--   undercurl = true,
+--   underline = true,
+--   bold = true,
+--   italic = {
+--     strings = true,
+--     operators = true,
+--     comments = true,
+--     ...
+--   },
+--   strikethrough = true,
+--   invert_selection = false,
+--   invert_signs = false,
+--   invert_tabline = false,
+--   invert_intend_guides = false,
+--   inverse = true, -- invert background for search, diffs, statuslines and errors
+--   contrast = "", -- can be "hard", "soft" or empty string
+--   palette_overrides = {},
+--   overrides = {},
+--   dim_inactive = false,
+--   transparent_mode = true,
+-- })
+-- vim.cmd("colorscheme gruvbox")
 
 -- Set lualine as statusline
 -- See `:help lualine.txt`
