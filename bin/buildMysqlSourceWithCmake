@@ -1,5 +1,16 @@
 #!/usr/bin/bash
 
+# 2023-05-05 update
+# https://dev.mysql.com/doc/mysql-installation-excerpt/8.0/en/installing-source-distribution.html
+# find the source location of openssl@1.1
+brew --cellar openssl@1.1 && brew info openssl@1.1
+# mkdir build && cd build && cmake .. -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/Users/10018944/workspace/boost -DWITH_SSL=/opt/homebrew/Cellar/openssl@1.1/1.1.1t
+# in clion
+# updae cmake options: add (-DWITH_DEBUG=1 -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/Users/10018944/workspace/boost -DWITH_SSL=/opt/homebrew/Cellar/openssl@1.1/1.1.1t)
+mkdir build && cd build
+cmake .. -DDOWNLOAD_BOOST=1 -DWITH_BOOST=/Users/10018944/workspace/boost -DWITH_SSL=/opt/homebrew/Cellar/openssl@1.1/1.1.1t -DCMAKE_INSTALL_PREFIX=build_out
+cmake --install .
+
 # install the latest version of boost
 sudo pacman -S boost
 
@@ -41,3 +52,5 @@ cmake options:
 -DSYSCONFDIR==/Users/10018944/workspace/mysql-server/build
 -DMYSQL_UNIX_ADDR=/Users/10018944/workspace/mysql-server/build/data/mysql.sock
 -DWITH_SSL=/opt/homebrew/Cellar/openssl@1.1/1.1.1o
+
+
