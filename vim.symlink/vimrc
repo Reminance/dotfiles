@@ -345,7 +345,9 @@ endif
 source ~/.vim/_machine_specific.vim
 
 " Vim-plug Auto Load
-" Auto load for the first time
+" Bootstrap Plug for the first time
+" let autoload_plug_path = stdpath('data') . '/site/autoload/plug.vim'
+" if !filereadable(autoload_plug_path)
 if ! filereadable(system('echo -n "$HOME/.vim/autoload/plug.vim"'))
     echo "Downloading junegunn/vim-plug to manage plugins..."
     silent !mkdir -p $HOME/.vim/autoload/
@@ -353,7 +355,7 @@ if ! filereadable(system('echo -n "$HOME/.vim/autoload/plug.vim"'))
     autocmd VimEnter * PlugInstall
 endif
 
-call plug#begin(system('echo -n "$HOME/.vim/plugged"'))
+call plug#begin()
 " PlugInstall PlugClean PlugUpdate
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
