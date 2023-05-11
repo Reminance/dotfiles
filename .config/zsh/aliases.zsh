@@ -74,3 +74,9 @@ alias sort-uniq='sort -u '
 # https://github.com/man-pages-zh/manpages-zh
 alias cman='man -M /usr/local/share/man/zh_CN'
 
+# jupyter lab, pip install jupyterlab
+alias jl='jupyter lab'
+
+# jupyter notebook, pip install notebook
+alias jnb='jupyter notebook'
+
