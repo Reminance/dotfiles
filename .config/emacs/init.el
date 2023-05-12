@@ -525,12 +525,16 @@
 ;;----------------------------------------------------------------------------
 ;; org-mode
 ;; ----------------------------------------------------------------------------
+(defvar org-notes-dir "~/workspace/work-tools/notes"
+  "My org notes directory.")
+(defvar org-notes-file "notes.org"
+  "My org notes file.")
+(defvar org-personal-file "personal.org"
+  "My org personal file.")
 (define-key leader-key "fi" (lambda () (interactive) (find-file (expand-file-name "init.el" user-emacs-directory))))
 (define-key leader-key "fc" (lambda () (interactive) (find-file (expand-file-name "custom.el" user-emacs-directory))))
 (define-key leader-key "fm" (lambda () (interactive) (find-file (expand-file-name "machine-specific.el" user-emacs-directory))))
-(define-key leader-key "fn" (lambda () (interactive) (find-file "~/doc/org/notes.org")))
-(define-key leader-key "fp" (lambda () (interactive) (find-file "~/doc/org/personal.org")))
-(define-key leader-key "fr" (lambda () (interactive) (find-file "~/doc/org/reading.org")))
+(define-key leader-key "fn" (lambda () (interactive) (find-file (format "%s/%s" org-notes-dir org-notes-file))))
 (define-key leader-key "al" 'org-agenda-list)
 (define-key leader-key "at" 'org-todo-list)
 (global-set-key (kbd "M-L") 'org-agenda-list)
@@ -563,13 +567,13 @@
 (setq org-babel-confirm-evaluate nil)
 (setq org-src-window-setup 'current-window)
 (setq org-display-inline-images t)
+(setq org-startup-with-inline-images t)
 (setq org-redisplay-inline-images t)
 (setq org-startup-with-inline-images nil)
-(setq org-default-notes-file "~/doc/org/notes.org")
+(setq org-default-notes-file (format "%s/%s" org-notes-dir org-notes-file))
 (setq org-agenda-files (list
-                        "~/doc/org/notes.org"
-                        "~/doc/org/personal.org"
-                        "~/doc/org/reading.org"
+                        (format "%s/%s" org-notes-dir org-notes-file)
+                        (format "%s/%s" org-notes-dir org-personal-file)
                         ))
 (add-hook 'org-mode-hook 'org-indent-mode)
 (global-set-key (kbd "C-c l") #'org-store-link)
@@ -580,15 +584,15 @@
 (setq org-agenda-window-setup 'only-window)
 (setq org-agenda-restore-windows-after-quit t)
 
-(setq org-directory "~/doc/org/")
+(setq org-directory org-notes-dir)
 (setq org-capture-templates
       '(
-        ("t" "Todo" entry (file+headline "~/doc/org/notes.org" "Tasks")
+        ("t" "Todo" entry (file+headline (format "%s/%s" org-notes-dir org-notes-file) "Tasks")
          ;; Prompt for tag
          "* TODO %?\t%^g\n Entered on %U\n  %i\n  %a")
-        ("o" "Someday" entry (file+headline "~/doc/org/personal.org" "Tasks")
+        ("o" "Someday" entry (file+headline (format "%s/%s" org-notes-dir org-personal-file) "Tasks")
          "* SOMEDAY %?")
-        ("s" "Code Snippet" entry (file+datetree "~/doc/org/snippet.org")
+        ("s" "Code Snippet" entry (file+datetree (format "%s/%s" org-notes-dir "snippet.org"))
          ;; Prompt for tag and language
          "* %?\t%^g\n#+BEGIN_SRC %^{language}\n\n#+END_SRC")
         ))
@@ -958,7 +962,13 @@
           ("zenburn-bg-05" . "#292929") ;; line number
           ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
           ))
-  (load-theme 'zenburn t))
+  ;; (load-theme 'zenburn t)
+  )
+
+(use-package vscode-dark-plus-theme
+  :ensure t
+  :config
+  (load-theme 'vscode-dark-plus t))
 
 ;; (use-package doom-modeline
 ;;   :init (doom-modeline-mode 1))
@@ -1161,7 +1171,7 @@
   :config
   ;; 默认的 rg 配置
   (setq counsel-rg-base-command "rg --hidden --ignore-case --max-columns 300 --no-heading --line-number --color never %s -g \"!.git\" -g !doc -g !themes -g !quelpa -g !backup ")
-  (setq counsel-fzf-cmd "fd --hidden --exclude={.git,site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,doc/,backup} --type f | fzf -f \"%s\" --algo=v1")
+  (setq counsel-fzf-cmd "fd --hidden --exclude={.git,site-lisp,etc/snippets,themes,/var,/elpa,quelpa/,/url,/auto-save-list,.cache,backup} --type f | fzf -f \"%s\" --algo=v1")
   ;; Integration with 'projectile'
   (with-eval-after-load 'projectile
     (setq projectile-completion-system 'ivy)))
