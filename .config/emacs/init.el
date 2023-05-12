@@ -202,7 +202,7 @@
 (global-set-key "\M-n" (lambda() (interactive) (scroll-up 1)))
 (global-set-key "\M-p" (lambda() (interactive) (scroll-down 1)))
 (setq hscroll-step 1)
-(setq hscroll-margin 0)
+(setq scroll-margin 3)
 (global-set-key [wheel-right] (lambda() (interactive) (scroll-left 5)))
 (global-set-key [wheel-left] (lambda() (interactive) (scroll-right 5)))
 ;; ;; t means point keeps its screen position if the scroll command moved it to next screen
