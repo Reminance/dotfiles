@@ -952,44 +952,42 @@
 ;;    `(ctbl:face-cell-select ((t (:background nil :foreground ,zenburn-green))))
 ;;    `(ctbl:face-continue-bar ((t (:background ,zenburn-bg-05 :foreground ,zenburn-bg))))
 ;;    `(ctbl:face-row-select ((t (:background nil :foreground ,zenburn-green))))
-(use-package zenburn-theme
-  :config
-  (setq zenburn-override-colors-alist
-        '(
-          ("zenburn-bg" . "#292929") ;; background
-          ("zenburn-bg+1" . "#292929") ;; fringe
-          ("zenburn-bg-1" . "#404040") ;; region highlight
-          ("zenburn-bg-05" . "#292929") ;; line number
-          ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
-          ))
-  ;; (load-theme 'zenburn t)
-  )
+;; (use-package zenburn-theme
+;;   :config
+;;   (setq zenburn-override-colors-alist
+;;         '(
+;;           ("zenburn-bg" . "#292929") ;; background
+;;           ("zenburn-bg+1" . "#292929") ;; fringe
+;;           ("zenburn-bg-1" . "#404040") ;; region highlight
+;;           ("zenburn-bg-05" . "#292929") ;; line number
+;;           ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
+;;           ))
+;;   (load-theme 'zenburn t))
 
-(use-package vscode-dark-plus-theme
-  :ensure t
-  :config
-  (load-theme 'vscode-dark-plus t))
-
-;; (use-package doom-modeline
-;;   :init (doom-modeline-mode 1))
-
-;; (use-package doom-themes
+;; (use-package vscode-dark-plus-theme
 ;;   :ensure t
 ;;   :config
-;;   ;; Global settings (defaults)
-;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-;;   (load-theme 'doom-one t)
+;;   (load-theme 'vscode-dark-plus t))
 
-;;   ;; Enable flashing mode-line on errors
-;;   (doom-themes-visual-bell-config)
-;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
-;;   (doom-themes-neotree-config)
-;;   ;; or for treemacs users
-;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-;;   (doom-themes-treemacs-config)
-;;   ;; Corrects (and improves) org-mode's native fontification.
-;;   (doom-themes-org-config))
+(use-package doom-modeline
+  :init (doom-modeline-mode 1))
+
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-monokai-pro t)
+  ;; Enable flashing mode-line on errors
+  ;; (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
@@ -1225,6 +1223,59 @@
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
   (setq enable-recursive-minibuffers t))
+
+;; evil
+(use-package evil
+  ;; :disabled
+  :init
+  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+  (setq evil-want-keybinding nil)
+  :config
+  (eval-after-load "evil-maps"
+    (dolist (map '(evil-motion-state-map
+                   evil-normal-state-map
+                   evil-operator-state-map
+                   evil-replace-state-map
+                   evil-insert-state-map
+                   evil-visual-state-map
+                   evil-emacs-state-map))
+      (define-key (eval map) "\C-n" nil)
+      (define-key (eval map) "\C-p" nil)
+      (define-key (eval map) "\C-a" nil)
+      (define-key (eval map) "\C-e" nil)
+      (define-key (eval map) "\C-f" nil)
+      (define-key (eval map) "\C-b" nil)
+      (define-key (eval map) "\C-y" nil)
+      (define-key (eval map) "\C-k" nil)
+      (define-key (eval map) "\C-u" nil)
+      (define-key (eval map) "\C-d" nil)
+      ;; (define-key (eval map) "\C-z" nil)
+      (define-key (eval map) "\M-." nil)
+      ;; (define-key (eval map) "\C-w" nil)
+      ;; (define-key (eval map) (kbd "SPC") nil)
+      ;; (define-key (eval map) (kbd "RET") nil)
+      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+      )
+    )
+  (eval-after-load "evil-maps"
+    (dolist (map '(
+                   evil-insert-state-map
+                   ))
+      (define-key (eval map) "\C-i" nil)
+      (define-key (eval map) "\C-o" nil)
+      (define-key (eval map) "\C-w" nil)
+      (define-key (eval map) "\C-v" nil)
+      )
+    )
+  (setq evil-disable-insert-state-bindings t)
+  (evil-mode 1))
+
+(use-package evil-collection
+  ;; :disabled
+  :after evil
+  :config
+  (evil-collection-init))
+
 
 (use-package marginalia
   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
