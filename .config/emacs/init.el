@@ -1265,10 +1265,10 @@
 
 ;; ;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
 
-;; ;; Enable vertico
-;; (use-package vertico
-;;   :init
-;;   (vertico-mode))
+;; Enable vertico
+(use-package vertico
+  :init
+  (vertico-mode))
 
 ;; (use-package orderless
 ;;   :init
