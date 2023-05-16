@@ -134,7 +134,7 @@
 ;;   )
 (set-face-attribute 'default nil
                     :font (font-spec
-                           :name "JetbrainsMono Nerd Font"
+                           ;; :name "JetbrainsMono Nerd Font"
                            :size 12))
 
 ;;----------------------------------------------------------------------------
@@ -679,6 +679,17 @@
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize)))
 
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  (defun crm-indicator (args)
+    (cons (concat "[CRM] " (car args)) (cdr args)))
+  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+  (setq minibuffer-prompt-properties
+        '(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+  (setq enable-recursive-minibuffers t))
+
 (use-package quickrun)
 
 (use-package org-num
@@ -858,6 +869,58 @@
   (setq save-place-file (locate-user-emacs-file "var/places" "var/.emacs-places"))
   :hook (after-init . (lambda () (save-place-mode t))))
 
+;; evil
+;; (use-package evil
+;;   ;; :disabled
+;;   :init
+;;   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+;;   (setq evil-want-keybinding nil)
+;;   :config
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(evil-motion-state-map
+;;                    evil-normal-state-map
+;;                    evil-operator-state-map
+;;                    evil-replace-state-map
+;;                    evil-insert-state-map
+;;                    evil-visual-state-map
+;;                    evil-emacs-state-map))
+;;       (define-key (eval map) "\C-n" nil)
+;;       (define-key (eval map) "\C-p" nil)
+;;       (define-key (eval map) "\C-a" nil)
+;;       (define-key (eval map) "\C-e" nil)
+;;       (define-key (eval map) "\C-f" nil)
+;;       (define-key (eval map) "\C-b" nil)
+;;       (define-key (eval map) "\C-y" nil)
+;;       (define-key (eval map) "\C-k" nil)
+;;       (define-key (eval map) "\C-u" nil)
+;;       (define-key (eval map) "\C-d" nil)
+;;       ;; (define-key (eval map) "\C-z" nil)
+;;       (define-key (eval map) "\M-." nil)
+;;       ;; (define-key (eval map) "\C-w" nil)
+;;       ;; (define-key (eval map) (kbd "SPC") nil)
+;;       ;; (define-key (eval map) (kbd "RET") nil)
+;;       (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
+;;       )
+;;     )
+;;   (eval-after-load "evil-maps"
+;;     (dolist (map '(
+;;                    evil-insert-state-map
+;;                    ))
+;;       (define-key (eval map) "\C-i" nil)
+;;       (define-key (eval map) "\C-o" nil)
+;;       (define-key (eval map) "\C-w" nil)
+;;       (define-key (eval map) "\C-v" nil)
+;;       )
+;;     )
+;;   (setq evil-disable-insert-state-bindings t)
+;;   (evil-mode 1))
+
+;; (use-package evil-collection
+;;   ;; :disabled
+;;   :after evil
+;;   :config
+;;   (evil-collection-init))
+
 (use-package which-key
   :diminish which-key-mode
   :custom
@@ -952,17 +1015,17 @@
 ;;    `(ctbl:face-cell-select ((t (:background nil :foreground ,zenburn-green))))
 ;;    `(ctbl:face-continue-bar ((t (:background ,zenburn-bg-05 :foreground ,zenburn-bg))))
 ;;    `(ctbl:face-row-select ((t (:background nil :foreground ,zenburn-green))))
-;; (use-package zenburn-theme
-;;   :config
-;;   (setq zenburn-override-colors-alist
-;;         '(
-;;           ("zenburn-bg" . "#292929") ;; background
-;;           ("zenburn-bg+1" . "#292929") ;; fringe
-;;           ("zenburn-bg-1" . "#404040") ;; region highlight
-;;           ("zenburn-bg-05" . "#292929") ;; line number
-;;           ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
-;;           ))
-;;   (load-theme 'zenburn t))
+(use-package zenburn-theme
+  :config
+  (setq zenburn-override-colors-alist
+        '(
+          ("zenburn-bg" . "#292929") ;; background
+          ("zenburn-bg+1" . "#292929") ;; fringe
+          ("zenburn-bg-1" . "#404040") ;; region highlight
+          ("zenburn-bg-05" . "#292929") ;; line number
+          ;; ("zenburn-bg-05" . "#2e2e2e") ;; line number
+          ))
+  (load-theme 'zenburn t))
 
 ;; (use-package vscode-dark-plus-theme
 ;;   :ensure t
@@ -972,22 +1035,22 @@
 (use-package doom-modeline
   :init (doom-modeline-mode 1))
 
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-monokai-pro t)
-  ;; Enable flashing mode-line on errors
-  ;; (doom-themes-visual-bell-config)
-  ;; Enable custom neotree theme (all-the-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-monokai-pro t)
+;;   ;; Enable flashing mode-line on errors
+;;   ;; (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (all-the-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
+;;   (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
 
 (use-package youdao-dictionary
   :commands (youdao-dictionary-search-at-point-posframe)
@@ -1147,8 +1210,8 @@
 
 (use-package counsel
   :bind (
-         ;; ("M-x" . 'counsel-M-x)
-         ;; ("C-x b" . 'counsel-ibuffer)
+         ("M-x" . 'counsel-M-x)
+         ("C-x b" . 'counsel-ibuffer)
          ("C-M-j" . 'counsel-switch-buffer) ;; skip corrent buffer, more efficient
          ("C-x d" . 'counsel-dired)
          ("C-x C-f" . 'counsel-find-file)
@@ -1177,8 +1240,8 @@
 (use-package ivy
   :diminish ivy-mode
   :config
-  (setq ivy-re-builders-alist
-        '((t . ivy--regex-fuzzy)))
+  ;; (setq ivy-re-builders-alist
+  ;;       '((t . ivy--regex-fuzzy)))
   (use-package ivy-rich
     :config
     (ivy-rich-mode 1))
@@ -1200,192 +1263,128 @@
 ;; ;; ---------------------------------------------------------------------------- Ivy, Counsel and Swiper end
 
 
-;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
+;; ;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult start
 
-;; Enable vertico
-(use-package vertico
-  :init
-  (vertico-mode))
+;; ;; Enable vertico
+;; (use-package vertico
+;;   :init
+;;   (vertico-mode))
 
-(use-package orderless
-  :init
-  (setq completion-styles '(orderless)
-        completion-category-defaults nil
-        completion-category-overrides '((file (styles partial-completion)))))
+;; (use-package orderless
+;;   :init
+;;   (setq completion-styles '(orderless)
+;;         completion-category-defaults nil
+;;         completion-category-overrides '((file (styles partial-completion)))))
 
-;; A few more useful configurations...
-(use-package emacs
-  :init
-  (defun crm-indicator (args)
-    (cons (concat "[CRM] " (car args)) (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
-  (setq enable-recursive-minibuffers t))
+;; (use-package marginalia
+;;   ;; Either bind `marginalia-cycle' globally or only in the minibuffer
+;;   :bind (("M-A" . marginalia-cycle)
+;;          :map minibuffer-local-map
+;;          ("M-A" . marginalia-cycle))
+;;   :init
+;;   (marginalia-mode))
 
-;; evil
-(use-package evil
-  ;; :disabled
-  :init
-  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-  (setq evil-want-keybinding nil)
-  :config
-  (eval-after-load "evil-maps"
-    (dolist (map '(evil-motion-state-map
-                   evil-normal-state-map
-                   evil-operator-state-map
-                   evil-replace-state-map
-                   evil-insert-state-map
-                   evil-visual-state-map
-                   evil-emacs-state-map))
-      (define-key (eval map) "\C-n" nil)
-      (define-key (eval map) "\C-p" nil)
-      (define-key (eval map) "\C-a" nil)
-      (define-key (eval map) "\C-e" nil)
-      (define-key (eval map) "\C-f" nil)
-      (define-key (eval map) "\C-b" nil)
-      (define-key (eval map) "\C-y" nil)
-      (define-key (eval map) "\C-k" nil)
-      (define-key (eval map) "\C-u" nil)
-      (define-key (eval map) "\C-d" nil)
-      ;; (define-key (eval map) "\C-z" nil)
-      (define-key (eval map) "\M-." nil)
-      ;; (define-key (eval map) "\C-w" nil)
-      ;; (define-key (eval map) (kbd "SPC") nil)
-      ;; (define-key (eval map) (kbd "RET") nil)
-      (define-key (eval map) (kbd "TAB") nil) ;; let evil take care of tab and C-i translation
-      )
-    )
-  (eval-after-load "evil-maps"
-    (dolist (map '(
-                   evil-insert-state-map
-                   ))
-      (define-key (eval map) "\C-i" nil)
-      (define-key (eval map) "\C-o" nil)
-      (define-key (eval map) "\C-w" nil)
-      (define-key (eval map) "\C-v" nil)
-      )
-    )
-  (setq evil-disable-insert-state-bindings t)
-  (evil-mode 1))
+;; (use-package embark
+;;   :bind
+;;   (("C-." . embark-act)         ;; pick some comfortable binding
+;;    ("C-;" . embark-dwim)        ;; good alternative: M-.
+;;    ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
+;;   :init
+;;   (setq prefix-help-command #'embark-prefix-help-command)
+;;   :config
+;;   (add-to-list 'display-buffer-alist
+;;                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+;;                  nil
+;;                  (window-parameters (mode-line-format . none)))))
 
-(use-package evil-collection
-  ;; :disabled
-  :after evil
-  :config
-  (evil-collection-init))
+;; ;; Consult users will also want the embark-consult package.
+;; (use-package embark-consult
+;;   :after (embark consult)
+;;   :demand t ; only necessary if you have the hook below
+;;   :hook
+;;   (embark-collect-mode . consult-preview-at-point-mode))
+;; (setq prefix-help-command 'embark-prefix-help-command)
 
+;; ;; Example configuration for Consult
+;; (use-package consult
+;;   ;; ;; Replace bindings. Lazily loaded due by `use-package'.
+;;   :bind (;; C-c bindings (mode-specific-map)
+;;          ;;        ("C-c h" . consult-history)
+;;          ;;        ("C-c m" . consult-mode-command)
+;;          ;;        ("C-c k" . consult-kmacro)
+;;          ;;        ;; C-x bindings (ctl-x-map)
+;;          ;;        ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+;;          ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+;;          ;;        ("C-M-j" . consult-buffer)                ;; orig. switch-to-buffer
+;;          ;;        ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+;;          ;;        ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+;;          ;;        ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+;;          ;;        ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+;;          ;;        ;; Custom M-# bindings for fast register access
+;;          ;;        ("M-#" . consult-register-load)
+;;          ;;        ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+;;          ;;        ("C-M-#" . consult-register)
+;;          ;;        ;; Other custom bindings
+;;          ;;        ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+;;          ;;        ("<help> a" . consult-apropos)            ;; orig. apropos-command
+;;          ;;        ;; M-g bindings (goto-map)
+;;          ;;        ("M-g e" . consult-compile-error)
+;;          ;;        ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+;;          ;;        ("M-g g" . consult-goto-line)             ;; orig. goto-line
+;;          ;;        ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+;;          ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+;;          ;;        ("M-g m" . consult-mark)
+;;          ;;        ("M-g k" . consult-global-mark)
+;;          ;;        ("M-g i" . consult-imenu)
+;;          ;;        ("M-g I" . consult-imenu-multi)
+;;          ;;        ;; M-s bindings (search-map)
+;;          ;;        ("M-s d" . consult-find)
+;;          ;;        ("M-s D" . consult-locate)
+;;          ;;        ("M-s g" . consult-grep)
+;;          ;;        ("M-s G" . consult-git-grep)
+;;                 ("M-s r" . consult-ripgrep)
+;;                 ("M-S-f" . consult-ripgrep)
+;;          ;;        ("M-s l" . consult-line)
+;;          ;;        ("M-s L" . consult-line-multi)
+;;          ;;        ("M-s m" . consult-multi-occur)
+;;          ;;        ("M-s k" . consult-keep-lines)
+;;          ;;        ("M-s u" . consult-focus-lines)
+;;          ;;        ;; Isearch integration
+;;          ;;        ("M-s e" . consult-isearch-history)
+;;          ;;        :map isearch-mode-map
+;;          ;;        ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+;;          ;;        ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+;;          ;;        ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+;;          ;;        ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+;;          ;;        ;; Minibuffer history
+;;          ;;        :map minibuffer-local-map
+;;          ;;        ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+;;          ;;        ("M-r" . consult-history)                ;; orig. previous-matching-history-element
+;;          )
 
-(use-package marginalia
-  ;; Either bind `marginalia-cycle' globally or only in the minibuffer
-  :bind (("M-A" . marginalia-cycle)
-         :map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
-  :init
-  (marginalia-mode))
+;;   :hook (completion-list-mode . consult-preview-at-point-mode)
+;;   :init
+;;   (setq register-preview-delay 0.5
+;;         register-preview-function #'consult-register-format)
+;;   (advice-add #'register-preview :override #'consult-register-window)
+;;   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+;;   (setq xref-show-xrefs-function #'consult-xref
+;;         xref-show-definitions-function #'consult-xref)
+;;   :config
+;;   (consult-customize
+;;    consult-theme
+;;    :preview-key '(:debounce 0.2 any)
+;;    consult-ripgrep consult-git-grep consult-grep
+;;    consult-bookmark consult-recent-file consult-xref
+;;    consult--source-bookmark consult--source-recent-file
+;;    consult--source-project-recent-file
+;;    :preview-key (kbd "M-."))
+;;   (setq consult-ripgrep-args "rg --null --color=never --max-columns=300 --ignore-case --no-heading --line-number --hidden -g \"!.git\" -g !themes -g !quelpa -g !backup .")
+;;   (setq consult-narrow-key "<") ;; (kbd "C-+")
+;;   (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
+;;   )
 
-(use-package embark
-  :bind
-  (("C-." . embark-act)         ;; pick some comfortable binding
-   ("C-;" . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings)) ;; alternative for `describe-bindings'
-  :init
-  (setq prefix-help-command #'embark-prefix-help-command)
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
-
-;; Consult users will also want the embark-consult package.
-(use-package embark-consult
-  :after (embark consult)
-  :demand t ; only necessary if you have the hook below
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-(setq prefix-help-command 'embark-prefix-help-command)
-
-;; Example configuration for Consult
-(use-package consult
-  ;; ;; Replace bindings. Lazily loaded due by `use-package'.
-  :bind (;; C-c bindings (mode-specific-map)
-         ;;        ("C-c h" . consult-history)
-         ;;        ("C-c m" . consult-mode-command)
-         ;;        ("C-c k" . consult-kmacro)
-         ;;        ;; C-x bindings (ctl-x-map)
-         ;;        ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
-         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
-         ;;        ("C-M-j" . consult-buffer)                ;; orig. switch-to-buffer
-         ;;        ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
-         ;;        ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
-         ;;        ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
-         ;;        ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
-         ;;        ;; Custom M-# bindings for fast register access
-         ;;        ("M-#" . consult-register-load)
-         ;;        ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
-         ;;        ("C-M-#" . consult-register)
-         ;;        ;; Other custom bindings
-         ;;        ("M-y" . consult-yank-pop)                ;; orig. yank-pop
-         ;;        ("<help> a" . consult-apropos)            ;; orig. apropos-command
-         ;;        ;; M-g bindings (goto-map)
-         ;;        ("M-g e" . consult-compile-error)
-         ;;        ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
-         ;;        ("M-g g" . consult-goto-line)             ;; orig. goto-line
-         ;;        ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
-         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
-         ;;        ("M-g m" . consult-mark)
-         ;;        ("M-g k" . consult-global-mark)
-         ;;        ("M-g i" . consult-imenu)
-         ;;        ("M-g I" . consult-imenu-multi)
-         ;;        ;; M-s bindings (search-map)
-         ;;        ("M-s d" . consult-find)
-         ;;        ("M-s D" . consult-locate)
-         ;;        ("M-s g" . consult-grep)
-         ;;        ("M-s G" . consult-git-grep)
-                ("M-s r" . consult-ripgrep)
-                ("M-S-f" . consult-ripgrep)
-         ;;        ("M-s l" . consult-line)
-         ;;        ("M-s L" . consult-line-multi)
-         ;;        ("M-s m" . consult-multi-occur)
-         ;;        ("M-s k" . consult-keep-lines)
-         ;;        ("M-s u" . consult-focus-lines)
-         ;;        ;; Isearch integration
-         ;;        ("M-s e" . consult-isearch-history)
-         ;;        :map isearch-mode-map
-         ;;        ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
-         ;;        ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
-         ;;        ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
-         ;;        ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
-         ;;        ;; Minibuffer history
-         ;;        :map minibuffer-local-map
-         ;;        ("M-s" . consult-history)                 ;; orig. next-matching-history-element
-         ;;        ("M-r" . consult-history)                ;; orig. previous-matching-history-element
-         )
-
-  :hook (completion-list-mode . consult-preview-at-point-mode)
-  :init
-  (setq register-preview-delay 0.5
-        register-preview-function #'consult-register-format)
-  (advice-add #'register-preview :override #'consult-register-window)
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-  (setq xref-show-xrefs-function #'consult-xref
-        xref-show-definitions-function #'consult-xref)
-  :config
-  (consult-customize
-   consult-theme
-   :preview-key '(:debounce 0.2 any)
-   consult-ripgrep consult-git-grep consult-grep
-   consult-bookmark consult-recent-file consult-xref
-   consult--source-bookmark consult--source-recent-file
-   consult--source-project-recent-file
-   :preview-key (kbd "M-."))
-  (setq consult-ripgrep-args "rg --null --color=never --max-columns=300 --ignore-case --no-heading --line-number --hidden -g \"!.git\" -g !themes -g !quelpa -g !backup .")
-  (setq consult-narrow-key "<") ;; (kbd "C-+")
-  (setq consult-async-min-input 2) ;; Minimum number of letters needed, before asynchronous process is called.
-  )
-
-;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult end
+;; ;; ;; ---------------------------------------------------------------------------- vertico orderless marginalia embark consult end
 
 (use-package ctable)
 
