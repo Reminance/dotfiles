@@ -26,7 +26,7 @@ alias te='env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacsclient -nw -c'
 alias lg='lazygit'
 alias ra='ranger'
 
-# alias cat='bat'
+alias cat='bat'
 
 # alias proxys="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890 && curl ip.sb"
 # alias proxys="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"

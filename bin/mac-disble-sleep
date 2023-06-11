@@ -1,0 +1,8 @@
+#!/bin/sh
+
+sudo pmset -b sleep 0; sudo pmset -b disablesleep 1
+# sudo pmset -b sleep 30; sudo pmset -b disablesleep 0
+
+# man pmset
+# disksleep - disk spindown timer; replaces 'spindown' argument in 10.4 (value in minutes, or 0 to disable)
+# sleep - system sleep timer (value in minutes, or 0 to disable)
