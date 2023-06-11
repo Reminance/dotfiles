@@ -1,3 +1,7 @@
 #!/bin/sh
 
 wget -O config.yaml https://portal.meomiao.xyz/api/v1/client/subscribe\?token\=$1
+
+# 或者使用subconverter https://github.com/tindy2013/subconverter/blob/master/README-cn.md
+# ./subconverter
+# curl -s "http://127.0.0.1:25500/sub?target=clash&url="$(echo "https://api.meomiao.me/api/v1/client/subscribe?token=8911e73954276afa0e434cb8a858cfd1" | sed  "s|/|%2F|g" | sed  "s|:|%3A|g"  | sed  "s|?|%3F|g") > config.yaml
