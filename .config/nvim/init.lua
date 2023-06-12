@@ -92,6 +92,8 @@ vim.keymap.set({ 'i', 'c' }, "<C-b>", "<Left>")
 vim.keymap.set({ 'i', 'c' }, "<C-f>", "<Right>")
 vim.keymap.set({ 'i', 'c' }, "<C-a>", "<Home>")
 vim.keymap.set({ 'i', 'c' }, "<C-e>", "<End>")
+-- Allow saving of files as sudo when I forgot to start vim using sudo.
+vim.keymap.set('c', "w!!", "w !sudo tee > /dev/null %")
 
 -- move selected lines up/down and keep selected
 vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv")

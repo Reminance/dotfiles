@@ -144,8 +144,8 @@ nnoremap <M-s>. :so %<CR>
 vnoremap <M-s>v y:execute @@<CR>:echo 'Sourced selection.'<CR>
 nnoremap <M-s>L ^vg_y:execute @@<CR>:echo 'Sourced line.'<CR>
 
-" Save file as sudo on files that require root permission(by typing [Ctrl-s !]), note the '' symbol is type through Ctrl-v ctrl-s
-cnoremap ! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!
+" Allow saving of files as sudo when I forgot to start vim using sudo.
+cmap w!! w !sudo tee > /dev/null %
 
 " normal mode bindings
 nnoremap <Down> :res +1<CR>
@@ -495,7 +495,7 @@ nnoremap <M-S-f> :Rg<CR>
 " The Silver Searcher
 nnoremap <M-S-a> :Ag<CR>
 nnoremap <M-S-g> :GFiles<CR>
-nnoremap <M-S-d> :GFiles?<CR>
+" nnoremap <M-S-d> :GFiles?<CR>
 nnoremap <M-S-n> :Files<CR>
 nnoremap <M-S-e> :Buffers<CR>
 nnoremap <M-S-h> :History<CR>
