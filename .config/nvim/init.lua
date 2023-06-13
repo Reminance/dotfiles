@@ -249,7 +249,7 @@ require('packer').startup(function(use)
     -- Fuzzy Finder (files, lsp, etc)
   use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+  -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
   use 'connorholyday/vim-snazzy'
   use({
@@ -304,8 +304,8 @@ require('packer').startup(function(use)
   -- file navigation
   use 'junegunn/fzf.vim'
 
-  -- Draw ASCII diagrams in Neovim.
-  use "jbyuki/venn.nvim"
+  -- -- Draw ASCII diagrams in Neovim.
+  -- use "jbyuki/venn.nvim"
   -- diffview
   use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
 
@@ -324,7 +324,7 @@ require('packer').startup(function(use)
 		  {'hrsh7th/cmp-cmdline'},
 		  {'saadparwaiz1/cmp_luasnip'},
 		  {'hrsh7th/cmp-nvim-lsp'},
-		  {'hrsh7th/cmp-nvim-lua'},
+		  -- {'hrsh7th/cmp-nvim-lua'},
 
 		  -- Snippets
 		  {'L3MON4D3/LuaSnip'},
