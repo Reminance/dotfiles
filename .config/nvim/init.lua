@@ -23,6 +23,9 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- disable statusline
+vim.opt.laststatus = 0
+
 -- Finding files - Search down into subfolders
 vim.opt.path:append { '**' }
 
@@ -251,22 +254,24 @@ require('packer').startup(function(use)
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
 
+  -- colorscheme
   use 'connorholyday/vim-snazzy'
-  use({
-	  'rose-pine/neovim',
-	  as = 'rose-pine',
-	  -- config = function()
-		 --  vim.cmd('colorscheme rose-pine')
-	  -- end
-  })
-  use { "ellisonleao/gruvbox.nvim" }
+  -- use({
+	 --  'rose-pine/neovim',
+	 --  as = 'rose-pine',
+	 --  -- config = function()
+		--  --  vim.cmd('colorscheme rose-pine')
+	 --  -- end
+  -- })
+  -- use { "ellisonleao/gruvbox.nvim" }
+  
   use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
   use('mbbill/undotree')
   use('tpope/vim-fugitive')
   use 'lewis6991/gitsigns.nvim'
   use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
   use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+  -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
   use 'mhinz/vim-startify'
   use {
     "folke/which-key.nvim",
@@ -332,7 +337,8 @@ require('packer').startup(function(use)
 	  }
   }
 
-  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
+  -- -- markdown-preview
+  -- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 
 end)
 
@@ -371,16 +377,16 @@ vim.cmd('colorscheme snazzy')
 -- })
 -- vim.cmd("colorscheme gruvbox")
 
--- Set lualine as statusline
--- See `:help lualine.txt`
-require('lualine').setup {
-  options = {
-    icons_enabled = true,
-    -- theme = 'onedark',
-    component_separators = '|',
-    section_separators = '',
-  },
-}
+-- -- Set lualine as statusline
+-- -- See `:help lualine.txt`
+-- require('lualine').setup {
+--   options = {
+--     icons_enabled = true,
+--     -- theme = 'onedark',
+--     component_separators = '|',
+--     section_separators = '',
+--   },
+-- }
 
 -- Enable Comment.nvim
 require('Comment').setup()
@@ -512,27 +518,27 @@ vim.keymap.set('n', '<Leader>gs', ':G<CR>', options)
 -- far
 vim.keymap.set('n', '<Leader>F', ':F  %<left><left>', options)
 
--- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
-function _G.Toggle_venn()
-    local venn_enabled = vim.inspect(vim.b.venn_enabled)
-    if venn_enabled == "nil" then
-        vim.b.venn_enabled = true
-        vim.cmd[[setlocal ve=all]]
-        -- draw a line on HJKL keystokes
-        vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
-        -- draw a box by pressing "f" with visual selection
-        vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
-    else
-        vim.cmd[[setlocal ve=]]
-        vim.cmd[[mapclear <buffer>]]
-        vim.b.venn_enabled = nil
-    end
-end
--- toggle keymappings for venn using <leader>v
-vim.api.nvim_set_keymap('n', '<leader>V', ":lua Toggle_venn()<CR>", { noremap = true})
+-- -- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
+-- function _G.Toggle_venn()
+--     local venn_enabled = vim.inspect(vim.b.venn_enabled)
+--     if venn_enabled == "nil" then
+--         vim.b.venn_enabled = true
+--         vim.cmd[[setlocal ve=all]]
+--         -- draw a line on HJKL keystokes
+--         vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
+--         vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
+--         vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
+--         vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
+--         -- draw a box by pressing "f" with visual selection
+--         vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+--     else
+--         vim.cmd[[setlocal ve=]]
+--         vim.cmd[[mapclear <buffer>]]
+--         vim.b.venn_enabled = nil
+--     end
+-- end
+-- -- toggle keymappings for venn using <leader>v
+-- vim.api.nvim_set_keymap('n', '<leader>V', ":lua Toggle_venn()<CR>", { noremap = true})
 
 -- diffview.nvim
 -- Lua
