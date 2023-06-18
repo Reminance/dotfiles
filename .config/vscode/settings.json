@@ -1,0 +1,22 @@
+{
+  "cmake.configureOnOpen": true,
+  "editor.accessibilitySupport": "off",
+  "security.workspace.trust.untrustedFiles": "open",
+  "workbench.startupEditor": "none",
+  "terminal.integrated.env.osx": {
+    "FIG_NEW_SESSION": "1"
+  },
+  "notebook.globalToolbar": false,
+  "git.openRepositoryInParentFolders": "always",
+  "explorer.confirmDelete": false,
+  "vscodeGoogleTranslate.preferredLanguage": "Chinese (Simplified)",
+  "editor.language.brackets": [],
+  "editor.minimap.enabled": false,
+  "workbench.statusBar.visible": false,
+  "window.commandCenter": false,
+  "terminal.external.osxExec": "Terminal.app",
+  "window.zoomLevel": -1,
+  "workbench.activityBar.visible": false,
+  // "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
+  // "vscode-neovim.neovimInitVimPaths.darwin": "$HOME/.config/nvim/init.lua",
+}

@@ -241,6 +241,12 @@ func! CompileRunGcc()
 endfunc
 ]]
 
+if vim.g.vscode then
+    -- VSCode extension
+else
+    -- ordinary Neovim
+end
+
 -- Only required if you have packer configured as `opt`
 vim.cmd.packadd('packer.nvim')
 
@@ -412,6 +418,7 @@ require('gitsigns').setup {
     topdelete = { text = '‾' },
     changedelete = { text = '~' },
   },
+  -- current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
 }
 
 -- [[ Configure Telescope ]]
@@ -447,9 +454,8 @@ require('telescope').setup{
   }
 }
 
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
+-- -- Enable telescope fzf native, if installed
+-- pcall(require('telescope').load_extension, 'fzf')
 
 -- telescope.nvim
 vim.keymap.set('n', '<M-O>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })

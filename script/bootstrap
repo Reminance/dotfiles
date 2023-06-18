@@ -154,7 +154,6 @@ link_config_dir () {
   # for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1 -type d -not -path '*.git*' -not -path '*.config')
   for src in $(find -H "$DOTFILES_ROOT/.config" -maxdepth 1  -not -path '*.git*' -not -path '*.config')
   do
-    dst="$HOME/.config/$(basename "${src}")"
     dst="${XDG_CONFIG_HOME:-$HOME/.config}/$(basename "${src}")"
     link_file "$src" "$dst"
   done
@@ -168,22 +167,34 @@ link_local_share_applications_dir () {
   link_file "$src" "$dst"
 }
 
+link_mac_vscode_dir () {
+  local overwrite_all=false backup_all=false skip_all=true
+  info "linking mac vscode settings, from $DOTFILES_ROOT/.config/vscode to $HOME/Library/Application Support/Code/User"
+  for src in $(find -H "$DOTFILES_ROOT/.config/vscode" -maxdepth 1 -not -path '*vscode')
+  do
+    dst="$HOME/Library/Application Support/Code/User/$(basename "${src}")"
+    link_file "$src" "$dst"
+  done
+  success "linking mac vscode settings.json done"
+}
+
 setup_gitconfig
 link_symlink_file
 link_config_dir
 link_local_share_applications_dir
 
-# # If we're on a Mac, let's install and setup homebrew.
-# if [ "$(uname -s)" == "Darwin" ]
-# then
-#   info "installing dependencies"
-#   if source bin/dot | while read -r data; do info "$data"; done
-#   then
-#     success "dependencies installed"
-#   else
-#     fail "error installing dependencies"
-#   fi
-# fi
+# If we're on a Mac, let's install and setup homebrew.
+if [ "$(uname -s)" == "Darwin" ]
+then
+  # info "installing mac dependencies"
+  # if source bin/dot | while read -r data; do info "$data"; done
+  # then
+  #   success "dependencies installed"
+  # else
+  #   fail "error installing dependencies"
+  # fi
+  link_mac_vscode_dir
+fi
 
 echo ''
 echo '  All installed!'
