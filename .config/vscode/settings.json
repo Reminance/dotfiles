@@ -17,5 +17,6 @@
   "window.commandCenter": false,
   "terminal.external.osxExec": "Terminal.app",
   "window.zoomLevel": -1,
-  "workbench.activityBar.visible": false
+  "workbench.activityBar.visible": false,
+  "editor.lineNumbers": "relative"
 }
