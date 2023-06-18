@@ -243,6 +243,7 @@ endfunc
 
 if vim.g.vscode then
     -- VSCode extension
+    print('vscode nvim loaded')
 else
     -- ordinary Neovim
 end
@@ -498,8 +499,8 @@ local options = { noremap = true, silent = true }
 vim.keymap.set('n', '<Leader>\\', ':Startify<CR>', options)
 
 -- vim-easy-align
-vim.keymap.set('n', '<Leader>ea', '<Plug>EasyAlign', {})
-vim.keymap.set('x', '<Leader>ea', '<Plug>EasyAlign', {})
+vim.keymap.set('n', '<Leader>ea', ':EasyAlign<CR>', {})
+vim.keymap.set('x', '<Leader>ea', '"EasyAlign<CR>', {})
 
 -- undotree
 vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
