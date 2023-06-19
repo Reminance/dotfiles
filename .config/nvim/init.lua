@@ -465,6 +465,7 @@ vim.keymap.set('n', '<M-E>', require('telescope.builtin').buffers, { desc = '[S]
 vim.keymap.set('n', '<leader>sH', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
@@ -567,7 +568,7 @@ vim.diagnostic.config({
   severity_sort = false,
 })
 
-local signs = { Error = " ", Warn = "", Hint = "", Info = "" }
+local signs = { Error = "×", Warn = "", Hint = "💡", Info = "" }
 for type, icon in pairs(signs) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
