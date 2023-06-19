@@ -336,6 +336,14 @@ else
     		  {'rafamadriz/friendly-snippets'},
     	  }
       }
+      use {
+          "rcarriga/nvim-dap-ui",
+          requires = {
+              {"mfussenegger/nvim-dap"},
+              {"mfussenegger/nvim-dap-python"},
+              {"leoluz/nvim-dap-go"},
+          }
+      }
       -- -- markdown-preview
       -- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
     end)
@@ -692,6 +700,59 @@ else
     -- insert `(` after select function or method item
     local cmp_autopairs = require "nvim-autopairs.completion.cmp"
     cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
+
+    -- nvim-dap nvim-dap-ui
+    local dap, dapui = require("dap"), require("dapui")
+    dapui.setup({
+    })
+    vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" }) --  ◉
+    vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+    vim.fn.sign_define("DapStopped", { text = "󰁕", texthl = "LspDiagnosticsSignInformation", linehl = "DiagnosticUnderlineInfo", numhl = "LspDiagnosticsSignInformation" })
+    dap.listeners.after.event_initialized["dapui_config"] = function()
+      dapui.open()
+    end
+    dap.listeners.before.event_terminated["dapui_config"] = function()
+      dapui.close()
+    end
+    dap.listeners.before.event_exited["dapui_config"] = function()
+      dapui.close()
+    end
+    vim.keymap.set('n', '<F6>', require'dap'.toggle_breakpoint)
+    vim.keymap.set('n', '<F9>', require'dap'.continue)
+    vim.keymap.set('n', '<F7>', require'dap'.step_into)
+    vim.keymap.set('n', '<F8>', require'dap'.step_over)
+    vim.keymap.set('n', '<F16>', require'dap'.step_out) -- S-F8
+    vim.keymap.set('n', '<F21>', require'dapui'.toggle) -- S-F9
+
+    require('dap-python').setup('/opt/homebrew/bin/python')
+    require('dap-go').setup()
+    dap.adapters.codelldb = {
+        type = 'server',
+        port = "${port}",
+        executable = {
+            -- CHANGE THIS to your path!
+            command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
+            args = {"--port", "${port}"},
+
+            -- On windows you may have to uncomment this:
+            -- detached = false,
+        }
+    }
+    dap.configurations.cpp = {
+        {
+            name = "Launch file",
+            type = "codelldb",
+            request = "launch",
+            program = function()
+                return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            end,
+            cwd = '${workspaceFolder}',
+            stopOnEntry = false,
+        },
+    }
+    dap.configurations.c = dap.configurations.cpp
+    dap.configurations.rust = dap.configurations.cpp
 end
 
 -- plugins without tui, can use within both ordinary vim and vscode
