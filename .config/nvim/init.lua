@@ -396,7 +396,7 @@ else
     -- Colorizer
     vim.g.colorizer_auto_color = 1
     -- vim.g.colorizer_auto_filetype = "yaml,zsh,zsh-theme,lua,vim,json"
-    
+
     -- Gitsigns
     -- See `:help gitsigns.txt`
     require('gitsigns').setup {
@@ -409,7 +409,7 @@ else
       },
       -- current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
     }
-    
+
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
     require('telescope').setup{
@@ -704,4 +704,4 @@ vim.keymap.set('n', '<Leader>ea', ':EasyAlign<CR>', {})
 vim.keymap.set('x', '<Leader>ea', ':EasyAlign<CR>', {})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+-- vim: ts=4 sts=4 sw=4 et
