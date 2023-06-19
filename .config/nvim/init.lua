@@ -524,7 +524,7 @@ vim.keymap.set('n', '<Leader>gl', ':diffget //3<CR>', options)
 vim.keymap.set('n', '<Leader>gs', ':G<CR>', options)
 
 -- far
-vim.keymap.set('n', '<Leader>F', ':F  %<left><left>', options)
+vim.keymap.set('n', '<Leader>F', ':F  %<left><left>', {})
 
 -- -- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
 -- function _G.Toggle_venn()
