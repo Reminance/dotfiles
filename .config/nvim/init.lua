@@ -261,6 +261,9 @@ else
   require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
+    use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
+    use 'junegunn/vim-easy-align'
+    use 'tpope/vim-surround'
       -- Fuzzy Finder (files, lsp, etc)
     use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
     -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
@@ -272,7 +275,6 @@ else
     use('mbbill/undotree')
     use('tpope/vim-fugitive')
     use 'lewis6991/gitsigns.nvim'
-    use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
     use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
     -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
     use 'mhinz/vim-startify'
@@ -286,22 +288,22 @@ else
         }
       end
     }
-    use 'junegunn/vim-easy-align'
-    use 'tpope/vim-surround'
     -- icons
     use 'ryanoasis/vim-devicons'
-    use 'kyazdani42/nvim-web-devicons'
     use {
-      'kyazdani42/nvim-tree.lua',
+      'nvim-tree/nvim-tree.lua',
       requires = {
-        'kyazdani42/nvim-web-devicons', -- optional, for file icon
+        'nvim-tree/nvim-web-devicons', -- optional
       },
-      -- config = function() require'nvim-tree'.setup {} end
+      config = function() require'nvim-tree'.setup {} end
     }
-    use 'luochen1990/rainbow'
+    -- use 'luochen1990/rainbow' -- didn't work with treesitter
     use 'windwp/nvim-autopairs'
     use 'chrisbra/Colorizer'
     use 'voldikss/vim-floaterm'
+    use {"akinsho/toggleterm.nvim", tag = '*', config = function()
+      require("toggleterm").setup()
+    end}
     use 'brooth/far.vim'
     -- file navigation
     use 'junegunn/fzf.vim'
@@ -323,6 +325,7 @@ else
   		  {'hrsh7th/cmp-cmdline'},
   		  {'saadparwaiz1/cmp_luasnip'},
   		  {'hrsh7th/cmp-nvim-lsp'},
+  		  {'hrsh7th/cmp-copilot'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
   		  -- {'hrsh7th/cmp-nvim-lua'},
   		  -- Snippets
   		  {'L3MON4D3/LuaSnip'},
@@ -337,9 +340,13 @@ else
             {"leoluz/nvim-dap-go"},
         }
     }
+    use "github/copilot.vim"
     -- -- markdown-preview
     -- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
   end)
+
+  -- for ToggleTerm
+  vim.keymap.set('n', '<C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
 
   -- for snazzy
   vim.g["SnazzyTransparent"] = 1
@@ -456,21 +463,8 @@ else
   vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
   vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
-  -- rainbow
-  vim.g["rainbow_active"] = 1
-
-  -- nvim-tree.lua
-  require('nvim-tree').setup{
-    view = {
-      width = 30,
-      side = "left",
-    },
-    actions = {
-      open_file = {
-        resize_window = true
-      }
-    },
-   }
+  -- -- rainbow
+  -- vim.g["rainbow_active"] = 1
 
    -- vim-floaterm
   -- " Set floaterm window's background to black
@@ -559,7 +553,7 @@ else
   -- nvim-treesitter
   require'nvim-treesitter.configs'.setup {
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "cpp", "make", "cmake", "commonlisp", "dockerfile", "go", "java", "lua", "python", "rust", "html", "javascript", "css", "toml", "vim", "vue", "json", "yaml" },
+    ensure_installed = { "c", "cpp", "make", "cmake", "dockerfile", "go", "java", "lua", "python", "rust", "html", "javascript", "css", "toml", "vim", "json", "yaml" },
 
     -- Install languages synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -659,10 +653,6 @@ else
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
     },
-    window = {
-      -- completion = cmp.config.window.bordered(),
-      -- documentation = cmp.config.window.bordered(),
-    },
     mapping = cmp.mapping.preset.insert({
       ['<C-b>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -671,13 +661,14 @@ else
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
+      { name = 'nvim_lsp', max_item_count = 10, group_index = 1 },
       -- { name = 'vsnip' }, -- For vsnip users.
-      { name = 'luasnip' }, -- For luasnip users.
+      { name = 'luasnip', max_item_count = 5, group_index = 1 }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
+      { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },
     }, {
-      { name = 'buffer' },
+      { name = 'buffer', max_item_count = 8, group_index = 2, keyword_length = 3 },
       { name = "treesitter" },
       { name = "path" },
       { name = "spell" },
@@ -690,22 +681,29 @@ else
       format = function(entry, vim_item)
         vim_item.kind = kind_icons[vim_item.kind]
         vim_item.menu = ({
-          nvim_lsp = "(LSP)",
-          nvim_lua = "(NVIM_LUA)",
-          luasnip = "(Snippet)",
-          buffer = "(Buffer)",
-          path = "(Path)",
-          emoji = "(Emoji)",
-          calc = "(Calc)",
-          cmp_tabnine = "(Tabnine)",
-          vsnip = "(Snippet)",
-          tmux = "(TMUX)",
-          copilot = "(Copilot)",
-          treesitter = "(TreeSitter)",
+          nvim_lsp = "[LSP]",
+          nvim_lua = "[NVIM_LUA]",
+          luasnip = "[Snippet]",
+          buffer = "[Buffer]",
+          path = "[Path]",
+          emoji = "[Emoji]",
+          calc = "[Calc]",
+          cmp_tabnine = "[Tabnine]",
+          vsnip = "[Snippet]",
+          tmux = "[TMUX]",
+          copilot = "[Copilot]",
+          treesitter = "[TreeSitter]",
         })[entry.source.name]
         return vim_item
       end,
     },
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
+    -- experimental = {
+    --   ghost_text = true,
+    -- },
   })
 
   -- Set configuration for specific filetype.
