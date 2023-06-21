@@ -696,7 +696,7 @@ else
       ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp', max_item_count = 10, group_index = 1 },
+      { name = 'nvim_lsp', max_item_count = 6, group_index = 1 },
       -- { name = 'vsnip' }, -- For vsnip users.
       { name = 'luasnip', max_item_count = 5, group_index = 1 }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
