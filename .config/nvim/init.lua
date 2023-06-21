@@ -168,6 +168,8 @@ vim.keymap.set("n", "<Leader><Space>", ":nohlsearch<CR>", { noremap = true, sile
 -- Openning Files
 -- Open the vimrc file anytime
 vim.keymap.set("n", "<Leader>fi", ":e ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
+-- source $MYVIMRC
+vim.keymap.set("n", "<Leader>si", ":source $MYVIMRC<CR>", { noremap = true, silent = true })
 
 -- Compile Function
 vim.cmd[[
@@ -326,6 +328,7 @@ else
   		  {'saadparwaiz1/cmp_luasnip'},
   		  {'hrsh7th/cmp-nvim-lsp'},
   		  {'hrsh7th/cmp-copilot'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
+  		  {'rcarriga/cmp-dap'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
   		  -- {'hrsh7th/cmp-nvim-lua'},
   		  -- Snippets
   		  {'L3MON4D3/LuaSnip'},
@@ -768,6 +771,19 @@ else
     })
   })
 
+  cmp.setup({
+    enabled = function()
+      return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+      or require("cmp_dap").is_dap_buffer()
+    end
+  })
+
+  cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+    sources = {
+      { name = "dap" },
+    },
+  })
+
   -- insert `(` after select function or method item
   local cmp_autopairs = require "nvim-autopairs.completion.cmp"
   cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
@@ -790,10 +806,10 @@ else
     dapui.close()
   end
   vim.keymap.set('n', '<F6>', require'dap'.toggle_breakpoint)
-  vim.keymap.set('n', '<F9>', require'dap'.continue)
   vim.keymap.set('n', '<F7>', require'dap'.step_into)
+  vim.keymap.set('n', '<F15>', require'dap'.step_out) -- S-F7
   vim.keymap.set('n', '<F8>', require'dap'.step_over)
-  vim.keymap.set('n', '<F16>', require'dap'.step_out) -- S-F8
+  vim.keymap.set('n', '<F9>', require'dap'.continue)
   vim.keymap.set('n', '<F21>', require'dapui'.toggle) -- S-F9
 
   require('dap-python').setup('/opt/homebrew/bin/python')
