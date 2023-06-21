@@ -116,10 +116,10 @@ vim.keymap.set("n", "<Leader>su", ":sort u<CR>")
 vim.keymap.set("v", "<Leader>su", ":'<,'>sort u<CR>")
 
 -- Window Management
-vim.keymap.set("n", "<M-h>", "<Esc><C-w>h")
-vim.keymap.set("n", "<M-j>", "<Esc><C-w>j")
-vim.keymap.set("n", "<M-k>", "<Esc><C-w>k")
-vim.keymap.set("n", "<M-l>", "<Esc><C-w>l")
+vim.keymap.set("n", "<C-h>", "<Esc><C-w>h")
+vim.keymap.set("n", "<C-j>", "<Esc><C-w>j")
+vim.keymap.set("n", "<C-k>", "<Esc><C-w>k")
+vim.keymap.set("n", "<C-l>", "<Esc><C-w>l")
 
 -- split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 vim.keymap.set("n", "<Leader>sh", ":set nosplitright<CR>:vsplit<CR>")
@@ -171,7 +171,6 @@ vim.keymap.set("n", "<Leader>fi", ":e ~/.config/nvim/init.lua<CR>", { noremap = 
 -- source $MYVIMRC
 vim.keymap.set("n", "<Leader>si", ":source $MYVIMRC<CR>", { noremap = true, silent = true })
 
--- Compile Function
 vim.cmd[[
 noremap <Leader>R :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -180,19 +179,22 @@ func! CompileRunGcc()
         " exec "!g++ % -o %<"
         " exec "!gcc % -o %<"
         " exec "!time ./%<"
-        :FloatermNew --autoclose=0 gcc % -o %< && time ./%<
+        " :FloatermNew --autoclose=0 gcc % -o %< && time ./%<
+        :TermExec cmd="gcc % -o %< && time ./%<"
     elseif &filetype == 'cpp'
         " set splitbelow
         " exec "!g++ -std=c++11 % -Wall -o %<"
         " :sp
         " :res -15
         " :term ./%<
-        :FloatermNew --autoclose=0 g++ -std=c++11 % -Wall -o %< && ./%<
+        " :FloatermNew --autoclose=0 g++ -std=c++11 % -Wall -o %< && ./%<
+        :TermExec cmd="g++ -std=c++11 % -Wall -o %< && ./%<"
     elseif &filetype == 'java'
         " ==== compile & run ===
         " exec "!javac % && time java %<"
         " :FloatermNew --width=80 --height=40 javac % && time java %<
-        :FloatermNew --autoclose=0 javac % && time java %<
+        " :FloatermNew --autoclose=0 javac % && time java %<
+        :TermExec cmd="javac % && time java %<"
         " === make & run ===
         " exec 'set makeprg=javac\ -g\ %'
         " exec "make"
@@ -202,43 +204,50 @@ func! CompileRunGcc()
         " === for debug ===
         " exec "!time java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=y %<"
     elseif &filetype == 'rust'
-        :FloatermNew --autoclose=0 rustc % && time ./%<
+        " :FloatermNew --autoclose=0 rustc % && time ./%<
+        :TermExec cmd="rustc % && time ./%<"
     elseif (&filetype == 'sh' || &filetype == 'zsh')
         " :!time bash %
-        :FloatermNew --autoclose=0 time bash %
+        " :FloatermNew --autoclose=0 time bash %
+        :TermExec cmd="time bash %"
     elseif &filetype == 'python'
         " set splitbelow
         " :sp
         " :term python3 %
-        :FloatermNew --autoclose=0 python3 %
-    elseif &filetype == 'html'
-        silent! exec "!".g:mkdp_browser." % &"
-    elseif &filetype == 'vimwiki'
-        exec "MarkdownPreview"
-    elseif &filetype == 'markdown'
-        exec "MarkdownPreview"
-    elseif &filetype == 'tex'
-        " silent! exec "VimtexStop"
-        " silent! exec "VimtexCompile"
-        silent! exec "LLPStartPreview"
-    elseif &filetype == 'dart'
-        CocCommand flutter.run -d iPhone\ 11\ Pro
-        CocCommand flutter.dev.openDevLog
+        " :FloatermNew --autoclose=0 python3 %
+        :TermExec cmd="python3 %"
     elseif &filetype == 'javascript'
         " set splitbelow
         " :sp
         " :term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
         " :FloatermNew export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
-        :FloatermNew --autoclose=0 export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings %
+        " :FloatermNew --autoclose=0 export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings %
+        :TermExec cmd="export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings %"
     elseif &filetype == 'go'
         " set splitbelow
         " :sp
         " :term go run .
-        :FloatermNew --autoclose=0 time go run %
+        " :FloatermNew --autoclose=0 time go run %
+        :TermExec cmd="time go run %"
     elseif &filetype == 'nasm'
-        exec "!nasm -f bin % -o %<.bin"
+        " exec "!nasm -f bin % -o %<.bin"
+        :TermExec cmd="nasm -f bin % -o %<.bin"
     elseif &filetype == 'lua'
-        :FloatermNew --autoclose=0 time lua %
+        " :FloatermNew --autoclose=0 time lua %
+        :TermExec cmd="time lua %"
+    " elseif &filetype == 'html'
+    "     silent! exec "!".g:mkdp_browser." % &"
+    " elseif &filetype == 'vimwiki'
+    "     exec "MarkdownPreview"
+    " elseif &filetype == 'markdown'
+    "     exec "MarkdownPreview"
+    " elseif &filetype == 'tex'
+    "     " silent! exec "VimtexStop"
+    "     " silent! exec "VimtexCompile"
+    "     silent! exec "LLPStartPreview"
+    " elseif &filetype == 'dart'
+    "     CocCommand flutter.run -d iPhone\ 11\ Pro
+    "     CocCommand flutter.dev.openDevLog
     endif
 endfunc
 ]]
@@ -274,7 +283,7 @@ else
     use 'connorholyday/vim-snazzy'
     -- use { "ellisonleao/gruvbox.nvim" }
     use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
-    use('mbbill/undotree')
+    -- use('mbbill/undotree')
     use('tpope/vim-fugitive')
     use 'lewis6991/gitsigns.nvim'
     use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
@@ -301,8 +310,8 @@ else
     }
     -- use 'luochen1990/rainbow' -- didn't work with treesitter
     use 'windwp/nvim-autopairs'
-    use 'chrisbra/Colorizer'
-    use 'voldikss/vim-floaterm'
+    -- use 'chrisbra/Colorizer'
+    -- use 'voldikss/vim-floaterm'
     use {"akinsho/toggleterm.nvim", tag = '*', config = function()
       require("toggleterm").setup()
     end}
@@ -350,10 +359,20 @@ else
 
   -- for ToggleTerm
   vim.keymap.set('n', '<C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
+  function _G.set_terminal_keymaps()
+  local opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
+  vim.keymap.set('t', '<C-\\>', [[<Cmd>ToggleTerm<CR>]], opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+end
+-- if you only want these mappings for toggle term use term://*toggleterm#* instead
+vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
   -- for snazzy
   vim.g["SnazzyTransparent"] = 1
-  vim.cmd[[hi Special guifg=#ff6ac1 gui=italic,bold]]  -- for telescope: highlight matching chars fg, gui=italic,underline,bold
   vim.cmd('colorscheme snazzy')
 
   -- -- for rose-pine
@@ -404,21 +423,23 @@ else
     show_trailing_blankline_indent = false,
   }
 
-  -- Colorizer
-  vim.g.colorizer_auto_color = 1
-  -- vim.g.colorizer_auto_filetype = "yaml,zsh,zsh-theme,lua,vim,json"
+  -- -- Colorizer
+  -- vim.g.colorizer_auto_color = 1
+  -- -- vim.g.colorizer_auto_filetype = "yaml,zsh,zsh-theme,lua,vim,json"
 
   -- Gitsigns
   -- See `:help gitsigns.txt`
   require('gitsigns').setup {
-    signs = {
-      add = { text = '+' },
-      change = { text = '~' },
-      delete = { text = '_' },
-      topdelete = { text = '‾' },
-      changedelete = { text = '~' },
-    },
+    -- signs = {
+    --   add          = { text = '│' },
+    --   change       = { text = '│' },
+    --   delete       = { text = '_' },
+    --   topdelete    = { text = '‾' },
+    --   changedelete = { text = '~' },
+    --   untracked    = { text = '┆' },
+    -- },
     -- current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+    -- current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
   }
 
   -- [[ Configure Telescope ]]
@@ -434,9 +455,10 @@ else
       }
     },
     pickers = {
-      -- find_files = {
-      --   theme = "dropdown",
-      -- },
+      find_files = {
+        theme = "dropdown",
+        previewer = false,
+      },
       -- live_grep = {
       --   theme = "dropdown"
       -- },
@@ -453,6 +475,11 @@ else
       }
     }
   }
+  -- https://github.com/nvim-telescope/telescope.nvim/blob/39b12d84e86f5054e2ed98829b367598ae53ab41/plugin/telescope.lua#L11-L91
+  -- telescope.lua#highlights
+  vim.api.nvim_set_hl(0, "TelescopeBorder", {fg="#5E81AC"})
+  vim.api.nvim_set_hl(0, "TelescopeSelection", {bg="None", bold=true})
+  vim.api.nvim_set_hl(0, "TelescopeMatching", {fg="#ff6ac1", bold=true})
 
   -- -- Enable telescope fzf native, if installed
   -- pcall(require('telescope').load_extension, 'fzf')
@@ -469,11 +496,11 @@ else
   -- -- rainbow
   -- vim.g["rainbow_active"] = 1
 
-   -- vim-floaterm
-  -- " Set floaterm window's background to black
-  vim.cmd[[hi Floaterm guibg=black]]
-  -- " Set floating window border line color to cyan, and background to orange
-  vim.cmd[[hi FloatermBorder guifg=cyan]]
+  --  -- vim-floaterm
+  -- -- " Set floaterm window's background to black
+  -- vim.cmd[[hi Floaterm guibg=black]]
+  -- -- " Set floating window border line color to cyan, and background to orange
+  -- vim.cmd[[hi FloatermBorder guifg=cyan]]
 
   -- nvim-autopairs
   require('nvim-autopairs').setup({
@@ -483,8 +510,8 @@ else
   -- vim-startify
   vim.keymap.set('n', '<Leader>\\', ':Startify<CR>', options)
 
-  -- undotree
-  vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
+  -- -- undotree
+  -- vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
 
   -- nvim-tree
   vim.keymap.set('n', 'T', ':NvimTreeToggle<CR>', options)
