@@ -19,7 +19,7 @@ window:
   # If both are `0`, this setting is ignored.
   dimensions:
     columns: 180
-    lines: 50
+    lines: 60
 
   opacity: 0.9
 
@@ -345,7 +345,7 @@ working_directory: None
 #winpty_backend: false
 
 # Send ESC (\x1b) before characters when alt is pressed.
-alt_send_esc: true
+# alt_send_esc: true
 
 #mouse:
   # Click settings
