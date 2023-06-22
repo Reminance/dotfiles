@@ -348,6 +348,8 @@ local plugins = {
 		  -- Snippets
 		  {'L3MON4D3/LuaSnip'},
 		  {'rafamadriz/friendly-snippets'},
+      -- lsp_signature
+      {'ray-x/lsp_signature.nvim'},
     }
   },
   {
@@ -358,7 +360,7 @@ local plugins = {
       {"leoluz/nvim-dap-go"},
     }
   },
-  "github/copilot.vim",
+  'github/copilot.vim',
   -- -- markdown-preview
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
 }
@@ -634,6 +636,10 @@ require'nvim-treesitter.configs'.setup {
     additional_vim_regex_highlighting = false,
   },
 }
+
+-- lsp_signature
+local cfg = {}  -- add your config here
+require "lsp_signature".setup(cfg)
 
 -- lsp-zero
 -- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v1.x/doc/md/lsp.md#default-keybindings

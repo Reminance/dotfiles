@@ -53,22 +53,7 @@ export GOPROXY=https://goproxy.cn,https://gocenter.io,https://goproxy.io,direct
 # export RUSTUP_DIST_SERVER=https://mirrors.tuna.tsinghua.edu.cn/rustup # use default server instead
 
 # JAVA
-# export JDK_HOME=/usr/lib/jvm/java-8-openjdk
-# export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
-# export JAVA_HOME=/usr/lib/jvm/java-11-zulu-fx
-# export JAVA_HOME=/usr/lib/jvm/java-16-zulu-fx
-# export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
-# [[ -f /usr/lib/jvm/java-8-zulu-fx ]] && export JAVA_HOME=/usr/lib/jvm/java-8-zulu-fx
-# [[ -f /usr/libexec/java_home ]] && export JAVA_HOME=/usr/libexec/java_home
-# export JAVA_HOME=$(/usr/libexec/java_home)
-# export M2_HOME=/opt/maven
-# export GRADLE_HOME=/usr/share/java/gradle
-# this is for nvim-lsp env
-# export JAR=$HOME/workspace/java/jdtls/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.0.v20200915-1508.jar
-# export JDTLS_HOME=$HOME/workspace/java/jdtls/eclipse.jdt.ls
-# export JAR=${$(find $JDTLS_HOME/plugins/org.eclipse.equinox.launcher_*.jar -type f -printf %p:)%%:}
-# export JDTLS_CONFIG=$JDTLS_HOME/config_linux
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/openjdk-17.jdk/Contents/Home
 
 # could be in /etc/profile
 #export TERMINAL=alacritty
