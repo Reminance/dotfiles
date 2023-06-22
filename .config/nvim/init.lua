@@ -259,68 +259,82 @@ endfunc
 
 local options = { noremap = true, silent = true }
 
--- Only required if you have packer configured as `opt`
-vim.cmd.packadd('packer.nvim')
-require('packer').startup(function(use)
-  -- Packer can manage itself
-  use 'wbthomason/packer.nvim'
-  use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-  use 'junegunn/vim-easy-align'
-  use 'tpope/vim-surround'
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+local plugins = {
+  'numToStr/Comment.nvim', -- "gc" to comment visual regions/lines
+  'junegunn/vim-easy-align',
+  'tpope/vim-surround',
     -- Fuzzy Finder (files, lsp, etc)
-  use { 'nvim-telescope/telescope.nvim', branch = '0.1.x', requires = { 'nvim-lua/plenary.nvim' } }
+  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
-  use 'connorholyday/vim-snazzy'
-  -- use { "ellisonleao/gruvbox.nvim" }
-  use({'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'})
-  -- use('mbbill/undotree')
-  use('tpope/vim-fugitive')
-  use 'lewis6991/gitsigns.nvim'
-  use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
-  -- use 'nvim-lualine/lualine.nvim' -- Fancier statusline
-  use 'mhinz/vim-startify'
-  use {
+  'connorholyday/vim-snazzy',
+  -- "ellisonleao/gruvbox.nvim",
+  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  -- 'mbbill/undotree',
+  'tpope/vim-fugitive',
+  'lewis6991/gitsigns.nvim',
+  'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
+  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'mhinz/vim-startify',
+  {
     "folke/which-key.nvim",
-    config = function()
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
-    end
-  }
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    }
+  },
   -- icons
-  use 'ryanoasis/vim-devicons'
-  use {
-    'nvim-tree/nvim-tree.lua',
-    requires = {
-      'nvim-tree/nvim-web-devicons', -- optional
+  'ryanoasis/vim-devicons',
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
     },
-    config = function() require'nvim-tree'.setup {} end
-  }
-  -- use 'luochen1990/rainbow' -- didn't work with treesitter
-  use 'windwp/nvim-autopairs'
-  -- use 'chrisbra/Colorizer'
-  -- use 'voldikss/vim-floaterm'
-  use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-    require("toggleterm").setup()
-  end}
-  use 'brooth/far.vim'
+    config = function()
+      require("nvim-tree").setup {}
+    end,
+  },
+  -- 'luochen1990/rainbow', -- didn't work with treesitter
+  'windwp/nvim-autopairs',
+  -- 'chrisbra/Colorizer',
+  -- 'voldikss/vim-floaterm',
+  {"akinsho/toggleterm.nvim", version = '*', opts = {--[[ things you want to change go here]]}},
+  'brooth/far.vim',
   -- file navigation
-  use 'junegunn/fzf.vim'
+  'junegunn/fzf.vim',
   -- -- Draw ASCII diagrams in Neovim.
   -- use "jbyuki/venn.nvim"
   -- diffview
-  use { 'sindrets/diffview.nvim', requires = 'nvim-lua/plenary.nvim' }
-  use {
-	  'VonHeikemen/lsp-zero.nvim',
-	  requires = {
-		  -- LSP Support
-		  {'neovim/nvim-lspconfig'},
+  { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  {
+    'VonHeikemen/lsp-zero.nvim',
+    branch = 'v2.x',
+    dependencies = {
+      -- LSP Support
+      {'neovim/nvim-lspconfig'},             -- Required
 		  {'williamboman/mason.nvim'},
-		  {'williamboman/mason-lspconfig.nvim'},
+      {'williamboman/mason-lspconfig.nvim'}, -- Optional
 		  -- Autocompletion
 		  {'hrsh7th/nvim-cmp'},
 		  {'hrsh7th/cmp-buffer'},
@@ -334,20 +348,23 @@ require('packer').startup(function(use)
 		  -- Snippets
 		  {'L3MON4D3/LuaSnip'},
 		  {'rafamadriz/friendly-snippets'},
-	  }
-  }
-  use {
-      "rcarriga/nvim-dap-ui",
-      requires = {
-          {"mfussenegger/nvim-dap"},
-          {"mfussenegger/nvim-dap-python"},
-          {"leoluz/nvim-dap-go"},
-      }
-  }
-  use "github/copilot.vim"
+    }
+  },
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      {"mfussenegger/nvim-dap"},
+      {"mfussenegger/nvim-dap-python"},
+      {"leoluz/nvim-dap-go"},
+    }
+  },
+  "github/copilot.vim",
   -- -- markdown-preview
-  -- use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
-end)
+  -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
+}
+
+local opts = {}
+require("lazy").setup(plugins, opts)
 
 -- Enable Comment.nvim
 require('Comment').setup()
@@ -601,7 +618,14 @@ require'nvim-treesitter.configs'.setup {
     -- the name of the parser)
     -- list of language that will be disabled
     -- disable = { "c", "rust" },
-    disable = {},
+    -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
+    disable = function(lang, buf)
+        local max_filesize = 100 * 1024 -- 100 KB
+        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+        if ok and stats and stats.size > max_filesize then
+            return true
+        end
+    end,
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
     -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).

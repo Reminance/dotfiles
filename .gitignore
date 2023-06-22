@@ -15,6 +15,7 @@ sandbox/
 .config/emacs/custom.el
 .config/nvim/plugin
 .config/nvim/tmp/undo
+.config/nvim/lazy-lock.json
 .config/lazygit/state.yml
 .config/iterm2/AppSupport
 .config/clash/
