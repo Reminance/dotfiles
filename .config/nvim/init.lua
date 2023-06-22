@@ -282,13 +282,12 @@ local plugins = {
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
   'connorholyday/vim-snazzy',
-  -- "ellisonleao/gruvbox.nvim",
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
-  -- 'mbbill/undotree',
+  'mbbill/undotree',
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
   'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
-  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
     "folke/which-key.nvim",
@@ -315,16 +314,15 @@ local plugins = {
       require("nvim-tree").setup {}
     end,
   },
-  -- 'luochen1990/rainbow', -- didn't work with treesitter
   'windwp/nvim-autopairs',
-  -- 'chrisbra/Colorizer',
-  -- 'voldikss/vim-floaterm',
+  'norcalli/nvim-colorizer.lua',
+  'voldikss/vim-floaterm',
   {"akinsho/toggleterm.nvim", version = '*', opts = {--[[ things you want to change go here]]}},
   'brooth/far.vim',
   -- file navigation
   'junegunn/fzf.vim',
   -- -- Draw ASCII diagrams in Neovim.
-  -- use "jbyuki/venn.nvim"
+  'jbyuki/venn.nvim',
   -- diffview
   { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
   {
@@ -394,46 +392,9 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 vim.g["SnazzyTransparent"] = 1
 vim.cmd('colorscheme snazzy')
 
--- -- for rose-pine
--- require('rose-pine').setup({
---     disable_background = true
--- })
-
--- -- for gruvbox setup must be called before loading the colorscheme
--- require("gruvbox").setup({
---   undercurl = true,
---   underline = true,
---   bold = true,
---   italic = {
---     strings = true,
---     operators = true,
---     comments = true,
---     ...
---   },
---   strikethrough = true,
---   invert_selection = false,
---   invert_signs = false,
---   invert_tabline = false,
---   invert_intend_guides = false,
---   inverse = true, -- invert background for search, diffs, statuslines and errors
---   contrast = "", -- can be "hard", "soft" or empty string
---   palette_overrides = {},
---   overrides = {},
---   dim_inactive = false,
---   transparent_mode = true,
--- })
--- vim.cmd("colorscheme gruvbox")
-
--- -- Set lualine as statusline
--- -- See `:help lualine.txt`
--- require('lualine').setup {
---   options = {
---     icons_enabled = true,
---     -- theme = 'onedark',
---     component_separators = '|',
---     section_separators = '',
---   },
--- }
+-- Set lualine as statusline
+-- See `:help lualine.txt`
+require('lualine').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
@@ -442,9 +403,8 @@ require('indent_blankline').setup {
   show_trailing_blankline_indent = false,
 }
 
--- -- Colorizer
--- vim.g.colorizer_auto_color = 1
--- -- vim.g.colorizer_auto_filetype = "yaml,zsh,zsh-theme,lua,vim,json"
+-- norcalli/nvim-colorizer.lua
+require'colorizer'.setup()
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
@@ -507,19 +467,17 @@ vim.api.nvim_set_hl(0, "TelescopeMatching", {fg="#ff6ac1", bold=true})
 vim.keymap.set('n', '<M-O>', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
 vim.keymap.set('n', '<M-F>', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<M-E>', require('telescope.builtin').buffers, { desc = '[S]earch [B]uffers' })
+vim.keymap.set('n', '<M-R>', require('telescope.builtin').resume, { desc = '[S]earch Telescope [R]esume' })
 vim.keymap.set('n', '<leader>sH', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
--- -- rainbow
--- vim.g["rainbow_active"] = 1
-
---  -- vim-floaterm
--- -- " Set floaterm window's background to black
--- vim.cmd[[hi Floaterm guibg=black]]
--- -- " Set floating window border line color to cyan, and background to orange
--- vim.cmd[[hi FloatermBorder guifg=cyan]]
+ -- vim-floaterm
+-- " Set floaterm window's background to black
+vim.cmd[[hi Floaterm guibg=black]]
+-- " Set floating window border line color to cyan, and background to orange
+vim.cmd[[hi FloatermBorder guifg=cyan]]
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
@@ -529,8 +487,8 @@ require('nvim-autopairs').setup({
 -- vim-startify
 vim.keymap.set('n', '<Leader>\\', ':Startify<CR>', options)
 
--- -- undotree
--- vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
+-- undotree
+vim.keymap.set('n', '<F5>', ':UndotreeToggle<CR>', options)
 
 -- nvim-tree
 vim.keymap.set('n', 'T', ':NvimTreeToggle<CR>', options)
@@ -552,27 +510,27 @@ vim.keymap.set('n', '<Leader>gs', ':G<CR>', options)
 -- far
 vim.keymap.set('n', '<Leader>F', ':F  %<left><left>', {})
 
--- -- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
--- function _G.Toggle_venn()
---     local venn_enabled = vim.inspect(vim.b.venn_enabled)
---     if venn_enabled == "nil" then
---         vim.b.venn_enabled = true
---         vim.cmd[[setlocal ve=all]]
---         -- draw a line on HJKL keystokes
---         vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
---         vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
---         vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
---         vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
---         -- draw a box by pressing "f" with visual selection
---         vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
---     else
---         vim.cmd[[setlocal ve=]]
---         vim.cmd[[mapclear <buffer>]]
---         vim.b.venn_enabled = nil
---     end
--- end
--- -- toggle keymappings for venn using <leader>v
--- vim.api.nvim_set_keymap('n', '<leader>V', ":lua Toggle_venn()<CR>", { noremap = true})
+-- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
+function _G.Toggle_venn()
+    local venn_enabled = vim.inspect(vim.b.venn_enabled)
+    if venn_enabled == "nil" then
+        vim.b.venn_enabled = true
+        vim.cmd[[setlocal ve=all]]
+        -- draw a line on HJKL keystokes
+        vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
+        vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
+        -- draw a box by pressing "f" with visual selection
+        vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
+    else
+        vim.cmd[[setlocal ve=]]
+        vim.cmd[[mapclear <buffer>]]
+        vim.b.venn_enabled = nil
+    end
+end
+-- toggle keymappings for venn using <leader>v
+vim.api.nvim_set_keymap('n', '<leader>V', ":lua Toggle_venn()<CR>", { noremap = true})
 
 -- diffview.nvim
 require("diffview").setup({
