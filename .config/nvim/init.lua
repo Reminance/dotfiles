@@ -120,11 +120,11 @@ vim.keymap.set("n", "<Leader>o", ":%s///ng<Left><Left><Left><Left>")
 vim.keymap.set("n", "<Leader>su", ":sort u<CR>")
 vim.keymap.set("v", "<Leader>su", ":'<,'>sort u<CR>")
 
--- Window Management
-vim.keymap.set("n", "<C-h>", "<Esc><C-w>h")
-vim.keymap.set("n", "<C-j>", "<Esc><C-w>j")
-vim.keymap.set("n", "<C-k>", "<Esc><C-w>k")
-vim.keymap.set("n", "<C-l>", "<Esc><C-w>l")
+-- -- Window Management
+-- vim.keymap.set("n", "<C-h>", "<Esc><C-w>h")
+-- vim.keymap.set("n", "<C-j>", "<Esc><C-w>j")
+-- vim.keymap.set("n", "<C-k>", "<Esc><C-w>k")
+-- vim.keymap.set("n", "<C-l>", "<Esc><C-w>l")
 
 -- split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 vim.keymap.set("n", "<Leader>sh", ":set nosplitright<CR>:vsplit<CR>")
@@ -132,11 +132,15 @@ vim.keymap.set("n", "<Leader>sj", ":set splitbelow<CR>:split<CR>")
 vim.keymap.set("n", "<Leader>sk", ":set nosplitbelow<CR>:split<CR>")
 vim.keymap.set("n", "<Leader>sl", ":set splitright<CR>:vsplit<CR>")
 
--- normal mode bindings
+-- normal mode bindings for resizing windows, <Option-arrow> for Mac, <C-M-hjkl> for Linux
+vim.keymap.set("n", "<S-Left>", ":vertical resize-1<CR>")
 vim.keymap.set("n", "<S-Down>", ":res +1<CR>")
 vim.keymap.set("n", "<S-Up>", ":res -1<CR>")
-vim.keymap.set("n", "<S-Left>", ":vertical resize-1<CR>")
 vim.keymap.set("n", "<S-Right>", ":vertical resize+1<CR>")
+vim.keymap.set("n", "<C-M-h>", ":vertical resize-1<CR>")
+vim.keymap.set("n", "<C-M-j>", ":res +1<CR>")
+vim.keymap.set("n", "<C-M-k>", ":res -1<CR>")
+vim.keymap.set("n", "<C-M-l>", ":vertical resize+1<CR>")
 
 -- yank to system clipboard
 vim.keymap.set("v", "Y", [["*y :let @+=@*<CR>]])
@@ -318,6 +322,7 @@ local plugins = {
   'norcalli/nvim-colorizer.lua',
   'voldikss/vim-floaterm',
   {"akinsho/toggleterm.nvim", version = '*', opts = {--[[ things you want to change go here]]}},
+  'christoomey/vim-tmux-navigator',
   'brooth/far.vim',
   -- file navigation
   'junegunn/fzf.vim',
@@ -365,6 +370,15 @@ local plugins = {
 
 local opts = {}
 require("lazy").setup(plugins, opts)
+
+-- vim-tmux-navigator, replacing window management above
+vim.cmd[[
+let g:tmux_navigator_no_mappings = 1
+noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
+noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
+noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
+noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
+]]
 
 -- Enable Comment.nvim
 require('Comment').setup()

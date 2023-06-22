@@ -15,8 +15,8 @@ then
     tmux new-session -d -s $SESSION
 
     # Name first Pane and start zsh
-    tmux rename-window -t 1 'Main'
-    tmux send-keys -t 'Main' 'zsh' C-m 'cd ~/dotfiles' C-m 'clear' C-m
+    tmux rename-window -t 1 'WorkTool'
+    tmux send-keys -t 'WorkTool' 'zsh' C-m 'cd ~/workspace/work-tools' C-m 'clear' C-m
 
     # # emacs
     # tmux new-window -t $SESSION:2 -n 'Emacs'
@@ -24,19 +24,13 @@ then
     # # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m 'env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw' C-m
     # # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m runemacs C-m
 
-    # Create and setup pane for doc
-    tmux new-window -t $SESSION:2 -n 'Doc'
-    tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m
-    # tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m 'temacs' C-m
-    # tmux send-keys -t 'Doc' 'zsh' C-m 'cd ~/doc' C-m 'clear' C-m 'emacs --daemon' C-m 'emacsclient -c'
-
     # Setup an additional shell
-    tmux new-window -t $SESSION:3 -n 'WorkTool'
-    tmux send-keys -t 'WorkTool' "zsh" C-m 'cd ~/workspace/work-tools/' C-m 'clear' C-m
+    tmux new-window -t $SESSION:2 -n 'Jira'
+    tmux send-keys -t 'Jira' "zsh" C-m 'cd ~/workspace/work-tools/jira' C-m 'clear' C-m
 
-    # DB
-    tmux new-window -t $SESSION:4 -n 'DB'
-    tmux send-keys -t 'DB' "zsh" C-m 'clear' C-m
+    # Other
+    tmux new-window -t $SESSION:3 -n 'Other'
+    tmux send-keys -t 'Other' "zsh" C-m 'clear' C-m
 
 fi
 

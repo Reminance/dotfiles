@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo $1 | awk -F ' - ' '{print $4}' | xargs open -u
+

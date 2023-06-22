@@ -42,35 +42,28 @@ set-option -ga terminal-overrides ",xterm-256color:Tc"
 set -g base-index 1
 setw -g pane-base-index 1
 
-## Use vim keybindings in copy mode, prefix+[, # bind [ copy-mode
+## Use vim keybindings in copy mode, press <prefix+[> to enter copy-mode
 setw -g mode-keys vi
 set-option -s set-clipboard on
-bind P paste-buffer
 bind-key -T copy-mode-vi v send-keys -X begin-selection
-bind-key -T copy-mode-vi y send-keys -X rectangle-toggle
+bind-key -T copy-mode-vi y send-keys -X copy-selection
 unbind -T copy-mode-vi Enter
-bind-key -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel 'xclip -se c -i'
-bind-key -T copy-mode-vi MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel 'xclip -se c -i'
 
 # no delay on ESC
 set -sg escape-time 0
 
 ## Pane selection and resizing
-# unbind-key C-M-h       ; bind-key -n C-M-h       select-pane -L
-# unbind-key C-M-j       ; bind-key -n C-M-j       select-pane -D
-# unbind-key C-M-k       ; bind-key -n C-M-k       select-pane -U
-# unbind-key C-M-l       ; bind-key -n C-M-l       select-pane -R
-unbind-key M-Left       ; bind-key -n M-Left      select-pane -L
-unbind-key M-Down       ; bind-key -n M-Down      select-pane -D
-unbind-key M-Up         ; bind-key -n M-Up        select-pane -U
-unbind-key M-Right      ; bind-key -n M-Right     select-pane -R
+unbind-key C-h;    bind-key -n C-h    select-pane -L
+unbind-key C-j;    bind-key -n C-j    select-pane -D
+unbind-key C-k;    bind-key -n C-k    select-pane -U
+unbind-key C-l;    bind-key -n C-l    select-pane -R
 
-# unbind-key C-M-d     ; bind-key -n C-M-d  detach-client
+unbind-key C-M-d; bind-key -n C-M-d  detach-client
 
-unbind-key C-M-left   ; bind-key -n C-M-left    resize-pane -L 1
-unbind-key C-M-down   ; bind-key -n C-M-down    resize-pane -D 1
-unbind-key C-M-up     ; bind-key -n C-M-up      resize-pane -U 1
-unbind-key C-M-right  ; bind-key -n C-M-right   resize-pane -R 1
+unbind-key C-M-h;    bind-key -n C-M-h    resize-pane -L 1
+unbind-key C-M-j;    bind-key -n C-M-j    resize-pane -D 1
+unbind-key C-M-k;    bind-key -n C-M-k    resize-pane -U 1
+unbind-key C-M-l;    bind-key -n C-M-l    resize-pane -R 1
 
 bind-key -n M-1 select-window -t :1
 bind-key -n M-2 select-window -t :2
@@ -82,13 +75,13 @@ bind-key -n M-7 select-window -t :7
 bind-key -n M-8 select-window -t :8
 bind-key -n M-9 select-window -t :9
 
-
 # List of plugins
 # https://github.com/tmux-plugins/tpm
 # git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 # Press prefix + I (capital i, as in Install) to fetch the plugin.
 
 set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'christoomey/vim-tmux-navigator'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-yank'
 

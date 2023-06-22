@@ -160,3 +160,11 @@ function pretty_csv_sh {
     perl -pe 's/((?<=,)|(?<=^)),/ ,/g;' "$@" | column -t -s, | less  -F -S -X -K
 }
 
+
+# open link in browser
+open_link () {
+    cat ~/workspace/work-tools/jira/tmp/jira_link_dump.txt | fzf --height 30% --exit-0 --bind 'enter:become(mac_open_issue {})' --bind 'alt-,:first,alt-.:last' -d ' - ' --with-nth 1,2,3
+    zle reset-prompt
+}
+zle -N open_link
+bindkey '\ej' open_link
