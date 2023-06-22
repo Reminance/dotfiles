@@ -23,6 +23,11 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
+-- disable auto commenting
+-- vim.o.formatoptions = vim.o.formatoptions:gsub("cro", "")
+-- vim.opt.formatoptions:remove("c")
+vim.cmd[[ autocmd FileType * set formatoptions-=cro ]]
+
 -- disable statusline
 vim.opt.laststatus = 0
 
@@ -740,11 +745,9 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
       { name = "cmp-cmdline" },
     }),
     formatting = {
-      fields = { "kind", "abbr", "menu" },
-      source_names = {
-      },
+      fields = { "abbr", "kind", "menu" },
       format = function(entry, vim_item)
-        vim_item.kind = kind_icons[vim_item.kind]
+        vim_item.kind = kind_icons[vim_item.kind] .. ' ' .. vim_item.kind
         vim_item.menu = ({
           nvim_lsp = "[LSP]",
           nvim_lua = "[NVIM_LUA]",
@@ -762,10 +765,10 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
         return vim_item
       end,
     },
-    window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-    },
+    -- window = {
+    --   completion = cmp.config.window.bordered(),
+    --   documentation = cmp.config.window.bordered(),
+    -- },
     -- experimental = {
     --   ghost_text = true,
     -- },
