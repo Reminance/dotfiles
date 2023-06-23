@@ -40,16 +40,17 @@ return {
     Copilot = "",
   },
   git = {
-    LineAdded = "",
-    LineModified = "",
-    LineRemoved = "",
-    FileDeleted = "",
+    LineAdd = "", -- │
+    LineChange = "", -- │
+    LineDelete = "", -- _
+    LineToDelete = "", -- ‾
+    LineChangeDelete = "~",
     FileIgnored = "◌",
     FileRenamed = "",
     FileStaged = "S",
     FileUnmerged = "",
     FileUnstaged = "",
-    FileUntracked = "U",
+    FileUntracked = "┆",
     Diff = "",
     Repo = "",
     Octoface = "",

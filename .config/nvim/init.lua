@@ -252,6 +252,10 @@ func! CompileRunGcc()
 endfunc
 ]]
 
+-- enable markdown_folding, using Neovim's runtime filetype
+-- vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
+vim.g['markdown_folding'] = 1
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -276,7 +280,9 @@ local plugins = {
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
-  'connorholyday/vim-snazzy',
+  -- 'connorholyday/vim-snazzy',
+  -- 'dracula/vim',
+  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   'mbbill/undotree',
   'tpope/vim-fugitive',
@@ -391,19 +397,31 @@ end
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
--- for snazzy
-vim.g["SnazzyTransparent"] = 1
-vim.cmd('colorscheme snazzy')
+-- -- for snazzy
+-- vim.g["SnazzyTransparent"] = 1
+-- vim.cmd('colorscheme snazzy')
+
+-- -- for dracula/vim
+-- vim.cmd('colorscheme dracula')
+
+-- for catppuccin/nvim
+require("catppuccin").setup({
+    flavour = "mocha", -- latte, frappe, macchiato, mocha
+    transparent_background = true, -- disables setting the background color.
+})
+-- setup must be called before loading
+vim.cmd.colorscheme "catppuccin"
 
 -- -- Set lualine as statusline
 -- -- See `:help lualine.txt`
 -- require('lualine').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
--- See `:help indent_blankline.txt`
-require('indent_blankline').setup {
-  char = '┊',
-  show_trailing_blankline_indent = false,
+-- -- See `:help indent_blankline.txt`
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    -- show_current_context = true,
+    show_current_context_start = true,
 }
 
 -- norcalli/nvim-colorizer.lua
@@ -412,15 +430,10 @@ require'colorizer'.setup()
 -- Gitsigns
 -- See `:help gitsigns.txt`
 require('gitsigns').setup {
-  -- signs = {
-  --   add          = { text = '│' },
-  --   change       = { text = '│' },
-  --   delete       = { text = '_' },
-  --   topdelete    = { text = '‾' },
-  --   changedelete = { text = '~' },
-  --   untracked    = { text = '┆' },
-  -- },
-  -- current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  current_line_blame_opts = {
+    delay = 300,
+  },
   -- current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
 }
 
@@ -525,14 +538,6 @@ require("neodev").setup({
   -- add any options here, or leave empty to use the default settings
 })
 
--- lsp config
--- vim.api.nvim_create_autocmd('LspAttach', {
---   desc = 'LSP actions',
---   callback = function(event)
---     -- Create your keybindings here...
---   end
--- })
-
 require('mason').setup()
 require('mason-lspconfig').setup({
   ensure_installed = {
@@ -544,7 +549,7 @@ require('mason-lspconfig').setup({
     'gopls',
     'jdtls',
     'tsserver',
-    'rust_analyzer',
+    -- 'rust_analyzer',
   },
   -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
   -- This setting has no relation with the `ensure_installed` setting.
