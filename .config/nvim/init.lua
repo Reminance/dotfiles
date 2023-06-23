@@ -286,6 +286,12 @@ local plugins = {
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
   'connorholyday/vim-snazzy',
+  -- {
+  --   "folke/tokyonight.nvim",
+  --   lazy = false,
+  --   priority = 1000,
+  --   opts = {},
+  -- },
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   'mbbill/undotree',
   'tpope/vim-fugitive',
@@ -330,31 +336,28 @@ local plugins = {
   'jbyuki/venn.nvim',
   -- diffview
   { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  -- LSP Support
+  {'neovim/nvim-lspconfig'},             -- Required
   {
-    'VonHeikemen/lsp-zero.nvim',
-    branch = 'v2.x',
-    dependencies = {
-      -- LSP Support
-      {'neovim/nvim-lspconfig'},             -- Required
-		  {'williamboman/mason.nvim'},
-      {'williamboman/mason-lspconfig.nvim'}, -- Optional
-		  -- Autocompletion
-		  {'hrsh7th/nvim-cmp'},
-		  {'hrsh7th/cmp-buffer'},
-		  {'hrsh7th/cmp-path'},
-		  {'hrsh7th/cmp-cmdline'},
-		  {'saadparwaiz1/cmp_luasnip'},
-		  {'hrsh7th/cmp-nvim-lsp'},
-		  {'hrsh7th/cmp-copilot'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
-		  {'rcarriga/cmp-dap'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
-		  -- {'hrsh7th/cmp-nvim-lua'},
-		  -- Snippets
-		  {'L3MON4D3/LuaSnip'},
-		  {'rafamadriz/friendly-snippets'},
-      -- lsp_signature
-      {'ray-x/lsp_signature.nvim'},
-    }
+    "williamboman/mason.nvim",
+    build = ":MasonUpdate" -- :MasonUpdate updates registry contents
   },
+  {'williamboman/mason-lspconfig.nvim'}, -- Optional
+  -- Autocompletion
+  {'hrsh7th/nvim-cmp'},
+  {'hrsh7th/cmp-buffer'},
+  {'hrsh7th/cmp-path'},
+  {'hrsh7th/cmp-cmdline'},
+  {'saadparwaiz1/cmp_luasnip'},
+  {'hrsh7th/cmp-nvim-lsp'},
+  {'hrsh7th/cmp-copilot'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
+  {'rcarriga/cmp-dap'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
+  -- {'hrsh7th/cmp-nvim-lua'},
+  -- Snippets
+  {'L3MON4D3/LuaSnip'},
+  {'rafamadriz/friendly-snippets'},
+  -- lsp_signature
+  {'ray-x/lsp_signature.nvim'},
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
@@ -363,6 +366,7 @@ local plugins = {
       {"leoluz/nvim-dap-go"},
     }
   },
+  'mfussenegger/nvim-jdtls',
   'github/copilot.vim',
   -- -- markdown-preview
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
@@ -406,9 +410,12 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 vim.g["SnazzyTransparent"] = 1
 vim.cmd('colorscheme snazzy')
 
--- Set lualine as statusline
--- See `:help lualine.txt`
-require('lualine').setup()
+-- -- for tokyonight
+-- vim.cmd[[colorscheme tokyonight-night]]
+
+-- -- Set lualine as statusline
+-- -- See `:help lualine.txt`
+-- require('lualine').setup()
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- See `:help indent_blankline.txt`
@@ -451,10 +458,12 @@ require('telescope').setup{
     find_files = {
       theme = "dropdown",
       previewer = false,
+      path_display = { "shorten" },
     },
-    -- live_grep = {
-    --   theme = "dropdown"
-    -- },
+    live_grep = {
+      -- theme = "dropdown",
+      path_display = { "shorten" },
+    },
     buffers = {
       show_all_buffers = true,
       sort_lastused = true,
@@ -552,6 +561,88 @@ require("diffview").setup({
 })
 
 -- lsp config
+vim.api.nvim_create_autocmd('LspAttach', {
+  desc = 'LSP actions',
+  callback = function(event)
+    -- Create your keybindings here...
+  end
+})
+
+require('mason').setup()
+require('mason-lspconfig').setup({
+  ensure_installed = {
+    -- Replace these with whatever servers you want to install
+    'bashls',
+    'lua_ls',
+    'pyright',
+    'clangd',
+    'gopls',
+    'jdtls',
+    'tsserver',
+    'rust_analyzer',
+  },
+  -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
+  -- This setting has no relation with the `ensure_installed` setting.
+  -- Can either be:
+  --   - false: Servers are not automatically installed.
+  --   - true: All servers set up via lspconfig are automatically installed.
+  --   - { exclude: string[] }: All servers set up via lspconfig, except the ones provided in the list, are automatically installed.
+  --       Example: automatic_installation = { exclude = { "rust_analyzer", "solargraph" } }
+  ---@type boolean
+  automatic_installation = false,
+  handlers = {
+    -- The first entry (without a key) will be the default handler
+    -- and will be called for each installed server that doesn't have
+    -- a dedicated handler.
+    function (server_name) -- default handler (optional)
+        require("lspconfig")[server_name].setup {}
+    end,
+    -- Next, you can provide a dedicated handler for specific servers.
+    -- For example, a handler override for the `rust_analyzer`:
+    ["jdtls"] = function ()
+      -- disable jdtls for setting up automatically, will be conflict with ftplugin/java.vim; otherwise will create 2 lsp clients;
+    end
+  }
+})
+
+-- Global mappings.
+-- See `:help vim.diagnostic.*` for documentation on any of the below functions
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- Use LspAttach autocommand to only map the following keys
+-- after the language server attaches to the current buffer
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+  callback = function(ev)
+    -- Enable completion triggered by <c-x><c-o>
+    vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    -- Buffer local mappings.
+    -- See `:help vim.lsp.*` for documentation on any of the below functions
+    local opts = { buffer = ev.buf }
+    vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
+    vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+    vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
+    -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
+    vim.keymap.set('n', '<space>wl', function()
+      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    end, opts)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
+    vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
+    vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+    vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
+    vim.keymap.set('n', '<space>fm', function()
+      vim.lsp.buf.format { async = true }
+    end, opts)
+  end,
+})
+
 -- lsp diagnostic setup
 vim.diagnostic.config({
   -- virtual_text = true,
@@ -612,40 +703,6 @@ require'nvim-treesitter.configs'.setup {
 -- lsp_signature
 local cfg = {}  -- add your config here
 require "lsp_signature".setup(cfg)
-
--- lsp-zero
--- https://github.com/VonHeikemen/lsp-zero.nvim/blob/v1.x/doc/md/lsp.md#default-keybindings
--- K: Displays hover information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.hover().
--- gd: Jumps to the definition of the symbol under the cursor. See :help vim.lsp.buf.definition().
--- gD: Jumps to the declaration of the symbol under the cursor. Some servers don't implement this feature. See :help vim.lsp.buf.declaration().
--- gi: Lists all the implementations for the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.implementation().
--- go: Jumps to the definition of the type of the symbol under the cursor. See :help vim.lsp.buf.type_definition().
--- gr: Lists all the references to the symbol under the cursor in the quickfix window. See :help vim.lsp.buf.references().
--- <Ctrl-k>: Displays signature information about the symbol under the cursor in a floating window. See :help vim.lsp.buf.signature_help(). If a mapping already exists for this key this function is not bound.
--- <F2>: Renames all references to the symbol under the cursor. See :help vim.lsp.buf.rename().
--- <F4>: Selects a code action available at the current cursor position. See :help vim.lsp.buf.code_action().
--- gl: Show diagnostics in a floating window. See :help vim.diagnostic.open_float().
--- [d: Move to the previous diagnostic in the current buffer. See :help vim.diagnostic.goto_prev().
--- ]d: Move to the next diagnostic. See :help vim.diagnostic.goto_next().
-local lsp = require('lsp-zero').preset({
-  name = 'minimal',
-  -- set_lsp_keymaps = true,
-  set_lsp_keymaps = {preserve_mappings = false}, -- Change set_lsp_keymaps to this to force the keybindings from lsp-zero.
-  -- manage_nvim_cmp = true,
-  manage_nvim_cmp = {
-    set_extra_mappings = false,
-  },
-  suggest_lsp_servers = false,
-})
-lsp.on_attach(function(client, bufnr)
-  local opts = {buffer = bufnr}
-  local bind = vim.keymap.set
-  bind('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', opts)
-  -- more keybindings...
-end)
--- (Optional) Configure lua language server for neovim
-lsp.nvim_workspace()
-lsp.setup()
 
 -- nvim-cmp
 local kind_icons = {
