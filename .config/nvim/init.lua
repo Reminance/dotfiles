@@ -277,12 +277,6 @@ local plugins = {
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
   'connorholyday/vim-snazzy',
-  -- {
-  --   "folke/tokyonight.nvim",
-  --   lazy = false,
-  --   priority = 1000,
-  --   opts = {},
-  -- },
   {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
   'mbbill/undotree',
   'tpope/vim-fugitive',
@@ -324,7 +318,6 @@ local plugins = {
   -- file navigation
   'junegunn/fzf.vim',
   -- -- Draw ASCII diagrams in Neovim.
-  'jbyuki/venn.nvim',
   -- diffview
   { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
   { "folke/neodev.nvim", opts = {} },
@@ -364,8 +357,8 @@ local plugins = {
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
 }
 
-local opts = {}
-require("lazy").setup(plugins, opts)
+local lazy_opts = {}
+require("lazy").setup(plugins, lazy_opts)
 
 -- vim-tmux-navigator, replacing window management above
 vim.cmd[[
@@ -386,13 +379,13 @@ vim.keymap.set('x', '<Leader>ea', ':EasyAlign<CR>', {})
 -- for ToggleTerm
 vim.keymap.set('n', '<C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
 function _G.set_terminal_keymaps()
-  local opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], opts)
-  vim.keymap.set('t', '<C-\\>', [[<Cmd>ToggleTerm<CR>]], opts)
-  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], opts)
-  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
-  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
-  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
+  local toggleterm_keymap_opts = {buffer = 0}
+  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-\\>', [[<Cmd>ToggleTerm<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], toggleterm_keymap_opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
@@ -401,9 +394,6 @@ vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 -- for snazzy
 vim.g["SnazzyTransparent"] = 1
 vim.cmd('colorscheme snazzy')
-
--- -- for tokyonight
--- vim.cmd[[colorscheme tokyonight-night]]
 
 -- -- Set lualine as statusline
 -- -- See `:help lualine.txt`
@@ -524,28 +514,6 @@ vim.keymap.set('n', '<Leader>gs', ':G<CR>', options)
 
 -- far
 vim.keymap.set('n', '<Leader>F', ':F  %<left><left>', {})
-
--- venn.nvim, Draw ASCII diagrams in Neovim: enable or disable keymappings
-function _G.Toggle_venn()
-    local venn_enabled = vim.inspect(vim.b.venn_enabled)
-    if venn_enabled == "nil" then
-        vim.b.venn_enabled = true
-        vim.cmd[[setlocal ve=all]]
-        -- draw a line on HJKL keystokes
-        vim.api.nvim_buf_set_keymap(0, "n", "J", "<C-v>j:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "K", "<C-v>k:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "L", "<C-v>l:VBox<CR>", {noremap = true})
-        vim.api.nvim_buf_set_keymap(0, "n", "H", "<C-v>h:VBox<CR>", {noremap = true})
-        -- draw a box by pressing "f" with visual selection
-        vim.api.nvim_buf_set_keymap(0, "v", "f", ":VBox<CR>", {noremap = true})
-    else
-        vim.cmd[[setlocal ve=]]
-        vim.cmd[[mapclear <buffer>]]
-        vim.b.venn_enabled = nil
-    end
-end
--- toggle keymappings for venn using <leader>v
-vim.api.nvim_set_keymap('n', '<leader>V', ":lua Toggle_venn()<CR>", { noremap = true})
 
 -- diffview.nvim
 require("diffview").setup({
