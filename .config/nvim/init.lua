@@ -23,11 +23,6 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
--- disable auto commenting
--- vim.o.formatoptions = vim.o.formatoptions:gsub("cro", "")
--- vim.opt.formatoptions:remove("c")
-vim.cmd[[ autocmd FileType * set formatoptions-=cro ]]
-
 -- disable statusline
 vim.opt.laststatus = 0
 
@@ -64,7 +59,7 @@ vim.o.ignorecase = true
 vim.o.smartcase = true
 
 -- Decrease update time
-vim.o.updatetime = 250
+vim.o.updatetime = 500
 vim.wo.signcolumn = 'yes'
 
 -- Set colorscheme
@@ -133,10 +128,6 @@ vim.keymap.set("n", "<Leader>sk", ":set nosplitbelow<CR>:split<CR>")
 vim.keymap.set("n", "<Leader>sl", ":set splitright<CR>:vsplit<CR>")
 
 -- normal mode bindings for resizing windows, <Option-arrow> for Mac, <C-M-hjkl> for Linux
-vim.keymap.set("n", "<S-Left>", ":vertical resize-1<CR>")
-vim.keymap.set("n", "<S-Down>", ":res +1<CR>")
-vim.keymap.set("n", "<S-Up>", ":res -1<CR>")
-vim.keymap.set("n", "<S-Right>", ":vertical resize+1<CR>")
 vim.keymap.set("n", "<C-M-h>", ":vertical resize-1<CR>")
 vim.keymap.set("n", "<C-M-j>", ":res +1<CR>")
 vim.keymap.set("n", "<C-M-k>", ":res -1<CR>")
@@ -336,6 +327,7 @@ local plugins = {
   'jbyuki/venn.nvim',
   -- diffview
   { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
+  { "folke/neodev.nvim", opts = {} },
   -- LSP Support
   {'neovim/nvim-lspconfig'},             -- Required
   {
@@ -458,11 +450,11 @@ require('telescope').setup{
     find_files = {
       theme = "dropdown",
       previewer = false,
-      path_display = { "shorten" },
+      path_display = { "smart" }, -- :h telescope.defaults.path_display
     },
     live_grep = {
-      -- theme = "dropdown",
-      path_display = { "shorten" },
+      theme = "dropdown",
+      path_display = { "smart" },
     },
     buffers = {
       show_all_buffers = true,
@@ -479,7 +471,7 @@ require('telescope').setup{
 }
 -- https://github.com/nvim-telescope/telescope.nvim/blob/39b12d84e86f5054e2ed98829b367598ae53ab41/plugin/telescope.lua#L11-L91
 -- telescope.lua#highlights
-vim.api.nvim_set_hl(0, "TelescopeBorder", {fg="#5E81AC"})
+-- vim.api.nvim_set_hl(0, "TelescopBorder", {fg="#5E81AC"})
 vim.api.nvim_set_hl(0, "TelescopeSelection", {bg="None", bold=true})
 vim.api.nvim_set_hl(0, "TelescopeMatching", {fg="#ff6ac1", bold=true})
 
@@ -560,13 +552,18 @@ require("diffview").setup({
   enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
 })
 
--- lsp config
-vim.api.nvim_create_autocmd('LspAttach', {
-  desc = 'LSP actions',
-  callback = function(event)
-    -- Create your keybindings here...
-  end
+-- IMPORTANT: make sure to setup neodev BEFORE lspconfig
+require("neodev").setup({
+  -- add any options here, or leave empty to use the default settings
 })
+
+-- lsp config
+-- vim.api.nvim_create_autocmd('LspAttach', {
+--   desc = 'LSP actions',
+--   callback = function(event)
+--     -- Create your keybindings here...
+--   end
+-- })
 
 require('mason').setup()
 require('mason-lspconfig').setup({
@@ -643,11 +640,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- from lua/icons.lua
+local my_icons = require("icons")
+
 -- lsp diagnostic setup
 vim.diagnostic.config({
   -- virtual_text = true,
   virtual_text = {
-    prefix = '●', -- Could be '●', '■', '▎', 'x'
+    prefix = my_icons.diagnostics.Prefix,
   },
   signs = true,
   update_in_insert = false,
@@ -656,8 +656,7 @@ vim.diagnostic.config({
   float = true,
 })
 
-local signs = { Error = "×", Warn = "", Hint = "󰌶", Info = "" }
-for type, icon in pairs(signs) do
+for type, icon in pairs(my_icons.localsigns) do
   local hl = "DiagnosticSign" .. type
   vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
@@ -705,35 +704,7 @@ local cfg = {}  -- add your config here
 require "lsp_signature".setup(cfg)
 
 -- nvim-cmp
-local kind_icons = {
-  Text = "󰉿",
-  Method = "m",
-  Function = "󰊕",
-  Constructor = "",
-  Field = "",
-  Variable = "󰆧",
-  Class = "󰌗",
-  Interface = "",
-  Module = "",
-  Property = "",
-  Unit = "",
-  Value = "󰎠",
-  Enum = "",
-  Keyword = "󰌋",
-  Snippet = "",
-  Color = "󰏘",
-  File = "󰈙",
-  Reference = "",
-  Folder = "󰉋",
-  EnumMember = "",
-  Constant = "󰇽",
-  Struct = "",
-  Event = "",
-  Operator = "󰆕",
-  TypeParameter = "󰊄",
-  Codeium = "󰚩",
-  Copilot = "",
-}
+local kind_icons = my_icons.kind
 local cmp = require('cmp')
 -- luasnip load
 require('luasnip.loaders.from_vscode').lazy_load()
@@ -785,14 +756,14 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
   }),
   sources = cmp.config.sources({
-    { name = 'nvim_lsp', max_item_count = 6, group_index = 1 },
+    { name = 'nvim_lsp', max_item_count = 20, group_index = 1 },
     -- { name = 'vsnip' }, -- For vsnip users.
-    { name = 'luasnip', max_item_count = 5, group_index = 1 }, -- For luasnip users.
+    { name = 'luasnip', max_item_count = 6, group_index = 1 }, -- For luasnip users.
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
     { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },
   }, {
-    { name = 'buffer', max_item_count = 8, group_index = 2, keyword_length = 3 },
+    { name = 'buffer', max_item_count = 6, group_index = 2, keyword_length = 3 },
     { name = "treesitter" },
     { name = "path" },
     { name = "spell" },
@@ -876,10 +847,12 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = 
 local dap, dapui = require("dap"), require("dapui")
 dapui.setup({
 })
-vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "󰁕", texthl = "LspDiagnosticsSignInformation", linehl = "DiagnosticUnderlineInfo", numhl = "LspDiagnosticsSignInformation" })
+
+local diagnostics_icons = my_icons.diagnostics
+vim.fn.sign_define("DapBreakpoint", { text = diagnostics_icons.Debug, texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition", { text = diagnostics_icons.BoldQuestion, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointRejected", { text = diagnostics_icons.Reject, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = diagnostics_icons.stoped, texthl = "LspDiagnosticsSignInformation", linehl = "DiagnosticUnderlineInfo", numhl = "LspDiagnosticsSignInformation" })
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end

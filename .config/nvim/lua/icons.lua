@@ -1,40 +1,43 @@
 -- from https://github.com/LunarVim/LunarVim/blob/407e7b05eace59f571730f7d1467c39f7ba73a90/lua/lvim/icons.lua
+-- https://www.nerdfonts.com/cheat-sheet
 return {
   kind = {
+    Text = "󰉿",
+    Method = "m",
+    Function = "󰊕",
     Array = "",
     Boolean = "",
-    Class = "",
-    Color = "",
-    Constant = "",
-    Constructor = "",
-    Enum = "",
-    EnumMember = "",
-    Event = "",
-    Field = "",
-    File = "",
-    Folder = "󰉋",
-    Function = "",
-    Interface = "",
-    Key = "",
-    Keyword = "",
-    Method = "",
-    Module = "",
+    Constructor = "", -- 
+    Field = "", -- 
+    Variable = "󰆧",  -- 
+    Class = "󰌗",
+    Interface = "",  -- 
+    Module = "",  -- 
     Namespace = "",
-    Null = "󰟢",
+    Key = "",
+    Property = "",  -- 
+    Unit = "",  -- 
+    Value = "󰎠",  -- 
+    Enum = "", -- 
+    Keyword = "󰌋",
     Number = "",
+    Snippet = "",
     Object = "",
-    Operator = "",
-    Package = "",
-    Property = "",
-    Reference = "",
-    Snippet = "",
+    Null = "󰟢",
+    Color = "󰏘", -- 
+    File = "󰈙",  -- 
+    Reference = "", -- 
+    Folder = "󰉋",
+    EnumMember = "", -- 
     String = "",
-    Struct = "",
-    Text = "",
-    TypeParameter = "",
-    Unit = "",
-    Value = "",
-    Variable = "",
+    Constant = "󰇽", -- 
+    Struct = "",  -- 
+    Event = "",  -- 
+    Operator = "󰆕", -- 
+    TypeParameter = "󰊄",  -- 
+    Package = "",
+    Codeium = "󰚩",
+    Copilot = "",
   },
   git = {
     LineAdded = "",
@@ -130,6 +133,7 @@ return {
     TriangleShortArrowUp = "",
   },
   diagnostics = {
+    Prefix = "●",   -- Could be '●', '■', '▎', 'x'
     BoldError = "",
     Error = "",
     BoldWarning = "",
@@ -153,14 +157,13 @@ return {
     Smiley = "",
     Package = "",
     CircuitBoard = "",
+    Bugs = "",
+    Bugs1 = "",
   },
   localsigns = {
-    Error = "×", Warn = "", Hint = "󰌶", Info = ""   --  ◉
-  },
-  localsigns2 = {
-    error = '✘',
-    warn = '▲',
-    hint = '⚑',
-    info = '»'
+    Error = "✘", -- ×
+    Warn = "",  -- ▲
+    Hint = "󰌶",  -- ⚑
+    Info = ""   --  ◉ »
   },
 }
