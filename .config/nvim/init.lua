@@ -253,8 +253,30 @@ endfunc
 ]]
 
 -- enable markdown_folding, using Neovim's runtime filetype
--- vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
-vim.g['markdown_folding'] = 1
+vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
+
+-- shortcut to TransformTodoStatus symbol
+vim.cmd[[
+noremap mt :call TransformTodoStatus('✅','🏷️')<CR>
+noremap md :call TransformTodoStatus('🏷️','✅')<CR>
+function! TransformTodoStatus(from, to)
+  let line=getline('.')
+  " try to match symbol with line end trailing space
+  if line =~ "^\.*" . a:from . "\\s*$"
+    norm mm
+    exe '.s/' . a:from . '\s*$/' . a:to . '/g'
+    norm `m
+  else
+    if line =~ "^\.*" . a:to . "\\s*$"
+      echo "status is already do nothing"
+    else
+      norm mm
+      exe ':normal! A ' . a:to
+      norm `m
+    endif
+  endif
+endfunction
+]]
 
 local options = { noremap = true, silent = true }
 
