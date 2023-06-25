@@ -1,6 +1,9 @@
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
+-- finding keybindings setup location
+-- :verbose nmap <C-j>
+
 -- Set highlight on search
 vim.o.hlsearch = true
 
@@ -91,10 +94,13 @@ vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>")
 vim.keymap.set("i", "<C-n>", "<Down>")
 vim.keymap.set("i", "<C-p>", "<Up>")
+vim.keymap.set("i", "<C-k>", "<C-o>D")
 vim.keymap.set({ 'i', 'c' }, "<C-b>", "<Left>")
 vim.keymap.set({ 'i', 'c' }, "<C-f>", "<Right>")
 vim.keymap.set({ 'i', 'c' }, "<C-a>", "<Home>")
 vim.keymap.set({ 'i', 'c' }, "<C-e>", "<End>")
+vim.keymap.set({ 'i', 'c' }, "<M-b>", "<S-Left>")
+vim.keymap.set({ 'i', 'c' }, "<M-f>", "<S-Right>")
 -- Allow saving of files as sudo when I forgot to start vim using sudo.
 vim.keymap.set('c', "w!!", "w !sudo tee > /dev/null %")
 
@@ -116,10 +122,10 @@ vim.keymap.set("n", "<Leader>su", ":sort u<CR>")
 vim.keymap.set("v", "<Leader>su", ":'<,'>sort u<CR>")
 
 -- -- Window Management
--- vim.keymap.set("n", "<C-h>", "<Esc><C-w>h")
--- vim.keymap.set("n", "<C-j>", "<Esc><C-w>j")
--- vim.keymap.set("n", "<C-k>", "<Esc><C-w>k")
--- vim.keymap.set("n", "<C-l>", "<Esc><C-w>l")
+vim.keymap.set("n", "<M-h>", "<Esc><C-w>h")
+vim.keymap.set("n", "<M-j>", "<Esc><C-w>j")
+vim.keymap.set("n", "<M-k>", "<Esc><C-w>k")
+vim.keymap.set("n", "<M-l>", "<Esc><C-w>l")
 
 -- split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 vim.keymap.set("n", "<Leader>sh", ":set nosplitright<CR>:vsplit<CR>")
@@ -132,6 +138,24 @@ vim.keymap.set("n", "<C-M-h>", ":vertical resize-1<CR>")
 vim.keymap.set("n", "<C-M-j>", ":res +1<CR>")
 vim.keymap.set("n", "<C-M-k>", ":res -1<CR>")
 vim.keymap.set("n", "<C-M-l>", ":vertical resize+1<CR>")
+
+-- Tab Management
+vim.cmd[[
+" Tab Management
+nnoremap <M-n> :tabnew<CR>
+nnoremap <M-q> :tabclose<CR>
+" switching tabs
+nnoremap <M-,> :-tabnext<CR>
+nnoremap <M-.> :+tabnext<CR>
+" Move the tabs
+nnoremap <M-<> :-tabmove<CR>
+nnoremap <M->> :+tabmove<CR>
+" " Map alt-x keys to jump to a tab
+" for i in range(1, 8)
+"     exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
+" endfor
+" nnoremap <M-9> :tablast<CR>
+]]
 
 -- yank to system clipboard
 vim.keymap.set("v", "Y", [["*y :let @+=@*<CR>]])
@@ -278,6 +302,9 @@ function! TransformTodoStatus(from, to)
 endfunction
 ]]
 
+-- add additional keybinding to expand luasnip snippet
+vim.cmd[[imap <silent><expr> <C-\> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-\>']]
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -310,7 +337,7 @@ local plugins = {
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
   'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
-  'nvim-lualine/lualine.nvim', -- Fancier statusline
+  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
     "folke/which-key.nvim",
@@ -339,9 +366,8 @@ local plugins = {
   },
   'windwp/nvim-autopairs',
   'norcalli/nvim-colorizer.lua',
-  'voldikss/vim-floaterm',
+  -- 'voldikss/vim-floaterm',
   {"akinsho/toggleterm.nvim", version = '*', opts = {--[[ things you want to change go here]]}},
-  'christoomey/vim-tmux-navigator',
   'brooth/far.vim',
   -- file navigation
   'junegunn/fzf.vim',
@@ -388,15 +414,6 @@ local plugins = {
 local lazy_opts = {}
 require("lazy").setup(plugins, lazy_opts)
 
--- vim-tmux-navigator, replacing window management above
-vim.cmd[[
-let g:tmux_navigator_no_mappings = 1
-noremap <silent> <C-h> :<C-U>TmuxNavigateLeft<cr>
-noremap <silent> <C-j> :<C-U>TmuxNavigateDown<cr>
-noremap <silent> <C-k> :<C-U>TmuxNavigateUp<cr>
-noremap <silent> <C-l> :<C-U>TmuxNavigateRight<cr>
-]]
-
 -- Enable Comment.nvim
 require('Comment').setup()
 
@@ -405,15 +422,30 @@ vim.keymap.set('n', '<Leader>ea', ':EasyAlign<CR>', {})
 vim.keymap.set('x', '<Leader>ea', ':EasyAlign<CR>', {})
 
 -- for ToggleTerm
+ require("toggleterm").setup{
+  -- direction = 'horizontal', -- 'vertical' | 'horizontal' | 'tab' | 'float',
+  -- size can be a number or function which is passed the current terminal
+  size = function(term)
+    if term.direction == "horizontal" then
+      return 15
+    elseif term.direction == "vertical" then
+      return vim.o.columns * 0.4
+    end
+  end,
+}
 vim.keymap.set('n', '<C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
 function _G.set_terminal_keymaps()
   local toggleterm_keymap_opts = {buffer = 0}
   vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<C-\\>', [[<Cmd>ToggleTerm<CR>]], toggleterm_keymap_opts)
-  vim.keymap.set('t', '<C-h>', [[<Cmd>wincmd h<CR>]], toggleterm_keymap_opts)
-  vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], toggleterm_keymap_opts)
-  vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], toggleterm_keymap_opts)
-  vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-h>', [[<Cmd>wincmd h<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-j>', [[<Cmd>wincmd j<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-k>', [[<Cmd>wincmd k<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-l>', [[<Cmd>wincmd l<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-,>', [[<Cmd>-tabnext<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-.>', [[<Cmd>+tabnext<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M-<>', [[<Cmd>-tabmove<CR><C-l>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<M->>', [[<Cmd>+tabmove<CR><C-l>]], toggleterm_keymap_opts)
 end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
@@ -452,10 +484,10 @@ require'colorizer'.setup()
 -- Gitsigns
 -- See `:help gitsigns.txt`
 require('gitsigns').setup {
-  current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    delay = 300,
-  },
+  -- current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+  -- current_line_blame_opts = {
+  --   delay = 300,
+  -- },
   -- current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
 }
 
@@ -702,8 +734,9 @@ require "lsp_signature".setup(cfg)
 local kind_icons = my_icons.kind
 local cmp = require('cmp')
 -- luasnip load
-require('luasnip.loaders.from_vscode').lazy_load()
 local luasnip = require('luasnip')
+require("luasnip.loaders.from_snipmate").lazy_load()
+require('luasnip.loaders.from_vscode').lazy_load()
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
@@ -724,7 +757,20 @@ cmp.setup({
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
     ["<C-y>"] = cmp.config.disable,
-    -- ["<Tab>"] = cmp.config.disable,
+    ["<C-n>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
+    ["<C-p>"] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { "i", "s" }),
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -753,7 +799,7 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp', max_item_count = 20, group_index = 1 },
     -- { name = 'vsnip' }, -- For vsnip users.
-    { name = 'luasnip', max_item_count = 6, group_index = 1 }, -- For luasnip users.
+    { name = 'luasnip', max_item_count = 20, group_index = 1 }, -- For luasnip users.
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
     { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },

@@ -525,7 +525,7 @@
 ;;----------------------------------------------------------------------------
 ;; org-mode
 ;; ----------------------------------------------------------------------------
-(defvar org-notes-dir "~/workspace/work-tools/notes"
+(defvar org-notes-dir "~/workspace/work-tools/org-notes"
   "My org notes directory.")
 (defvar org-notes-file "notes.org"
   "My org notes file.")
