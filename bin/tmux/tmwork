@@ -15,18 +15,12 @@ then
     tmux new-session -d -s $SESSION
 
     # Name first Pane and start zsh
-    tmux rename-window -t 1 'WorkTool'
-    tmux send-keys -t 'WorkTool' 'zsh' C-m 'cd ~/workspace/work-tools' C-m 'clear' C-m
-
-    # # emacs
-    # tmux new-window -t $SESSION:2 -n 'Emacs'
-    # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m
-    # # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m 'env TERM=xterm-256color LC_CTYPE=zh_CN.UTF-8 emacs -nw' C-m
-    # # tmux send-keys -t 'Emacs' "zsh" C-m 'cd ~/dotfiles' C-m 'clear' C-m runemacs C-m
+    tmux rename-window -t 1 'JIRA'
+    tmux send-keys -t 'JIRA' 'zsh' C-m 'cd ~/workspace/work-tools/jira' C-m 'clear' C-m
 
     # Setup an additional shell
-    tmux new-window -t $SESSION:2 -n 'Jira'
-    tmux send-keys -t 'Jira' "zsh" C-m 'cd ~/workspace/work-tools/jira' C-m 'clear' C-m
+    tmux new-window -t $SESSION:2 -n 'WorkTools'
+    tmux send-keys -t 'WorkTools' "zsh" C-m 'cd ~/workspace/work-tools' C-m 'clear' C-m
 
     # Other
     tmux new-window -t $SESSION:3 -n 'Other'
