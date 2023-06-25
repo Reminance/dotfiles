@@ -194,6 +194,8 @@ vim.keymap.set("n", "<Leader><Space>", ":nohlsearch<CR>", { noremap = true, sile
 vim.keymap.set("n", "<Leader>fi", ":e ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
 -- source $MYVIMRC
 vim.keymap.set("n", "<Leader>si", ":source $MYVIMRC<CR>", { noremap = true, silent = true })
+-- reload current file
+vim.keymap.set("n", "<Leader>ff", ":e<CR>", { noremap = true, silent = true })
 
 vim.cmd[[
 noremap <Leader>R :call CompileRunGcc()<CR>
@@ -389,8 +391,8 @@ local plugins = {
   {'hrsh7th/cmp-cmdline'},
   {'saadparwaiz1/cmp_luasnip'},
   {'hrsh7th/cmp-nvim-lsp'},
-  {'hrsh7th/cmp-copilot'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
-  {'rcarriga/cmp-dap'}, -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
+  -- {'hrsh7th/cmp-copilot'}, --produce lattency issue, makes completion laggy an slow -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
+  {'rcarriga/cmp-dap'},
   -- {'hrsh7th/cmp-nvim-lua'},
   -- Snippets
   {'L3MON4D3/LuaSnip'},
@@ -433,11 +435,11 @@ vim.keymap.set('x', '<Leader>ea', ':EasyAlign<CR>', {})
     end
   end,
 }
-vim.keymap.set('n', '<C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
+vim.keymap.set('n', '<C-\\><C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
+
 function _G.set_terminal_keymaps()
   local toggleterm_keymap_opts = {buffer = 0}
-  vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], toggleterm_keymap_opts)
-  vim.keymap.set('t', '<C-\\>', [[<Cmd>ToggleTerm<CR>]], toggleterm_keymap_opts)
+  vim.keymap.set('t', '<C-\\><C-\\>', [[<Cmd>ToggleTerm<CR>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<M-h>', [[<Cmd>wincmd h<CR>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<M-j>', [[<Cmd>wincmd j<CR>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<M-k>', [[<Cmd>wincmd k<CR>]], toggleterm_keymap_opts)
@@ -450,6 +452,15 @@ end
 
 -- if you only want these mappings for toggle term use term://*toggleterm#* instead
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
+
+-- lazygit using toggleterm
+local Terminal  = require('toggleterm.terminal').Terminal
+-- If the hidden key is set to true, this terminal will not be toggled by normal toggleterm commands such as :ToggleTerm or the open mapping;  count=5 means lazygit terminal object can be specified with a count 5
+local lazygit = Terminal:new({ cmd = "lazygit", hidden = true, direction = 'float', count=5 })
+function _Lazygit_toggle()
+  lazygit:toggle()
+end
+vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", {noremap = true, silent = true})
 
 -- -- for snazzy
 -- vim.g["SnazzyTransparent"] = 1
@@ -545,11 +556,11 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
- -- vim-floaterm
--- " Set floaterm window's background to black
-vim.cmd[[hi Floaterm guibg=black]]
--- " Set floating window border line color to cyan, and background to orange
-vim.cmd[[hi FloatermBorder guifg=cyan]]
+--  -- vim-floaterm
+-- -- " set floaterm window's background to black
+-- vim.cmd[[hi floaterm guibg=black]]
+-- -- " set floating window border line color to cyan, and background to orange
+-- vim.cmd[[hi floatermborder guifg=cyan]]
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
@@ -651,7 +662,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-    -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
+    vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
     vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
     vim.keymap.set('n', '<space>wr', vim.lsp.buf.remove_workspace_folder, opts)
     vim.keymap.set('n', '<space>wl', function()
@@ -802,7 +813,7 @@ cmp.setup({
     { name = 'luasnip', max_item_count = 20, group_index = 1 }, -- For luasnip users.
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
-    { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },
+    -- { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },
   }, {
     { name = 'buffer', max_item_count = 6, group_index = 2, keyword_length = 3 },
     { name = "treesitter" },

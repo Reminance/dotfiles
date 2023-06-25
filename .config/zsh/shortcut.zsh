@@ -167,4 +167,4 @@ open_link () {
     zle reset-prompt
 }
 zle -N open_link
-bindkey '\ej' open_link
+bindkey '\en' open_link
