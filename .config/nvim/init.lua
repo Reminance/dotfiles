@@ -533,7 +533,8 @@ require('telescope').setup{
         i = {
           ["<c-k>"] = "delete_buffer",
         }
-      }
+      },
+      path_display = { "smart" },
     }
   }
 }
