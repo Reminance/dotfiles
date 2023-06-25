@@ -420,8 +420,8 @@ require("lazy").setup(plugins, lazy_opts)
 require('Comment').setup()
 
 -- vim-easy-align
-vim.keymap.set('n', '<Leader>ea', ':EasyAlign<CR>', {})
-vim.keymap.set('x', '<Leader>ea', ':EasyAlign<CR>', {})
+vim.keymap.set('n', '<Leader>Ea', ':EasyAlign<CR>', {})
+vim.keymap.set('x', '<Leader>Ea', ':EasyAlign<CR>', {})
 
 -- for ToggleTerm
  require("toggleterm").setup{
@@ -891,9 +891,11 @@ cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
   },
 })
 
--- insert `(` after select function or method item
-local cmp_autopairs = require "nvim-autopairs.completion.cmp"
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done { map_char = { tex = "" } })
+-- https://github.com/windwp/nvim-autopairs#mapping-cr
+-- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#nvim-autopairs
+-- If you want insert `(` after select function or method item
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
 
 -- nvim-dap nvim-dap-ui
 local dap, dapui = require("dap"), require("dapui")
@@ -915,6 +917,7 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 vim.keymap.set('n', '<F6>', require'dap'.toggle_breakpoint)
+vim.keymap.set('n', '<F14>', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint contidion: '), nil, nil) end) -- S-F6
 vim.keymap.set('n', '<F7>', require'dap'.step_into)
 vim.keymap.set('n', '<F15>', require'dap'.step_out) -- S-F7
 vim.keymap.set('n', '<F8>', require'dap'.step_over)
