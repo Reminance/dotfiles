@@ -140,7 +140,7 @@ vim.keymap.set("n", "<C-M-k>", ":res -1<CR>")
 vim.keymap.set("n", "<C-M-l>", ":vertical resize+1<CR>")
 
 -- Tab Management
-vim.cmd[[
+vim.cmd [[
 " Tab Management
 nnoremap <M-n> :tabnew<CR>
 nnoremap <M-q> :tabclose<CR>
@@ -168,15 +168,15 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- go to last location when opening a buffer  " make cursor remain the position of last quit
-vim.cmd[[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
+vim.cmd [[au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
 
 -- syntax highlighting of search results
-vim.cmd[[au ColorScheme * highlight Search guibg=NONE guifg=Cyan gui=italic,underline,bold]]
+vim.cmd [[au ColorScheme * highlight Search guibg=NONE guifg=Cyan gui=italic,underline,bold]]
 
 -- Don't move on *
 vim.keymap.set("n", "*", "mm*`m", { noremap = true, silent = true })
 -- Visual Mode * from Scrooloose
-vim.cmd[[
+vim.cmd [[
 function! s:VSetSearch()
     let temp = @@
     norm! gvy
@@ -192,12 +192,14 @@ vim.keymap.set("n", "<Leader><Space>", ":nohlsearch<CR>", { noremap = true, sile
 -- Openning Files
 -- Open the vimrc file anytime
 vim.keymap.set("n", "<Leader>fi", ":e ~/.config/nvim/init.lua<CR>", { noremap = true, silent = true })
+-- Open the notes file anytime
+vim.keymap.set("n", "<Leader>fn", ":e ~/workspace/work-tools/notes/notes.md<CR>", { noremap = true, silent = true })
 -- source $MYVIMRC
 vim.keymap.set("n", "<Leader>si", ":source $MYVIMRC<CR>", { noremap = true, silent = true })
 -- reload current file
 vim.keymap.set("n", "<Leader>ff", ":e<CR>", { noremap = true, silent = true })
 
-vim.cmd[[
+vim.cmd [[
 noremap <Leader>R :call CompileRunGcc()<CR>
 func! CompileRunGcc()
     exec "w"
@@ -282,7 +284,7 @@ endfunc
 vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
 
 -- shortcut to TransformTodoStatus symbol
-vim.cmd[[
+vim.cmd [[
 noremap mt :call TransformTodoStatus('✅','🏷️')<CR>
 noremap md :call TransformTodoStatus('🏷️','✅')<CR>
 function! TransformTodoStatus(from, to)
@@ -305,7 +307,7 @@ endfunction
 ]]
 
 -- add additional keybinding to expand luasnip snippet
-vim.cmd[[imap <silent><expr> <C-\> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-\>']]
+vim.cmd [[imap <silent><expr> <C-\> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-\>']]
 
 local options = { noremap = true, silent = true }
 
@@ -326,15 +328,15 @@ local plugins = {
   'numToStr/Comment.nvim', -- "gc" to comment visual regions/lines
   'junegunn/vim-easy-align',
   'tpope/vim-surround',
-    -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
+  -- Fuzzy Finder (files, lsp, etc)
+  { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
   -- 'connorholyday/vim-snazzy',
   -- 'dracula/vim',
-  { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
+  { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   'mbbill/undotree',
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
@@ -369,42 +371,42 @@ local plugins = {
   'windwp/nvim-autopairs',
   'norcalli/nvim-colorizer.lua',
   -- 'voldikss/vim-floaterm',
-  {"akinsho/toggleterm.nvim", version = '*', opts = {--[[ things you want to change go here]]}},
+  { "akinsho/toggleterm.nvim", version = '*',                         opts = { --[[ things you want to change go here]] } },
   'brooth/far.vim',
   -- file navigation
   'junegunn/fzf.vim',
   -- -- Draw ASCII diagrams in Neovim.
   -- diffview
-  { 'sindrets/diffview.nvim', dependencies = 'nvim-lua/plenary.nvim' },
-  { "folke/neodev.nvim", opts = {} },
+  { 'sindrets/diffview.nvim',  dependencies = 'nvim-lua/plenary.nvim' },
+  { "folke/neodev.nvim",       opts = {} },
   -- LSP Support
-  {'neovim/nvim-lspconfig'},             -- Required
+  { 'neovim/nvim-lspconfig' }, -- Required
   {
     "williamboman/mason.nvim",
-    build = ":MasonUpdate" -- :MasonUpdate updates registry contents
+    build = ":MasonUpdate"                 -- :MasonUpdate updates registry contents
   },
-  {'williamboman/mason-lspconfig.nvim'}, -- Optional
+  { 'williamboman/mason-lspconfig.nvim' }, -- Optional
   -- Autocompletion
-  {'hrsh7th/nvim-cmp'},
-  {'hrsh7th/cmp-buffer'},
-  {'hrsh7th/cmp-path'},
-  {'hrsh7th/cmp-cmdline'},
-  {'saadparwaiz1/cmp_luasnip'},
-  {'hrsh7th/cmp-nvim-lsp'},
+  { 'hrsh7th/nvim-cmp' },
+  { 'hrsh7th/cmp-buffer' },
+  { 'hrsh7th/cmp-path' },
+  { 'hrsh7th/cmp-cmdline' },
+  { 'saadparwaiz1/cmp_luasnip' },
+  { 'hrsh7th/cmp-nvim-lsp' },
   -- {'hrsh7th/cmp-copilot'}, --produce lattency issue, makes completion laggy an slow -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
-  {'rcarriga/cmp-dap'},
+  { 'rcarriga/cmp-dap' },
   -- {'hrsh7th/cmp-nvim-lua'},
   -- Snippets
-  {'L3MON4D3/LuaSnip'},
-  {'rafamadriz/friendly-snippets'},
+  { 'L3MON4D3/LuaSnip' },
+  { 'rafamadriz/friendly-snippets' },
   -- lsp_signature
-  {'ray-x/lsp_signature.nvim'},
+  { 'ray-x/lsp_signature.nvim' },
   {
     "rcarriga/nvim-dap-ui",
     dependencies = {
-      {"mfussenegger/nvim-dap"},
-      {"mfussenegger/nvim-dap-python"},
-      {"leoluz/nvim-dap-go"},
+      { "mfussenegger/nvim-dap" },
+      { "mfussenegger/nvim-dap-python" },
+      { "leoluz/nvim-dap-go" },
     }
   },
   'mfussenegger/nvim-jdtls',
@@ -424,7 +426,7 @@ vim.keymap.set('n', '<Leader>Ea', ':EasyAlign<CR>', {})
 vim.keymap.set('x', '<Leader>Ea', ':EasyAlign<CR>', {})
 
 -- for ToggleTerm
- require("toggleterm").setup{
+require("toggleterm").setup {
   -- direction = 'horizontal', -- 'vertical' | 'horizontal' | 'tab' | 'float',
   -- size can be a number or function which is passed the current terminal
   size = function(term)
@@ -438,7 +440,7 @@ vim.keymap.set('x', '<Leader>Ea', ':EasyAlign<CR>', {})
 vim.keymap.set('n', '<C-\\><C-\\>', ":ToggleTerm<CR>", { desc = 'ToggleTerm' })
 
 function _G.set_terminal_keymaps()
-  local toggleterm_keymap_opts = {buffer = 0}
+  local toggleterm_keymap_opts = { buffer = 0 }
   vim.keymap.set('t', '<C-\\><C-\\>', [[<Cmd>ToggleTerm<CR>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<M-h>', [[<Cmd>wincmd h<CR>]], toggleterm_keymap_opts)
   vim.keymap.set('t', '<M-j>', [[<Cmd>wincmd j<CR>]], toggleterm_keymap_opts)
@@ -454,13 +456,14 @@ end
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
 
 -- lazygit using toggleterm
-local Terminal  = require('toggleterm.terminal').Terminal
+local Terminal = require('toggleterm.terminal').Terminal
 -- If the hidden key is set to true, this terminal will not be toggled by normal toggleterm commands such as :ToggleTerm or the open mapping;  count=5 means lazygit terminal object can be specified with a count 5
-local lazygit = Terminal:new({ cmd = "lazygit", hidden = true, direction = 'float', count=5 })
+local lazygit  = Terminal:new({ cmd = "lazygit", hidden = true, direction = 'float', count = 5 })
 function _Lazygit_toggle()
   lazygit:toggle()
 end
-vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", {noremap = true, silent = true})
+
+vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", { noremap = true, silent = true })
 
 -- -- for snazzy
 -- vim.g["SnazzyTransparent"] = 1
@@ -471,8 +474,8 @@ vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", {noremap = t
 
 -- for catppuccin/nvim
 require("catppuccin").setup({
-    flavour = "mocha", -- latte, frappe, macchiato, mocha
-    transparent_background = true, -- disables setting the background color.
+  flavour = "mocha",             -- latte, frappe, macchiato, mocha
+  transparent_background = true, -- disables setting the background color.
 })
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
@@ -484,13 +487,13 @@ vim.cmd.colorscheme "catppuccin"
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- -- See `:help indent_blankline.txt`
 require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
-    -- show_current_context = true,
-    show_current_context_start = true,
+  -- for example, context is off by default, use this to turn it on
+  -- show_current_context = true,
+  show_current_context_start = true,
 }
 
 -- norcalli/nvim-colorizer.lua
-require'colorizer'.setup()
+require 'colorizer'.setup()
 
 -- Gitsigns
 -- See `:help gitsigns.txt`
@@ -504,7 +507,7 @@ require('gitsigns').setup {
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     mappings = {
       i = {
@@ -541,8 +544,8 @@ require('telescope').setup{
 -- https://github.com/nvim-telescope/telescope.nvim/blob/39b12d84e86f5054e2ed98829b367598ae53ab41/plugin/telescope.lua#L11-L91
 -- telescope.lua#highlights
 -- vim.api.nvim_set_hl(0, "TelescopBorder", {fg="#5E81AC"})
-vim.api.nvim_set_hl(0, "TelescopeSelection", {bg="None", bold=true})
-vim.api.nvim_set_hl(0, "TelescopeMatching", {fg="#ff6ac1", bold=true})
+vim.api.nvim_set_hl(0, "TelescopeSelection", { bg = "None", bold = true })
+vim.api.nvim_set_hl(0, "TelescopeMatching", { fg = "#ff6ac1", bold = true })
 
 -- -- Enable telescope fzf native, if installed
 -- pcall(require('telescope').load_extension, 'fzf')
@@ -565,7 +568,7 @@ vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc =
 
 -- nvim-autopairs
 require('nvim-autopairs').setup({
-  disable_filetype = { "TelescopePrompt" , "vim" },
+  disable_filetype = { "TelescopePrompt", "vim" },
 })
 
 -- vim-startify
@@ -630,12 +633,12 @@ require('mason-lspconfig').setup({
     -- The first entry (without a key) will be the default handler
     -- and will be called for each installed server that doesn't have
     -- a dedicated handler.
-    function (server_name) -- default handler (optional)
-        require("lspconfig")[server_name].setup {}
+    function(server_name) -- default handler (optional)
+      require("lspconfig")[server_name].setup {}
     end,
     -- Next, you can provide a dedicated handler for specific servers.
     -- For example, a handler override for the `rust_analyzer`:
-    ["jdtls"] = function ()
+    ["jdtls"] = function()
       -- disable jdtls for setting up automatically, will be conflict with ftplugin/java.vim; otherwise will create 2 lsp clients;
     end
   }
@@ -701,9 +704,10 @@ for type, icon in pairs(my_icons.localsigns) do
 end
 
 -- nvim-treesitter
-require'nvim-treesitter.configs'.setup {
+require 'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "cpp", "make", "cmake", "dockerfile", "go", "java", "lua", "python", "rust", "html", "javascript", "css", "toml", "vim", "json", "yaml" },
+  ensure_installed = { "c", "cpp", "make", "cmake", "dockerfile", "go", "java", "lua", "python", "rust", "html",
+    "javascript", "css", "toml", "vim", "json", "yaml" },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
   sync_install = false,
@@ -723,11 +727,11 @@ require'nvim-treesitter.configs'.setup {
     -- disable = { "c", "rust" },
     -- Or use a function for more flexibility, e.g. to disable slow treesitter highlight for large files
     disable = function(lang, buf)
-        local max_filesize = 100 * 1024 -- 100 KB
-        local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        if ok and stats and stats.size > max_filesize then
-            return true
-        end
+      local max_filesize = 100 * 1024 -- 100 KB
+      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      if ok and stats and stats.size > max_filesize then
+        return true
+      end
     end,
 
     -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
@@ -739,7 +743,7 @@ require'nvim-treesitter.configs'.setup {
 }
 
 -- lsp_signature
-local cfg = {}  -- add your config here
+local cfg = {} -- add your config here
 require "lsp_signature".setup(cfg)
 
 -- nvim-cmp
@@ -811,12 +815,12 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = 'nvim_lsp', max_item_count = 20, group_index = 1 },
     -- { name = 'vsnip' }, -- For vsnip users.
-    { name = 'luasnip', max_item_count = 20, group_index = 1 }, -- For luasnip users.
+    { name = 'luasnip',  max_item_count = 20, group_index = 1 }, -- For luasnip users.
     -- { name = 'ultisnips' }, -- For ultisnips users.
     -- { name = 'snippy' }, -- For snippy users.
     -- { name = 'copilot', priority = 100, max_item_count = 3, group_index = 2 },
   }, {
-    { name = 'buffer', max_item_count = 6, group_index = 2, keyword_length = 3 },
+    { name = 'buffer',     max_item_count = 6, group_index = 2, keyword_length = 3 },
     { name = "treesitter" },
     { name = "path" },
     { name = "spell" },
@@ -882,7 +886,7 @@ cmp.setup.cmdline(':', {
 cmp.setup({
   enabled = function()
     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-    or require("cmp_dap").is_dap_buffer()
+        or require("cmp_dap").is_dap_buffer()
   end
 })
 
@@ -896,7 +900,7 @@ cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
 -- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#nvim-autopairs
 -- If you want insert `(` after select function or method item
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-cmp.event:on( 'confirm_done', cmp_autopairs.on_confirm_done())
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
 -- nvim-dap nvim-dap-ui
 local dap, dapui = require("dap"), require("dapui")
@@ -904,10 +908,19 @@ dapui.setup({
 })
 
 local diagnostics_icons = my_icons.diagnostics
-vim.fn.sign_define("DapBreakpoint", { text = diagnostics_icons.Debug, texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointCondition", { text = diagnostics_icons.BoldQuestion, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointRejected", { text = diagnostics_icons.Reject, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = diagnostics_icons.stoped, texthl = "LspDiagnosticsSignInformation", linehl = "DiagnosticUnderlineInfo", numhl = "LspDiagnosticsSignInformation" })
+vim.fn.sign_define("DapBreakpoint",
+  { text = diagnostics_icons.Debug, texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition",
+  { text = diagnostics_icons.BoldQuestion, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointRejected",
+  { text = diagnostics_icons.Reject, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped",
+  {
+    text = diagnostics_icons.stoped,
+    texthl = "LspDiagnosticsSignInformation",
+    linehl = "DiagnosticUnderlineInfo",
+    numhl = "LspDiagnosticsSignInformation"
+  })
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
 end
@@ -917,39 +930,40 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
-vim.keymap.set('n', '<F6>', require'dap'.toggle_breakpoint)
-vim.keymap.set('n', '<F14>', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint contidion: '), nil, nil) end) -- S-F6
-vim.keymap.set('n', '<F7>', require'dap'.step_into)
-vim.keymap.set('n', '<F15>', require'dap'.step_out) -- S-F7
-vim.keymap.set('n', '<F8>', require'dap'.step_over)
-vim.keymap.set('n', '<F9>', require'dap'.continue)
-vim.keymap.set('n', '<F21>', require'dapui'.toggle) -- S-F9
+vim.keymap.set('n', '<F6>', require 'dap'.toggle_breakpoint)
+vim.keymap.set('n', '<F14>',
+  function() require('dap').set_breakpoint(vim.fn.input('Breakpoint contidion: '), nil, nil) end) -- S-F6
+vim.keymap.set('n', '<F7>', require 'dap'.step_into)
+vim.keymap.set('n', '<F15>', require 'dap'.step_out)                                              -- S-F7
+vim.keymap.set('n', '<F8>', require 'dap'.step_over)
+vim.keymap.set('n', '<F9>', require 'dap'.continue)
+vim.keymap.set('n', '<F21>', require 'dapui'.toggle) -- S-F9
 
 require('dap-python').setup('/opt/homebrew/bin/python')
 require('dap-go').setup()
 dap.adapters.codelldb = {
-    type = 'server',
-    port = "${port}",
-    executable = {
-        -- CHANGE THIS to your path!
-        command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
-        args = {"--port", "${port}"},
+  type = 'server',
+  port = "${port}",
+  executable = {
+    -- CHANGE THIS to your path!
+    command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
+    args = { "--port", "${port}" },
 
-        -- On windows you may have to uncomment this:
-        -- detached = false,
-    }
+    -- On windows you may have to uncomment this:
+    -- detached = false,
+  }
 }
 dap.configurations.cpp = {
-    {
-        name = "Launch file",
-        type = "codelldb",
-        request = "launch",
-        program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        end,
-        cwd = '${workspaceFolder}',
-        stopOnEntry = false,
-    },
+  {
+    name = "Launch file",
+    type = "codelldb",
+    request = "launch",
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = '${workspaceFolder}',
+    stopOnEntry = false,
+  },
 }
 dap.configurations.c = dap.configurations.cpp
 dap.configurations.rust = dap.configurations.cpp
