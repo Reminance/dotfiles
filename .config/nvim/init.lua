@@ -331,11 +331,14 @@ local plugins = {
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
-  -- use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
+  -- { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
-  -- 'connorholyday/vim-snazzy',
-  -- 'dracula/vim',
+  'connorholyday/vim-snazzy',
+  'dracula/vim',
   { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
+  {"rebelot/kanagawa.nvim"},
+  {'jacoborus/tender.vim'},
+  {'luisiacc/gruvbox-baby'},
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   'mbbill/undotree',
   'tpope/vim-fugitive',
@@ -479,6 +482,15 @@ require("catppuccin").setup({
 })
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
+
+-- -- colorschme kanagawa.nvim
+-- vim.cmd("colorscheme kanagawa")
+
+-- -- colorschme tender.vim
+-- vim.cmd("colorscheme tender")
+
+-- -- colorschme gruvbox-baby
+-- vim.cmd("colorscheme gruvbox-baby")
 
 -- -- Set lualine as statusline
 -- -- See `:help lualine.txt`
