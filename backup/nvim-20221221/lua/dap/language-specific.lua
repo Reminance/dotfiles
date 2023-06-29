@@ -101,7 +101,7 @@ dap.configurations.go = {
 -- }
 
 -- 💀 Adjust the path to your executable
-local cmd = '/Users/10018944/workspace/codelldb/extension/adapter/codelldb'  -- lldb dir unzip from vsix file
+local cmd = os.getenv("HOME") .. '/workspace/codelldb/extension/adapter/codelldb'  -- lldb dir unzip from vsix file
 dap.adapters.codelldb = function(on_adapter)
   -- This asks the system for a free port
   local tcp = vim.loop.new_tcp()
