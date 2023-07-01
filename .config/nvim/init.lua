@@ -309,6 +309,44 @@ endfunction
 -- add additional keybinding to expand luasnip snippet
 vim.cmd [[imap <silent><expr> <C-\> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<C-\>']]
 
+-- shortcut for toggle case, base on arthurxavierx/vim-caser, don't need title case, sentence case for now...
+local currentCase = ""
+function ToggleCase()
+  if currentCase == "" then
+    currentCase = "snake_case"
+    vim.fn['caser#DoAction']("SnakeCase", vim.fn.visualmode())
+  elseif currentCase == "snake_case" then
+    currentCase = "camelCase"
+    vim.fn['caser#DoAction']("CamelCase", vim.fn.visualmode())
+  elseif currentCase == "camelCase" then
+    currentCase = "MixedCase"
+    vim.fn['caser#DoAction']("MixedCase", vim.fn.visualmode())
+  elseif currentCase == "MixedCase" then
+    currentCase = "dash-case"
+    vim.fn['caser#DoAction']("KebabCase", vim.fn.visualmode())
+  elseif currentCase == "dash-case" then
+    currentCase = "UPPER_CASE"
+    vim.fn['caser#DoAction']("UpperCase", vim.fn.visualmode())
+  elseif currentCase == "UPPER_CASE" then
+    currentCase = "dot.case"
+    vim.fn['caser#DoAction']("DotCase", vim.fn.visualmode())
+  elseif currentCase == "dot.case" then
+    currentCase = "space case"
+    vim.fn['caser#DoAction']("SpaceCase", vim.fn.visualmode())
+  elseif currentCase == "space case" then
+    currentCase = "snake_case"
+    vim.fn['caser#DoAction']("SnakeCase", vim.fn.visualmode())
+  --   currentCase = "Title Case"
+  --   vim.fn['caser#DoAction']("TitleCase", vim.fn.visualmode())
+  -- elseif currentCase == "Title Case" then
+  --   currentCase = "Sentence case"
+  --   vim.fn['caser#DoAction']("SentenceCase", vim.fn.visualmode())
+  -- elseif currentCase == "Sentence case" then
+  end
+  vim.api.nvim_feedkeys('gv', 'n', false)
+end
+vim.api.nvim_set_keymap('v', '<M-U>', ':lua ToggleCase()<CR>', { noremap = true, silent = true })
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -328,6 +366,8 @@ local plugins = {
   'numToStr/Comment.nvim', -- "gc" to comment visual regions/lines
   'junegunn/vim-easy-align',
   'tpope/vim-surround',
+  -- gsm/gsp MixedCase, gsc camelCase, gs_ snake_case, gsu/gsU UPPER_CASE, gst Title Case, gss Sentence case, gs<space> space case, gs-/gsk dash-case or kebab-case, gsK Title-Dash-Case or Title-Kebab-Case, gs. dot.case
+  'arthurxavierx/vim-caser', -- https://github.com/arthurxavierx/vim-caser
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
