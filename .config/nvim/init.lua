@@ -347,6 +347,12 @@ function ToggleCase()
 end
 vim.api.nvim_set_keymap('v', '<M-U>', ':lua ToggleCase()<CR>', { noremap = true, silent = true })
 
+-- for terryma/vim-expand-region
+vim.cmd[[
+map <C-=> <Plug>(expand_region_expand)
+map <C-_> <Plug>(expand_region_shrink)
+]]
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -368,6 +374,7 @@ local plugins = {
   'tpope/vim-surround',
   -- gsm/gsp MixedCase, gsc camelCase, gs_ snake_case, gsu/gsU UPPER_CASE, gst Title Case, gss Sentence case, gs<space> space case, gs-/gsk dash-case or kebab-case, gsK Title-Dash-Case or Title-Kebab-Case, gs. dot.case
   'arthurxavierx/vim-caser', -- https://github.com/arthurxavierx/vim-caser
+  'terryma/vim-expand-region',
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
