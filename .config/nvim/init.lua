@@ -26,8 +26,8 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
--- -- disable statusline
--- vim.opt.laststatus = 0
+-- disable statusline
+vim.opt.laststatus = 0
 
 -- Finding files - Search down into subfolders
 vim.opt.path:append { '**' }
@@ -87,7 +87,7 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Vim: quit if buffer list is empty; https://superuser.com/questions/668528/vim-quit-if-buffer-list-is-empty
 vim.cmd[[
-autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
+" autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif      "" WARNING: can't not open help window
 func SmartQuit()
   if expand('%') == '' && ( len( filter( range(1, bufnr('$')),  'buflisted(v:val)' ) )  == 1 )
     exe 'quit!'
@@ -408,7 +408,7 @@ local plugins = {
   'lewis6991/gitsigns.nvim',
   'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
-  'nvim-lualine/lualine.nvim', -- Fancier statusline
+  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
     "folke/which-key.nvim",
@@ -556,17 +556,31 @@ vim.cmd.colorscheme "catppuccin"
 -- -- colorschme gruvbox-baby
 -- vim.cmd("colorscheme gruvbox-baby")
 
--- Set lualine as statusline
--- See `:help lualine.txt`
-require('lualine').setup({
-  options = {
-    section_separators = { left = '', right = '' },
-    component_separators = { left = '|', right = '|' }
-  }
-})
+-- -- Set lualine as statusline
+-- -- See `:help lualine.txt`
+-- require('lualine').setup({
+--   options = {
+--     section_separators = { left = '', right = '' },
+--     component_separators = { left = '|', right = '|' }
+--   }
+-- })
 
 -- for akinsho/bufferline.nvim
-require("bufferline").setup{}
+require("bufferline").setup{
+  options = {
+    diagnostics = "nvim_lsp",
+    diagnostics_update_in_insert = false,
+    diagnostics_indicator = function(count, level, diagnostics_dict, context)
+      local s = " "
+      for e, n in pairs(diagnostics_dict) do
+        local sym = e == "error" and "  "
+          or (e == "warning" and "  " or " 󰌶 " )
+        s = s .. n .. sym
+      end
+      return s
+    end,
+  },
+}
 vim.keymap.set('n', '<M-,>', ':BufferLineCyclePrev<CR>', options)
 vim.keymap.set('n', '<M-.>', ':BufferLineCycleNext<CR>', options)
 vim.keymap.set('n', '<M-<>', ':BufferLineMovePrev<CR>', options)
