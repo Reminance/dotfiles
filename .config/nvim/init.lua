@@ -85,11 +85,28 @@ vim.g.maplocalleader = ' '
 -- See `:help vim.keymap.set()`
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
+-- Vim: quit if buffer list is empty; https://superuser.com/questions/668528/vim-quit-if-buffer-list-is-empty
+vim.cmd[[
+autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif
+func SmartQuit()
+  if expand('%') == '' && ( len( filter( range(1, bufnr('$')),  'buflisted(v:val)' ) )  == 1 )
+    exe 'quit!'
+  else
+    exe 'bdel!'
+  endif
+endfunc
+nnoremap <silent> <C-q> :call SmartQuit()<CR>
+vnoremap <silent> <C-q> :call SmartQuit()<CR>
+inoremap <silent> <C-q> <Esc>:call SmartQuit()<CR>
+]]
+
 -- keymaps
 vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "R", "<nop>")
-vim.keymap.set("n", "<C-q>", ":q<CR>")
-vim.keymap.set("i", "<C-q>", "<ESC>:q<CR>")
+vim.keymap.set("n", "<C-M-q>", ":qa<CR>")
+vim.keymap.set("i", "<C-M-q>", "<ESC>:qa<CR>")
+vim.keymap.set("n", "<C-q>", ":bd<CR>")
+vim.keymap.set("i", "<C-q>", "<ESC>:bd<CR>")
 vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>")
 vim.keymap.set("i", "<C-n>", "<Down>")
@@ -139,23 +156,22 @@ vim.keymap.set("n", "<C-M-j>", ":res +1<CR>")
 vim.keymap.set("n", "<C-M-k>", ":res -1<CR>")
 vim.keymap.set("n", "<C-M-l>", ":vertical resize+1<CR>")
 
--- Tab Management
-vim.cmd [[
-" Tab Management
-nnoremap <M-n> :tabnew<CR>
-nnoremap <M-q> :tabclose<CR>
-" switching tabs
-nnoremap <M-,> :-tabnext<CR>
-nnoremap <M-.> :+tabnext<CR>
-" Move the tabs
-nnoremap <M-<> :-tabmove<CR>
-nnoremap <M->> :+tabmove<CR>
-" " Map alt-x keys to jump to a tab
-" for i in range(1, 8)
-"     exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
-" endfor
-" nnoremap <M-9> :tablast<CR>
-]]
+-- -- Tab Management
+-- vim.cmd [[
+-- nnoremap <M-n> :tabnew<CR>
+-- nnoremap <M-q> :tabclose<CR>
+-- " switching tabs
+-- nnoremap <M-,> :-tabnext<CR>
+-- nnoremap <M-.> :+tabnext<CR>
+-- " Move the tabs
+-- nnoremap <M-<> :-tabmove<CR>
+-- nnoremap <M->> :+tabmove<CR>
+-- " " Map alt-x keys to jump to a tab
+-- " for i in range(1, 8)
+-- "     exe "nnoremap <M-" . i . "> :tabnext " . i . "<CR>"
+-- " endfor
+-- " nnoremap <M-9> :tablast<CR>
+-- ]]
 
 -- yank to system clipboard
 vim.keymap.set("v", "Y", [["*y :let @+=@*<CR>]])
@@ -391,6 +407,7 @@ local plugins = {
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
   'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
+  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
   'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
@@ -548,6 +565,13 @@ require('lualine').setup({
   }
 })
 
+-- for akinsho/bufferline.nvim
+require("bufferline").setup{}
+vim.keymap.set('n', '<M-,>', ':BufferLineCyclePrev<CR>', options)
+vim.keymap.set('n', '<M-.>', ':BufferLineCycleNext<CR>', options)
+vim.keymap.set('n', '<M-<>', ':BufferLineMovePrev<CR>', options)
+vim.keymap.set('n', '<M->>', ':BufferLineMoveNext<CR>', options)
+
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- -- See `:help indent_blankline.txt`
 require("indent_blankline").setup {
@@ -567,6 +591,46 @@ require('gitsigns').setup {
   --   delay = 300,
   -- },
   -- current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+  on_attach = function(bufnr)
+    local gs = package.loaded.gitsigns
+
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
+
+    -- Navigation
+    map('n', ']c', function()
+      if vim.wo.diff then return ']c' end
+      vim.schedule(function() gs.next_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    map('n', '[c', function()
+      if vim.wo.diff then return '[c' end
+      vim.schedule(function() gs.prev_hunk() end)
+      return '<Ignore>'
+    end, {expr=true})
+
+    -- Actions
+    map('n', '<leader>hs', gs.stage_hunk)
+    map('n', '<leader>hr', gs.reset_hunk)
+    map('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+    map('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
+    map('n', '<leader>hS', gs.stage_buffer)
+    map('n', '<leader>hu', gs.undo_stage_hunk)
+    map('n', '<leader>hR', gs.reset_buffer)
+    map('n', '<leader>hp', gs.preview_hunk)
+    map('n', '<leader>hb', function() gs.blame_line{full=true} end)
+    map('n', '<leader>tb', gs.toggle_current_line_blame)
+    map('n', '<leader>hd', gs.diffthis)
+    map('n', '<leader>hD', function() gs.diffthis('~') end)
+    map('n', '<leader>td', gs.toggle_deleted)
+
+    -- Text object
+    map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
+  end
 }
 
 -- [[ Configure Telescope ]]
