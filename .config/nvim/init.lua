@@ -26,8 +26,8 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
--- disable statusline
-vim.opt.laststatus = 0
+-- -- disable statusline
+-- vim.opt.laststatus = 0
 
 -- Finding files - Search down into subfolders
 vim.opt.path:append { '**' }
@@ -391,7 +391,7 @@ local plugins = {
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
   'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
-  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
     "folke/which-key.nvim",
@@ -539,9 +539,14 @@ vim.cmd.colorscheme "catppuccin"
 -- -- colorschme gruvbox-baby
 -- vim.cmd("colorscheme gruvbox-baby")
 
--- -- Set lualine as statusline
--- -- See `:help lualine.txt`
--- require('lualine').setup()
+-- Set lualine as statusline
+-- See `:help lualine.txt`
+require('lualine').setup({
+  options = {
+    section_separators = { left = '', right = '' },
+    component_separators = { left = '|', right = '|' }
+  }
+})
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- -- See `:help indent_blankline.txt`
