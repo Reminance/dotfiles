@@ -118,8 +118,8 @@ vim.keymap.set({ 'i', 'c' }, "<C-a>", "<Home>")
 vim.keymap.set({ 'i', 'c' }, "<C-e>", "<End>")
 vim.keymap.set({ 'i', 'c' }, "<M-b>", "<S-Left>")
 vim.keymap.set({ 'i', 'c' }, "<M-f>", "<S-Right>")
--- Allow saving of files as sudo when I forgot to start vim using sudo.
-vim.keymap.set('c', "w!!", "w !sudo tee > /dev/null %")
+-- -- Allow saving of files as sudo when I forgot to start vim using sudo.
+-- vim.keymap.set('c', "w!!", "w !sudo tee > /dev/null %") -- use https://github.com/lambdalisue/suda.vim instead
 
 -- move selected lines up/down and keep selected
 vim.keymap.set("v", "J", ":move '>+1<CR>gv=gv")
@@ -369,6 +369,9 @@ map <C-=> <Plug>(expand_region_expand)
 map <C-_> <Plug>(expand_region_shrink)
 ]]
 
+-- suda.vim
+vim.cmd('let g:suda_smart_edit = 1')
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -391,6 +394,7 @@ local plugins = {
   -- gsm/gsp MixedCase, gsc camelCase, gs_ snake_case, gsu/gsU UPPER_CASE, gst Title Case, gss Sentence case, gs<space> space case, gs-/gsk dash-case or kebab-case, gsK Title-Dash-Case or Title-Kebab-Case, gs. dot.case
   'arthurxavierx/vim-caser', -- https://github.com/arthurxavierx/vim-caser
   'terryma/vim-expand-region',
+  'lambdalisue/suda.vim',
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
