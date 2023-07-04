@@ -95,9 +95,9 @@ func SmartQuit()
     exe 'bdel!'
   endif
 endfunc
-nnoremap <silent> <C-q> :call SmartQuit()<CR>
-vnoremap <silent> <C-q> :call SmartQuit()<CR>
-inoremap <silent> <C-q> <Esc>:call SmartQuit()<CR>
+nnoremap <silent> <M-q> :call SmartQuit()<CR>
+vnoremap <silent> <M-q> :call SmartQuit()<CR>
+inoremap <silent> <M-q> <Esc>:call SmartQuit()<CR>
 ]]
 
 -- keymaps
@@ -105,8 +105,9 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "R", "<nop>")
 vim.keymap.set("n", "<C-M-q>", ":qa<CR>")
 vim.keymap.set("i", "<C-M-q>", "<ESC>:qa<CR>")
--- vim.keymap.set("n", "<C-q>", ":bd<CR>")
--- vim.keymap.set("i", "<C-q>", "<ESC>:bd<CR>")
+vim.keymap.set("n", "<C-q>", ":q<CR>")
+vim.keymap.set("i", "<C-q>", "<ESC>:q<CR>")
+vim.keymap.set("v", "<C-q>", "<ESC>:q<CR>")
 vim.keymap.set("n", "<C-s>", ":w<CR>")
 vim.keymap.set("i", "<C-s>", "<ESC>:w<CR>")
 vim.keymap.set("i", "<C-n>", "<Down>")

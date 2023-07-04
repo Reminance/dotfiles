@@ -127,6 +127,7 @@ nnoremap R <nop>
 nnoremap Q <nop>
 nnoremap <C-q> :q<CR>
 inoremap <C-q> <Esc>:q<CR>
+vnoremap <C-q> <Esc>:q<CR>
 nnoremap <Leader>qq :q!<CR>
 " quit all the other windows except for current  " (:h only)(<C-w>o)
 nnoremap <Leader>qw :only<CR>
