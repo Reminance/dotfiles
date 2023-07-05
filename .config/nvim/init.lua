@@ -401,12 +401,9 @@ local plugins = {
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
-  'connorholyday/vim-snazzy',
-  'dracula/vim',
+  -- 'connorholyday/vim-snazzy',
+  -- 'dracula/vim',
   { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
-  {"rebelot/kanagawa.nvim"},
-  {'jacoborus/tender.vim'},
-  {'luisiacc/gruvbox-baby'},
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   'mbbill/undotree',
   'tpope/vim-fugitive',
@@ -540,26 +537,20 @@ vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", { noremap = 
 -- -- for snazzy
 -- vim.g["SnazzyTransparent"] = 1
 -- vim.cmd('colorscheme snazzy')
+-- vim.cmd('hi Folded guifg=#d78787 guibg=None gui=bold')
 
 -- -- for dracula/vim
+-- vim.cmd('let g:dracula_colorterm = 0')  -- for transparency
 -- vim.cmd('colorscheme dracula')
+-- vim.cmd('hi Folded guifg=#d75f87 guibg=None gui=bold')
 
 -- for catppuccin/nvim
 require("catppuccin").setup({
-  flavour = "mocha",             -- latte, frappe, macchiato, mocha
   transparent_background = true, -- disables setting the background color.
 })
 -- setup must be called before loading
 vim.cmd.colorscheme "catppuccin"
-
--- -- colorschme kanagawa.nvim
--- vim.cmd("colorscheme kanagawa")
-
--- -- colorschme tender.vim
--- vim.cmd("colorscheme tender")
-
--- -- colorschme gruvbox-baby
--- vim.cmd("colorscheme gruvbox-baby")
+vim.cmd('hi Folded guibg=None gui=bold')
 
 -- -- Set lualine as statusline
 -- -- See `:help lualine.txt`
@@ -584,6 +575,9 @@ require("bufferline").setup{
       end
       return s
     end,
+    offsets = {
+      { filetype = "NvimTree", text = "File Explorer", highlight = "Directory", text_align = "left" }
+    },
   },
 }
 vim.keymap.set('n', '<M-,>', ':BufferLineCyclePrev<CR>', options)
@@ -593,6 +587,7 @@ vim.keymap.set('n', '<M->>', ':BufferLineMoveNext<CR>', options)
 
 -- Enable `lukas-reineke/indent-blankline.nvim`
 -- -- See `:help indent_blankline.txt`
+vim.cmd("let g:indent_blankline_filetype_exclude = ['help', 'startify', 'fzf', 'lspinfo', 'lazy', 'checkhealth', 'man', '']")
 require("indent_blankline").setup {
   -- for example, context is off by default, use this to turn it on
   -- show_current_context = true,
