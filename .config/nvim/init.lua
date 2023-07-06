@@ -87,7 +87,6 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Vim: quit if buffer list is empty; https://superuser.com/questions/668528/vim-quit-if-buffer-list-is-empty
 vim.cmd[[
-" autocmd BufDelete * if len(filter(range(1, bufnr('$')), '! empty(bufname(v:val)) && buflisted(v:val)')) == 1 | quit | endif      "" WARNING: can't not open help window
 func SmartQuit()
   if expand('%') == '' && ( len( filter( range(1, bufnr('$')),  'buflisted(v:val)' ) )  == 1 )
     exe 'quit!'
