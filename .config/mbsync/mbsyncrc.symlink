@@ -26,7 +26,7 @@ SyncState *
 
 IMAPAccount work
 Host imap.exmail.qq.com
-User xucheng2@shein.com
+User xucheng2@work-account.com
 PassCmd "cat ~/.mbsyncpass_work"
 Port 993
 SSLType IMAPS

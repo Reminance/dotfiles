@@ -500,9 +500,9 @@
 ;;           :match-func (lambda (msg)
 ;;                         (when msg
 ;;                           (string-match-p "^/work" (mu4e-message-field msg :maildir))))
-;;           :vars '((user-mail-address . "xucheng2@shein.com")
+;;           :vars '((user-mail-address . "xucheng2@work-account.com")
 ;;                   (user-full-name . "xucheng2")
-;;                   (smtpmail-smtp-user  . "xucheng2@shein.com")
+;;                   (smtpmail-smtp-user  . "xucheng2@work-account.com")
 ;;                   (smtpmail-smtp-server  . "smtp.exmail.qq.com")
 ;;                   (smtpmail-smtp-service . 465)
 ;;                   (smtpmail-stream-type  . ssl)
