@@ -372,6 +372,9 @@ map <C-_> <Plug>(expand_region_shrink)
 -- suda.vim
 vim.cmd('let g:suda_smart_edit = 1')
 
+-- for liuchengxu/vista.vim
+vim.keymap.set("n", "\\", ":Vista!!<CR>", { noremap = true, silent = true })
+
 local options = { noremap = true, silent = true }
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -395,6 +398,7 @@ local plugins = {
   'arthurxavierx/vim-caser', -- https://github.com/arthurxavierx/vim-caser
   'terryma/vim-expand-region',
   'lambdalisue/suda.vim',
+  'liuchengxu/vista.vim',
   -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim',   branch = '0.1.x',    dependencies = { 'nvim-lua/plenary.nvim' } },
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
@@ -582,7 +586,7 @@ require("bufferline").setup{
       return s
     end,
     offsets = {
-      { filetype = "NvimTree", text = "File Explorer", highlight = "Directory", text_align = "left" }
+      { filetype = "NvimTree", text = "Explorer", highlight = "Directory", text_align = "center" },
     },
   },
 }
@@ -708,7 +712,7 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sK', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
---  -- vim-floaterm
+-- -- vim-floaterm
 -- -- " set floaterm window's background to black
 -- vim.cmd[[hi floaterm guibg=black]]
 -- -- " set floating window border line color to cyan, and background to orange
