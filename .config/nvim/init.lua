@@ -279,6 +279,8 @@ func! CompileRunGcc()
     elseif &filetype == 'lua'
         " :FloatermNew --autoclose=0 time lua %
         :TermExec cmd="time lua %"
+    elseif &filetype == 'typescript'
+        :TermExec cmd="time tsc % && node %<.js"
     " elseif &filetype == 'html'
     "     silent! exec "!".g:mkdp_browser." % &"
     " elseif &filetype == 'vimwiki'
@@ -453,13 +455,10 @@ local plugins = {
   { "folke/neodev.nvim",       opts = {} },
   -- LSP Support
   { 'neovim/nvim-lspconfig' }, -- Required
-  -- {
-  --   "jose-elias-alvarez/null-ls.nvim",
-  --   -- config = function()
-  --   --   require("null-ls").setup()
-  --   -- end,
-  --   requires = { "nvim-lua/plenary.nvim" },
-  -- },
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
+  },
   {
     "williamboman/mason.nvim",
     build = ":MasonUpdate"                 -- :MasonUpdate updates registry contents
@@ -754,18 +753,19 @@ require("diffview").setup({
   enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
 })
 
--- -- for jose-elias-alvarez/null-ls.nvim
--- local null_ls = require("null-ls")
---
--- null_ls.setup({
---     sources = {
---         null_ls.builtins.formatting.stylua,
---         null_ls.builtins.diagnostics.eslint,
---         null_ls.builtins.completion.spell,
---         null_ls.builtins.diagnostics.mypy,
---         null_ls.builtins.diagnostics.ruff,
---     },
--- })
+-- for jose-elias-alvarez/null-ls.nvim
+local null_ls = require("null-ls")
+
+null_ls.setup({
+  sources = {
+    -- null_ls.builtins.formatting.stylua,
+    -- null_ls.builtins.diagnostics.eslint,
+    -- null_ls.builtins.completion.spell,
+    -- null_ls.builtins.diagnostics.mypy,
+    -- null_ls.builtins.diagnostics.ruff,
+    null_ls.builtins.formatting.black
+  },
+})
 
 -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
 require("neodev").setup({
