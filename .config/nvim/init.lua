@@ -1156,6 +1156,12 @@ dap.adapters.codelldb = {
     -- CHANGE THIS to your path!
     command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
     args = { "--port", "${port}" },
+    -- args = {
+    -- "--port", "${port}",
+    --   function()
+    --     return vim.fn.input('Arguments: ')
+    --   end,
+    -- },
 
     -- On windows you may have to uncomment this:
     -- detached = false,
@@ -1169,6 +1175,11 @@ dap.configurations.cpp = {
     program = function()
       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
     end,
+    -- args = {
+    --   function()
+    --     return vim.fn.input('Arguments: ')
+    --   end,
+    -- },
     cwd = '${workspaceFolder}',
     stopOnEntry = false,
   },
