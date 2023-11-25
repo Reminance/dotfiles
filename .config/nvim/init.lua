@@ -26,7 +26,7 @@ vim.opt.incsearch = true
 -- Enable mouse mode
 vim.o.mouse = 'a'
 
--- vim substitute command
+-- vim substitute command -- vim 正则匹配替换与引用
 -- :%s/\(\w\+\)/select '\1' tableName, id, create_time from \1 order by id desc limit 1/g
 -- select 'table_name' tableName, id, create_time from table_name order by id desc limit 1
 -- 在上述命令中，:%s 表示将整个文件中的匹配项替换为指定文本。\(\w\+\) 表示用于匹配每个表名的正则表达式，其中 \w\+ 表示匹配任何连续的字母、数字或下划线。\1 表示反向引用前面的括号，即所匹配的表名。而 select '\1' tableName, id, create_time from \1 order by id desc limit 1 则是用于替换的 SQL 语句。/g 则表示替换所有匹配项。
@@ -34,6 +34,9 @@ vim.o.mouse = 'a'
 -- apple, banana, cherry, date, elderberry
 -- 'apple', 'banana', 'cherry', 'date', 'elderberry'
 -- 在上述命令中，% 表示将整个文件加载到 vim 缓冲区域中进行操作 s 表示代表 substitute - 替代。 \w\+ 匹配一个或多个单词字符，即匹配任何连续的字母、数字或下划线。'&' 代表当前匹配的文本本身，即标记要被占位符拼接的文本。g 则表示要替换所有匹配项而不仅仅是第一个。
+--
+-- plantuml entiry --> Table
+-- :%s/entity ""\<\(\w\+\)\>"/Table("\1"")/g
 
 -- disable statusline
 vim.opt.laststatus = 0
