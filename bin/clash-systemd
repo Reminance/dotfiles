@@ -15,3 +15,9 @@ ExecReload=/usr/local/bin/clash-linux-armv7-v1.0.0 -d /usr/local/bin/
 
 [Install]
 WantedBy=multi-user.target
+
+# cp clash.service /lib/systemd/system/
+# systemctl daemon-reload
+# systemctl start clash.service
+# journalctl -u clash.service
+# systemctl enable clash.service
