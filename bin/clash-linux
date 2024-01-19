@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Country.mmdb
+# https://github.com/Dreamacro/maxmind-geoip/releases
+#
+# https://github.com/Kuingsmile/clash-core/releases 下载clash-linux-armv7(for raspberry pi)
+# https://www.clash.la/releases/ 下载clash-linux-armv7(for raspberry pi)
+#
+# config.yaml(订阅配置)
+#
+# ./clash-linux-armv7-v1.18.0 -d .

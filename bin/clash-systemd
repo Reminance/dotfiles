@@ -1,0 +1,17 @@
+#!/bin/sh
+
+[Unit]
+Description=Clash Service
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+Restart=on-failure
+RestartSec=5s
+ExecStart=/usr/local/bin/clash-linux-armv7-v1.0.0 -d /usr/local/bin/
+ExecStop=/bin/kill $MAINPID
+ExecReload=/usr/local/bin/clash-linux-armv7-v1.0.0 -d /usr/local/bin/
+
+[Install]
+WantedBy=multi-user.target
