@@ -5,6 +5,7 @@
 #
 # https://github.com/Kuingsmile/clash-core/releases 下载clash-linux-armv7(for raspberry pi)
 # https://www.clash.la/releases/ 下载clash-linux-armv7(for raspberry pi)
+# gzip -d clash-linux-armv7-v1.18.0.gz
 #
 # config.yaml(订阅配置)
 #
