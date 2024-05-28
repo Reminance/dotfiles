@@ -30,7 +30,7 @@ alias cat='bat'
 
 # alias proxys="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890 && curl ip.sb"
 # alias proxys="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
-alias proxys="export https_proxy=http://192.168.1.100:7890 http_proxy=http://192.168.1.100:7890 all_proxy=socks5://192.168.1.100:7890"
+alias proxys="export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 all_proxy=socks5://127.0.0.1:7890"
 alias proxyu="unset http_proxy https_proxy all_proxy"
 
 # pacman
