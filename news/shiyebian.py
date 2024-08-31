@@ -27,6 +27,7 @@ data = soup.find('ul', class_ = 'more-list')
 for i, li in enumerate(data.find_all('li'), start=1):
     title = li.find('span').text + " " + li.a.text
     content += f"- {i}、[{title}]({urljoin(url, li.a.get('href'))})\n"
+print("广西壮族自治区教育厅 完成")
 
 content += "### 广西南宁市教育局\n"
 url = "https://jy.nanning.gov.cn/xxgk/fdzdgknr/rsxx/klzpygs/"
@@ -40,6 +41,7 @@ for i, li in enumerate(data.find('ul').find_all('li'), start=1):
         title = time_str + " " + li.a.get_text(strip=True)
         url_inner = li.find('a')['href'] if li.find('a') else '#'
         content += f"- {i}、[{title}]({urljoin(url, url_inner)})\n"
+print("广西南宁市教育局 完成")
 
 # 抓取页面静态内容
 def fetch_dynamic_content(url):
@@ -70,12 +72,17 @@ if not ul_element:
     exit(0)
 for i, li in enumerate(ul_element.find_all('li'), start=1):
     time_str = li.find('div', class_ = 'date').span.text
-    title = time_str + " " + li.find('div', class_ = 'tit').a.get_text(strip=True) + " " + li.find('div', class_ = 'date').text
+    for cite in li.find_all('cite'):
+        cite.extract()
     url_inner = li.find('a')['onclick'] if li.find('a') else '#'
     match = re.search(r"goToMenu\('([^']+)'\)", url_inner)
     url_inner = match.group(1) if match else ""
     real_url = urljoin(urlparse(url).scheme + "://" + urlparse(url).netloc, "/market" + url_inner)
+    for span in li.find('div', class_ = 'date').find_all('span'):
+        span.extract()
+    title = time_str + " " + li.find('div', class_ = 'tit').a.get_text(strip=True) + " " + li.find('div', class_ = 'date').get_text(strip=True)
     content += f"- {i}、[{title}]({real_url})\n"
+print("广西就业平台 事业单位招聘专栏 完成")
 
 content += "### 南宁人才网\n"
 url = "http://0771.gxrcw.com/news/classsub.aspx?classid=1058"
@@ -89,6 +96,7 @@ for i, li in enumerate(data.find('ul').find_all('li'), start=1):
         title = time_str + " " + li.b.a.get_text(strip=True)
         url_inner = li.find('a')['href'] if li.find('a') else '#'
         content += f"- {i}、[{title}]({urljoin(url, url_inner)})\n"
+print("南宁人才网 完成")
 
 content += "### 广西人事考试网\n"
 url = "https://www.gxpta.com.cn/ksxm/sydwzpks/"
@@ -102,6 +110,7 @@ for i, li in enumerate(data.find_all('li'), start=1):
         title = time_str + " " + li.a.get_text(strip=True)
         url_inner = li.find('a')['href'] if li.find('a') else '#'
         content += f"- {i}、[{title}]({urljoin(url, url_inner)})\n"
+print("广西人事考试网 完成")
 
 content += "### 事业编考试信息发布站\n"
 url = "https://www.shiyebian.net/guangxi/nanning/index.html"
@@ -118,6 +127,7 @@ for _, ul in enumerate(data.find_all('ul'), start=1):
             title = time_str + " " + li.a.get_text(strip=True)
             url_inner = li.find('a')['href'] if li.find('a') else '#'
             content += f"- {i}、[{title}]({urljoin(url, url_inner)})\n"
+print("事业编考试信息发布站 完成")
 
 content += "### 华图教育 人事考试\n"
 url = "https://nanning.huatu.com/"
@@ -135,6 +145,7 @@ for i, li in enumerate(data.ul.find_all('li'), start=1):
         title = time_str + " " + li.a.get_text(strip=True) + " " + li.mark.text
         url = li.find('a')['href'] if li.find('a') else '#'
         content += f"- {i}、[{title}]({url})\n"
+print("华图教育 人事考试 完成")
 
 print(content)
 
