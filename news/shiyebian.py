@@ -139,13 +139,15 @@ for i, li in enumerate(data.ul.find_all('li'), start=1):
 print(content)
 
 # 获取UID https://wxpusher.zjiecode.com/demo
+# IyDpk77mjqXlhbPms6jlupTnlKggaHR0cHM6Ly93eHB1c2hlci56amllY29kZS5jb20vd3h1c2VyLz90eXBlPTEmaWQ9ODI1OTIjL2ZvbGxvdwojIOmTvuaOpeWFs+azqFJlbWluYW5jZSB0b3BpYzogaHR0cHM6Ly93eHB1c2hlci56amllY29kZS5jb20vd3h1c2VyLz90eXBlPTImaWQ9MzMwOTQjL2ZvbGxvdwo=
 # 内容类型 1表示文字  2表示html(只发送body标签内部的数据即可，不包括body标签，推荐使用这种) 3表示markdown 
 WxPusher.send_message(
-        # uids=[''],
-        topic_ids=[''],
         content_type=3,
         content=content,
         summary=summary,
+        topic_ids=[''],
+        # uids=[''],
         token=''
+        #ICAgICAgICB0b3BpY19pZHM9WyczMzA5NCddLAogICAgICAgICMgdWlkcz1bJ1VJRF9KYlBWc3VENTk0a2RlSUJaTlFBbnk2Tm1PZlN6J10sCiAgICAgICAgdG9rZW49J0FUX1hibzdWdno5Y2VVSW8xNXZ0bkUzTE1oeUdZWXFuNDZnJwo=
         )
 
