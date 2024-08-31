@@ -505,7 +505,7 @@ local plugins = {
       { "leoluz/nvim-dap-go" },
     }
   },
-  'mfussenegger/nvim-jdtls',
+  -- 'mfussenegger/nvim-jdtls',
   'github/copilot.vim',
   -- -- markdown-preview
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
@@ -827,7 +827,7 @@ require('mason-lspconfig').setup({
     'pyright',  -- Pandas ExcelWriter Generates 'Cannot Instantiate Abstract Class' Error Incorrectly; https://github.com/microsoft/pylance-release/issues/386; pip install pandas-stubs; should solve this problem
     'clangd',
     'gopls',
-    'jdtls',
+    -- 'jdtls',
     'tsserver',
     -- 'rust_analyzer',
   },
@@ -917,7 +917,7 @@ end
 -- nvim-treesitter
 require 'nvim-treesitter.configs'.setup {
   -- A list of parser names, or "all"
-  ensure_installed = { "c", "cpp", "make", "cmake", "dockerfile", "go", "java", "lua", "python", "rust", "html",
+  ensure_installed = { "c", "cpp", "make", "cmake", "dockerfile", "go", "lua", "python", "rust", "html",
     "javascript", "css", "toml", "vim", "json", "yaml" },
 
   -- Install languages synchronously (only applied to `ensure_installed`)
