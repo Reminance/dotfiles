@@ -15,7 +15,7 @@ from urllib.parse import urljoin, urlparse
 from wxpusher import WxPusher
 from loguru import logger as log
 
-log.add(f"{os.environ['HOME']}/news.log", rotation="200KB")
+log.add(f"{os.environ['HOME']}/shiyebian.log", rotation="200KB")
 
 today = datetime.date.today().strftime('%Y-%m-%d')
 summary = f"{today}每日微语 - 事业编"
