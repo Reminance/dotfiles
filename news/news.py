@@ -4,145 +4,171 @@ import requests
 import datetime
 import re
 import json
+import os
 from wxpusher import WxPusher
 from urllib.parse import quote
+from loguru import logger as log
+
+log.add(f"{os.environ['HOME']}/news.log", rotation="200KB")
 
 today = datetime.date.today().strftime('%Y-%m-%d')
 summary = f"{today}每日微语 - 新闻"
 content = f"### {summary}\n"
 
+# 澎湃热榜
+log.info("开始抓取澎湃热榜")
 content += f"##### 澎湃热榜\n"
 url = 'https://cache.thepaper.cn/contentapi/wwwIndex/rightSidebar'
-response = requests.get(url)
-if response.status_code != 200:
-    print('thepaper response not 200')
-    exit(0)
-
-list_data = response.json()['data']['hotNews']
-i = 0
-for news in list_data:
-    i += 1
-    url = f"https://www.thepaper.cn/newsDetail_forward_{news['contId']}"
-    title = news['name']
-    # content += f"<div><span id=\"index\">{i}.</span><a target=]=\"_blank\" href=\"{url}\">  {title}</a></div>"
-    content += f"- {i}、[{title}]({url})\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', {}).get('hotNews', [])
+    for i, news in enumerate(list_data, start=1):
+        url = f"https://www.thepaper.cn/newsDetail_forward_{news['contId']}"
+        title = news['name']
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"澎湃热榜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
 content += "\n"
 
-# type: { realtime: "热搜", novel: "小说", movie: "电影", teleplay: "电视剧", car: "汽车", game: "游戏", }
+# 百度热搜
+log.info("开始抓取百度热搜")
 content += f"##### 百度热搜\n"
 type = 'realtime'
 url = f'https://top.baidu.com/board?tab={type}'
 headers = {
     "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) FxiOS/1.0 Mobile/12F69 Safari/605.1.15"
 }
-response = requests.get(url, headers=headers)
-if response.status_code != 200:
-    print('baidu response not 200')
-    exit(0)
-pattern = re.compile(r'<!--s-data:(.*?)-->', re.S)
-match_result = pattern.search(response.text)
-if not match_result:
-    print( "No matching data found.")
-    exit(0)
-json_object = json.loads(match_result.group(1)).get('cards')[0].get('content')
-for i, v in enumerate(json_object, start=1):
-    title = v.get('word')
-    url = f"https://www.baidu.com/s?wd={quote(v.get('query'))}"
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    pattern = re.compile(r'<!--s-data:(.*?)-->', re.S)
+    match_result = pattern.search(response.text)
+    if match_result:
+        json_object = json.loads(match_result.group(1)).get('cards')[0].get('content')
+        for i, v in enumerate(json_object, start=1):
+            title = v.get('word')
+            url = f"https://www.baidu.com/s?wd={quote(v.get('query'))}"
+            content += f"- {i}、[{title}]({url})\n"
+    else:
+        log.error("未找到百度热搜匹配数据")
+except Exception as e:
+    log.error(f"百度热搜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# 头条热榜
+log.info("开始抓取头条热榜")
 content += f"##### 头条热榜\n"
 url = 'https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc'
-response = requests.get(url)
-if response.status_code != 200:
-    print('toutiao response not 200')
-    exit(0)
-list_data = response.json().get('data')
-for i, v in enumerate(list_data, start=1):
-    title = v.get('Title')
-    url = f"https://www.toutiao.com/trending/{v.get('ClusterIdStr')}/"
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
-        
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', [])
+    for i, v in enumerate(list_data, start=1):
+        title = v.get('Title')
+        url = f"https://www.toutiao.com/trending/{v.get('ClusterIdStr')}/"
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"头条热榜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
+
+# 网易热点
+log.info("开始抓取网易热点")
 content += f"##### 网易热点\n"
 url = 'https://m.163.com/fe/api/hot/news/flow'
-response = requests.get(url)
-if response.status_code != 200:
-    print('netease response not 200')
-    exit(0)
-list_data = response.json().get('data').get('list')
-for i, v in enumerate(list_data, start=1):
-    title = v.get('title')
-    url = f"https://www.163.com/dy/article/{v.get('docid')}.html"
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', {}).get('list', [])
+    for i, v in enumerate(list_data, start=1):
+        title = v.get('title')
+        url = f"https://www.163.com/dy/article/{v.get('docid')}.html"
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"网易热点抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# 知乎热榜
+log.info("开始抓取知乎热榜")
 content += f"##### 知乎热榜\n"
 url = 'https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=50&desktop=true'
-response = requests.get(url)
-if response.status_code != 200:
-    print('zhihu response not 200')
-    exit(0)
-list_data = response.json().get('data')
-for i, v in enumerate(list_data, start=1):
-    data = v.get('target')
-    title = data.get('title')
-    url = f"https://www.zhihu.com/question/{data.get('id')}"
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', [])
+    for i, v in enumerate(list_data, start=1):
+        data = v.get('target')
+        title = data.get('title')
+        url = f"https://www.zhihu.com/question/{data.get('id')}"
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"知乎热榜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# 知乎日报
+log.info("开始抓取知乎日报")
 content += f"##### 知乎日报\n"
 url = 'https://daily.zhihu.com/api/4/news/latest'
-response = requests.get(url)
-if response.status_code != 200:
-    print('zhihu response not 200')
-    exit(0)
-list_data = response.json().get('stories')
-for i, v in enumerate(list_data, start=1):
-    title = v.get('title')
-    url = v.get('url')
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('stories', [])
+    for i, v in enumerate(list_data, start=1):
+        title = v.get('title')
+        url = f"https://daily.zhihu.com/story/{v.get('id')}"
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"知乎日报抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# 新浪热榜
+log.info("开始抓取新浪热榜")
 content += f"##### 新浪热榜\n"
-url = f"https://newsapp.sina.cn/api/hotlist?newsId=HB-1-snhs%2Ftop_news_list-all"
-response = requests.get(url)
-if response.status_code != 200:
-    print('hellogithub response not 200')
-    exit(0)
-list_data = response.json().get('data').get('hotList')
-for i, v in enumerate(list_data, start=1):
-    title = v['info']['title'] + " 热度:" + v['info']['hotValue']
-    url = v['base']['base']['url']
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+url = 'https://newsapp.sina.cn/api/hotlist?newsId=HB-1-snhs%2Ftop_news_list-all'
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', {}).get('hotList', [])
+    for i, v in enumerate(list_data, start=1):
+        title = v['info']['title'] + " 热度:" + v['info']['hotValue']
+        url = v['base']['base']['url']
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"新浪热榜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# 腾讯新闻热点榜
+log.info("开始抓取腾讯新闻热点榜")
 content += f"##### 腾讯新闻热点榜\n"
 url = 'https://r.inews.qq.com/gw/event/hot_ranking_list?page_size=20'
-response = requests.get(url)
-if response.status_code != 200:
-    print('zhihu response not 200')
-    exit(0)
-list_data = response.json().get('idlist')[0]['newslist']
-list_data = list_data[1:]
-for i, v in enumerate(list_data, start=1):
-    title = v.get('title')
-    url = v.get('url')
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('idlist', [])[0]['newslist']
+    list_data = list_data[1:]
+    for i, v in enumerate(list_data, start=1):
+        title = v.get('title')
+        url = v.get('url')
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"腾讯新闻热点榜抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
+# HelloGitHub
+log.info("开始抓取HelloGitHub")
 content += f"##### hellogithub\n"
 url = 'https://abroad.hellogithub.com/v1/?sort_by=featured&tid=&page=1'
-response = requests.get(url)
-if response.status_code != 200:
-    print('hellogithub response not 200')
-    exit(0)
-list_data = response.json().get('data')
-for i, v in enumerate(list_data, start=1):
-    title = v.get('title')
-    url = f"https://hellogithub.com/repository/{v['item_id']}"
-    content += f"- {i}、[{title}]({url})\n"
-content+= "\n"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    list_data = response.json().get('data', [])
+    for i, v in enumerate(list_data, start=1):
+        title = v.get('title')
+        url = f"https://hellogithub.com/repository/{v['item_id']}"
+        content += f"- {i}、[{title}]({url})\n"
+except Exception as e:
+    log.error(f"HelloGitHub抓取失败: {e}. Response text: {locals().get('response', {}).text}")
+content += "\n"
 
 print(content)
 
