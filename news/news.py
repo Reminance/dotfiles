@@ -5,12 +5,12 @@ import datetime
 import re
 import json
 from wxpusher import WxPusher
+from urllib.parse import quote
 
 today = datetime.date.today().strftime('%Y-%m-%d')
 summary = f"{today}每日微语 - 新闻"
 content = f"### {summary}\n"
 
-# 澎湃
 content += f"##### 澎湃热榜\n"
 url = 'https://cache.thepaper.cn/contentapi/wwwIndex/rightSidebar'
 response = requests.get(url)
@@ -28,7 +28,6 @@ for news in list_data:
     content += f"- {i}、[{title}]({url})\n"
 content += "\n"
 
-# 百度
 # type: { realtime: "热搜", novel: "小说", movie: "电影", teleplay: "电视剧", car: "汽车", game: "游戏", }
 content += f"##### 百度热搜\n"
 type = 'realtime'
@@ -48,11 +47,10 @@ if not match_result:
 json_object = json.loads(match_result.group(1)).get('cards')[0].get('content')
 for i, v in enumerate(json_object, start=1):
     title = v.get('word')
-    url = f"https://www.baidu.com/s?wd={v.get('query')}"
+    url = f"https://www.baidu.com/s?wd={quote(v.get('query'))}"
     content += f"- {i}、[{title}]({url})\n"
 content+= "\n"
 
-# 头条
 content += f"##### 头条热榜\n"
 url = 'https://www.toutiao.com/hot-event/hot-board/?origin=toutiao_pc'
 response = requests.get(url)
@@ -66,7 +64,6 @@ for i, v in enumerate(list_data, start=1):
     content += f"- {i}、[{title}]({url})\n"
 content+= "\n"
         
-# 网易
 content += f"##### 网易热点\n"
 url = 'https://m.163.com/fe/api/hot/news/flow'
 response = requests.get(url)
@@ -80,7 +77,6 @@ for i, v in enumerate(list_data, start=1):
     content += f"- {i}、[{title}]({url})\n"
 content+= "\n"
 
-# 知乎
 content += f"##### 知乎热榜\n"
 url = 'https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=50&desktop=true'
 response = requests.get(url)
@@ -94,8 +90,61 @@ for i, v in enumerate(list_data, start=1):
     url = f"https://www.zhihu.com/question/{data.get('id')}"
     content += f"- {i}、[{title}]({url})\n"
 content+= "\n"
-print(content)
 
+content += f"##### 知乎日报\n"
+url = 'https://daily.zhihu.com/api/4/news/latest'
+response = requests.get(url)
+if response.status_code != 200:
+    print('zhihu response not 200')
+    exit(0)
+list_data = response.json().get('stories')
+for i, v in enumerate(list_data, start=1):
+    title = v.get('title')
+    url = v.get('url')
+    content += f"- {i}、[{title}]({url})\n"
+content+= "\n"
+
+content += f"##### 新浪热榜\n"
+url = f"https://newsapp.sina.cn/api/hotlist?newsId=HB-1-snhs%2Ftop_news_list-all"
+response = requests.get(url)
+if response.status_code != 200:
+    print('hellogithub response not 200')
+    exit(0)
+list_data = response.json().get('data').get('hotList')
+for i, v in enumerate(list_data, start=1):
+    title = v['info']['title'] + " 热度:" + v['info']['hotValue']
+    url = v['base']['base']['url']
+    content += f"- {i}、[{title}]({url})\n"
+content+= "\n"
+
+content += f"##### 腾讯新闻热点榜\n"
+url = 'https://r.inews.qq.com/gw/event/hot_ranking_list?page_size=20'
+response = requests.get(url)
+if response.status_code != 200:
+    print('zhihu response not 200')
+    exit(0)
+list_data = response.json().get('idlist')[0]['newslist']
+list_data = list_data[1:]
+for i, v in enumerate(list_data, start=1):
+    title = v.get('title')
+    url = v.get('url')
+    content += f"- {i}、[{title}]({url})\n"
+content+= "\n"
+
+content += f"##### hellogithub\n"
+url = 'https://abroad.hellogithub.com/v1/?sort_by=featured&tid=&page=1'
+response = requests.get(url)
+if response.status_code != 200:
+    print('hellogithub response not 200')
+    exit(0)
+list_data = response.json().get('data')
+for i, v in enumerate(list_data, start=1):
+    title = v.get('title')
+    url = f"https://hellogithub.com/repository/{v['item_id']}"
+    content += f"- {i}、[{title}]({url})\n"
+content+= "\n"
+
+print(content)
 
 # 获取UID https://wxpusher.zjiecode.com/demo
 # IyDpk77mjqXlhbPms6jlupTnlKggaHR0cHM6Ly93eHB1c2hlci56amllY29kZS5jb20vd3h1c2VyLz90eXBlPTEmaWQ9ODI1OTIjL2ZvbGxvdwojIOmTvuaOpeWFs+azqFJlbWluYW5jZSB0b3BpYzogaHR0cHM6Ly93eHB1c2hlci56amllY29kZS5jb20vd3h1c2VyLz90eXBlPTImaWQ9MzMwOTQjL2ZvbGxvdwo=
