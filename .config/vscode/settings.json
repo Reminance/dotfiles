@@ -16,5 +16,15 @@
   "workbench.statusBar.visible": false,
   "window.commandCenter": false,
   "terminal.external.osxExec": "Terminal.app",
-  "editor.lineNumbers": "relative"
+  "editor.lineNumbers": "relative",
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      80
+    ],
+    "editor.selectionHighlight": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off"
+  }
 }
