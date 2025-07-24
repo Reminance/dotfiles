@@ -16,7 +16,7 @@
         ui = true
 [core]
         excludesfile = ~/.gitignore
-        pager = delta
+	pager = delta --line-numbers --dark
 	compression = 0
 	autocrlf = input
 [interactive]
