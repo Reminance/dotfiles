@@ -465,7 +465,7 @@ local plugins = {
   { "akinsho/toggleterm.nvim", version = '*',                         opts = { --[[ things you want to change go here]] } },
   'brooth/far.vim',
   -- file navigation
-  {"junegunn/fzf.vim"},
+  -- {"junegunn/fzf.vim"},
   -- -- Draw ASCII diagrams in Neovim.
   -- diffview
   { 'sindrets/diffview.nvim',  dependencies = 'nvim-lua/plenary.nvim' },
