@@ -431,7 +431,6 @@ local plugins = {
   'mbbill/undotree',
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
-  'lukas-reineke/indent-blankline.nvim', -- Add indentation guides even on blank lines
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
   -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
@@ -474,10 +473,6 @@ local plugins = {
   -- LSP Support
   { 'neovim/nvim-lspconfig' }, -- Required
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    requires = { "nvim-lua/plenary.nvim" },
-  },
-  {
     "williamboman/mason.nvim",
     build = ":MasonUpdate"                 -- :MasonUpdate updates registry contents
   },
@@ -503,6 +498,7 @@ local plugins = {
       { "mfussenegger/nvim-dap" },
       { "mfussenegger/nvim-dap-python" },
       { "leoluz/nvim-dap-go" },
+      { "nvim-neotest/nvim-nio" },
     }
   },
   -- 'mfussenegger/nvim-jdtls',
@@ -639,15 +635,6 @@ vim.keymap.set('n', '<M-,>', ':BufferLineCyclePrev<CR>', options)
 vim.keymap.set('n', '<M-.>', ':BufferLineCycleNext<CR>', options)
 vim.keymap.set('n', '<M-<>', ':BufferLineMovePrev<CR>', options)
 vim.keymap.set('n', '<M->>', ':BufferLineMoveNext<CR>', options)
-
--- Enable `lukas-reineke/indent-blankline.nvim`
--- -- See `:help indent_blankline.txt`
-vim.cmd("let g:indent_blankline_filetype_exclude = ['help', 'startify', 'fzf', 'lspinfo', 'lazy', 'checkhealth', 'man', '']")
-require("indent_blankline").setup {
-  -- for example, context is off by default, use this to turn it on
-  -- show_current_context = true,
-  show_current_context_start = true,
-}
 
 -- norcalli/nvim-colorizer.lua
 require 'colorizer'.setup()
@@ -799,20 +786,6 @@ require("diffview").setup({
   enhanced_diff_hl = true, -- See ':h diffview-config-enhanced_diff_hl'
 })
 
--- for jose-elias-alvarez/null-ls.nvim
-local null_ls = require("null-ls")
-
-null_ls.setup({
-  sources = {
-    -- null_ls.builtins.formatting.stylua,
-    -- null_ls.builtins.diagnostics.eslint,
-    -- null_ls.builtins.completion.spell,
-    -- null_ls.builtins.diagnostics.mypy,
-    -- null_ls.builtins.diagnostics.ruff,
-    null_ls.builtins.formatting.black
-  },
-})
-
 -- IMPORTANT: make sure to setup neodev BEFORE lspconfig
 require("neodev").setup({
   -- add any options here, or leave empty to use the default settings
@@ -828,7 +801,6 @@ require('mason-lspconfig').setup({
     'clangd',
     'gopls',
     -- 'jdtls',
-    'tsserver',
     -- 'rust_analyzer',
   },
   -- Whether servers that are set up (via lspconfig) should be automatically installed if they're not already installed.
