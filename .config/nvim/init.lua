@@ -465,7 +465,7 @@ local plugins = {
   { "akinsho/toggleterm.nvim", version = '*',                         opts = { --[[ things you want to change go here]] } },
   'brooth/far.vim',
   -- file navigation
-  'junegunn/fzf.vim',
+  {"junegunn/fzf.vim"},
   -- -- Draw ASCII diagrams in Neovim.
   -- diffview
   { 'sindrets/diffview.nvim',  dependencies = 'nvim-lua/plenary.nvim' },
@@ -484,25 +484,25 @@ local plugins = {
   { 'hrsh7th/cmp-cmdline' },
   { 'saadparwaiz1/cmp_luasnip' },
   { 'hrsh7th/cmp-nvim-lsp' },
-  -- {'hrsh7th/cmp-copilot'}, --produce lattency issue, makes completion laggy an slow -- :Copilot setup  # https://github.com/hrsh7th/cmp-copilot
-  { 'rcarriga/cmp-dap' },
+  -- {'hrsh7th/cmp-copilot'}, --produce lattency issue, makes completion laggy an slow -- :Copilot setup
   -- {'hrsh7th/cmp-nvim-lua'},
   -- Snippets
   { 'L3MON4D3/LuaSnip' },
   { 'rafamadriz/friendly-snippets' },
   -- lsp_signature
   { 'ray-x/lsp_signature.nvim' },
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = {
-      { "mfussenegger/nvim-dap" },
-      { "mfussenegger/nvim-dap-python" },
-      { "leoluz/nvim-dap-go" },
-      { "nvim-neotest/nvim-nio" },
-    }
-  },
+  -- {
+  --   "rcarriga/nvim-dap-ui",
+  --   dependencies = {
+  --     { "mfussenegger/nvim-dap" },
+  --     { "mfussenegger/nvim-dap-python" },
+  --     { "leoluz/nvim-dap-go" },
+  --     { "nvim-neotest/nvim-nio" },
+  --   }
+  -- },
+  -- { 'rcarriga/cmp-dap' },
   -- 'mfussenegger/nvim-jdtls',
-  'github/copilot.vim',
+  {'github/copilot.vim'},
   -- -- markdown-preview
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
   {
@@ -1066,101 +1066,102 @@ cmp.setup.cmdline(':', {
   })
 })
 
-cmp.setup({
-  enabled = function()
-    return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-        or require("cmp_dap").is_dap_buffer()
-  end
-})
-
-cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-  sources = {
-    { name = "dap" },
-  },
-})
-
 -- https://github.com/windwp/nvim-autopairs#mapping-cr
 -- https://github.com/hrsh7th/nvim-cmp/wiki/Advanced-techniques#nvim-autopairs
 -- If you want insert `(` after select function or method item
 local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 
--- nvim-dap nvim-dap-ui
-local dap, dapui = require("dap"), require("dapui")
-dapui.setup({
-})
+-- -- nvim-dap nvim-dap-ui
+-- local dap, dapui = require("dap"), require("dapui")
+-- dapui.setup({
+-- })
+--
+-- local diagnostics_icons = my_icons.diagnostics
+-- vim.fn.sign_define("DapBreakpoint",
+--   { text = diagnostics_icons.Debug, texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
+-- vim.fn.sign_define("DapBreakpointCondition",
+--   { text = diagnostics_icons.BoldQuestion, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+-- vim.fn.sign_define("DapBreakpointRejected",
+--   { text = diagnostics_icons.Reject, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
+-- vim.fn.sign_define("DapStopped",
+--   {
+--     text = diagnostics_icons.stoped,
+--     texthl = "LspDiagnosticsSignInformation",
+--     linehl = "DiagnosticUnderlineInfo",
+--     numhl = "LspDiagnosticsSignInformation"
+--   })
+-- dap.listeners.after.event_initialized["dapui_config"] = function()
+--   dapui.open()
+-- end
+-- dap.listeners.before.event_terminated["dapui_config"] = function()
+--   dapui.close()
+-- end
+-- dap.listeners.before.event_exited["dapui_config"] = function()
+--   dapui.close()
+-- end
+-- vim.keymap.set('n', '<F6>', require 'dap'.toggle_breakpoint)
+-- vim.keymap.set('n', '<F14>',
+--   function() require('dap').set_breakpoint(vim.fn.input('Breakpoint contidion: '), nil, nil) end) -- S-F6
+-- vim.keymap.set('n', '<F7>', require 'dap'.step_into)
+-- vim.keymap.set('n', '<F15>', require 'dap'.step_out)                                              -- S-F7
+-- vim.keymap.set('n', '<F8>', require 'dap'.step_over)
+-- vim.keymap.set('n', '<F9>', require 'dap'.continue)
+-- vim.keymap.set('n', '<F21>', require 'dapui'.toggle) -- S-F9
+--
+-- require('dap-python').setup('/opt/homebrew/bin/python')
+-- require('dap-go').setup()
+-- dap.adapters.codelldb = {
+--   type = 'server',
+--   port = "${port}",
+--   executable = {
+--     -- CHANGE THIS to your path!
+--     command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
+--     args = { "--port", "${port}" },
+--     -- args = {
+--     -- "--port", "${port}",
+--     --   function()
+--     --     return vim.fn.input('Arguments: ')
+--     --   end,
+--     -- },
+--
+--     -- On windows you may have to uncomment this:
+--     -- detached = false,
+--   }
+-- }
+-- dap.configurations.cpp = {
+--   {
+--     name = "Launch file",
+--     type = "codelldb",
+--     request = "launch",
+--     program = function()
+--       return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+--     end,
+--     -- args = {
+--     --   function()
+--     --     return vim.fn.input('Arguments: ')
+--     --   end,
+--     -- },
+--     cwd = '${workspaceFolder}',
+--     stopOnEntry = false,
+--   },
+-- }
+-- dap.configurations.c = dap.configurations.cpp
+-- dap.configurations.rust = dap.configurations.cpp
 
-local diagnostics_icons = my_icons.diagnostics
-vim.fn.sign_define("DapBreakpoint",
-  { text = diagnostics_icons.Debug, texthl = "LspDiagnosticsSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointCondition",
-  { text = diagnostics_icons.BoldQuestion, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointRejected",
-  { text = diagnostics_icons.Reject, texthl = "LspDiagnosticsSignHint", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped",
-  {
-    text = diagnostics_icons.stoped,
-    texthl = "LspDiagnosticsSignInformation",
-    linehl = "DiagnosticUnderlineInfo",
-    numhl = "LspDiagnosticsSignInformation"
-  })
-dap.listeners.after.event_initialized["dapui_config"] = function()
-  dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
-end
-vim.keymap.set('n', '<F6>', require 'dap'.toggle_breakpoint)
-vim.keymap.set('n', '<F14>',
-  function() require('dap').set_breakpoint(vim.fn.input('Breakpoint contidion: '), nil, nil) end) -- S-F6
-vim.keymap.set('n', '<F7>', require 'dap'.step_into)
-vim.keymap.set('n', '<F15>', require 'dap'.step_out)                                              -- S-F7
-vim.keymap.set('n', '<F8>', require 'dap'.step_over)
-vim.keymap.set('n', '<F9>', require 'dap'.continue)
-vim.keymap.set('n', '<F21>', require 'dapui'.toggle) -- S-F9
-
-require('dap-python').setup('/opt/homebrew/bin/python')
-require('dap-go').setup()
-dap.adapters.codelldb = {
-  type = 'server',
-  port = "${port}",
-  executable = {
-    -- CHANGE THIS to your path!
-    command = os.getenv("HOME") .. "/.vscode/extensions/vadimcn.vscode-lldb-1.9.2/adapter/codelldb",
-    args = { "--port", "${port}" },
-    -- args = {
-    -- "--port", "${port}",
-    --   function()
-    --     return vim.fn.input('Arguments: ')
-    --   end,
-    -- },
-
-    -- On windows you may have to uncomment this:
-    -- detached = false,
-  }
-}
-dap.configurations.cpp = {
-  {
-    name = "Launch file",
-    type = "codelldb",
-    request = "launch",
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    -- args = {
-    --   function()
-    --     return vim.fn.input('Arguments: ')
-    --   end,
-    -- },
-    cwd = '${workspaceFolder}',
-    stopOnEntry = false,
-  },
-}
-dap.configurations.c = dap.configurations.cpp
-dap.configurations.rust = dap.configurations.cpp
+-- -- cmp-dap (nvim-cmp source for nvim-dap REPL and nvim-dap-ui buffers)
+-- cmp.setup({
+--   enabled = function()
+--     return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+--         or require("cmp_dap").is_dap_buffer()
+--   end
+-- })
+--
+-- cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+--   sources = {
+--     { name = "dap" },
+--   },
+-- })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
