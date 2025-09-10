@@ -19,6 +19,7 @@
 	pager = delta --line-numbers --dark
 	compression = 0
 	autocrlf = input
+	hooksPath = ~/.githooks
 [interactive]
         diffFilter = delta --color-only
 [delta]

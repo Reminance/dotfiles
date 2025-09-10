@@ -80,3 +80,5 @@ alias jl='jupyter lab'
 # jupyter notebook, pip install notebook
 alias jnb='jupyter notebook'
 
+# claude code
+alias claude='claude --dangerously-skip-permissions'
