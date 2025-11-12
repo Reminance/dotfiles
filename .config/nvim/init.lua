@@ -424,15 +424,15 @@ local plugins = {
   -- Fuzzy Finder Algorithm which requires local dependencies to be built. Only load if `make` is available
   -- { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', cond = vim.fn.executable 'make' == 1 }
   -- colorscheme
-  -- 'connorholyday/vim-snazzy',
-  -- 'dracula/vim',
+  'connorholyday/vim-snazzy',
+  'dracula/vim',
   { "catppuccin/nvim",                 name = "catppuccin", priority = 1000 },
   { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
   'mbbill/undotree',
   'tpope/vim-fugitive',
   'lewis6991/gitsigns.nvim',
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
-  -- 'nvim-lualine/lualine.nvim', -- Fancier statusline
+  'nvim-lualine/lualine.nvim', -- Fancier statusline
   'mhinz/vim-startify',
   {
     "folke/which-key.nvim",
@@ -505,23 +505,23 @@ local plugins = {
   {'github/copilot.vim'},
   -- -- markdown-preview
   -- { "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, },
-  {
-    'kristijanhusak/vim-dadbod-ui',
-    dependencies = {
-      { 'tpope/vim-dadbod', lazy = true },
-      { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
-    },
-    cmd = {
-      'DBUI',
-      'DBUIToggle',
-      'DBUIAddConnection',
-      'DBUIFindBuffer',
-    },
-    init = function()
-      -- Your DBUI configuration
-      vim.g.db_ui_use_nerd_fonts = 1
-    end,
-  },
+  -- {
+  --   'kristijanhusak/vim-dadbod-ui',
+  --   dependencies = {
+  --     { 'tpope/vim-dadbod', lazy = true },
+  --     { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
+  --   },
+  --   cmd = {
+  --     'DBUI',
+  --     'DBUIToggle',
+  --     'DBUIAddConnection',
+  --     'DBUIFindBuffer',
+  --   },
+  --   init = function()
+  --     -- Your DBUI configuration
+  --     vim.g.db_ui_use_nerd_fonts = 1
+  --   end,
+  -- },
   {
     "folke/trouble.nvim",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -530,6 +530,21 @@ local plugins = {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     },
+  },
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- add any options here
+    },
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    }
   },
 }
 
@@ -585,32 +600,33 @@ end
 
 vim.keymap.set("n", "<leader>lg", "<cmd>lua _Lazygit_toggle()<CR>", { noremap = true, silent = true })
 
--- -- for snazzy
--- vim.g["SnazzyTransparent"] = 1
--- vim.cmd('colorscheme snazzy')
--- vim.cmd('hi Folded guifg=#d78787 guibg=None gui=bold')
+-- for snazzy
+vim.g["SnazzyTransparent"] = 1
+vim.cmd('colorscheme snazzy')
+vim.cmd('hi Folded guifg=#d78787 guibg=None gui=bold')
 
 -- -- for dracula/vim
 -- vim.cmd('let g:dracula_colorterm = 0')  -- for transparency
 -- vim.cmd('colorscheme dracula')
 -- vim.cmd('hi Folded guifg=#d75f87 guibg=None gui=bold')
 
--- for catppuccin/nvim
-require("catppuccin").setup({
-  transparent_background = true, -- disables setting the background color.
-})
--- setup must be called before loading
-vim.cmd.colorscheme "catppuccin"
-vim.cmd('hi Folded guibg=None gui=bold')
-
--- -- Set lualine as statusline
--- -- See `:help lualine.txt`
--- require('lualine').setup({
---   options = {
---     section_separators = { left = '', right = '' },
---     component_separators = { left = '|', right = '|' }
---   }
+-- -- for catppuccin/nvim
+-- require("catppuccin").setup({
+--   transparent_background = true, -- disables setting the background color.
 -- })
+
+-- -- setup must be called before loading
+-- vim.cmd.colorscheme "catppuccin"
+-- vim.cmd('hi Folded guibg=None gui=bold')
+
+-- Set lualine as statusline
+-- See `:help lualine.txt`
+require('lualine').setup({
+  options = {
+    section_separators = { left = '', right = '' },
+    component_separators = { left = '|', right = '|' }
+  }
+})
 
 -- for akinsho/bufferline.nvim
 require("bufferline").setup{
@@ -1162,6 +1178,31 @@ cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
 --     { name = "dap" },
 --   },
 -- })
+
+-- for folke/noice.nvim
+require("noice").setup({
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+    },
+  },
+  -- you can enable a preset for easier configuration
+  presets = {
+    bottom_search = true, -- use a classic bottom cmdline for search
+    command_palette = true, -- position the cmdline and popupmenu together
+    long_message_to_split = true, -- long messages will be sent to a split
+    inc_rename = false, -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false, -- add a border to hover docs and signature help
+  },
+})
+
+-- for rcarriga/nvim-notify
+require("notify").setup({
+  background_colour = "#000000",
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
