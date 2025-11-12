@@ -182,7 +182,7 @@ https://github.com/vegarab/dotfiles
 ```
 
 # jetbrains
-This project provides a series of easy-to-use Linux configurations, including some interesting and useful programming-related codes and scripts.
+This project offers a series of easy-to-use configurations for Linux/Unix systems, including some interesting and useful programming-related codes and scripts.
 The project also demonstrates how to manage and install these configurations through makefile or symblolic link and shell scripts.
 
 # 有趣的项目
