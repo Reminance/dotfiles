@@ -843,6 +843,11 @@ require('mason-lspconfig').setup({
   }
 })
 
+-- Source - https://stackoverflow.com/a/79656109
+-- Posted by Jo Totland
+-- Retrieved 2025-11-13, License - CC BY-SA 4.0
+vim.lsp.config("lua_ls", { settings = { Lua = { diagnostics = { globals = { "vim" }}}}})
+
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
