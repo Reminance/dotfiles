@@ -637,7 +637,8 @@ require("bufferline").setup{
       local s = " "
       for e, n in pairs(diagnostics_dict) do
         local sym = e == "error" and "  "
-          or (e == "warning" and "  " or " 󰌶 " )
+          or e == "warning" and "  "
+          or (e == "info" and "  " or " 󰌵 " )
         s = s .. n .. sym
       end
       return s
@@ -895,7 +896,16 @@ vim.diagnostic.config({
   virtual_text = {
     prefix = my_icons.diagnostics.Prefix,
   },
-  signs = true,
+  -- diagnostics symbols
+  -- signs = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '', -- or other icon of your choice here, this is just what my config has:
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.INFO] = '',
+      [vim.diagnostic.severity.HINT] = '󰌵',
+    },
+  },
   update_in_insert = false,
   underline = true,
   severity_sort = false,
@@ -958,7 +968,7 @@ local luasnip = require('luasnip')
 require("luasnip.loaders.from_snipmate").lazy_load()
 require('luasnip.loaders.from_vscode').lazy_load()
 local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
 end
 cmp.setup({
