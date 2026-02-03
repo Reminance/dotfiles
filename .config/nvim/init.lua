@@ -317,7 +317,7 @@ endfunc
 ]]
 
 -- enable markdown_folding, using Neovim's runtime filetype
-vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
+-- vim.cmd('let g:markdown_folding = 1') -- This setting seems to enable folding from Neovim's runtime filetype, https://github.com/neovim/neovim/blob/master/runtime/ftplugin/markdown.vim
 
 -- shortcut to TransformTodoStatus symbol
 vim.cmd [[
